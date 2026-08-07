@@ -8,7 +8,7 @@ package tecnologoinf.main;
  *
  * @author briha
  */
-public class ProgAppGrupo8S42026 {
+public class Main {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
