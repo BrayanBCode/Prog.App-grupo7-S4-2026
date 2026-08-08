@@ -9,5 +9,6 @@ package tecnologoinf.Logica;
  * @author maida
  */
 public interface IController {
+    void hola();
     
 }

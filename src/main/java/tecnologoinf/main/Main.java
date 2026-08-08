@@ -4,6 +4,9 @@
 
 package tecnologoinf.main;
 
+import tecnologoinf.Logica.Fabrica;
+import tecnologoinf.Logica.IController;
+
 /**
  *
  * @author briha
@@ -11,7 +14,9 @@ package tecnologoinf.main;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        var f = Fabrica.getInstance();
+        IController c = f.getUserControler();
         
+        c.hola();
     }
 }

@@ -9,5 +9,9 @@ package tecnologoinf.Logica;
  * @author maida
  */
 public class Controller implements IController {
-    
+
+    @Override
+    public void hola() {
+        System.out.print("Hola mundito de geys");
+    }
 }

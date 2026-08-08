@@ -4,11 +4,24 @@
  */
 package tecnologoinf.Logica;
 
-/**
+/*
  *
  * @author maida
  */
 public class Fabrica {
-    private static tecnologoinf.Logica.Fabrica instance;
+    private static Fabrica INSTANCE;
+    
+    private Fabrica() {};
+            
+    public static Fabrica getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new Fabrica();
+        }
+        return INSTANCE;
+    }
+    
+    public IController getUserControler() {
+        return new Controller();
+    }
     
 }
