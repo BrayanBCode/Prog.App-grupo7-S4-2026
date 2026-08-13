@@ -6,7 +6,7 @@ package tecnologoinf.main;
 
 import tecnologoinf.Logica.Fabrica;
 import tecnologoinf.Logica.IController;
-import tecnologoinf.Presentacion.Fprueba;
+import tecnologoinf.Presentacion.JFInicio;
 /**
  *
  * @author briha
@@ -17,7 +17,7 @@ public class Main {
         var f = Fabrica.getInstance();
         IController c = f.getUserControler();
         c.hola();
-        var prueba = new Fprueba();
+        var prueba = new JFInicio();
         prueba.setVisible(true);        
         
     }
