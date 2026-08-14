@@ -1,0 +1,104 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Logica;
+
+import java.util.List;
+import java.time.LocalDate;
+import java.io.Serializable;
+import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
+
+/**
+ *
+ * @author maida
+ */
+@Entity
+public class Curso implements Serializable {
+    //Atributos
+    @Id private String nombre;
+    private String descripcion;
+    private int duracion;
+    private float canthoras;
+    private int cantCreditos;
+    private LocalDate fechaRegistro;
+    private String url;
+    
+    //Forainge key
+    @ManyToOne
+    private Instituto instituto;
+    
+    @ManyToOne
+    private Docente docente;
+    
+    @OneToMany(mappedBy="curso")
+    private List<EdicionCurso> edCursos= new ArrayList<>();
+    
+    @ManyToMany(mappedBy="cursos")
+    private List<ProgramaFormacion> pFormaciones = new ArrayList<>();
+    
+    //AutoRelacion foraing key
+    
+    @ManyToMany
+    private List<Curso> previas = new ArrayList<>();
+    
+    //Lado Inverso
+    @ManyToMany(mappedBy="previas")
+    private List<Curso> esPreviaDe = new ArrayList<>();
+    
+    //Metodos
+    public List<Curso> getPrevias(){return previas;}
+    public String getNombreC(){return nombre;}
+    
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    //Metodos
+    public void setNombreC(String nombre){this.nombre = nombre;}
+    public void setInstituto(Instituto instituto){this.instituto = instituto;}
+    public void setDocente(Docente docente){this.docente = docente;}
+    
+    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Curso)) {
+            return false;
+        }
+        Curso other = (Curso) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Logica.Curso[ id=" + id + " ]";
+    }
+    
+}
