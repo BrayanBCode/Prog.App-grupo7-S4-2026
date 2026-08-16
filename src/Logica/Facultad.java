@@ -26,8 +26,7 @@ public class Facultad implements Serializable {
     private List<Instituto> institutos = new ArrayList<>();
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    
     private Long id;
 
     public void setNombre(String nombre){this.nombre = nombre;}

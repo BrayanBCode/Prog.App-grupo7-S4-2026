@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
 
@@ -20,16 +21,19 @@ import javax.persistence.ManyToOne;
 @Entity
 public class InscripcionEdicion implements Serializable {
     //Forainge key
-     @ManyToOne
-    @JoinColumn(name="estudiante_id",nullable=false)
-    private Estudiante estudiante;
-    
     @ManyToOne
-    @JoinColumn(name= "edicion_curso_id",nullable=false)
+    @JoinColumns({
+        @JoinColumn(name = "ESTUDIANTE_NICKNAME", referencedColumnName = "NICKNAME"),
+        @JoinColumn(name = "ESTUDIANTE_MAIL", referencedColumnName = "MAIL")
+    })
+    private Estudiante estudiante;
+
+    @ManyToOne
     private EdicionCurso edicionCurso;
-    
-    //Atributos
-    private LocalDate fechaInscripcion; 
+
+    private java.time.LocalDate fechaInscripcion;
+
+    public InscripcionEdicion() {}
     
     //Metodos
     public void setEstudiante(Estudiante estudiante){this.estudiante = estudiante;}

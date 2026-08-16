@@ -14,6 +14,7 @@ import org.eclipse.persistence.jpa.jpql.parser.DateTime;
  * @author maida
  */
 @Entity
+@IdClass(UsuarioID.class)
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class Usuario implements Serializable {
     //Atributos
@@ -23,48 +24,27 @@ public abstract class Usuario implements Serializable {
    private String Nombre;
    private LocalDate fechaNac;
    
-   
-   
+   //Constructor para JPA
+   public Usuario() {}
 
+    // Constructor completo
+    public Usuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac) {
+        this.nickname = nickname;
+        this.Mail = mail;
+        this.Nombre = nombre;
+        this.Apellido = apellido;
+        this.fechaNac = fechaNac;
+    }
+    // Getters para los campos ID
+    public String getNickname() { return nickname; }
+    public String getMail() { return Mail; }
+
+    // Método que devuelve el objeto de clave compuesta UsuarioID
+    public UsuarioID getId() {
+        return new UsuarioID(nickname, Mail);
+    }
+   
    public String getNombreU(){return Nombre;}
    
-    private static final long serialVersionUID = 1L;
-    @javax.persistence.Id
-    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
-    private Long id;
-    
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Usuario)) {
-            return false;
-        }
-        Usuario other = (Usuario) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Logica.Usuario[ id=" + id + " ]";
-    }
     
 }

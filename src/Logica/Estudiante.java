@@ -6,6 +6,7 @@ package Logica;
 
 import java.util.List;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -26,47 +27,25 @@ public class Estudiante extends Usuario {
     
     @OneToMany(mappedBy= "estudiante")
     private List<InscripcionPrograma> pInscripcion = new ArrayList<>();
+    // Constructor vacío necesario para JPA
+    public Estudiante() {
+        super();
+    }
+
+    // Constructor completo que invoca a la clase padre (Usuario)
+    public Estudiante(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac) {
+        super(nickname, mail, nombre, apellido, fechaNac);
+    }
+    
+    // Retorna la clave compuesta heredada de Usuario
+    public UsuarioID getID() {
+        return super.getId();
+    }
     
     //Metodos
     public String getNombre(){return super.getNombreU();} //El super es para heredar el comportamiento del padre (poder acceder al atributo Nombre)
     public List<InscripcionEdicion> getInscripciones(){return inscripciones;}
     
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Estudiante)) {
-            return false;
-        }
-        Estudiante other = (Estudiante) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Logica.Estudiante[ id=" + id + " ]";
-    }
+    
     
 }

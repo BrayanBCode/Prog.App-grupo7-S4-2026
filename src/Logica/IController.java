@@ -4,11 +4,13 @@
  */
 package Logica;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author maida
  */
 public interface IController {
-    void hola();
+    void AltaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto);
     
 }

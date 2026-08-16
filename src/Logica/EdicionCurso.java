@@ -45,8 +45,7 @@ public class EdicionCurso implements Serializable {
     public List<Docente> getDocentes(){return docentes;}
     
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+   
     private Long id;
 
     public Long getId() {

@@ -6,6 +6,7 @@ package Logica;
 
 import java.util.List;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,44 +30,17 @@ public class Docente extends Usuario {
     
     @OneToMany(mappedBy="docente")
     private List<Curso> cursos = new ArrayList<>();
+    // Constructor vacío necesario para JPA
+    public Docente() {
+        super();
+    }
+
+    // Constructor que llama a Usuario y asigna el instituto
+    public Docente(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String institutoTrabajo) {
+        super(nickname, mail, nombre, apellido, fechaNac);
+        this.institutoTrabajo = institutoTrabajo;
+    }
     
-    
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Docente)) {
-            return false;
-        }
-        Docente other = (Docente) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Logica.Docente[ id=" + id + " ]";
-    }
+    private String institutoTrabajo;
     
 }
