@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" 
+             xmlns="http://xmlns.jcp.org/xml/ns/persistence" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+
+  <persistence-unit name="DataBase" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    
+    <!-- Entidades Mapeadas -->
+    <class>Logica.Usuario</class>
+    <class>Logica.Docente</class>
+    <class>Logica.Estudiante</class>
+    <class>Logica.InscripcionEdicion</class>
+    <class>Logica.EdicionCurso</class>
+    <class>Logica.ProgramaFormacion</class>
+    <class>Logica.InscripcionPrograma</class>
+    <class>Logica.Curso</class>
+    <class>Logica.Instituto</class>
+    <class>Logica.Facultad</class>
+
+    <properties>
+      <!-- 1. URL CORREGIDA: Cambia 'laboratorio_db' por el nombre exacto de la BD que creaste en MySQL Workbench -->
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/laboratorio_db?serverTimezone=UTC&amp;zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      
+      <!-- Credenciales de MySQL -->
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.password" value="root"/> <!-- Pon tu contraseña si tienes una -->
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      
+      <!-- 2. RECREAR TABLAS AUTOMÁTICAMENTE: Borra y rehace las tablas en cada corrida para evitar duplicados/errores -->
+      <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+      
+      <!-- 3. LOGS EN CONSOLA: Te muestra las consultas SQL reales en la consola de NetBeans -->
+      <property name="eclipselink.logging.level" value="FINE"/>
+    </properties>
+  </persistence-unit>
+</persistence>
