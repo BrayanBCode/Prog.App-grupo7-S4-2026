@@ -49,7 +49,52 @@ public class Controller implements IController {
             // 6. Cerrar siempre el EntityManager
             em.close();
         }
-    }
-}
+    }    
+        
+    @Override 
+    public void CrearPrograma( String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta) {
+        
+        EntityManager em = Conexion.getInstancia().getEntityManager();
+        
+        try {
+            em.getTransaction().begin();
+            
+            
+            ProgramaFormacion pf = em.find(ProgramaFormacion.class, nombre);
+            if (pf != null) {
+                throw new Exception("Ya existe un programa de formación registrado con el nombre: " + nombre);
+            }
+            
+            
+            ProgramaFormacion nuevoPrograma = new ProgramaFormacion( nombre, descripcion, fechaInicio, fechaFin, fechaAlta);
+            
+            
+            em.persist(nuevoPrograma);
+            
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            
+            try {
+                throw e;
+            } catch (Exception ex) {
+                System.getLogger(Controller.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+            
+        } finally {
+            em.close();
+        }
+    }   
+        
+        
+    
 
+    }
+
+    
+
+   
+    
 

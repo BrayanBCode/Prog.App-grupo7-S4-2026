@@ -1,71 +1,83 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Logica;
 
-import java.util.List;
-import java.time.LocalDate;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-/**
- *
- * @author maida
- */
 @Entity
 public class ProgramaFormacion implements Serializable {
-    //Atributos
-    @Id private String nombre;
+    
+    private static final long serialVersionUID = 1L;
+
+    // --- ATRIBUTOS ---
+    @Id 
+    private String nombre;
     private String descripcion;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
+    private LocalDate fechaAlta;
     
-    //Forainge key
+    // --- RELACIONES ---
     @OneToMany(mappedBy = "pFormacion")
     private List<InscripcionPrograma> pInscripciones = new ArrayList<>();
     
     @ManyToMany
     private List<Curso> cursos = new ArrayList<>();
     
-    //Metodos
-    public void setNombre(String nombre){this.nombre = nombre;}
-    public List<Curso> getCursos(){return cursos;}
-    
-    
-    private static final long serialVersionUID = 1L;
-    
-    private Long id;
+    // --- CONSTRUCTORES ---
+    public ProgramaFormacion() {}
 
-    public Long getId() {
-        return id;
+    public ProgramaFormacion(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.fechaAlta = fechaAlta;
     }
+    
+    // --- GETTERS Y SETTERS ---
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
+    public LocalDate getFechaInicio() { return fechaInicio; }
+    public void setFechaInicio(LocalDate fechaInicio) { this.fechaInicio = fechaInicio; }
+
+    public LocalDate getFechaFin() { return fechaFin; }
+    public void setFechaFin(LocalDate fechaFin) { this.fechaFin = fechaFin; }
+
+    public LocalDate getFechaAlta() { return fechaAlta; }
+    public void setFechaAlta(LocalDate fechaAlta) { this.fechaAlta = fechaAlta; }
+
+    public List<Curso> getCursos() { return cursos; }
+    public void setCursos(List<Curso> cursos) { this.cursos = cursos; }
+
+    public List<InscripcionPrograma> getPInscripciones() { return pInscripciones; }
+    public void setPInscripciones(List<InscripcionPrograma> pInscripciones) { this.pInscripciones = pInscripciones; }
+
+    // --- EQUALS, HASHCODE Y TOSTRING ---
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (nombre != null ? nombre.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof ProgramaFormacion)) {
             return false;
         }
         ProgramaFormacion other = (ProgramaFormacion) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.nombre == null && other.nombre != null) || 
+            (this.nombre != null && !this.nombre.equals(other.nombre))) {
             return false;
         }
         return true;
@@ -73,7 +85,6 @@ public class ProgramaFormacion implements Serializable {
 
     @Override
     public String toString() {
-        return "Logica.ProgramaFormacion[ id=" + id + " ]";
+        return this.nombre;
     }
-    
 }
