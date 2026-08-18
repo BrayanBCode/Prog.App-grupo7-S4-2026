@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Logica;
+package Logica.cursos;
 
-import java.time.LocalDate;
+import Logica.usuarios.Estudiante;
+
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,12 +15,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
+
 /**
  *
  * @author maida
  */
 @Entity
-public class InscripcionPrograma implements Serializable {
+public class InscripcionEdicion implements Serializable {
+    //Forainge key
     @ManyToOne
     @JoinColumns({
         @JoinColumn(name = "ESTUDIANTE_NICKNAME", referencedColumnName = "NICKNAME"),
@@ -28,19 +31,21 @@ public class InscripcionPrograma implements Serializable {
     private Estudiante estudiante;
 
     @ManyToOne
-    private ProgramaFormacion pFormacion;
+    private EdicionCurso edicionCurso;
 
     private java.time.LocalDate fechaInscripcion;
 
-    public InscripcionPrograma() {}
+    public InscripcionEdicion() {}
+    
     //Metodos
-    public void setEstudiante(Estudiante estudiante){this.estudiante=estudiante;}
-    public void setpFormacion(ProgramaFormacion pformacion){this.pFormacion= pformacion;}
+    public void setEstudiante(Estudiante estudiante){this.estudiante = estudiante;}
+    public void setEdicionCurso(EdicionCurso edicioncurso){this.edicionCurso=edicioncurso;}
     
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
 
     public Long getId() {
         return id;
@@ -60,10 +65,10 @@ public class InscripcionPrograma implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof InscripcionPrograma)) {
+        if (!(object instanceof InscripcionEdicion)) {
             return false;
         }
-        InscripcionPrograma other = (InscripcionPrograma) object;
+        InscripcionEdicion other = (InscripcionEdicion) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -72,7 +77,7 @@ public class InscripcionPrograma implements Serializable {
 
     @Override
     public String toString() {
-        return "Logica.InscripcionPrograma[ id=" + id + " ]";
+        return "Logica.InscripcionEdicion[ id=" + id + " ]";
     }
     
 }

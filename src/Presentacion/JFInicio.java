@@ -4,8 +4,8 @@
  */
 package Presentacion;
 
-import Logica.Fabrica;
-import Logica.IController;
+import Logica.controller.Fabrica;
+import Logica.controller.IController;
 
 /**
  *
@@ -104,15 +104,6 @@ public class JFInicio extends javax.swing.JFrame {
         registro.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-         
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new JFInicio().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPane1;

@@ -2,8 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Logica;
+package Logica.controller;
 
+import Logica.*;
+import Logica.usuarios.Docente;
+import Logica.usuarios.Estudiante;
+import Logica.cursos.ProgramaFormacion;
+import Logica.usuarios.Usuario;
 import java.time.LocalDate;
 import javax.persistence.EntityManager;
 import Persistencia.Conexion;

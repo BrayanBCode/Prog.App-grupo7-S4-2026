@@ -10,7 +10,7 @@ package Presentacion;
  */
 public class JFRegistro extends javax.swing.JFrame {
      //Control es con el que nos vamos a comunicar para llamar las funciones que tengamos en IController 
-    Logica.IController control = Logica.Fabrica.getInstance().getUserControler();
+    Logica.controller.IController control = Logica.controller.Fabrica.getInstance().getUserControler();
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFRegistro.class.getName());
 
@@ -322,17 +322,15 @@ public class JFRegistro extends javax.swing.JFrame {
 
     try {
         
-        // 4. Ejecutar el Alta
+        // Ejecutar el Alta
         control.AltaUsuario(nick, mail, nombre, apellido, fechaNac, instituto);
 
-        // 5. Mensaje de éxito y cerrar la ventana
+        // Mensaje de éxito y cerrar la ventana
         javax.swing.JOptionPane.showMessageDialog(this, 
             "Usuario registrado con éxito.", 
             "Éxito", 
             javax.swing.JOptionPane.INFORMATION_MESSAGE);
             
-        this.dispose(); // Cierra el formulario
-
     } catch (Exception ex) {
         // Si el Nickname o Mail están repetidos, atrapa la excepción y avisa al usuario
         javax.swing.JOptionPane.showMessageDialog(this, 
