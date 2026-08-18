@@ -11,7 +11,6 @@ import java.time.LocalDate;
  * @author maida
  */
 public interface IController {
-    
     void AltaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto);
     void CrearPrograma(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta);
 }

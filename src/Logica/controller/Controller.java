@@ -51,7 +51,6 @@ public class Controller implements IController {
             }
             e.printStackTrace();
         } finally {
-            // 6. Cerrar siempre el EntityManager
             em.close();
         }
     }    
