@@ -22,7 +22,7 @@ public class Controller implements IController {
     @Override
     public void AltaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto) {
         
-        // 1. Determinar y crear la entidad correspondiente
+        // Determinar y crear la entidad correspondiente
         Usuario usuario;
         
         if (instituto != null && !instituto.trim().isEmpty()) {
@@ -31,17 +31,17 @@ public class Controller implements IController {
             usuario = new Estudiante(nickname, mail, nombre, apellido, fechaNac);
         }
 
-        // 2. Obtener el EntityManager
+        // Obtener el EntityManager
         EntityManager em = Conexion.getInstancia().getEntityManager();
 
         try {
-            // 3. Iniciar la transacción
+            // Iniciar la transacción
             em.getTransaction().begin();
             
-            // 4. Persistir el objeto (JPA detecta automáticamente si es Docente o Estudiante)
+            // Persistir el objeto (JPA detecta automáticamente si es Docente o Estudiante)
             em.persist(usuario);
             
-            // 5. Confirmar los cambios en la Base de Datos
+            // Confirmar los cambios en la Base de Datos
             em.getTransaction().commit();
             
         } catch (Exception e) {
