@@ -3,7 +3,7 @@ package Logica.controller;
 import Logica.cursos.*;
 import Logica.usuarios.Docente;
 import Logica.usuarios.Estudiante;
-import Logica.cursos.ProgramaFormacion;
+import Logica.programaFormacion.ProgramaFormacion;
 import Logica.usuarios.Usuario;
 import Logica.usuarios.UsuarioID;
 import java.time.LocalDate;
@@ -211,3 +211,5 @@ public void AltaUsuario(String nickname, String mail, String nombre, String apel
         }
     }    
 }
+
+

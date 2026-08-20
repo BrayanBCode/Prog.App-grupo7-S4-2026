@@ -5,7 +5,7 @@
 package Logica.usuarios;
 
 import Logica.cursos.InscripcionEdicion;
-import Logica.cursos.InscripcionPrograma;
+import Logica.programaFormacion.InscripcionPrograma;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -7,11 +7,11 @@
     <class>Logica.cursos.InscripcionEdicion</class>
     <class>Logica.cursos.Curso</class>
     <class>Logica.cursos.EdicionCurso</class>
-    <class>Logica.cursos.ProgramaFormacion</class>
-    <class>Logica.cursos.InscripcionPrograma</class>
     <class>Logica.usuarios.Docente</class>
     <class>Logica.usuarios.Estudiante</class>
     <class>Logica.usuarios.Usuario</class>
+    <class>Logica.programaFormacion.ProgramaFormacion</class>
+    <class>Logica.programaFormacion.InscripcionPrograma</class>
     <properties>
       <!-- Configuración JDBC (Cambia 'laboratorio_db' por el nombre real de tu BD) -->
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/laboratorio_db?serverTimezone=UTC&amp;zeroDateTimeBehavior=CONVERT_TO_NULL"/>

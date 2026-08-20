@@ -4,6 +4,7 @@
  */
 package Logica.cursos;
 
+import Logica.programaFormacion.ProgramaFormacion;
 import Logica.usuarios.Docente;
 
 import java.util.List;

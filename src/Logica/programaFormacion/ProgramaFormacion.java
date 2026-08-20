@@ -1,5 +1,6 @@
-package Logica.cursos;
+ package Logica.programaFormacion;
 
+import Logica.cursos.Curso;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
