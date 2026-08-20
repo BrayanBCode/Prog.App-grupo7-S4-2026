@@ -3,7 +3,6 @@ import Logica.cursos.Curso;
 import Logica.usuarios.Docente;
 import Logica.cursos.EdicionCurso;
 import Logica.usuarios.Estudiante;
-import Logica.cursos.Facultad;
 import Logica.cursos.InscripcionEdicion;
 import Logica.cursos.InscripcionPrograma;
 import Logica.cursos.Instituto;

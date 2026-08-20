@@ -7,7 +7,6 @@
     <class>Logica.cursos.InscripcionEdicion</class>
     <class>Logica.cursos.Curso</class>
     <class>Logica.cursos.EdicionCurso</class>
-    <class>Logica.cursos.Facultad</class>
     <class>Logica.cursos.ProgramaFormacion</class>
     <class>Logica.cursos.InscripcionPrograma</class>
     <class>Logica.usuarios.Docente</class>

@@ -27,15 +27,12 @@ public class Instituto implements Serializable {
        @ManyToMany
        private List<Docente>docentes = new ArrayList<>();
        
-       @ManyToOne
-       private Facultad facultad;
        
        @OneToMany(mappedBy = "instituto")
        private List<Curso> cursos = new ArrayList<>();
        
       public void setNombre(String nombre){this.nombre = nombre;}
       
-      public void setFacultad(Facultad facultad){this.facultad = facultad;}
       
 
 }

@@ -42,6 +42,8 @@ public abstract class Usuario implements Serializable {
     public UsuarioID getId() {
         return new UsuarioID(nickname, Mail);
     }
+    public String getApellido(){return Apellido;}
+    public LocalDate getFechaNac(){return fechaNac;}
    
    public String getNombreU(){return Nombre;}
    
