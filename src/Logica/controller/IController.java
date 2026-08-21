@@ -14,7 +14,20 @@ import java.util.List;
  * @author maida
  */
 public interface IController {
-    void AltaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto) throws Exception;    void CrearPrograma(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta);
+    void AltaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto) throws Exception;
+    void ConsultaUsuario();            // Not Implemented
+    void ModificarUsuario();           // Not Implemented
+    void AltaCurso();                  // Not Implemented
+    void ConsultaCurso();              // Not Implemented
+    void AltaEdiciónCurso();           // Not Implemented
+    void ConsolutaEdicionCurso();      // Not Implemented
+    void InscripcionEdicionCurso();    // Not Implemented
+    void CrearProgramaFormacion();     // Not Implemented 
+    void AgregarCursoAProgFormacion(); // Not Implemented 
+    void ConsoltaProgramaFormacion();  // Not Implemented 
+    void AltaInstituto();              // Not Implemented
+       
+    void CrearPrograma(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta);
     List<String[]> listarUsuariosTabla();  
     String[] obtenerDataUsuario(String nickname,String mail);
     List<String> obtenerEdicionesYProgramas(String nickname);
