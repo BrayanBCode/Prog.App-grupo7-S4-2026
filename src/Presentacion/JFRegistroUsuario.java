@@ -4,6 +4,8 @@
  */
 package Presentacion;
 
+import Presentacion.usuario.JFConsultaUsuario;
+
 /**
  *
  * @author maida

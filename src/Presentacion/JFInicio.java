@@ -4,6 +4,7 @@
  */
 package Presentacion;
 
+import Presentacion.usuario.JFConsultaUsuario;
 import Logica.controller.Fabrica;
 import Logica.controller.IController;
 
