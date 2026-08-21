@@ -8,16 +8,16 @@ package Presentacion;
  *
  * @author maida
  */
-public class JFRegistro extends javax.swing.JFrame {
+public class JFRegistroUsuario extends javax.swing.JFrame {
      //Control es con el que nos vamos a comunicar para llamar las funciones que tengamos en IController 
     Logica.controller.IController control = Logica.controller.Fabrica.getInstance().getUserControler();
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFRegistro.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFRegistroUsuario.class.getName());
 
     /**
      * Creates new form JFRegistro
      */
-    public JFRegistro() {
+    public JFRegistroUsuario() {
         initComponents();
 
          FDocente1.setEnabled(false);
@@ -347,7 +347,7 @@ public class JFRegistro extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-           JFConsulta consulta = new JFConsulta();
+           JFConsultaUsuario consulta = new JFConsultaUsuario();
            consulta.setVisible(true);
            this.dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -374,7 +374,7 @@ public class JFRegistro extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new JFRegistro().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new JFRegistroUsuario().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

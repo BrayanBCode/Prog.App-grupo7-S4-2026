@@ -11,15 +11,15 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author maida
  */
-public class JFConsulta extends javax.swing.JFrame {
+public class JFConsultaUsuario extends javax.swing.JFrame {
     Logica.controller.IController control = Logica.controller.Fabrica.getInstance().getUserControler();
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFConsulta.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFConsultaUsuario.class.getName());
 
     /**
      * Creates new form JFConsulta
      */
-    public JFConsulta() {
+    public JFConsultaUsuario() {
         initComponents();
         cargarTablaUsuarios();
     }
@@ -203,7 +203,7 @@ public class JFConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        JFRegistro registro = new JFRegistro();
+        JFRegistroUsuario registro = new JFRegistroUsuario();
         registro.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -230,7 +230,7 @@ public class JFConsulta extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new JFConsulta().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new JFConsultaUsuario().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
