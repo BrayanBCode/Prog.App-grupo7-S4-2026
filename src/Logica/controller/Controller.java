@@ -15,61 +15,62 @@ import javax.swing.JOptionPane;
 
 public class Controller implements IController {
     
-    @Override
-public List<String> obtenerDataDocente(String nickname) {
     EntityManager em = Conexion.getInstancia().getEntityManager();
-    try {
-        // Cursos creados por el docente
-        List<String> cursos = em.createQuery(
-            "SELECT c.nombre FROM Curso c WHERE c.docente.nickname = :nick", String.class)
-            .setParameter("nick", nickname)
-            .getResultList();
+    
+    @Override
+    public List<String> obtenerDataDocente(String nickname) {
 
-        // Ediciones asociadas al docente (relación ManyToMany)
-        List<String> ediciones = em.createQuery(
-            "SELECT DISTINCT e.nombre FROM EdicionCurso e JOIN e.docentes d WHERE d.nickname = :nick", String.class)
-            .setParameter("nick", nickname)
-            .getResultList();
+        try {
+            // Cursos creados por el docente
+            List<String> cursos = this.em.createQuery(
+                "SELECT c.nombre FROM Curso c WHERE c.docente.nickname = :nick", String.class)
+                .setParameter("nick", nickname)
+                .getResultList();
 
-        // Programas de Formación que contienen cursos dictados por este docente
-        List<String> programas = em.createQuery(
-            "SELECT DISTINCT p.nombre FROM ProgramaFormacion p JOIN p.cursos c WHERE c.docente.nickname = :nick", String.class)
-            .setParameter("nick", nickname)
-            .getResultList();
+            // Ediciones asociadas al docente (relación ManyToMany)
+            List<String> ediciones = this.em.createQuery(
+                "SELECT DISTINCT e.nombre FROM EdicionCurso e JOIN e.docentes d WHERE d.nickname = :nick", String.class)
+                .setParameter("nick", nickname)
+                .getResultList();
 
-        // Formatea resultados para la vista
-        List<String> resultado = new ArrayList<>();
+            // Programas de Formación que contienen cursos dictados por este docente
+            List<String> programas = this.em.createQuery(
+                "SELECT DISTINCT p.nombre FROM ProgramaFormacion p JOIN p.cursos c WHERE c.docente.nickname = :nick", String.class)
+                .setParameter("nick", nickname)
+                .getResultList();
 
-        resultado.add("--- CURSOS ---");
-        if (cursos.isEmpty()) resultado.add("(Sin cursos registrados)");
-        else cursos.forEach(c -> resultado.add("- " + c));
+            // Formatea resultados para la vista
+            List<String> resultado = new ArrayList<>();
 
-        resultado.add("\n--- EDICIONES DE CURSOS ---");
-        if (ediciones.isEmpty()) resultado.add("(Sin ediciones asignadas)");
-        else ediciones.forEach(e -> resultado.add("- " + e));
+            resultado.add("--- CURSOS ---");
+            if (cursos.isEmpty()) resultado.add("(Sin cursos registrados)");
+            else cursos.forEach(c -> resultado.add("- " + c));
 
-        resultado.add("\n--- PROGRAMAS DE FORMACIÓN ---");
-        if (programas.isEmpty()) resultado.add("(Sin programas vinculados)");
-        else programas.forEach(p -> resultado.add("- " + p));
+            resultado.add("\n--- EDICIONES DE CURSOS ---");
+            if (ediciones.isEmpty()) resultado.add("(Sin ediciones asignadas)");
+            else ediciones.forEach(e -> resultado.add("- " + e));
 
-        return resultado;
-    } finally {
-        em.close();
+            resultado.add("\n--- PROGRAMAS DE FORMACIÓN ---");
+            if (programas.isEmpty()) resultado.add("(Sin programas vinculados)");
+            else programas.forEach(p -> resultado.add("- " + p));
+
+            return resultado;
+        } finally {
+            em.close();
+        }
     }
-}
 
     @Override
     public List<String> obtenerEdicionesYProgramas(String nickname) {
-        EntityManager em = Conexion.getInstancia().getEntityManager();
         try {
             //  Ediciones de curso del estudiante
-            List<String> ediciones = em.createQuery(
+            List<String> ediciones = this.em.createQuery(
                 "SELECT ie.edicionCurso.nombre FROM InscripcionEdicion ie WHERE ie.estudiante.nickname = :nick", String.class)
                 .setParameter("nick", nickname)
                 .getResultList();
 
             // Programas de formación del estudiante
-            List<String> programas = em.createQuery(
+            List<String> programas = this.em.createQuery(
                 "SELECT ip.pFormacion.nombre FROM InscripcionPrograma ip WHERE ip.estudiante.nickname = :nick", String.class)
                 .setParameter("nick", nickname)
                 .getResultList();
@@ -79,31 +80,29 @@ public List<String> obtenerDataDocente(String nickname) {
             resultado.addAll(programas);
             return resultado;
         } finally {
-            em.close();
+            this.em.close();
         }
     }
 
     @Override
     public boolean esDocente(String nickname) {
-        EntityManager em = Conexion.getInstancia().getEntityManager();
         try {
-            Long cantidad = em.createQuery(
+            Long cantidad = this.em.createQuery(
                 "SELECT COUNT(d) FROM Docente d WHERE d.nickname = :nick", Long.class)
                 .setParameter("nick", nickname)
                 .getSingleResult();
 
             return cantidad > 0; // Retorna TRUE si existe como docente
         } finally {
-            em.close();
+            this.em.close();
         }
     }
 
     @Override
     public String[] obtenerDataUsuario(String nickname, String mail) {
-        EntityManager em = Conexion.getInstancia().getEntityManager();
         try {
             UsuarioID id = new UsuarioID(nickname, mail);
-            Usuario u = em.find(Usuario.class, id);
+            Usuario u = this.em.find(Usuario.class, id);
             if (u != null) {
                 return new String[]{
                     u.getNickname(),
@@ -115,15 +114,14 @@ public List<String> obtenerDataDocente(String nickname) {
             }
             return null;
         } finally {
-            em.close();
+            this.em.close();
         }
     }
 
     @Override
     public List<String[]> listarUsuariosTabla() {
-        EntityManager em = Conexion.getInstancia().getEntityManager();
         try {
-            List<Usuario> lista = em.createQuery("SELECT u FROM Usuario u", Usuario.class).getResultList();
+            List<Usuario> lista = this.em.createQuery("SELECT u FROM Usuario u", Usuario.class).getResultList();
             List<String[]> resultado = new ArrayList<>();
             for (Usuario u : lista) {
                 resultado.add(new String[]{ u.getNickname(), u.getMail() });
@@ -133,29 +131,28 @@ public List<String> obtenerDataDocente(String nickname) {
             e.printStackTrace();
             return null;
         } finally {
-            em.close();
+            this.em.close();
         }
     }
 
     @Override
 public void AltaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto) {
-    EntityManager em = Conexion.getInstancia().getEntityManager();
     try {
         // Busca si existe el NICKNAME en Docente o Estudiante (devolvemos String)
-        List<String> nickDocente = em.createQuery("SELECT d.nickname FROM Docente d WHERE d.nickname = :nick", String.class)
+        List<String> nickDocente = this.em.createQuery("SELECT d.nickname FROM Docente d WHERE d.nickname = :nick", String.class)
                 .setParameter("nick", nickname)
                 .getResultList();
 
-        List<String> nickEstudiante = em.createQuery("SELECT e.nickname FROM Estudiante e WHERE e.nickname = :nick", String.class)
+        List<String> nickEstudiante = this.em.createQuery("SELECT e.nickname FROM Estudiante e WHERE e.nickname = :nick", String.class)
                 .setParameter("nick", nickname)
                 .getResultList();
 
         // Buscar si existe el MAIL en Docente o Estudiante
-        List<String> mailDocente = em.createQuery("SELECT d.Mail FROM Docente d WHERE d.Mail = :Mail", String.class)
+        List<String> mailDocente = this.em.createQuery("SELECT d.Mail FROM Docente d WHERE d.Mail = :Mail", String.class)
                 .setParameter("Mail", mail)
                 .getResultList();
 
-        List<String> mailEstudiante = em.createQuery("SELECT e.Mail FROM Estudiante e WHERE e.Mail = :Mail", String.class)
+        List<String> mailEstudiante = this.em.createQuery("SELECT e.Mail FROM Estudiante e WHERE e.Mail = :Mail", String.class)
                 .setParameter("Mail", mail)
                 .getResultList();
 
@@ -169,9 +166,9 @@ public void AltaUsuario(String nickname, String mail, String nombre, String apel
                 usuario = new Estudiante(nickname, mail, nombre, apellido, fechaNac);
             }
 
-            em.getTransaction().begin();
-            em.persist(usuario);
-            em.getTransaction().commit();
+            this.em.getTransaction().begin();
+            this.em.persist(usuario);
+            this.em.getTransaction().commit();
 
         } else {
             // Lanzamos una excepción no comprobada para que la interfaz gráfica (Swing) la capture y muestre la alerta al administrador
@@ -179,73 +176,70 @@ public void AltaUsuario(String nickname, String mail, String nombre, String apel
         }
 
     } catch (Exception e) {
-        if (em.getTransaction().isActive()) {
-            em.getTransaction().rollback();
+        if (this.em.getTransaction().isActive()) {
+            this.em.getTransaction().rollback();
         }
         throw e; // Re-lanza la excepción hacia la vista Swing
     } finally {
-        em.close();
+        this.em.close();
     }
 }
 
 @Override
 public void CrearPrograma(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta) throws Exception {
-    EntityManager em = Conexion.getInstancia().getEntityManager();
     try {
-        ProgramaFormacion pf = em.find(ProgramaFormacion.class, nombre);
+        ProgramaFormacion pf = this.em.find(ProgramaFormacion.class, nombre);
         if (pf != null) {
             throw new Exception("Ya existe un programa de formación registrado con el nombre: " + nombre);
         }
-        em.getTransaction().begin();
+        this.em.getTransaction().begin();
         ProgramaFormacion nuevoPrograma = new ProgramaFormacion(nombre, descripcion, fechaInicio, fechaFin, fechaAlta);
-        em.persist(nuevoPrograma);
-        em.getTransaction().commit();
+        this.em.persist(nuevoPrograma);
+        this.em.getTransaction().commit();
     } finally {
-        if (em.getTransaction().isActive()) {
-            em.getTransaction().rollback();
+        if (this.em.getTransaction().isActive()) {
+            this.em.getTransaction().rollback();
         }
-        em.close();
+        this.em.close();
     }
 }
 
 @Override
 public void agregarCursoPrograma(String nombreP, String nombreC) throws Exception {
-        EntityManager em = Conexion.getInstancia().getEntityManager();
         try{ 
-            ProgramaFormacion programa = em.find(ProgramaFormacion.class,nombreP);
+            ProgramaFormacion programa = this.em.find(ProgramaFormacion.class,nombreP);
             if(programa==null){
                 throw new Exception("No existe un programa de formacion: "+ nombreP);
             }
-            Curso curso = em.find(Curso.class, nombreC);
+            Curso curso = this.em.find(Curso.class, nombreC);
             if(curso == null){
                 throw new Exception("No existe un curso con ese nombre: "+ nombreC);
             }
             if(programa.getCursos().contains(curso)){
                 throw new Exception("El curso ya se encuentra en el programa de formacion seleccionado");
             }
-            em.getTransaction().begin();
+            this.em.getTransaction().begin();
             programa.getCursos().add(curso);
-            em.merge(programa);
-            em.getTransaction().commit();
+            this.em.merge(programa);
+            this.em.getTransaction().commit();
         }
         catch(Exception e){
-            if(em.getTransaction().isActive());{
-            em.getTransaction().rollback();
+            if(this.em.getTransaction().isActive());{
+            this.em.getTransaction().rollback();
         }
             throw e;
         }finally{
-            em.close();
+            this.em.close();
         }
     }
     
     
     @Override
     public List<String> listarNombreProgramas(){
-        EntityManager em= Conexion.getInstancia().getEntityManager();
         try{
-            return em.createQuery("SELECT p.nombre FROM ProgramaFormacion p ORDER BY p.nombre",String.class).getResultList();
+            return this.em.createQuery("SELECT p.nombre FROM ProgramaFormacion p ORDER BY p.nombre",String.class).getResultList();
         }finally {
-            em.close();
+            this.em.close();
         }
         
     }
@@ -253,13 +247,12 @@ public void agregarCursoPrograma(String nombreP, String nombreC) throws Exceptio
    
     @Override
     public List<String> listarNombresCursos() {
-    EntityManager em = Conexion.getInstancia().getEntityManager();
     try {
-        return em.createQuery(
+        return this.em.createQuery(
             "SELECT c.nombre FROM Curso c ORDER BY c.nombre", String.class)
             .getResultList();
     } finally {
-        em.close();
+        this.em.close();
     }
 }
 }
