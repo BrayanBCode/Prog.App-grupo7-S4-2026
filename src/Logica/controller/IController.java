@@ -20,5 +20,8 @@ public interface IController {
     List<String> obtenerEdicionesYProgramas(String nickname);
     boolean esDocente(String nickname);
     List<String> obtenerDataDocente(String nickname);
+    List<String> listarNombreProgramas();
+    List<String> listarNombreCursos();
+    void agregarCursoPrograma(String nombreP,String nombreC);
 
 }

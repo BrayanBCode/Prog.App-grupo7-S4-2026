@@ -209,7 +209,34 @@ public void AltaUsuario(String nickname, String mail, String nombre, String apel
         } finally {
             em.close();
         }
+    }
+    
+    @Override
+    public void agregarCursoPrograma(String nombreP,String nombreC){
+        
     }    
+    
+    @Override
+    public List<String> listarNombreProgramas(){
+        EntityManager em= Conexion.getInstancia().getEntityManager();
+        try{
+            return em.createQuery("SELECT p.nombre FROM ProgramaFormacion p ORDER BY p.nombre",String.class).getResultList();
+        }finally {
+            em.close();
+        }
+        
+    }
+     
+   
+    
+    public List<String> listarNombresCurso(){
+        EntityManager em= Conexion.getInstancia().getEntityManager();
+        try{ 
+            return em.createQuery("SELECT c.nombre FROM Curso c ORDER BY c.nombre",String.class).getResultList();
+        }finally{
+            em.close();
+        }
+    }
 }
 
 

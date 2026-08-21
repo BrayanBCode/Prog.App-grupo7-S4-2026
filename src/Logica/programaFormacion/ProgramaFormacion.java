@@ -62,7 +62,8 @@ public class ProgramaFormacion implements Serializable {
 
     public List<InscripcionPrograma> getPInscripciones() { return pInscripciones; }
     public void setPInscripciones(List<InscripcionPrograma> pInscripciones) { this.pInscripciones = pInscripciones; }
-
+    
+    
     // --- EQUALS, HASHCODE Y TOSTRING ---
     @Override
     public int hashCode() {
@@ -87,5 +88,16 @@ public class ProgramaFormacion implements Serializable {
     @Override
     public String toString() {
         return this.nombre;
+    }
+    
+    public void agregarCurso(Curso curso){
+        if(curso==null){
+            throw new IllegalArgumentException("Seleccione un curso");
+        }
+        
+        if(this.cursos.contains(curso)){
+            throw new IllegalArgumentException("El curso ya esta integrado en este programa");
+        }
+        this.cursos.add(curso);
     }
 }

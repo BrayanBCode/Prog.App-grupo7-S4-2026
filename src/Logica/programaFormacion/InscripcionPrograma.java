@@ -40,8 +40,9 @@ public class InscripcionPrograma implements Serializable {
     //Metodos
     public void setEstudiante(Estudiante estudiante){this.estudiante=estudiante;}
     public void setpFormacion(ProgramaFormacion pformacion){this.pFormacion= pformacion;}
-    
+    public void setFechaInscripcion(LocalDate fechaInsc){this.fechaInscripcion= fechaInsc;}
     private static final long serialVersionUID = 1L;
+      
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
