@@ -188,33 +188,56 @@ public void AltaUsuario(String nickname, String mail, String nombre, String apel
     }
 }
 
-    @Override 
-    public void CrearPrograma(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta) {
+@Override
+public void CrearPrograma(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta) throws Exception {
+    EntityManager em = Conexion.getInstancia().getEntityManager();
+    try {
+        ProgramaFormacion pf = em.find(ProgramaFormacion.class, nombre);
+        if (pf != null) {
+            throw new Exception("Ya existe un programa de formación registrado con el nombre: " + nombre);
+        }
+        em.getTransaction().begin();
+        ProgramaFormacion nuevoPrograma = new ProgramaFormacion(nombre, descripcion, fechaInicio, fechaFin, fechaAlta);
+        em.persist(nuevoPrograma);
+        em.getTransaction().commit();
+    } finally {
+        if (em.getTransaction().isActive()) {
+            em.getTransaction().rollback();
+        }
+        em.close();
+    }
+}
+
+@Override
+public void agregarCursoPrograma(String nombreP, String nombreC) throws Exception {
         EntityManager em = Conexion.getInstancia().getEntityManager();
-        try {
+        try{ 
+            ProgramaFormacion programa = em.find(ProgramaFormacion.class,nombreP);
+            if(programa==null){
+                throw new Exception("No existe un programa de formacion: "+ nombreP);
+            }
+            Curso curso = em.find(Curso.class, nombreC);
+            if(curso == null){
+                throw new Exception("No existe un curso con ese nombre: "+ nombreC);
+            }
+            if(programa.getCursos().contains(curso)){
+                throw new Exception("El curso ya se encuentra en el programa de formacion seleccionado");
+            }
             em.getTransaction().begin();
-            ProgramaFormacion pf = em.find(ProgramaFormacion.class, nombre);
-            if (pf != null) {
-                throw new Exception("Ya existe un programa de formación registrado con el nombre: " + nombre);
-            }
-            
-            ProgramaFormacion nuevoPrograma = new ProgramaFormacion(nombre, descripcion, fechaInicio, fechaFin, fechaAlta);
-            em.persist(nuevoPrograma);
+            programa.getCursos().add(curso);
+            em.merge(programa);
             em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        } finally {
+        }
+        catch(Exception e){
+            if(em.getTransaction().isActive());{
+            em.getTransaction().rollback();
+        }
+            throw e;
+        }finally{
             em.close();
         }
     }
     
-    @Override
-    public void agregarCursoPrograma(String nombreP,String nombreC){
-        
-    }    
     
     @Override
     public List<String> listarNombreProgramas(){
@@ -228,15 +251,17 @@ public void AltaUsuario(String nickname, String mail, String nombre, String apel
     }
      
    
-    
-    public List<String> listarNombresCurso(){
-        EntityManager em= Conexion.getInstancia().getEntityManager();
-        try{ 
-            return em.createQuery("SELECT c.nombre FROM Curso c ORDER BY c.nombre",String.class).getResultList();
-        }finally{
-            em.close();
-        }
+    @Override
+    public List<String> listarNombresCursos() {
+    EntityManager em = Conexion.getInstancia().getEntityManager();
+    try {
+        return em.createQuery(
+            "SELECT c.nombre FROM Curso c ORDER BY c.nombre", String.class)
+            .getResultList();
+    } finally {
+        em.close();
     }
+}
 }
 
 

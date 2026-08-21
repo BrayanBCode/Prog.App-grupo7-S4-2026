@@ -20,6 +20,7 @@ import javax.persistence.Persistence;
  *
  * @author briha
  */
+
 public class Main {
     public static void main(String[] args) {
         new JFInicio().setVisible(true);

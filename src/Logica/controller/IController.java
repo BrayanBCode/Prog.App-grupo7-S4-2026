@@ -14,14 +14,16 @@ import java.util.List;
  * @author maida
  */
 public interface IController {
-    void AltaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto) throws Exception;    void CrearPrograma(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta);
+    
+    void AltaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto) throws Exception;
+    void CrearPrograma(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta)throws Exception;
     List<String[]> listarUsuariosTabla();  
     String[] obtenerDataUsuario(String nickname,String mail);
     List<String> obtenerEdicionesYProgramas(String nickname);
     boolean esDocente(String nickname);
     List<String> obtenerDataDocente(String nickname);
     List<String> listarNombreProgramas();
-    List<String> listarNombreCursos();
-    void agregarCursoPrograma(String nombreP,String nombreC);
+    List<String> listarNombresCursos();
+    void agregarCursoPrograma(String nombreP, String nombreC) throws Exception;
 
 }
