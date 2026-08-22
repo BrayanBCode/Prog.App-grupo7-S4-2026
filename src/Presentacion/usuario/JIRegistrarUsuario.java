@@ -56,13 +56,17 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         jButton3 = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
 
+        setBackground(new java.awt.Color(62, 67, 76));
         setBorder(null);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Registrar Cliente");
 
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Ingrese los siguientes datos:");
 
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Nombre: ");
         jLabel4.setMaximumSize(new java.awt.Dimension(57, 16));
         jLabel4.setMinimumSize(new java.awt.Dimension(57, 16));
@@ -73,25 +77,31 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Apellido:");
         jLabel5.setMaximumSize(new java.awt.Dimension(57, 16));
         jLabel5.setMinimumSize(new java.awt.Dimension(57, 16));
 
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Nickname:");
 
         FNickname.addActionListener(this::FNicknameActionPerformed);
 
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Correo Electronico:");
 
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Es docente?:");
 
         checkDocente.setText("Active si es docente");
         checkDocente.addActionListener(this::checkDocenteActionPerformed);
 
+        FDocente1.setForeground(new java.awt.Color(255, 255, 255));
         FDocente1.setText("Instituto perteneciente: ");
 
         FDocente2.addActionListener(this::FDocente2ActionPerformed);
 
+        LabelDocente3.setForeground(new java.awt.Color(255, 255, 255));
         LabelDocente3.setText("Fecha de nacimiento: ");
 
         SDia.setRequestFocusEnabled(false);
