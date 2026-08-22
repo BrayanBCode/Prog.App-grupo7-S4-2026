@@ -4,9 +4,12 @@
  */
 package Presentacion;
 
-import Presentacion.usuario.JFConsultaUsuario;
 import Logica.controller.Fabrica;
 import Logica.controller.IController;
+import Presentacion.usuario.JIConsultaUsuario;
+import Presentacion.usuario.JIRegistrarUsuario;
+import javax.swing.JInternalFrame;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
@@ -51,7 +54,7 @@ public class JFInicio extends javax.swing.JFrame {
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 349, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -66,9 +69,7 @@ public class JFInicio extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jDesktopPane1)
         );
 
         jMenu1.setText("Inicio");
@@ -107,17 +108,34 @@ public class JFInicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        JFRegistroUsuario registro = new JFRegistroUsuario();
-        registro.setVisible(true);
-        this.dispose();
+        this.openInternalFrame(new JIRegistrarUsuario(control));
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        JFConsultaUsuario consulta = new JFConsultaUsuario();
-        consulta.setVisible(true);
-        this.dispose();
+        this.openInternalFrame(new JIConsultaUsuario(control));
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private JInternalFrame adjustInternalFrame(JInternalFrame I) {
+        var ui = (BasicInternalFrameUI) I.getUI();
+        ui.setNorthPane(null);
+        I.setBorder(null);
+        I.setBounds(0, 0, jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
+        return I;
+    }
+    
+    private void openInternalFrame(JInternalFrame I) {
+        this.adjustInternalFrame(I);        
+        jDesktopPane1.add(I);
+        I.setVisible(true);
+        
+        try {
+            I.setSelected(true);
+        } catch(java.beans.PropertyVetoException e) {
+            logger.warning(e.getMessage());
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenu jMenu1;
