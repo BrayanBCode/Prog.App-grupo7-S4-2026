@@ -18,6 +18,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 public class JFInicio extends javax.swing.JFrame {
     private IController control;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFInicio.class.getName());
+    private JInternalFrame selectedFrame = null;
 
     /**
      * Creates new form Fprueba
@@ -125,7 +126,17 @@ public class JFInicio extends javax.swing.JFrame {
     }
     
     private void openInternalFrame(JInternalFrame I) {
-        this.adjustInternalFrame(I);        
+        
+        // Elimina la JInternalFrame que este abierto antes de crear otro
+        if(this.selectedFrame == null) {
+            selectedFrame = I;
+        } else {
+            jDesktopPane1.remove(selectedFrame);
+            selectedFrame.dispose();
+            selectedFrame = I;
+        }
+                
+        this.adjustInternalFrame(I);      
         jDesktopPane1.add(I);
         I.setVisible(true);
         
