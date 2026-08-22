@@ -16,6 +16,7 @@ import java.util.List;
 public interface IController {
     
     void AltaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto) throws Exception;
+    void ModificarUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac) throws Exception;
     void CrearPrograma(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta)throws Exception;
     List<String[]> listarUsuariosTabla();  
     String[] obtenerDataUsuario(String nickname,String mail);

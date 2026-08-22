@@ -191,6 +191,35 @@ public class Controller implements IController {
     }
 
     @Override
+    public void ModificarUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac) throws Exception {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            UsuarioID id = new UsuarioID(nickname, mail);
+            Usuario u = em.find(Usuario.class, id);
+
+            if (u == null) {
+                throw new Exception("El usuario no existe (puede haber sido eliminado por otro administrador).");
+            }
+
+            em.getTransaction().begin();
+            // nickname y mail son la clave (@Id) y no se tocan: solo se actualizan los datos básicos
+            u.setNombreU(nombre);
+            u.setApellido(apellido);
+            u.setFechaNac(fechaNac);
+            em.merge(u);
+            em.getTransaction().commit();
+
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
     public void CrearPrograma(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta) throws Exception {
         EntityManager em = conexion.getEntityManager();
         try {

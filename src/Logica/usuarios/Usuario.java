@@ -46,6 +46,10 @@ public abstract class Usuario implements Serializable {
     public LocalDate getFechaNac(){return fechaNac;}
    
    public String getNombreU(){return Nombre;}
-   
-    
+
+    // Setters de los datos modificables (nickname y Mail NO se exponen: son @Id y no deben cambiar)
+    public void setNombreU(String nombre) { this.Nombre = nombre; }
+    public void setApellido(String apellido) { this.Apellido = apellido; }
+    public void setFechaNac(LocalDate fechaNac) { this.fechaNac = fechaNac; }
+
 }
