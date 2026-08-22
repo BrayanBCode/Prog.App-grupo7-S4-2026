@@ -71,12 +71,6 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         jLabel4.setMaximumSize(new java.awt.Dimension(57, 16));
         jLabel4.setMinimumSize(new java.awt.Dimension(57, 16));
 
-        FNombre.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                FNombreFocusLost(evt);
-            }
-        });
-
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Apellido:");
         jLabel5.setMaximumSize(new java.awt.Dimension(57, 16));
@@ -224,11 +218,6 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void FNombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_FNombreFocusLost
-        var nombre = FNombre.getText().trim();
-        System.out.println("Hola "+nombre);
-    }//GEN-LAST:event_FNombreFocusLost
 
     private void FNicknameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FNicknameActionPerformed
         // TODO add your handling code here:

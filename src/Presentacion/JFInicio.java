@@ -28,6 +28,7 @@ public class JFInicio extends javax.swing.JFrame {
         Fabrica f =  Fabrica.getInstance();
         var c = f.getUserControler();
         this.control = c;
+        
        
     }
 
