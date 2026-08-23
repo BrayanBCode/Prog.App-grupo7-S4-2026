@@ -41,5 +41,6 @@ public class Docente extends Usuario {
     }
     
     private String institutoTrabajo;
+    public List<EdicionCurso> getEdicionesC(){return edicionesC;}
     
 }

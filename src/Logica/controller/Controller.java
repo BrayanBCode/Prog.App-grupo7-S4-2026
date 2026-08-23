@@ -291,4 +291,98 @@ public class Controller implements IController {
             em.close();
         }
     }
+
+    @Override
+    public List<String[]> listarDocentesTabla() {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            List<Docente> lista = em.createQuery("SELECT d FROM Docente d", Docente.class).getResultList();
+            List<String[]> resultado = new ArrayList<>();
+            for (Docente d : lista) {
+                // {0}=nickname (lo usamos como identificador), {1}=texto a mostrar en la lista
+                resultado.add(new String[]{ d.getNickname(), d.getNombreU() + " " + d.getApellido() + " (" + d.getNickname() + ")" });
+            }
+            return resultado;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<String> listarNombresInstitutos() {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            return em.createQuery(
+                "SELECT i.nombre FROM Instituto i ORDER BY i.nombre", String.class)
+                .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<String[]> listarCursosTabla(String nombreInstituto) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            // Acá se usa la relación Curso -> Instituto para filtrar
+            List<Curso> lista = em.createQuery(
+                "SELECT c FROM Curso c WHERE c.instituto.nombre = :inst ORDER BY c.nombre", Curso.class)
+                .setParameter("inst", nombreInstituto)
+                .getResultList();
+
+            List<String[]> resultado = new ArrayList<>();
+            for (Curso c : lista) {
+                resultado.add(new String[]{ c.getNombreC(), c.getDescripcion() });
+            }
+            return resultado;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public void altaEdicionCurso(String nombreEdicion, String nombreCurso, LocalDate fechaInicio, LocalDate fechaFin, int cupo, List<String> nicknamesDocentes) throws Exception {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            // El nombre de la edición es único (es su @Id)
+            EdicionCurso existente = em.find(EdicionCurso.class, nombreEdicion);
+            if (existente != null) {
+                throw new Exception("Ya existe una edición de curso registrada con el nombre: " + nombreEdicion);
+            }
+
+            Curso curso = em.find(Curso.class, nombreCurso);
+            if (curso == null) {
+                throw new Exception("El curso seleccionado no existe.");
+            }
+
+            if (fechaFin.isBefore(fechaInicio)) {
+                throw new Exception("La fecha de fin no puede ser anterior a la fecha de inicio.");
+            }
+
+            em.getTransaction().begin();
+
+            EdicionCurso edicion = new EdicionCurso(nombreEdicion, curso, fechaInicio, fechaFin, cupo, LocalDate.now());
+            em.persist(edicion);
+
+            // La relación ManyToMany EdicionCurso<->Docente la maneja Docente
+            // (lado dueño), así que hay que agregar la edición ahí, no al revés.
+            for (String nickname : nicknamesDocentes) {
+                Docente docente = em.createQuery(
+                        "SELECT d FROM Docente d WHERE d.nickname = :nick", Docente.class)
+                        .setParameter("nick", nickname)
+                        .getSingleResult();
+                docente.getEdicionesC().add(edicion);
+                em.merge(docente);
+            }
+
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
 }

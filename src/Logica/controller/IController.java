@@ -26,5 +26,9 @@ public interface IController {
     List<String> listarNombreProgramas();
     List<String> listarNombresCursos();
     void agregarCursoPrograma(String nombreP, String nombreC) throws Exception;
-
+    List<String[]> listarDocentesTabla();
+    List<String> listarNombresInstitutos();
+    List<String[]> listarCursosTabla(String nombreInstituto);
+    void altaEdicionCurso(String nombreEdicion, String nombreCurso, LocalDate fechaInicio, LocalDate fechaFin, int cupo, List<String> nicknamesDocentes) throws Exception;
+    
 }

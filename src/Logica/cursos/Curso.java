@@ -57,6 +57,8 @@ public class Curso implements Serializable {
     //Metodos
     public List<Curso> getPrevias(){return previas;}
     public String getNombreC(){return nombre;}
+    public Instituto getInstituto() {return instituto;}
+    public String getDescripcion(){return descripcion;}
     
     
     //Metodos

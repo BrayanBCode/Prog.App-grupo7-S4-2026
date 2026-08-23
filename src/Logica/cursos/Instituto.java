@@ -32,6 +32,7 @@ public class Instituto implements Serializable {
        private List<Curso> cursos = new ArrayList<>();
        
       public void setNombre(String nombre){this.nombre = nombre;}
+      public String getNombre() {return nombre;}
       
       
 

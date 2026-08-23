@@ -37,11 +37,39 @@ public class EdicionCurso implements Serializable {
     private LocalDate fechaFin;
     private int cupo = 0;
     private LocalDate fechaPublicacion;
-    
+
+    // Constructor vacío necesario para JPA
+    public EdicionCurso() {
+    }
+
+    public EdicionCurso(String nombre, Curso curso, LocalDate fechaInicio, LocalDate fechaFin, int cupo, LocalDate fechaPublicacion) {
+        this.nombre = nombre;
+        this.curso = curso;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.cupo = cupo;
+        this.fechaPublicacion = fechaPublicacion;
+    }
+
     //Metodos
-    
     public void setCurso(Curso curso){this.curso = curso;}
+    public Curso getCurso(){return curso;}
     public List<Docente> getDocentes(){return docentes;}
+
+    public String getNombre(){return nombre;}
+    public void setNombre(String nombre){this.nombre = nombre;}
+
+    public LocalDate getFechaInicio(){return fechaInicio;}
+    public void setFechaInicio(LocalDate fechaInicio){this.fechaInicio = fechaInicio;}
+
+    public LocalDate getFechaFin(){return fechaFin;}
+    public void setFechaFin(LocalDate fechaFin){this.fechaFin = fechaFin;}
+
+    public int getCupo(){return cupo;}
+    public void setCupo(int cupo){this.cupo = cupo;}
+
+    public LocalDate getFechaPublicacion(){return fechaPublicacion;}
+    public void setFechaPublicacion(LocalDate fechaPublicacion){this.fechaPublicacion = fechaPublicacion;}
     
     private static final long serialVersionUID = 1L;
    
