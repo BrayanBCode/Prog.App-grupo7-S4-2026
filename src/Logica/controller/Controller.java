@@ -140,7 +140,7 @@ public class Controller implements IController {
     }
 
     @Override
-    public void AltaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto) {
+    public void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto) {
         EntityManager em = conexion.getEntityManager();
         try {
             // Busca si existe el NICKNAME en Docente o Estudiante (devolvemos String)
@@ -191,7 +191,7 @@ public class Controller implements IController {
     }
 
     @Override
-    public void ModificarUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac) throws Exception {
+    public void modificarUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac) throws Exception {
         EntityManager em = conexion.getEntityManager();
         try {
             UsuarioID id = new UsuarioID(nickname, mail);
@@ -220,7 +220,7 @@ public class Controller implements IController {
     }
 
     @Override
-    public void CrearPrograma(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta) throws Exception {
+    public void crearPrograma(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta) throws Exception {
         EntityManager em = conexion.getEntityManager();
         try {
             ProgramaFormacion pf = em.find(ProgramaFormacion.class, nombre);
