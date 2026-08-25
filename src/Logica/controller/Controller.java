@@ -243,13 +243,23 @@ public class Controller implements IController {
     
     @Override
     public void modificarPorgrama(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin) throws Exception{
-        EntityManeger em = Conexion.getInstancia().getEntityManager();
+        EntityManager em = Conexion.getInstancia().getEntityManager();
         try{
             ProgramaFormacion programa= em.find(ProgramaFormacion.class,nombre);
             if(programa==null){
                 throw new Exception("No existe un programa de formacion con nombre: "+ nombre);
             }
-            
+            em.getTransaction().begin();
+            programa.setDescripcion(descripcion);
+            programa.setFechaInicio(fechaInicio);
+            programa.setFechaFin(fechaFin);
+            em.merge(programa);
+            em.getTransaction().commit();
+        }finally{
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            em.close();
         }
     }
     
