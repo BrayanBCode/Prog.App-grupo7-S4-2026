@@ -240,6 +240,21 @@ public class Controller implements IController {
             em.close();
         }
     }
+    
+    @Override
+    public void modificarPorgrama(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin) throws Exception{
+        EntityManeger em = Conexion.getInstancia().getEntityManager();
+        try{
+            ProgramaFormacion programa= em.find(ProgramaFormacion.class,nombre);
+            if(programa==null){
+                throw new Exception("No existe un programa de formacion con nombre: "+ nombre);
+            }
+            
+        }
+    }
+    
+    
+    
 
     @Override
     public List<String> listarNombreProgramas() {
