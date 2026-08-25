@@ -276,7 +276,7 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
 
         try {
             // Ejecutar el Alta
-            control.AltaUsuario(nick, mail, nombre, apellido, fechaNac, instituto);
+            control.altaUsuario(nick, mail, nombre, apellido, fechaNac, instituto);
 
             // Mensaje de éxito y cerrar la ventana
             javax.swing.JOptionPane.showMessageDialog(this,

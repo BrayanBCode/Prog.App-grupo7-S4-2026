@@ -269,7 +269,7 @@ public class JIModificarUsuario extends javax.swing.JInternalFrame {
         );
 
         try {
-            control.ModificarUsuario(nickname, mail, nombre, apellido, fechaNac);
+            control.modificarUsuario(nickname, mail, nombre, apellido, fechaNac);
 
             JOptionPane.showMessageDialog(this,
                 "Usuario modificado con exito.",
