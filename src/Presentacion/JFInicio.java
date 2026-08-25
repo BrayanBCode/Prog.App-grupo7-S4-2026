@@ -6,7 +6,8 @@ package Presentacion;
 
 import Logica.controller.Fabrica;
 import Logica.controller.IController;
-import Presentacion.edicionCurso.JIRegistroEdicionCurso;
+import Presentacion.altaEdicionCurso.JIRegistroEdicionCurso;
+import Presentacion.inscEdicionCruso.JIinscripcionEdicionCurso;
 import Presentacion.usuario.JIConsultaUsuario;
 import Presentacion.usuario.JIModificarUsuario;
 import Presentacion.usuario.JIRegistrarUsuario;
@@ -50,6 +51,7 @@ public class JFInicio extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
@@ -91,6 +93,10 @@ public class JFInicio extends javax.swing.JFrame {
         jMenuItem4.setText("Registro EdicionCurso");
         jMenuItem4.addActionListener(this::jMenuItem4ActionPerformed);
         jMenu2.add(jMenuItem4);
+
+        jMenuItem5.setText("jMenuItem5");
+        jMenuItem5.addActionListener(this::jMenuItem5ActionPerformed);
+        jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
 
@@ -142,6 +148,10 @@ public class JFInicio extends javax.swing.JFrame {
         this.openInternalFrame(new JIRegistroEdicionCurso(control));
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        this.openInternalFrame(new JIinscripcionEdicionCurso(control));
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
     private JInternalFrame adjustInternalFrame(JInternalFrame I) {
         var ui = (BasicInternalFrameUI) I.getUI();
         ui.setNorthPane(null);
@@ -183,6 +193,7 @@ public class JFInicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
