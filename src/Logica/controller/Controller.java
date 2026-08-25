@@ -242,35 +242,6 @@ public class Controller implements IController {
     }
 
     @Override
-    public void agregarCursoPrograma(String nombreP, String nombreC) throws Exception {
-        EntityManager em = conexion.getEntityManager();
-        try {
-            ProgramaFormacion programa = em.find(ProgramaFormacion.class, nombreP);
-            if (programa == null) {
-                throw new Exception("No existe un programa de formacion: " + nombreP);
-            }
-            Curso curso = em.find(Curso.class, nombreC);
-            if (curso == null) {
-                throw new Exception("No existe un curso con ese nombre: " + nombreC);
-            }
-            if (programa.getCursos().contains(curso)) {
-                throw new Exception("El curso ya se encuentra en el programa de formacion seleccionado");
-            }
-            em.getTransaction().begin();
-            programa.getCursos().add(curso);
-            em.merge(programa);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e;
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
     public List<String> listarNombreProgramas() {
         EntityManager em = conexion.getEntityManager();
         try {
@@ -382,6 +353,73 @@ public class Controller implements IController {
             }
             throw e;
         } finally {
+            em.close();
+        }
+    }
+    @Override
+    public void agregarCursoPrograma(String nombreP, String nombreC) throws Exception {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            //BUSCO EL PROGRAMA EN LA LISTA
+            ProgramaFormacion programa = em.find(ProgramaFormacion.class, nombreP);
+            //VERIFICO SI ES VACIO
+            if (programa == null) {
+                throw new Exception("No existe un programa de formacion: " + nombreP);
+            }
+            //VEO SI TIENE CURSOS
+            Curso curso = em.find(Curso.class, nombreC);
+            if (curso == null) {
+                throw new Exception("No existe un curso con ese nombre: " + nombreC);
+            }
+            //SI EL PROGRAMA CONTIENE EL CURSO A INGRESAR LE MANDO 
+            if (programa.getCursos().contains(curso)) {
+                throw new Exception("El curso ya se encuentra en el programa de formacion seleccionado");
+            }
+            //AGREGO EL CURSO A LA LISTA DE LOS PROGRAMA
+            em.getTransaction().begin();
+            programa.getCursos().add(curso);
+            em.merge(programa);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+    
+    @Override 
+    public List<String> obtenerDataPrograma(String nombrePrograma) throws Exception{
+        EntityManager em = conexion.getEntityManager();
+        try{
+            //BUSCO EL PROGRAMA
+            ProgramaFormacion programa = em.find(ProgramaFormacion.class, nombrePrograma);
+            if(programa == null){
+                throw new Exception("No Existe un Programa de Formacion con ese nombre"+nombrePrograma);
+            }
+        //CREO UNA LISTA RESULTADO Y LE AGREGO LA DATA A OBTENER
+        List<String> resultado = new ArrayList<>();
+        resultado.add("Nombre: "+ programa.getNombre());
+        resultado.add("Descripcion: " + programa.getDescripcion());
+        resultado.add("Fecha Inicio: "+ programa.getFechaInicio());
+        resultado.add("Fecha Fin"+ programa.getFechaFin());
+        resultado.add("Fecha Alta"+ programa.getFechaAlta());
+
+        resultado.add("Cursos");
+        //CREO LA LISTA CURSO PARA MOSTRAR LOS CURSOS ASIGNADOS AL PROGRAMA
+        List<Curso> curso = new ArrayList<>();
+        if(curso.isEmpty()){
+            resultado.add("Sin Cursos Registrados");
+        }else{
+            for(Curso c: curso){
+                resultado.add("-"+c.getNombreC());
+            }
+            }
+        return resultado;
+        }
+        finally {
             em.close();
         }
     }
