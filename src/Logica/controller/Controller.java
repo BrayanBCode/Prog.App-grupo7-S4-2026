@@ -448,4 +448,87 @@ public class Controller implements IController {
             em.close();
         }
     }
+    @Override
+    public List<String[]> listarEstudiantesTabla() {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            List<Estudiante> lista = em.createQuery("SELECT e FROM Estudiante e", Estudiante.class).getResultList();
+            List<String[]> resultado = new ArrayList<>();
+            for (Estudiante e : lista) {
+                resultado.add(new String[]{ e.getNickname(), e.getNombreU(), e.getApellido(), e.getMail() });
+            }
+            return resultado;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public String obtenerEdicionVigente(String nombreCurso) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            LocalDate hoy = LocalDate.now();
+            List<String> resultado = em.createQuery(
+                "SELECT e.nombre FROM EdicionCurso e WHERE e.curso.nombre = :curso AND e.fechaInicio <= :hoy AND e.fechaFin >= :hoy", String.class)
+                .setParameter("curso", nombreCurso)
+                .setParameter("hoy", hoy)
+                .getResultList();
+            return resultado.isEmpty() ? null : resultado.get(0);
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public void inscribirEstudianteEdicion(String nickname, String mail, String nombreEdicion, LocalDate fechaInscripcion) throws Exception {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            Estudiante estudiante = em.createQuery(
+                "SELECT e FROM Estudiante e WHERE e.nickname = :nick AND e.Mail = :mail", Estudiante.class)
+                .setParameter("nick", nickname)
+                .setParameter("mail", mail)
+                .getSingleResult();
+
+            EdicionCurso edicion = em.find(EdicionCurso.class, nombreEdicion);
+            if (edicion == null) {
+                throw new Exception("La edición de curso seleccionada no existe.");
+            }
+
+            Long yaInscripto = em.createQuery(
+                "SELECT COUNT(i) FROM InscripcionEdicion i WHERE i.estudiante.nickname = :nick AND i.edicionCurso.nombre = :edicion", Long.class)
+                .setParameter("nick", nickname)
+                .setParameter("edicion", nombreEdicion)
+                .getSingleResult();
+            if (yaInscripto > 0) {
+                throw new Exception("El estudiante ya está inscripto en esta edición del curso.");
+            }
+
+            // cupo == 0 se interpreta como "sin límite" (así se definió en Alta de Edición de Curso)
+            if (edicion.getCupo() > 0) {
+                Long inscriptos = em.createQuery(
+                    "SELECT COUNT(i) FROM InscripcionEdicion i WHERE i.edicionCurso.nombre = :edicion", Long.class)
+                    .setParameter("edicion", nombreEdicion)
+                    .getSingleResult();
+                if (inscriptos >= edicion.getCupo()) {
+                    throw new Exception("No hay cupos disponibles para esta edición.");
+                }
+            }
+
+            em.getTransaction().begin();
+            InscripcionEdicion inscripcion = new InscripcionEdicion();
+            inscripcion.setEstudiante(estudiante);
+            inscripcion.setEdicionCurso(edicion);
+            inscripcion.setFechaInscripcion(fechaInscripcion);
+            em.persist(inscripcion);
+            em.getTransaction().commit();
+
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
 }

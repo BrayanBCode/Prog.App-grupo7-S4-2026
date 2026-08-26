@@ -39,7 +39,11 @@ public class InscripcionEdicion implements Serializable {
     
     //Metodos
     public void setEstudiante(Estudiante estudiante){this.estudiante = estudiante;}
+    public Estudiante getEstudiante(){return estudiante;}
     public void setEdicionCurso(EdicionCurso edicioncurso){this.edicionCurso=edicioncurso;}
+    public EdicionCurso getEdicionCurso(){return edicionCurso;}
+    public void setFechaInscripcion(java.time.LocalDate fechaInscripcion){this.fechaInscripcion = fechaInscripcion;}
+    public java.time.LocalDate getFechaInscripcion(){return fechaInscripcion;}
     
     private static final long serialVersionUID = 1L;
     @Id

@@ -32,7 +32,6 @@ public class JFInicio extends javax.swing.JFrame {
         var c = f.getUserControler();
         this.control = c;
         
-       
     }
 
     /**
@@ -94,7 +93,7 @@ public class JFInicio extends javax.swing.JFrame {
         jMenuItem4.addActionListener(this::jMenuItem4ActionPerformed);
         jMenu2.add(jMenuItem4);
 
-        jMenuItem5.setText("jMenuItem5");
+        jMenuItem5.setText("Inscribir a EdicionCurso");
         jMenuItem5.addActionListener(this::jMenuItem5ActionPerformed);
         jMenu2.add(jMenuItem5);
 

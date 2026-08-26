@@ -5,6 +5,10 @@
 package Presentacion.inscEdicionCruso;
 
 import Logica.controller.IController;
+import java.time.LocalDate;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -13,14 +17,27 @@ import Logica.controller.IController;
 public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
 
     private IController control;
-    
+
+    private String selectedCurso;
+    private String selectedInsti;
+    private String edicionSeleccionada;      // nombre de la edición vigente del curso elegido
+    private String estudianteNickname;       // nickname del estudiante elegido en el popup
+    private String estudianteMail;           // mail del estudiante elegido en el popup
+
     /**
      * Creates new form JIinscripcionEdicionCurso
      */
     public JIinscripcionEdicionCurso(IController c) {
-        initComponents();
-        
+        initComponents();        
         this.control = c;
+
+        // El JDialog generado por el editor no venía modal: lo dejamos modal para
+        // que el flujo se detenga hasta que el administrador elija un estudiante.
+        JDSelecEstudiante.setModal(true);
+
+        for(String i : control.listarNombresInstitutos()) {
+            jCBoxSelecInsti.addItem(i);
+        }
     }
 
     /**
@@ -32,21 +49,363 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        JDSelecEstudiante = new javax.swing.JDialog();
+        lblDEstudiantes = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jDTEstudiantes = new javax.swing.JTable();
+        jDbtnCancelar = new javax.swing.JButton();
+        jDAceptar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLblSelecInsti = new javax.swing.JLabel();
+        jCBoxSelecInsti = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTEdicion = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTCurso = new javax.swing.JTable();
+        jBtnSelecEstudiante = new javax.swing.JButton();
+        jTxtNickname = new javax.swing.JTextField();
+        jTxtNombre = new javax.swing.JTextField();
+        jTxtApellido = new javax.swing.JTextField();
+        jTxtMail = new javax.swing.JTextField();
+        jLblNickname = new javax.swing.JLabel();
+        jLblNombre = new javax.swing.JLabel();
+        jLblMail = new javax.swing.JLabel();
+        jLblApellido = new javax.swing.JLabel();
+        jBtnCancelar = new javax.swing.JButton();
+        jBtnAceptar = new javax.swing.JButton();
+
+        lblDEstudiantes.setText("Estudiantes");
+
+        jDTEstudiantes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Nickname", "Nombre", "Apellido", "Email"
+            }
+        ));
+        jScrollPane3.setViewportView(jDTEstudiantes);
+
+        jDbtnCancelar.setText("Cancelar");
+        jDbtnCancelar.addActionListener(this::jDbtnCancelarActionPerformed);
+
+        jDAceptar.setText("Aceptar");
+        jDAceptar.addActionListener(this::jDAceptarActionPerformed);
+
+        javax.swing.GroupLayout JDSelecEstudianteLayout = new javax.swing.GroupLayout(JDSelecEstudiante.getContentPane());
+        JDSelecEstudiante.getContentPane().setLayout(JDSelecEstudianteLayout);
+        JDSelecEstudianteLayout.setHorizontalGroup(
+            JDSelecEstudianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JDSelecEstudianteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(JDSelecEstudianteLayout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(jDbtnCancelar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 154, Short.MAX_VALUE)
+                .addComponent(jDAceptar)
+                .addGap(49, 49, 49))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JDSelecEstudianteLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblDEstudiantes)
+                .addGap(169, 169, 169))
+        );
+        JDSelecEstudianteLayout.setVerticalGroup(
+            JDSelecEstudianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JDSelecEstudianteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblDEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(JDSelecEstudianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jDbtnCancelar)
+                    .addComponent(jDAceptar))
+                .addContainerGap())
+        );
+
+        setBackground(new java.awt.Color(62, 67, 76));
+        setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Inscribir a Edicion de Curso");
+        jLabel2.setAlignmentY(0.0F);
+
+        jLblSelecInsti.setForeground(new java.awt.Color(255, 255, 255));
+        jLblSelecInsti.setText("Seleccionar instituto");
+
+        jCBoxSelecInsti.addActionListener(this::jCBoxSelecInstiActionPerformed);
+
+        jTEdicion.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Edicion"
+            }
+        ));
+        jScrollPane1.setViewportView(jTEdicion);
+
+        jTCurso.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Curso"
+            }
+        ));
+        jTCurso.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTCursoMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTCurso);
+
+        jBtnSelecEstudiante.setText("Selec. Estudiante");
+        jBtnSelecEstudiante.addActionListener(this::jBtnSelecEstudianteActionPerformed);
+
+        jTxtNickname.setText("...");
+        jTxtNickname.setEnabled(false);
+
+        jTxtNombre.setText("...");
+        jTxtNombre.setEnabled(false);
+        jTxtNombre.addActionListener(this::jTxtNombreActionPerformed);
+
+        jTxtApellido.setText("...");
+        jTxtApellido.setEnabled(false);
+
+        jTxtMail.setText("...");
+        jTxtMail.setEnabled(false);
+
+        jLblNickname.setForeground(new java.awt.Color(255, 255, 255));
+        jLblNickname.setText("Nickname:");
+
+        jLblNombre.setForeground(new java.awt.Color(255, 255, 255));
+        jLblNombre.setText("Nombre: ");
+
+        jLblMail.setForeground(new java.awt.Color(255, 255, 255));
+        jLblMail.setText("Mail:");
+
+        jLblApellido.setForeground(new java.awt.Color(255, 255, 255));
+        jLblApellido.setText("Apellido:");
+
+        jBtnCancelar.setText("Cancelar");
+        jBtnCancelar.addActionListener(this::jBtnCancelarActionPerformed);
+
+        jBtnAceptar.setText("Aceptar");
+        jBtnAceptar.addActionListener(this::jBtnAceptarActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLblSelecInsti)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                                .addComponent(jCBoxSelecInsti, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jBtnSelecEstudiante)
+                                        .addComponent(jLblNickname, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addComponent(jBtnCancelar)
+                                            .addGap(28, 28, 28))
+                                        .addComponent(jLblMail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLblApellido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTxtNickname, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                                    .addComponent(jTxtApellido)
+                                    .addComponent(jTxtMail)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(28, 28, 28)
+                                        .addComponent(jBtnAceptar))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                    .addComponent(jTxtNombre))))
+                        .addGap(20, 20, 20))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 547, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLblSelecInsti)
+                    .addComponent(jCBoxSelecInsti, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jBtnSelecEstudiante)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLblNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTxtNickname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jTxtNombre)
+                    .addComponent(jLblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLblApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTxtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLblMail, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTxtMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBtnCancelar)
+                    .addComponent(jBtnAceptar))
+                .addGap(14, 14, 14))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTxtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtNombreActionPerformed
+        // Campo de solo lectura (muestra el nombre del estudiante elegido), no requiere acción.
+    }//GEN-LAST:event_jTxtNombreActionPerformed
 
+    private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
+        dispose(); // cierra el internal frame sin guardar nada
+    }//GEN-LAST:event_jBtnCancelarActionPerformed
+
+    private void jBtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAceptarActionPerformed
+        try {
+            if (selectedCurso == null) {
+                JOptionPane.showMessageDialog(this, "Tenés que elegir un curso.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if (edicionSeleccionada == null) {
+                JOptionPane.showMessageDialog(this, "El curso elegido no tiene una edición vigente.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if (estudianteNickname == null) {
+                JOptionPane.showMessageDialog(this, "Tenés que seleccionar un estudiante.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            control.inscribirEstudianteEdicion(estudianteNickname, estudianteMail, edicionSeleccionada, LocalDate.now());
+
+            JOptionPane.showMessageDialog(this, "Inscripción registrada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+
+        } catch (Exception e) {
+            System.out.println("Presentacion.inscEdicionCruso.JIinscripcionEdicionCurso.jBtnAceptarActionPerformed()");
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, e.getMessage(), "No se pudo inscribir", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jBtnAceptarActionPerformed
+
+    private void jCBoxSelecInstiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBoxSelecInstiActionPerformed
+        String instiSelect = (String) jCBoxSelecInsti.getSelectedItem();
+        DefaultTableModel m = (DefaultTableModel) jTCurso.getModel();
+        m.setRowCount(0);
+        
+        if(instiSelect == null) return;
+        
+        this.selectedInsti = instiSelect;
+        
+        List<String[]> cursos = control.listarCursosTabla(instiSelect);
+        for(String[] f : cursos) {
+            m.addRow(new Object[]{ f[0], f[1] });
+        }
+    }//GEN-LAST:event_jCBoxSelecInstiActionPerformed
+
+    private void jTCursoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTCursoMouseClicked
+        int fila = jTCurso.getSelectedRow();
+        if (fila < 0) return;
+
+        selectedCurso = (String) jTCurso.getValueAt(fila, 0);
+
+        // El sistema muestra la edición vigente del curso, si existe (no hay que elegir entre varias)
+        edicionSeleccionada = control.obtenerEdicionVigente(selectedCurso);
+
+        DefaultTableModel modelo = (DefaultTableModel) jTEdicion.getModel();
+        modelo.setRowCount(0);
+        if (edicionSeleccionada != null) {
+            modelo.addRow(new Object[]{ edicionSeleccionada });
+        } else {
+            JOptionPane.showMessageDialog(this, "El curso seleccionado no tiene una edición vigente en este momento.", "Sin edición vigente", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jTCursoMouseClicked
+
+    private void jBtnSelecEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSelecEstudianteActionPerformed
+        DefaultTableModel modelo = (DefaultTableModel) jDTEstudiantes.getModel();
+        modelo.setRowCount(0);
+        for (String[] fila : control.listarEstudiantesTabla()) {
+            modelo.addRow(new Object[]{ fila[0], fila[1], fila[2], fila[3] }); // Nickname, Nombre, Apellido, Email
+        }
+        JDSelecEstudiante.setLocationRelativeTo(this);
+        JDSelecEstudiante.setSize(400, 350);
+        JDSelecEstudiante.setVisible(true); // modal: el código se detiene acá hasta que cierren el popup
+    }//GEN-LAST:event_jBtnSelecEstudianteActionPerformed
+
+    private void jDbtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDbtnCancelarActionPerformed
+        JDSelecEstudiante.setVisible(false); // Cancelar: cierra el popup sin tocar la selección actual
+    }//GEN-LAST:event_jDbtnCancelarActionPerformed
+
+    private void jDAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDAceptarActionPerformed
+        int fila = jDTEstudiantes.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(JDSelecEstudiante, "Tenés que elegir un estudiante de la lista.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        estudianteNickname = (String) jDTEstudiantes.getValueAt(fila, 0);
+        estudianteMail = (String) jDTEstudiantes.getValueAt(fila, 3);
+
+        jTxtNickname.setText(estudianteNickname);
+        jTxtNombre.setText((String) jDTEstudiantes.getValueAt(fila, 1));
+        jTxtApellido.setText((String) jDTEstudiantes.getValueAt(fila, 2));
+        jTxtMail.setText(estudianteMail);
+
+        JDSelecEstudiante.setVisible(false);
+    }//GEN-LAST:event_jDAceptarActionPerformed
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog JDSelecEstudiante;
+    private javax.swing.JButton jBtnAceptar;
+    private javax.swing.JButton jBtnCancelar;
+    private javax.swing.JButton jBtnSelecEstudiante;
+    private javax.swing.JComboBox<String> jCBoxSelecInsti;
+    private javax.swing.JButton jDAceptar;
+    private javax.swing.JTable jDTEstudiantes;
+    private javax.swing.JButton jDbtnCancelar;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLblApellido;
+    private javax.swing.JLabel jLblMail;
+    private javax.swing.JLabel jLblNickname;
+    private javax.swing.JLabel jLblNombre;
+    private javax.swing.JLabel jLblSelecInsti;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTCurso;
+    private javax.swing.JTable jTEdicion;
+    private javax.swing.JTextField jTxtApellido;
+    private javax.swing.JTextField jTxtMail;
+    private javax.swing.JTextField jTxtNickname;
+    private javax.swing.JTextField jTxtNombre;
+    private javax.swing.JLabel lblDEstudiantes;
     // End of variables declaration//GEN-END:variables
 }
