@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java 
  */
 package Logica.usuarios;
 
@@ -42,5 +42,6 @@ public class Docente extends Usuario {
     
     private String institutoTrabajo;
     public List<EdicionCurso> getEdicionesC(){return edicionesC;}
+    public List<Instituto> getInstitutos(){return institutos;}
     
 }

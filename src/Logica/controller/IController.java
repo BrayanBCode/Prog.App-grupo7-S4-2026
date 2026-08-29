@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt 
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java t
  */
 package Logica.controller;
 
@@ -27,8 +27,10 @@ public interface IController {
     List<String> listarNombresCursos();
     void agregarCursoPrograma(String nombreP, String nombreC) throws Exception;
     List<String[]> listarDocentesTabla();
+    List<String[]> listarDocentesPorInstituto(String nombreInstituto);
     List<String> listarNombresInstitutos();
     List<String[]> listarCursosTabla(String nombreInstituto);
+    void altaCurso(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, LocalDate fechaRegistro, String nombreInstituto, String nicknameDocente, List<String> nombresPrevias) throws Exception;
     void altaEdicionCurso(String nombreEdicion, String nombreCurso, LocalDate fechaInicio, LocalDate fechaFin, int cupo, List<String> nicknamesDocentes) throws Exception;
     List<String> obtenerDataPrograma(String nombrePrograma)throws Exception;
     void modificarPorgrama(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin) throws Exception;
