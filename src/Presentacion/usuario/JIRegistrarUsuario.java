@@ -250,7 +250,15 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         String mail = Fmail.getText().trim();
         String nombre = FNombre.getText().trim();
         String apellido = FApellido.getText().trim();
-
+        boolean encontrado = mail.contains("@"); 
+        
+        if(encontrado == false){
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Por favor, añada el @ en su gmail.",
+                "Direccion de correo no valida",
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         // Valido campos obligatorios
         if (nick.isEmpty() || mail.isEmpty() || nombre.isEmpty() || apellido.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -259,14 +267,14 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
                 javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
-
+        if((Integer) SDia.getValue() > 0 && (Integer) SDia.getValue() <= 31 &&(Integer) SMes.getValue()> 0  && (Integer) SMes.getValue()<= 12 && (Integer) SAnio.getValue()>= 2000){
+            
         // Construyo la fecha desde los Spinners (Día, Mes, Año)
         java.time.LocalDate fechaNac = java.time.LocalDate.of(
             (Integer) SAnio.getValue(),
             (Integer) SMes.getValue(),
             (Integer) SDia.getValue()
         );
-
         // Manejar el campo opcional 'Instituto'
         String instituto = FDocente2.getText().trim();
         // Si el campo está deshabilitado o vacío, aseguramos enviarlo como null o vacío
@@ -290,6 +298,14 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
                 ex.getMessage(),
                 "Error al registrar",
                 javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+        
+        }else{
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Por favor,ingrese dia,mes y año mayor a 0.",
+                "Campos invalidos",
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+            
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
