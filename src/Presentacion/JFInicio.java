@@ -52,11 +52,11 @@ public class JFInicio extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
 
@@ -108,15 +108,14 @@ public class JFInicio extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Consulta");
-        jMenu3.addActionListener(this::jMenu3ActionPerformed);
 
         jMenuItem2.setText("ConsultaUsuario");
         jMenuItem2.addActionListener(this::jMenuItem2ActionPerformed);
         jMenu3.add(jMenuItem2);
 
-        jMenuItem6.setText("Consulta Edicion Curso");
-        jMenuItem6.addActionListener(this::jMenuItem6ActionPerformed);
-        jMenu3.add(jMenuItem6);
+        jMenuItem7.setText("Consulta Edicion Curso");
+        jMenuItem7.addActionListener(this::jMenuItem6ActionPerformed);
+        jMenu3.add(jMenuItem7);
 
         jMenuBar1.add(jMenu3);
 
@@ -164,14 +163,10 @@ public class JFInicio extends javax.swing.JFrame {
         this.openInternalFrame(new JIinscripcionEdicionCurso(control));
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
-    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
-        this.openInternalFrame(new JIConsultaEdicionCurso(control));
-    }//GEN-LAST:event_jMenu3ActionPerformed
-
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        this.openInternalFrame(new JIRegistroCurso(control));
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
+        this.openInternalFrame(new JIConsultaEdicionCurso(control));
+    }                                          
+//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private JInternalFrame adjustInternalFrame(JInternalFrame I) {
         var ui = (BasicInternalFrameUI) I.getUI();
@@ -216,6 +211,7 @@ public class JFInicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

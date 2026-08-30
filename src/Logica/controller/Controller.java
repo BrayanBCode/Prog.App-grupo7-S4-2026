@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import Persistencia.Conexion;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.TypedQuery;
 import javax.swing.JOptionPane;
 import org.eclipse.persistence.jpa.jpql.parser.CastExpression;
 
@@ -682,22 +683,32 @@ public List<String> listarEdicionesCurso(String nombreCurso) {
     }
 
     @Override
-    public String[] obtenerEdicionCurso(String nombreCurso) throws Exception{
-        EntityManager em = conexion.getEntityManager();
-        try{
-            EdicionCurso ed = em.find(EdicionCurso.class,nombreCurso);
-            if(ed == null){
-                throw new Exception("No existe una Edicion Curso con ese Nombre"+nombreCurso);
-            }
-            return new String[]{
-                 ed.getNombre(),
-                 String.valueOf(ed.getCurso()),
-                 String.valueOf(ed.getFechaInicio()),
-                 String.valueOf(ed.getFechaFin()),
-                 String.valueOf(ed.getCupo()),
-                 String.valueOf(ed.getFechaPublicacion())
-            };
-        }finally{
-            em.close();
+public String[] obtenerEdicionCurso(String nombreCurso) throws Exception {
+    EntityManager em = conexion.getEntityManager();
+    try {
+        // Buscamos la edición a través de la relación de la entidad Curso
+        TypedQuery<EdicionCurso> query = em.createQuery(
+            "SELECT ed FROM EdicionCurso ed WHERE ed.curso.nombre = :nombreCurso", EdicionCurso.class);
+        query.setParameter("nombreCurso", nombreCurso);
+        
+        List<EdicionCurso> lista = query.getResultList();
+        
+        if (lista.isEmpty()) {
+            throw new Exception("El curso '" + nombreCurso + "' no tiene ninguna edición registrada.");
         }
+        
+        EdicionCurso ed = lista.get(0); // Toma la primera edición encontrada
+
+        return new String[]{
+            ed.getNombre(),
+            ed.getCurso().getNombreC(),
+            String.valueOf(ed.getFechaInicio()),
+            String.valueOf(ed.getFechaFin()),
+            String.valueOf(ed.getCupo()),
+            String.valueOf(ed.getFechaPublicacion())
+        };
+    } finally {
+        em.close();
     }
+}
+}
