@@ -59,7 +59,7 @@ public class Curso implements Serializable {
     public String getNombreC(){return nombre;}
     public Instituto getInstituto() {return instituto;}
     public String getDescripcion(){return descripcion;}
-    
+    public int getCantCreditos(){return cantCreditos;}
     
     //Metodos
     public void setNombreC(String nombre){this.nombre = nombre;}

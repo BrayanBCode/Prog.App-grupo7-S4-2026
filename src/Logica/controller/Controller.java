@@ -12,11 +12,12 @@ import Persistencia.Conexion;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import org.eclipse.persistence.jpa.jpql.parser.CastExpression;
 
 public class Controller implements IController {
 
     private final Conexion conexion = Conexion.getInstancia();
-
+   
     @Override
     public List<String> obtenerDataDocente(String nickname) {
         EntityManager em = conexion.getEntityManager();
@@ -138,6 +139,38 @@ public class Controller implements IController {
             em.close();
         }
     }
+    
+
+public List<String> listarCursosPorInstituto(String nombreInstituto) {
+    EntityManager em = conexion.getEntityManager();
+    try {
+        return em.createQuery(
+            "SELECT c.nombre FROM Curso c WHERE c.instituto.nombre = :nombreInst", String.class)
+            .setParameter("nombreInst", nombreInstituto)
+            .getResultList();
+    } catch (Exception e) {
+        e.printStackTrace();
+        return new ArrayList<>();
+    } finally {
+        em.close();
+    }
+}
+
+public List<String> listarEdicionesCurso(String nombreCurso) {
+    EntityManager em = conexion.getEntityManager();
+    try {
+        return em.createQuery(
+            "SELECT e.nombre FROM EdicionCurso e WHERE e.curso.nombre = :nombreCurso", String.class)
+            .setParameter("nombreCurso", nombreCurso)
+            .getResultList();
+    } catch (Exception e) {
+        e.printStackTrace();
+        return new ArrayList<>();
+    } finally {
+        em.close();
+    }
+}
+
 
     @Override
     public void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto) {
@@ -448,4 +481,27 @@ public class Controller implements IController {
             em.close();
         }
     }
+   
+    @Override
+    public String[] obtenerEdicionCurso(String nombreCurso) throws Exception{
+        EntityManager em = conexion.getEntityManager();
+        try{
+            EdicionCurso ed = em.find(EdicionCurso.class,nombreCurso);
+            if(ed == null){
+                throw new Exception("No existe una Edicion Curso con ese Nombre"+nombreCurso);
+            }
+            return new String[]{
+                 ed.getNombre(),
+                 String.valueOf(ed.getCurso()),
+                 String.valueOf(ed.getFechaInicio()),
+                 String.valueOf(ed.getFechaFin()),
+                 String.valueOf(ed.getCupo()),
+                 String.valueOf(ed.getFechaPublicacion())
+            };
+        }finally{
+            em.close();
+        }
+  
+    }
 }
+
