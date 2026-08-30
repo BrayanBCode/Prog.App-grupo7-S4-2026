@@ -67,7 +67,6 @@ public class Curso implements Serializable {
     public Docente getDocente(){return docente;}
     public List<Curso> getEsPreviaDe(){return esPreviaDe;}
     
-    
     //Metodos
     public void setNombreC(String nombre){this.nombre = nombre;}
     public void setInstituto(Instituto instituto){this.instituto = instituto;}
