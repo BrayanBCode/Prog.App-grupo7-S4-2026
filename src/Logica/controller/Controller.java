@@ -191,6 +191,37 @@ public class Controller implements IController {
     }
 
     @Override
+    public void altaInstituto(String nombre) throws Exception {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            // No hay GUI para este caso de uso (el enunciado lo excluye explícitamente),
+            // así que acá es donde SÍ o SÍ tiene que frenarse un nombre vacío.
+            throw new Exception("El nombre del instituto no puede estar vacío.");
+        }
+
+        EntityManager em = conexion.getEntityManager();
+        try {
+            Instituto existente = em.find(Instituto.class, nombre.trim());
+            if (existente != null) {
+                throw new Exception("Ya existe un instituto registrado con el nombre: " + nombre);
+            }
+
+            em.getTransaction().begin();
+            Instituto instituto = new Instituto();
+            instituto.setNombre(nombre.trim());
+            em.persist(instituto);
+            em.getTransaction().commit();
+
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
     public void modificarUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac) throws Exception {
         EntityManager em = conexion.getEntityManager();
         try {
