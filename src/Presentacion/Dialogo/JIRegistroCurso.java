@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt 
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java 
  */
-package Presentacion.altaCurso;
+package Presentacion.Dialogo;
 
 import Logica.controller.IController;
 import java.time.LocalDate;

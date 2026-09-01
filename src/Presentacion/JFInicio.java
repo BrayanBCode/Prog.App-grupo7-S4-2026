@@ -6,12 +6,12 @@ package Presentacion;
 
 import Logica.controller.Fabrica;
 import Logica.controller.IController;
-import Presentacion.altaCurso.JIRegistroCurso;
-import Presentacion.altaEdicionCurso.JIRegistroEdicionCurso;
-import Presentacion.consultaEdicionCurso.JIConsultaEdicionCurso;
-import Presentacion.inscEdicionCruso.JIinscripcionEdicionCurso;
+import Presentacion.Dialogo.JIRegistroCurso;
+import Presentacion.EdicionCurso.JIRegistroEdicionCurso;
+import Presentacion.EdicionCurso.JIConsultaEdicionCurso;
+import Presentacion.EdicionCurso.JIinscripcionEdicionCurso;
 import Presentacion.usuario.JIConsultaUsuario;
-import Presentacion.usuario.JIModificarUsuario;
+import Presentacion.Dialogo.JIModificarUsuario;
 import Presentacion.usuario.JIRegistrarUsuario;
 import javax.swing.JInternalFrame;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -56,7 +56,7 @@ public class JFInicio extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
 
@@ -113,9 +113,9 @@ public class JFInicio extends javax.swing.JFrame {
         jMenuItem2.addActionListener(this::jMenuItem2ActionPerformed);
         jMenu3.add(jMenuItem2);
 
-        jMenuItem7.setText("Consulta Edicion Curso");
-        jMenuItem7.addActionListener(this::jMenuItem6ActionPerformed);
-        jMenu3.add(jMenuItem7);
+        jMenuItem8.setText("ConsultaEdicionCurso");
+        jMenuItem8.addActionListener(this::jMenuItem8ActionPerformed);
+        jMenu3.add(jMenuItem8);
 
         jMenuBar1.add(jMenu3);
 
@@ -168,6 +168,10 @@ public class JFInicio extends javax.swing.JFrame {
     }                                          
 //GEN-LAST:event_jMenuItem6ActionPerformed
 
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        this.openInternalFrame(new JIConsultaEdicionCurso(control));
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
     private JInternalFrame adjustInternalFrame(JInternalFrame I) {
         var ui = (BasicInternalFrameUI) I.getUI();
         ui.setNorthPane(null);
@@ -211,7 +215,7 @@ public class JFInicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

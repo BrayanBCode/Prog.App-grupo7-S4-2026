@@ -1,4 +1,4 @@
-package Presentacion.altaEdicionCurso;
+package Presentacion.Dialogo;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

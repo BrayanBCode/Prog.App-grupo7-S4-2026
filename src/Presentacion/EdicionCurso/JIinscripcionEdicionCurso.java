@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package Presentacion.inscEdicionCruso;
+package Presentacion.EdicionCurso;
 
 import Logica.controller.IController;
 import java.time.LocalDate;
