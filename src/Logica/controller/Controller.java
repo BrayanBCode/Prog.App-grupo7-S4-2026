@@ -710,4 +710,19 @@ public String[] obtenerEdicionCurso(String nombreEdicion) throws Exception {
         em.close();
     }
 }
+public List<String> listarInstituto() {
+    EntityManager em = conexion.getEntityManager();
+    try {
+        TypedQuery<Instituto> query = em.createQuery(
+            "SELECT i FROM Instituto i", Instituto.class);
+
+        List<String> nombres = new ArrayList<>();
+        for (Instituto i : query.getResultList()) {
+            nombres.add(i.getNombre());
+        }
+        return nombres;
+    } finally {
+        em.close();
+    }
+}
 }

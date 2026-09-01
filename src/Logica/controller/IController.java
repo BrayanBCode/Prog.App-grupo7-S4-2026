@@ -41,6 +41,7 @@ public interface IController {
     List<String> listarCursosPorInstituto(String nombreInstituto);
     List<String> listarEdicionesCurso(String nombreCurso);
     String[] obtenerEdicionCurso(String nombreCurso)throws Exception;
+    List<String> listarInstituto();
     
     
 }

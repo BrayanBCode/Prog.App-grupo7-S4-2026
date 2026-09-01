@@ -20,9 +20,16 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
     public JIRegistrarUsuario(IController c) {
         initComponents();
         this.control = c;
-        
-        
+        cargarInstitutos();
+        FDocente1.setEnabled(false);
+        FDocente2.setEnabled(false);
     }
+    private void cargarInstitutos() {
+    FDocente2.removeAllItems();
+    for (String nombre : control.listarInstituto()) {
+        FDocente2.addItem(nombre);
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,7 +53,6 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         checkDocente = new javax.swing.JCheckBox();
         FDocente1 = new javax.swing.JLabel();
-        FDocente2 = new javax.swing.JTextField();
         LabelDocente3 = new javax.swing.JLabel();
         SDia = new javax.swing.JSpinner();
         SMes = new javax.swing.JSpinner();
@@ -55,6 +61,7 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
+        FDocente2 = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(62, 67, 76));
         setBorder(null);
@@ -93,8 +100,6 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         FDocente1.setForeground(new java.awt.Color(255, 255, 255));
         FDocente1.setText("Instituto perteneciente: ");
 
-        FDocente2.addActionListener(this::FDocente2ActionPerformed);
-
         LabelDocente3.setForeground(new java.awt.Color(255, 255, 255));
         LabelDocente3.setText("Fecha de nacimiento: ");
 
@@ -107,6 +112,8 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton3.setText("Cancelar");
+
+        FDocente2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -150,10 +157,10 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
                     .addComponent(Fmail, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(checkDocente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(FDocente2, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(FDocente2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
                                 .addComponent(SDia, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(SMes, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -195,8 +202,8 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(FDocente2, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
-                            .addComponent(FDocente1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
+                            .addComponent(FDocente1, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                            .addComponent(FDocente2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(LabelDocente3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -224,21 +231,17 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_FNicknameActionPerformed
 
     private void checkDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkDocenteActionPerformed
-        boolean esDocente = checkDocente.isSelected();
+       boolean esDocente = checkDocente.isSelected();
 
-        // Habilita o deshabilita los componentes según el estado
-        FDocente1.setEnabled(esDocente);
-        FDocente2.setEnabled(esDocente);
+    // Habilita o deshabilita los componentes según el estado
+    FDocente1.setEnabled(esDocente);
+    FDocente2.setEnabled(esDocente);
 
-        // Si se desmarcó, limpia el texto del campo para no enviar datos viejos
-        if (!esDocente) {
-            FDocente2.setText("");
-        }
+    // Si se desmarcó, quita la selección para no enviar un instituto viejo
+    if (!esDocente) {
+        FDocente2.setSelectedIndex(-1);
+    }
     }//GEN-LAST:event_checkDocenteActionPerformed
-
-    private void FDocente2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FDocente2ActionPerformed
-
-    }//GEN-LAST:event_FDocente2ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -267,6 +270,7 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
                 javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
+       
         if((Integer) SDia.getValue() > 0 && (Integer) SDia.getValue() <= 31 &&(Integer) SMes.getValue()> 0  && (Integer) SMes.getValue()<= 12 && (Integer) SAnio.getValue()>= 2000){
             
         // Construyo la fecha desde los Spinners (Día, Mes, Año)
@@ -276,9 +280,9 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
             (Integer) SDia.getValue()
         );
         // Manejar el campo opcional 'Instituto'
-        String instituto = FDocente2.getText().trim();
-        // Si el campo está deshabilitado o vacío, aseguramos enviarlo como null o vacío
-        if (!FDocente2.isEnabled() || instituto.isEmpty()) {
+        String instituto = (String) FDocente2.getSelectedItem();
+        // Si el campo está deshabilitado o no hay nada seleccionado, lo enviamos como null
+        if (!FDocente2.isEnabled() || instituto == null) {
             instituto = null;
         }
 
@@ -313,7 +317,7 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField FApellido;
     private javax.swing.JLabel FDocente1;
-    private javax.swing.JTextField FDocente2;
+    private javax.swing.JComboBox<String> FDocente2;
     private javax.swing.JTextField FNickname;
     private javax.swing.JTextField FNombre;
     private javax.swing.JTextField Fmail;
