@@ -683,21 +683,20 @@ public List<String> listarEdicionesCurso(String nombreCurso) {
     }
 
     @Override
-public String[] obtenerEdicionCurso(String nombreCurso) throws Exception {
+public String[] obtenerEdicionCurso(String nombreEdicion) throws Exception {
     EntityManager em = conexion.getEntityManager();
     try {
-        // Buscamos la edición a través de la relación de la entidad Curso
         TypedQuery<EdicionCurso> query = em.createQuery(
-            "SELECT ed FROM EdicionCurso ed WHERE ed.curso.nombre = :nombreCurso", EdicionCurso.class);
-        query.setParameter("nombreCurso", nombreCurso);
-        
+            "SELECT ed FROM EdicionCurso ed WHERE ed.nombre = :nombreEdicion", EdicionCurso.class);
+        query.setParameter("nombreEdicion", nombreEdicion);
+
         List<EdicionCurso> lista = query.getResultList();
-        
+
         if (lista.isEmpty()) {
-            throw new Exception("El curso '" + nombreCurso + "' no tiene ninguna edición registrada.");
+            throw new Exception("La edición '" + nombreEdicion + "' no fue encontrada.");
         }
-        
-        EdicionCurso ed = lista.get(0); // Toma la primera edición encontrada
+
+        EdicionCurso ed = lista.get(0);
 
         return new String[]{
             ed.getNombre(),
