@@ -8,7 +8,7 @@ import Logica.usuarios.Usuario;
 import Logica.usuarios.UsuarioID;
 import java.time.LocalDate;
 import javax.persistence.EntityManager;
-import Persistencia.Conexion;
+import persistencia.Conexion;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.TypedQuery;

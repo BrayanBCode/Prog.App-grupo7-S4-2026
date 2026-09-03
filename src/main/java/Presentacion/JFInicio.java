@@ -6,10 +6,10 @@ package Presentacion;
 
 import Logica.controller.Fabrica;
 import Logica.controller.IController;
-import Presentacion.altaCurso.JIRegistroCurso;
-import Presentacion.altaEdicionCurso.JIRegistroEdicionCurso;
-import Presentacion.consultaEdicionCurso.JIConsultaEdicionCurso;
-import Presentacion.inscEdicionCruso.JIinscripcionEdicionCurso;
+import Presentacion.curso.JIRegistroCurso;
+import Presentacion.edicionCurso.JIRegistroEdicionCurso;
+import Presentacion.edicionCurso.JIConsultaEdicionCurso;
+import Presentacion.edicionCurso.JIinscripcionEdicionCurso;
 import Presentacion.usuario.JIConsultaUsuario;
 import Presentacion.usuario.JIModificarUsuario;
 import Presentacion.usuario.JIRegistrarUsuario;

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package Presentacion.consultaEdicionCurso;
+package Presentacion.edicionCurso;
 
 import Logica.controller.IController;
 import java.util.List;
@@ -52,6 +52,8 @@ public class JIConsultaEdicionCurso extends javax.swing.JInternalFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -81,6 +83,24 @@ public class JIConsultaEdicionCurso extends javax.swing.JInternalFrame {
         jLabel2.setText("Consultar Edicion de Curso");
         jLabel2.setAlignmentY(0.0F);
 
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Edicion del curso"
+            }
+        ));
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(jTable2);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -91,13 +111,16 @@ public class JIConsultaEdicionCurso extends javax.swing.JInternalFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(60, 60, 60)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(24, 24, 24)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addComponent(jLabel1)
+                .addGap(24, 24, 24)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,7 +131,9 @@ public class JIConsultaEdicionCurso extends javax.swing.JInternalFrame {
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap(145, Short.MAX_VALUE))
         );
 
@@ -136,29 +161,42 @@ public class JIConsultaEdicionCurso extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-    int fila = jTable1.getSelectedRow();
-    
-    if (fila != -1) { 
+        int fila = jTable1.getSelectedRow();
+    if (fila != -1) {
+        String cursoSeleccionado = jTable1.getValueAt(fila, 0).toString();
+
+        DefaultTableModel modelTabla2 = (DefaultTableModel) jTable2.getModel();
+        modelTabla2.setRowCount(0);
+
+        List<String> ediciones = control.listarEdicionesCurso(cursoSeleccionado);
+        for (String ed : ediciones) {
+            modelTabla2.addRow(new Object[]{ed});
+        }
+    }
+
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        int fila = jTable2.getSelectedRow();
+    if (fila != -1) {
         try {
-            String EdCSeleccionado = jTable1.getValueAt(fila, 0).toString();
-            
-            String[] datos = control.obtenerEdicionCurso(EdCSeleccionado);
-            
+            String edicionSeleccionada = jTable2.getValueAt(fila, 0).toString();
+            String[] datos = control.obtenerEdicionCurso(edicionSeleccionada);
+
             String mensaje = "DETALLES DE LA EDICIÓN DE CURSO:\n\n"
                     + "Nombre: " + datos[0] + "\n"
                     + "Curso: " + datos[1] + "\n"
                     + "Fecha de inicio: " + datos[2] + "\n"
                     + "Fecha de fin: " + datos[3] + "\n"
                     + "Cupo: " + datos[4] + "\n"
-                    + "Fecha de publicación: " + datos[5]; //
+                    + "Fecha de publicación: " + datos[5];
 
             JOptionPane.showMessageDialog(this, mensaje, "Información de Edición de Curso", JOptionPane.INFORMATION_MESSAGE);
-            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_jTable2MouseClicked
  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -166,6 +204,8 @@ public class JIConsultaEdicionCurso extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
 }
