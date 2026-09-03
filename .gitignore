@@ -1,6 +1,6 @@
 /target/
 .DS_Store
-/build
-/dist
-/nbproject/private
-nbproject/private/
+*.class
+.idea/
+*.iml
+.vscode/
