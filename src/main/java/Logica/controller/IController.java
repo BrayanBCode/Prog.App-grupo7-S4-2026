@@ -39,6 +39,8 @@ public interface IController {
     void inscribirEstudianteEdicion(String nickname, String mail, String nombreEdicion, LocalDate fechaInscripcion) throws Exception;
     List<String> listarCursosPorInstituto(String nombreInstituto);
     List<String> listarEdicionesCurso(String nombreCurso);
-    String[] obtenerEdicionCurso(String nombreCurso)throws Exception;
-    
+    String[] obtenerDataCurso(String nombreCurso) throws Exception;
+    List<String> listarProgramasPorCurso(String nombreCurso);
+    String[] obtenerEdicionCurso(String nombreEdicion)throws Exception;
+
 }

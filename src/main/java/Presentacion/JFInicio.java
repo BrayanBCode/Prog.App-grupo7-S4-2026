@@ -6,6 +6,7 @@ package Presentacion;
 
 import Logica.controller.Fabrica;
 import Logica.controller.IController;
+import Presentacion.curso.JIConsultaCurso;
 import Presentacion.curso.JIRegistroCurso;
 import Presentacion.edicionCurso.JIRegistroEdicionCurso;
 import Presentacion.edicionCurso.JIConsultaEdicionCurso;
@@ -97,7 +98,7 @@ public class JFInicio extends javax.swing.JFrame {
         jMenuItem4.addActionListener(this::jMenuItem4ActionPerformed);
         jMenu2.add(jMenuItem4);
 
-        jMenuItem6.setText("Alta de Curso");
+        jMenuItem6.setText("Registro de Curso");
         jMenuItem6.addActionListener(this::jMenuItem6ActionPerformed);
         jMenu2.add(jMenuItem6);
 
@@ -167,6 +168,11 @@ public class JFInicio extends javax.swing.JFrame {
         this.openInternalFrame(new JIRegistroCurso(control));
     }                                          
 //GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        this.openInternalFrame(new JIConsultaCurso(control));
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
 
     private JInternalFrame adjustInternalFrame(JInternalFrame I) {
         var ui = (BasicInternalFrameUI) I.getUI();
