@@ -8,7 +8,6 @@ import Logica.controller.Fabrica;
 import Logica.controller.IController;
 import Presentacion.curso.JIConsultaCurso;
 import Presentacion.curso.JIRegistroCurso;
-import Presentacion.curso.JIConsultaCursotemp;
 import Presentacion.edicionCurso.JIRegistroEdicionCurso;
 import Presentacion.edicionCurso.JIConsultaEdicionCurso;
 import Presentacion.edicionCurso.JIinscripcionEdicionCurso;
@@ -100,7 +99,7 @@ public class JFInicio extends javax.swing.JFrame {
         jMenuItem4.addActionListener(this::jMenuItem4ActionPerformed);
         jMenu2.add(jMenuItem4);
 
-        jMenuItem6.setText("Alta de Curso");
+        jMenuItem6.setText("Registro de Curso");
         jMenuItem6.addActionListener(this::jMenuItem6ActionPerformed);
         jMenu2.add(jMenuItem6);
 
@@ -171,13 +170,12 @@ public class JFInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        this.openInternalFrame(new JIConsultaEdicionCurso(control));
+        this.openInternalFrame(new JIRegistroCurso(control));
     }                                          
 //GEN-LAST:event_jMenuItem6ActionPerformed
-
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         this.openInternalFrame(new JIConsultaCurso(control));
-    }
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private JInternalFrame adjustInternalFrame(JInternalFrame I) {
         var ui = (BasicInternalFrameUI) I.getUI();

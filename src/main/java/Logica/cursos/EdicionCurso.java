@@ -72,32 +72,25 @@ public class EdicionCurso implements Serializable {
     public void setFechaPublicacion(LocalDate fechaPublicacion){this.fechaPublicacion = fechaPublicacion;}
     
     private static final long serialVersionUID = 1L;
-   
-    private Long id;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    // equals/hashCode basados en 'nombre', que es el verdadero @Id de la entidad.
+    // (Antes había un campo Long id" suelto, sin @Id y nunca asignado: quedaba
+    // siempre null, así que TODAS las instancias de EdicionCurso se consideraban
+    // "iguales" entre sí -> rompía contains()/remove() en listas y combos.)
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (nombre != null ? nombre.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof EdicionCurso)) {
             return false;
         }
         EdicionCurso other = (EdicionCurso) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.nombre == null && other.nombre != null) || (this.nombre != null && !this.nombre.equals(other.nombre))) {
             return false;
         }
         return true;
@@ -105,7 +98,7 @@ public class EdicionCurso implements Serializable {
 
     @Override
     public String toString() {
-        return "Logica.EdicionCurso[ id=" + id + " ]";
+        return "Logica.EdicionCurso[ nombre=" + nombre + " ]";
     }
     
 }
