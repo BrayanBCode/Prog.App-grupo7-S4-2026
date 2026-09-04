@@ -27,7 +27,6 @@ public class JIConsultaUsuario extends javax.swing.JInternalFrame {
         this.control = c;
         cargarTablaUsuarios();       
     }
-
     
     private void cargarTablaUsuarios() {
         // La vista solo maneja arreglos de Strings, sin importar la clase Usuario
