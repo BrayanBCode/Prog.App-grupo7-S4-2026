@@ -22,17 +22,19 @@ public abstract class Usuario implements Serializable {
    private String Apellido;
    private String Nombre;
    private LocalDate fechaNac;
+   private String Imagen;
    
    //Constructor para JPA
    public Usuario() {}
 
     // Constructor completo
-    public Usuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac) {
+    public Usuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String imagen) {
         this.nickname = nickname;
         this.Mail = mail;
         this.Nombre = nombre;
         this.Apellido = apellido;
         this.fechaNac = fechaNac;
+        this.Imagen = imagen;
     }
     // Getters para los campos ID
     public String getNickname() { return nickname; }
@@ -44,12 +46,13 @@ public abstract class Usuario implements Serializable {
     }
     public String getApellido(){return Apellido;}
     public LocalDate getFechaNac(){return fechaNac;}
-   
+   public String getImagen(){return Imagen;}
    public String getNombreU(){return Nombre;}
 
     // Setters de los datos modificables (nickname y Mail NO se exponen: son @Id y no deben cambiar)
     public void setNombreU(String nombre) { this.Nombre = nombre; }
     public void setApellido(String apellido) { this.Apellido = apellido; }
     public void setFechaNac(LocalDate fechaNac) { this.fechaNac = fechaNac; }
+    public void setImagen(String imagen){this.Imagen = imagen;}
 
 }
