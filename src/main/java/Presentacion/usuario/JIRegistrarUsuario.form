@@ -53,7 +53,7 @@
                               <Component id="jLabel7" alignment="0" pref="140" max="32767" attributes="0"/>
                               <Component id="jLabel6" alignment="0" pref="140" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jButton2" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="seleccionImagen" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="FDocente1" alignment="0" min="-2" pref="153" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
@@ -143,7 +143,7 @@
                           </Group>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButton2" max="32767" attributes="0"/>
+                      <Component id="seleccionImagen" max="32767" attributes="0"/>
                       <EmptySpace min="-2" pref="169" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
@@ -281,12 +281,12 @@
     </Component>
     <Component class="javax.swing.JSpinner" name="SAnio">
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="seleccionImagen">
       <Properties>
         <Property name="text" type="java.lang.String" value="Seleccionar Imagen"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="seleccionImagenActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">

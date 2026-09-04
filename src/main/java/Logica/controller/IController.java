@@ -14,8 +14,7 @@ import java.util.List;
  * @author maida
  */
 public interface IController {
-    
-    void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto) throws Exception;
+    void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen);
     void altaInstituto(String nombre) throws Exception;
     void modificarUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac) throws Exception;
     void crearPrograma(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta)throws Exception;
@@ -41,7 +40,5 @@ public interface IController {
     List<String> listarCursosPorInstituto(String nombreInstituto);
     List<String> listarEdicionesCurso(String nombreCurso);
     String[] obtenerEdicionCurso(String nombreCurso)throws Exception;
-    String[] obtenerDataCurso(String nombreCurso) throws Exception;
-    List<String> listarProgramasPorCurso(String nombreCurso);
     
 }

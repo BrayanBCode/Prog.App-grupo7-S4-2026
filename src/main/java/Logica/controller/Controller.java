@@ -13,10 +13,122 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.TypedQuery;
 import javax.swing.JOptionPane;
-import org.eclipse.persistence.jpa.jpql.parser.CastExpression;
-import java.util.stream.Collectors;
 
 public class Controller implements IController {
+  // Carpeta especial del Servidor Central donde se guardan las imágenes de usuario.
+// Ajustá la ruta según cómo esté configurado tu Servidor Central.
+private static final String CARPETA_IMAGENES = "imagenes_usuarios";
+
+
+@Override
+public void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen) {
+    EntityManager em = conexion.getEntityManager();
+    try {
+        // Busca si existe el NICKNAME en Docente o Estudiante (devolvemos String)
+        List<String> nickDocente = em.createQuery("SELECT d.nickname FROM Docente d WHERE d.nickname = :nick", String.class)
+                .setParameter("nick", nickname)
+                .getResultList();
+        List<String> nickEstudiante = em.createQuery("SELECT e.nickname FROM Estudiante e WHERE e.nickname = :nick", String.class)
+                .setParameter("nick", nickname)
+                .getResultList();
+        // Buscar si existe el MAIL en Docente o Estudiante
+        List<String> mailDocente = em.createQuery("SELECT d.Mail FROM Docente d WHERE d.Mail = :Mail", String.class)
+                .setParameter("Mail", mail)
+                .getResultList();
+        List<String> mailEstudiante = em.createQuery("SELECT e.Mail FROM Estudiante e WHERE e.Mail = :Mail", String.class)
+                .setParameter("Mail", mail)
+                .getResultList();
+
+        // Validar que todas las listas estén vacías
+        if (nickDocente.isEmpty() && nickEstudiante.isEmpty() && mailDocente.isEmpty() && mailEstudiante.isEmpty()) {
+
+            // Copiamos la imagen (si se seleccionó una) a la carpeta del Servidor Central
+            // y nos quedamos con la ruta final para persistirla junto al usuario.
+            String rutaImagenFinal = guardarImagenUsuario(nickname, imagen);
+
+            // Si es Docente, el instituto tiene que existir: lo buscamos ANTES de
+            // persistir nada para poder frenar el alta con un mensaje claro.
+            Instituto institutoEntity = null;
+            boolean esDocente = instituto != null && !instituto.trim().isEmpty();
+            if (esDocente) {
+                institutoEntity = em.find(Instituto.class, instituto.trim());
+                if (institutoEntity == null) {
+                    throw new IllegalArgumentException("El instituto seleccionado no existe: " + instituto);
+                }
+            }
+
+            Usuario usuario;
+            if (esDocente) {
+                usuario = new Docente(nickname, mail, nombre, apellido, fechaNac, imagen);
+            } else {
+                usuario = new Estudiante(nickname, mail, nombre, apellido, fechaNac, imagen);
+            }
+            usuario.setImagen(rutaImagenFinal); 
+
+            em.getTransaction().begin();
+            em.persist(usuario);
+            if (institutoEntity != null) {
+                // Instituto.docentes es el lado dueño de la relación ManyToMany:
+                // sin esto, el Docente quedaba creado pero nunca vinculado a
+                // ningún instituto (y por lo tanto nunca podía dictar cursos).
+                institutoEntity.getDocentes().add((Docente) usuario);
+            }
+            em.getTransaction().commit();
+        } else {
+            // Lanzamos una excepción no comprobada para que la interfaz gráfica (Swing) la capture y muestre la alerta al administrador
+            throw new IllegalArgumentException("El Nickname o el Email ya se encuentran registrados en el sistema.");
+        }
+    } catch (Exception e) {
+        if (em.getTransaction().isActive()) {
+            em.getTransaction().rollback();
+        }
+        throw e; // Re-lanza la excepción hacia la vista Swing
+    } finally {
+        em.close();
+    }
+}
+
+/**
+ * Copia la imagen elegida por el administrador (ruta local en su PC) a la
+ * carpeta especial de imágenes del Servidor Central, renombrándola con el
+ * nickname para evitar colisiones. Devuelve la ruta final a persistir, o
+ * null si no se seleccionó ninguna imagen.
+ */
+private String guardarImagenUsuario(String nickname, String rutaImagenOrigen) {
+    if (rutaImagenOrigen == null || rutaImagenOrigen.isEmpty()) {
+        return null;
+    }
+
+    java.io.File origen = new java.io.File(rutaImagenOrigen);
+    if (!origen.exists()) {
+        return null;
+    }
+
+    // Validación de formato por seguridad (además del filtro ya aplicado en la vista)
+    String nombreOrigen = origen.getName().toLowerCase();
+    String extension = nombreOrigen.substring(nombreOrigen.lastIndexOf('.') + 1);
+    if (!extension.equals("jpg") && !extension.equals("jpeg") && !extension.equals("png")) {
+        throw new IllegalArgumentException("Formato de imagen no soportado. Use JPG o PNG.");
+    }
+
+    try {
+        java.io.File carpetaDestino = new java.io.File(CARPETA_IMAGENES);
+        if (!carpetaDestino.exists()) {
+            carpetaDestino.mkdirs();
+        }
+
+        java.io.File destino = new java.io.File(carpetaDestino, nickname + "." + extension);
+        java.nio.file.Files.copy(
+                origen.toPath(),
+                destino.toPath(),
+                java.nio.file.StandardCopyOption.REPLACE_EXISTING
+        );
+
+        return destino.getPath();
+    } catch (java.io.IOException ex) {
+        throw new RuntimeException("No se pudo guardar la imagen del usuario: " + ex.getMessage(), ex);
+    }
+}
 
     private final Conexion conexion = Conexion.getInstancia();
    
@@ -104,25 +216,26 @@ public class Controller implements IController {
     }
 
     @Override
-    public String[] obtenerDataUsuario(String nickname, String mail) {
-        EntityManager em = conexion.getEntityManager();
-        try {
-            UsuarioID id = new UsuarioID(nickname, mail);
-            Usuario u = em.find(Usuario.class, id);
-            if (u != null) {
-                return new String[]{
-                    u.getNickname(),
-                    u.getMail(),
-                    u.getNombreU(),
-                    u.getApellido(),
-                    u.getFechaNac() != null ? u.getFechaNac().toString() : ""
-                };
-            }
-            return null;
-        } finally {
-            em.close();
+public String[] obtenerDataUsuario(String nickname, String mail) {
+    EntityManager em = conexion.getEntityManager();
+    try {
+        UsuarioID id = new UsuarioID(nickname, mail);
+        Usuario u = em.find(Usuario.class, id);
+        if (u != null) {
+            return new String[]{
+                u.getNickname(),
+                u.getMail(),
+                u.getNombreU(),
+                u.getApellido(),
+                u.getFechaNac() != null ? u.getFechaNac().toString() : "",
+                u.getImagen()
+            };
         }
+        return null;
+    } finally {
+        em.close();
     }
+}
 
     @Override
     public List<String[]> listarUsuariosTabla() {
@@ -174,56 +287,7 @@ public List<String> listarEdicionesCurso(String nombreCurso) {
 }
 
 
-    @Override
-    public void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto) {
-        EntityManager em = conexion.getEntityManager();
-        try {
-            // Busca si existe el NICKNAME en Docente o Estudiante (devolvemos String)
-            List<String> nickDocente = em.createQuery("SELECT d.nickname FROM Docente d WHERE d.nickname = :nick", String.class)
-                    .setParameter("nick", nickname)
-                    .getResultList();
-
-            List<String> nickEstudiante = em.createQuery("SELECT e.nickname FROM Estudiante e WHERE e.nickname = :nick", String.class)
-                    .setParameter("nick", nickname)
-                    .getResultList();
-
-            // Buscar si existe el MAIL en Docente o Estudiante
-            List<String> mailDocente = em.createQuery("SELECT d.Mail FROM Docente d WHERE d.Mail = :Mail", String.class)
-                    .setParameter("Mail", mail)
-                    .getResultList();
-
-            List<String> mailEstudiante = em.createQuery("SELECT e.Mail FROM Estudiante e WHERE e.Mail = :Mail", String.class)
-                    .setParameter("Mail", mail)
-                    .getResultList();
-
-            // Validar que todas las listas estén vacías
-            if (nickDocente.isEmpty() && nickEstudiante.isEmpty() && mailDocente.isEmpty() && mailEstudiante.isEmpty()) {
-
-                Usuario usuario;
-                if (instituto != null && !instituto.trim().isEmpty()) {
-                    usuario = new Docente(nickname, mail, nombre, apellido, fechaNac, instituto);
-                } else {
-                    usuario = new Estudiante(nickname, mail, nombre, apellido, fechaNac);
-                }
-
-                em.getTransaction().begin();
-                em.persist(usuario);
-                em.getTransaction().commit();
-
-            } else {
-                // Lanzamos una excepción no comprobada para que la interfaz gráfica (Swing) la capture y muestre la alerta al administrador
-                throw new IllegalArgumentException("El Nickname o el Email ya se encuentran registrados en el sistema.");
-            }
-
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e; // Re-lanza la excepción hacia la vista Swing
-        } finally {
-            em.close();
-        }
-    }
+ 
 
     @Override
     public void altaInstituto(String nombre) throws Exception {
@@ -584,8 +648,8 @@ public List<String> listarEdicionesCurso(String nombreCurso) {
         resultado.add("Fecha Alta"+ programa.getFechaAlta());
 
         resultado.add("Cursos");
-        //CREO LA LISTA CURSO PARA MOSTRAR LOS CURSOS ASIGNADOS AL PROGRAMA
-        List<Curso> curso = new ArrayList<>();
+        //LISTA REAL DE CURSOS ASIGNADOS AL PROGRAMA (antes quedaba vacía siempre)
+        List<Curso> curso = programa.getCursos();
         if(curso.isEmpty()){
             resultado.add("Sin Cursos Registrados");
         }else{
@@ -712,53 +776,4 @@ public String[] obtenerEdicionCurso(String nombreEdicion) throws Exception {
         em.close();
     }
 }
-
-    @Override
-    public String[] obtenerDataCurso(String nombreCurso) throws Exception {
-        EntityManager em = conexion.getEntityManager();
-        try {
-            Curso c = em.find(Curso.class, nombreCurso);
-            if (c == null) {
-                throw new Exception("No se encontró el curso llamado: '" + nombreCurso + "'");
-            }
-
-            String previas = c.getPrevias().isEmpty()
-                ? "(Sin previas)"
-                : c.getPrevias().stream().map(Curso::getNombreC).collect(Collectors.joining(", "));
-
-            String docente = c.getDocente() != null
-                ? c.getDocente().getNombreU() + " " + c.getDocente().getApellido() + " (" + c.getDocente().getNickname() + ")"
-                : "(Sin docente asignado)";
-
-            // {0}=nombre, {1}=descripcion, {2}=duracion, {3}=cantHoras, {4}=cantCreditos,
-            // {5}=url, {6}=fechaRegistro, {7}=instituto, {8}=docente, {9}=previas
-            return new String[]{
-                c.getNombreC(),
-                c.getDescripcion(),
-                String.valueOf(c.getDuracion()),
-                String.valueOf(c.getCantHoras()),
-                String.valueOf(c.getCantCreditos()),
-                c.getUrl(),
-                String.valueOf(c.getFechaRegistro()),
-                c.getInstituto() != null ? c.getInstituto().getNombre() : "",
-                docente,
-                previas
-            };
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public List<String> listarProgramasPorCurso(String nombreCurso) {
-        EntityManager em = conexion.getEntityManager();
-        try {
-            return em.createQuery(
-                "SELECT DISTINCT p.nombre FROM ProgramaFormacion p JOIN p.cursos c WHERE c.nombre = :nombreCurso ORDER BY p.nombre", String.class)
-                .setParameter("nombreCurso", nombreCurso)
-                .getResultList();
-        } finally {
-            em.close();
-        }
-    }
 }

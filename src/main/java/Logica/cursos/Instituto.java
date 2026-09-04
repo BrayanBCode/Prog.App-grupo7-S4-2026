@@ -33,7 +33,10 @@ public class Instituto implements Serializable {
        
       public void setNombre(String nombre){this.nombre = nombre;}
       public String getNombre() {return nombre;}
-      
-      
+
+      // Lado dueño de la relación ManyToMany con Docente: sin este getter no
+      // había forma de vincular nunca un Docente a un Instituto.
+      public List<Docente> getDocentes(){return docentes;}
+      public List<Curso> getCursos(){return cursos;}
 
 }
