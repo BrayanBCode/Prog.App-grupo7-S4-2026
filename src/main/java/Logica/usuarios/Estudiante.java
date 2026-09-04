@@ -30,8 +30,8 @@ public class Estudiante extends Usuario {
     }
 
     // Constructor completo que invoca a la clase padre (Usuario)
-    public Estudiante(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String imagen) {
-        super(nickname, mail, nombre, apellido, fechaNac, imagen);
+    public Estudiante(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac) {
+        super(nickname, mail, nombre, apellido, fechaNac);
     }
     
     // Retorna la clave compuesta heredada de Usuario

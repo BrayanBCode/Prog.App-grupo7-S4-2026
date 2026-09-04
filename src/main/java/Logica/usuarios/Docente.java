@@ -35,8 +35,8 @@ public class Docente extends Usuario {
     }
 
     // Constructor que llama a Usuario y asigna el instituto
-    public Docente(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String imagen, String institutoTrabajo) {
-        super(nickname, mail, nombre, apellido, fechaNac,imagen);
+    public Docente(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String institutoTrabajo) {
+        super(nickname, mail, nombre, apellido, fechaNac);
         this.institutoTrabajo = institutoTrabajo;
     }
     

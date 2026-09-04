@@ -6,7 +6,9 @@ package Presentacion;
 
 import Logica.controller.Fabrica;
 import Logica.controller.IController;
+import Presentacion.curso.JIConsultaCurso;
 import Presentacion.curso.JIRegistroCurso;
+import Presentacion.curso.JIConsultaCursotemp;
 import Presentacion.edicionCurso.JIRegistroEdicionCurso;
 import Presentacion.edicionCurso.JIConsultaEdicionCurso;
 import Presentacion.edicionCurso.JIinscripcionEdicionCurso;
@@ -57,6 +59,7 @@ public class JFInicio extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
 
@@ -117,6 +120,10 @@ public class JFInicio extends javax.swing.JFrame {
         jMenuItem7.addActionListener(this::jMenuItem6ActionPerformed);
         jMenu3.add(jMenuItem7);
 
+        jMenuItem8.setText("Consulta Curso");
+        jMenuItem8.addActionListener(this::jMenuItem8ActionPerformed);
+        jMenu3.add(jMenuItem8);
+
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Modificaciones");
@@ -168,6 +175,10 @@ public class JFInicio extends javax.swing.JFrame {
     }                                          
 //GEN-LAST:event_jMenuItem6ActionPerformed
 
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {
+        this.openInternalFrame(new JIConsultaCurso(control));
+    }
+
     private JInternalFrame adjustInternalFrame(JInternalFrame I) {
         var ui = (BasicInternalFrameUI) I.getUI();
         ui.setNorthPane(null);
@@ -212,6 +223,7 @@ public class JFInicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
