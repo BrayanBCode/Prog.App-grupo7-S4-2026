@@ -287,8 +287,6 @@ public class Controller implements IController {
     @Override
     public void altaInstituto(String nombre) throws Exception {
         if (nombre == null || nombre.trim().isEmpty()) {
-            // No hay GUI para este caso de uso (el enunciado lo excluye explícitamente),
-            // así que acá es donde SÍ o SÍ tiene que frenarse un nombre vacío.
             throw new Exception("El nombre del instituto no puede estar vacío.");
         }
 
