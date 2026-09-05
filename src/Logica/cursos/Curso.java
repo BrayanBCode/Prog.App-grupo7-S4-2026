@@ -96,5 +96,15 @@ public class Curso implements Serializable {
         this.instituto = instituto;
         this.docente = docente;
     }
+    
+    
+    
+     public List<ProgramaFormacion> getProgramas() { 
+    return pFormaciones; 
+     }
+
+    public void setProgramas(List<ProgramaFormacion> programas) { 
+    this.pFormaciones = programas; 
+    }   
   
 }
