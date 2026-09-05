@@ -16,16 +16,17 @@ import java.io.Serializable;
 @IdClass(UsuarioID.class)
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class Usuario implements Serializable {
+    
     //Atributos
-   @Id private String nickname;
-   @Id private String Mail; 
-   private String Apellido;
-   private String Nombre;
-   private LocalDate fechaNac;
-   private String Imagen;
+    @Id private String nickname;
+    @Id private String Mail; 
+    private String Apellido;
+    private String Nombre;
+    private LocalDate fechaNac;
+    private String Imagen;
    
-   //Constructor para JPA
-   public Usuario() {}
+    //Constructor para JPA
+    public Usuario() {}
 
     // Constructor completo
     public Usuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String imagen) {
@@ -46,8 +47,8 @@ public abstract class Usuario implements Serializable {
     }
     public String getApellido(){return Apellido;}
     public LocalDate getFechaNac(){return fechaNac;}
-   public String getImagen(){return Imagen;}
-   public String getNombreU(){return Nombre;}
+    public String getImagen(){return Imagen;}
+    public String getNombreU(){return Nombre;}
 
     // Setters de los datos modificables (nickname y Mail NO se exponen: son @Id y no deben cambiar)
     public void setNombreU(String nombre) { this.Nombre = nombre; }

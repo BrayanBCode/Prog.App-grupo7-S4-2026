@@ -369,7 +369,7 @@ public class Controller implements IController {
     @Override
     public void modificarPorgrama(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin) throws Exception{
         EntityManager em = Conexion.getInstancia().getEntityManager();
-        try{
+        try {
             ProgramaFormacion programa= em.find(ProgramaFormacion.class,nombre);
             if(programa==null){
                 throw new Exception("No existe un programa de formacion con nombre: "+ nombre);
@@ -380,7 +380,8 @@ public class Controller implements IController {
             programa.setFechaFin(fechaFin);
             em.merge(programa);
             em.getTransaction().commit();
-        }finally{
+            
+        } finally{
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
@@ -792,33 +793,31 @@ public class Controller implements IController {
     
     @Override
     public String[] obtenerEdicionCurso(String nombreEdicion) throws Exception {
-     EntityManager em = conexion.getEntityManager();
-     try {
-         // Buscar la edición directamente por su atributo 'nombre' o usando em.find
-         TypedQuery<EdicionCurso> query = em.createQuery(
-             "SELECT ed FROM EdicionCurso ed WHERE ed.nombre = :nombreEdicion", EdicionCurso.class);
-         query.setParameter("nombreEdicion", nombreEdicion);
+        EntityManager em = conexion.getEntityManager();
+        try {
+            // Buscar la edición directamente por su atributo 'nombre' o usando em.find
+            TypedQuery<EdicionCurso> query = em.createQuery(
+                "SELECT ed FROM EdicionCurso ed WHERE ed.nombre = :nombreEdicion", EdicionCurso.class);
+            query.setParameter("nombreEdicion", nombreEdicion);
 
-         List<EdicionCurso> lista = query.getResultList();
+            List<EdicionCurso> lista = query.getResultList();
 
-         if (lista.isEmpty()) {
-             throw new Exception("No se encontró la edición llamada: '" + nombreEdicion + "'");
-         }
+            if (lista.isEmpty()) {
+                throw new Exception("No se encontró la edición llamada: '" + nombreEdicion + "'");
+            }
 
-         EdicionCurso ed = lista.get(0);
+            EdicionCurso ed = lista.get(0);
 
-         return new String[]{
-             ed.getNombre(),
-             ed.getCurso().getNombreC(),
-             String.valueOf(ed.getFechaInicio()),
-             String.valueOf(ed.getFechaFin()),
-             String.valueOf(ed.getCupo()),
-             String.valueOf(ed.getFechaPublicacion())
-         };
-     } finally {
-         em.close();
-     }
+            return new String[]{
+                ed.getNombre(),
+                ed.getCurso().getNombreC(),
+                String.valueOf(ed.getFechaInicio()),
+                String.valueOf(ed.getFechaFin()),
+                String.valueOf(ed.getCupo()),
+                String.valueOf(ed.getFechaPublicacion())
+            };
+        } finally {
+            em.close();
+        }
     }
-    
-
 }
