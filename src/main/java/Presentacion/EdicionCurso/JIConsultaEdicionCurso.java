@@ -181,7 +181,7 @@ public class JIConsultaEdicionCurso extends javax.swing.JInternalFrame {
     if (fila != -1) {
         try {
             String edicionSeleccionada = jTable2.getValueAt(fila, 0).toString();
-            String[] datos = control.obtenerDataCurso(edicionSeleccionada);
+            String[] datos = control.obtenerEdicionCurso(edicionSeleccionada);
 
             String mensaje = "DETALLES DE LA EDICIÓN DE CURSO:\n\n"
                     + "Nombre: " + datos[0] + "\n"
