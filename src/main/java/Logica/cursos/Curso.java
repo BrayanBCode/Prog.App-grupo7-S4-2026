@@ -74,7 +74,12 @@ public class Curso implements Serializable {
     public int getCantCreditos() { return cantCreditos; }
     public String getUrl() { return url; }
     public LocalDate getFechaRegistro() { return fechaRegistro; }
-
+    public List<ProgramaFormacion> getProgramas() { 
+    return pFormaciones; 
+     }
+    public void setProgramas(List<ProgramaFormacion> programas) { 
+    this.pFormaciones = programas; 
+    }
     // Setters
     public void setNombreC(String nombre) { this.nombre = nombre; }
     public void setInstituto(Instituto instituto) { this.instituto = instituto; }

@@ -27,6 +27,7 @@ public class ProgramaFormacion implements Serializable {
     @OneToMany(mappedBy = "pFormacion")
     private List<InscripcionPrograma> pInscripciones = new ArrayList<>();
     
+   
     @ManyToMany
     private List<Curso> cursos = new ArrayList<>();
     
@@ -64,6 +65,7 @@ public class ProgramaFormacion implements Serializable {
     public void setPInscripciones(List<InscripcionPrograma> pInscripciones) { this.pInscripciones = pInscripciones; }
     
     
+    
     // --- EQUALS, HASHCODE Y TOSTRING ---
     @Override
     public int hashCode() {
@@ -91,13 +93,17 @@ public class ProgramaFormacion implements Serializable {
     }
     
     public void agregarCurso(Curso curso){
-        if(curso==null){
-            throw new IllegalArgumentException("Seleccione un curso");
-        }
-        
-        if(this.cursos.contains(curso)){
-            throw new IllegalArgumentException("El curso ya esta integrado en este programa");
-        }
-        this.cursos.add(curso);
+    if (curso == null) {
+        throw new IllegalArgumentException("Seleccione un curso");
     }
+    if (this.cursos.contains(curso)) {
+        throw new IllegalArgumentException("El curso ya está integrado en este programa");
+    }
+    this.cursos.add(curso);
+    
+    // Mantiene la consistencia bidireccional en memoria
+    if (!curso.getProgramas().contains(this)) {
+        curso.getProgramas().add(this);
+    }
+}
 }

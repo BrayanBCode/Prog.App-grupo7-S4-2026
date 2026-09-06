@@ -42,4 +42,10 @@ public interface IController {
     List<String> listarProgramasPorCurso(String nombreCurso);
     String[] obtenerEdicionCurso(String nombreEdicion)throws Exception;
     void altaCurso(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas) throws Exception;
+    boolean existePrograma(String nombre);
+    String[] obtenerDatosBasicosPrograma(String nombre);
+    List<String[]> listarProgramasTabla();
+    
+    
 }
+

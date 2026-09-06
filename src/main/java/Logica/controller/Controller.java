@@ -387,6 +387,44 @@ public class Controller implements IController {
         }
     }
     
+
+    
+    @Override
+
+    public List<String[]> listarProgramasTabla() {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            List<ProgramaFormacion> lista = em.createQuery(
+            "SELECT p FROM ProgramaFormacion p ORDER BY p.nombre", ProgramaFormacion.class).getResultList();
+        List<String[]> resultado = new ArrayList<>();
+        for (ProgramaFormacion p : lista) {
+            resultado.add(new String[]{ p.getNombre(), p.getDescripcion() });
+        }
+        return resultado;
+    } finally {
+        em.close();
+    }
+}
+
+    @Override
+    public String[] obtenerDatosBasicosPrograma(String nombre) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            ProgramaFormacion p = em.find(ProgramaFormacion.class, nombre);
+            if (p == null) return null;
+            return new String[]{
+                p.getNombre(),
+                p.getDescripcion(),
+                p.getFechaInicio() != null ? p.getFechaInicio().toString() : "",
+                p.getFechaFin() != null ? p.getFechaFin().toString() : "",
+                p.getFechaAlta() != null ? p.getFechaAlta().toString() : ""
+            };
+        } finally {
+            em.close();
+        }
+    }
+    
+
     @Override
     public List<String> listarNombreProgramas() {
         EntityManager em = conexion.getEntityManager();
@@ -557,39 +595,37 @@ public class Controller implements IController {
         }
     }
     
-    @Override 
-    public List<String> obtenerDataPrograma(String nombrePrograma) throws Exception{
+    @Override
+    public List<String> obtenerDataPrograma(String nombrePrograma) throws Exception {
         EntityManager em = conexion.getEntityManager();
-        try{
-            //BUSCO EL PROGRAMA
+        try {
             ProgramaFormacion programa = em.find(ProgramaFormacion.class, nombrePrograma);
-            if(programa == null) throw new Exception("No Existe un Programa de Formacion con ese nombre"+nombrePrograma);
-        //CREO UNA LISTA RESULTADO Y LE AGREGO LA DATA A OBTENER
-        List<String> resultado = new ArrayList<>();
-        resultado.add("Nombre: "+ programa.getNombre());
-        resultado.add("Descripcion: " + programa.getDescripcion());
-        resultado.add("Fecha Inicio: "+ programa.getFechaInicio());
-        resultado.add("Fecha Fin"+ programa.getFechaFin());
-        resultado.add("Fecha Alta"+ programa.getFechaAlta());
 
-        resultado.add("Cursos");
-        //LISTA REAL DE CURSOS ASIGNADOS AL PROGRAMA (antes quedaba vacía siempre)
-        List<Curso> curso = programa.getCursos();
-        if(curso.isEmpty()){
-            resultado.add("Sin Cursos Registrados");
-        }else{
-            for(Curso c: curso){
-                resultado.add("-"+c.getNombreC());
+            if (programa == null) {
+                throw new Exception("No existe un Programa de Formación con nombre: " + nombrePrograma);
             }
-        }
-        
-        return resultado;
-        }
-        
-        finally {
+            List<String> resultado = new ArrayList<>();
+            resultado.add("Nombre: " + programa.getNombre());
+            resultado.add("Descripcion: " + programa.getDescripcion());
+            resultado.add("Fecha Inicio: " + programa.getFechaInicio());
+            resultado.add("Fecha Fin: " + programa.getFechaFin());
+            resultado.add("Fecha Alta: " + programa.getFechaAlta());
+            resultado.add("Cursos");
+            List<Curso> cursos = programa.getCursos();
+            if (cursos.isEmpty()) {
+            resultado.add("Sin Cursos Registrados");
+            } else {
+                for (Curso c : cursos) {
+                    resultado.add("- " + c.getNombreC());
+                }
+            }
+            return resultado;
+        }finally {
+
             em.close();
         }
     }
+    
     @Override
     public List<String[]> listarEstudiantesTabla() {
         EntityManager em = conexion.getEntityManager();
@@ -673,6 +709,7 @@ public class Controller implements IController {
             em.close();
         }
     }
+
 
     @Override
     public String[] obtenerDataCurso(String nombreCurso) throws Exception {
@@ -803,6 +840,15 @@ public class Controller implements IController {
                 em.getTransaction().rollback();
             }
             throw e;
+        }
+    }
+    
+    @Override
+    public boolean existePrograma(String nombre) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            return em.find(ProgramaFormacion.class, nombre) != null;
+
         } finally {
             em.close();
         }
