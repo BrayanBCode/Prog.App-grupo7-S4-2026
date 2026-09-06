@@ -1,4 +1,4 @@
-package persistencia;
+package Persistencia;
 /**
  *
  * @author maida

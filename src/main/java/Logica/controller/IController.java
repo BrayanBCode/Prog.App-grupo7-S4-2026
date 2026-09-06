@@ -30,7 +30,6 @@ public interface IController {
     List<String[]> listarDocentesPorInstituto(String nombreInstituto);
     List<String> listarNombresInstitutos();
     List<String[]> listarCursosTabla(String nombreInstituto);
-    void altaCurso(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, LocalDate fechaRegistro, String nombreInstituto, String nicknameDocente, List<String> nombresPrevias) throws Exception;
     void altaEdicionCurso(String nombreEdicion, String nombreCurso, LocalDate fechaInicio, LocalDate fechaFin, int cupo, List<String> nicknamesDocentes) throws Exception;
     List<String> obtenerDataPrograma(String nombrePrograma)throws Exception;
     void modificarPorgrama(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin) throws Exception;
@@ -42,5 +41,5 @@ public interface IController {
     String[] obtenerDataCurso(String nombreCurso) throws Exception;
     List<String> listarProgramasPorCurso(String nombreCurso);
     String[] obtenerEdicionCurso(String nombreEdicion)throws Exception;
-
+    void altaCurso(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas) throws Exception;
 }

@@ -23,6 +23,8 @@ public class JIConsultaEdicionCurso extends javax.swing.JInternalFrame {
         initComponents();
         this.control = c;
         cargarInstitutos();
+        
+        loadTable((String) jComboBox1.getSelectedItem());
     }
     
     public void cargarInstitutos(){
@@ -36,7 +38,23 @@ public class JIConsultaEdicionCurso extends javax.swing.JInternalFrame {
     jComboBox1.setModel(model);
     }
     
+    private void loadTable(String instituto) {
+        if (instituto != null) {
+            // Obtenemos el modelo de la tabla existente para mantener sus columnas
+            DefaultTableModel modelTabla = (DefaultTableModel) jTable1.getModel();
 
+            // Limpiamos la tabla
+            modelTabla.setRowCount(0);
+
+            // Obtenemos los cursos del instituto
+            List<String> cursos = control.listarCursosPorInstituto(instituto);
+
+            // Insertamos cada curso como una fila nueva
+            for (String curso : cursos) {
+                modelTabla.addRow(new Object[]{curso});
+            }
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,6 +72,8 @@ public class JIConsultaEdicionCurso extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+
+        setBackground(new java.awt.Color(62, 67, 76));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -76,6 +96,7 @@ public class JIConsultaEdicionCurso extends javax.swing.JInternalFrame {
         jComboBox1.setName("CBoxSelectInstitute"); // NOI18N
         jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Seleccione Instituto");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -142,37 +163,25 @@ public class JIConsultaEdicionCurso extends javax.swing.JInternalFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
        String institutoSeleccionado = (String) jComboBox1.getSelectedItem();
+       ((DefaultTableModel) jTable2.getModel()).setRowCount(0);
 
-    if (institutoSeleccionado != null) {
-        // Obtenemos el modelo de la tabla existente para mantener sus columnas
-        DefaultTableModel modelTabla = (DefaultTableModel) jTable1.getModel();
-        
-        // Limpiamos la tabla
-        modelTabla.setRowCount(0);
-
-        // Obtenemos los cursos del instituto
-        List<String> cursos = control.listarCursosPorInstituto(institutoSeleccionado);
-
-        // Insertamos cada curso como una fila nueva
-        for (String curso : cursos) {
-            modelTabla.addRow(new Object[]{curso});
-        }
-    }
+       loadTable(institutoSeleccionado);
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         int fila = jTable1.getSelectedRow();
-    if (fila != -1) {
-        String cursoSeleccionado = jTable1.getValueAt(fila, 0).toString();
+        if (fila != -1) {
 
-        DefaultTableModel modelTabla2 = (DefaultTableModel) jTable2.getModel();
-        modelTabla2.setRowCount(0);
+            String cursoSeleccionado = jTable1.getValueAt(fila, 0).toString();
 
-        List<String> ediciones = control.listarEdicionesCurso(cursoSeleccionado);
-        for (String ed : ediciones) {
-            modelTabla2.addRow(new Object[]{ed});
+            DefaultTableModel modelTabla2 = (DefaultTableModel) jTable2.getModel();
+            modelTabla2.setRowCount(0);
+
+            List<String> ediciones = control.listarEdicionesCurso(cursoSeleccionado);
+            for (String ed : ediciones) {
+                modelTabla2.addRow(new Object[]{ed});
+            }
         }
-    }
 
     }//GEN-LAST:event_jTable1MouseClicked
 

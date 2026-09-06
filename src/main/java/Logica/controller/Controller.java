@@ -8,7 +8,7 @@ import Logica.usuarios.Usuario;
 import Logica.usuarios.UsuarioID;
 import java.time.LocalDate;
 import javax.persistence.EntityManager;
-import persistencia.Conexion;
+import Persistencia.Conexion;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -479,70 +479,6 @@ public class Controller implements IController {
     }
 
     @Override
-    public void altaCurso(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos,
-                           String url, LocalDate fechaRegistro, String nombreInstituto, String nicknameDocente,
-                           List<String> nombresPrevias) throws Exception {
-        EntityManager em = conexion.getEntityManager();
-        try {
-            // El nombre del curso es único en toda la plataforma (es su @Id), no solo dentro del instituto
-            Curso existente = em.find(Curso.class, nombre);
-            if (existente != null) {
-                throw new Exception("Ya existe un curso registrado con el nombre: " + nombre);
-            }
-
-            Instituto instituto = em.find(Instituto.class, nombreInstituto);
-            if (instituto == null) {
-                throw new Exception("El instituto seleccionado no existe.");
-            }
-
-            List<Docente> docentesEncontrados = em.createQuery(
-                "SELECT d FROM Docente d WHERE d.nickname = :nick", Docente.class)
-                .setParameter("nick", nicknameDocente)
-                .getResultList();
-            if (docentesEncontrados.isEmpty()) {
-                throw new Exception("El docente seleccionado no existe.");
-            }
-            Docente docente = docentesEncontrados.get(0);
-
-            // Regla de negocio (Visión 2.0): "Solo se pueden registrar cursos asociados
-            // al Instituto que integran". Se valida acá, en el Controller, no solo
-            // filtrando el combo en la GUI: así queda protegida aunque cambie la vista.
-            boolean integraInstituto = docente.getInstitutos().stream()
-                .anyMatch(i -> i.getNombre().equals(nombreInstituto));
-            if (!integraInstituto) {
-                throw new Exception("El docente '" + nicknameDocente + "' no integra el instituto '"
-                    + nombreInstituto + "'. Solo puede registrar cursos en institutos a los que pertenece.");
-            }
-
-            // Resolver las previas (ninguna, una o más) antes de abrir la transacción
-            List<Curso> previas = new ArrayList<>();
-            if (nombresPrevias != null) {
-                for (String nombrePrevia : nombresPrevias) {
-                    Curso previa = em.find(Curso.class, nombrePrevia);
-                    if (previa == null) {
-                        throw new Exception("El curso previa '" + nombrePrevia + "' no existe.");
-                    }
-                    previas.add(previa);
-                }
-            }
-
-            em.getTransaction().begin();
-            Curso curso = new Curso(nombre, descripcion, duracion, cantHoras, cantCreditos, fechaRegistro, url, instituto, docente);
-            curso.getPrevias().addAll(previas);
-            em.persist(curso);
-            em.getTransaction().commit();
-
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e;
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
     public void altaEdicionCurso(String nombreEdicion, String nombreCurso, LocalDate fechaInicio, LocalDate fechaFin, int cupo, List<String> nicknamesDocentes) throws Exception {
         EntityManager em = conexion.getEntityManager();
         try {
@@ -763,7 +699,7 @@ public class Controller implements IController {
                 c.getNombreC(),
                 c.getDescripcion(),
                 String.valueOf(c.getDuracion()),
-                String.valueOf(c.getCantHoras()),
+                String.valueOf(c.getCanthoras()),
                 String.valueOf(c.getCantCreditos()),
                 c.getUrl(),
                 String.valueOf(c.getFechaRegistro()),
@@ -814,6 +750,59 @@ public class Controller implements IController {
                 String.valueOf(ed.getCupo()),
                 String.valueOf(ed.getFechaPublicacion())
             };
+        } finally {
+            em.close();
+        }
+    }
+
+    public void altaCurso(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas) throws Exception {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            Curso existente = em.find(Curso.class, nombre);
+            if (existente != null) {
+                throw new Exception("Ya existe un curso registrado con el nombre: " + nombre);
+            }
+
+            Instituto instituto = em.find(Instituto.class, nombreInstituto);
+            if (instituto == null) {
+                throw new Exception("El instituto seleccionado no existe.");
+            }
+
+            Docente docente = em.createQuery(
+                            "SELECT d FROM Docente d WHERE d.nickname = :nick", Docente.class)
+                    .setParameter("nick", nicknameDocente)
+                    .getSingleResult();
+
+            em.getTransaction().begin();
+
+            Curso curso = new Curso();
+            curso.setNombreC(nombre);
+            curso.setDescripcion(descripcion);
+            curso.setDuracion(duracion);
+            curso.setCanthoras(cantHoras);
+            curso.setCantCreditos(cantCreditos);
+            curso.setUrl(url);
+            curso.setFechaRegistro(LocalDate.now());
+            curso.setInstituto(instituto);
+            curso.setDocente(docente);
+
+            if (previas != null) {
+                for (String nombrePrevia : previas) {
+                    Curso previa = em.find(Curso.class, nombrePrevia);
+                    if (previa != null) {
+                        curso.getPrevias().add(previa);
+                    }
+                }
+            }
+
+            em.persist(curso);
+            em.getTransaction().commit();
+
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
         } finally {
             em.close();
         }

@@ -24,19 +24,24 @@ public class Instituto implements Serializable {
     @Id private String nombre;
     
     //Forainge key
-       @ManyToMany
-       private List<Docente>docentes = new ArrayList<>();
-       
-       
-       @OneToMany(mappedBy = "instituto")
-       private List<Curso> cursos = new ArrayList<>();
-       
-      public void setNombre(String nombre){this.nombre = nombre;}
-      public String getNombre() {return nombre;}
+    @ManyToMany
+    private List<Docente>docentes = new ArrayList<>();
 
-      // Lado dueño de la relación ManyToMany con Docente: sin este getter no
-      // había forma de vincular nunca un Docente a un Instituto.
-      public List<Docente> getDocentes(){return docentes;}
-      public List<Curso> getCursos(){return cursos;}
+    @OneToMany(mappedBy = "instituto")
+    private List<Curso> cursos = new ArrayList<>();
+
+    public Instituto() {}
+
+    public Instituto(String name) {
+        this.nombre = name;
+    }
+
+    public void setNombre(String nombre){this.nombre = nombre;}
+    public String getNombre() {return nombre;}
+
+    // Lado dueño de la relación ManyToMany con Docente: sin este getter no
+    // había forma de vincular nunca un Docente a un Instituto.
+    public List<Docente> getDocentes(){return docentes;}
+    public List<Curso> getCursos(){return cursos;}
 
 }

@@ -286,6 +286,8 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
             (Integer) SDia.getValue()
         );
 
+
+
         // Manejar el campo opcional 'Instituto'
         String instituto = FDocente2.getText().trim();
         // Si el campo está deshabilitado o vacío, aseguramos enviarlo como null o vacío

@@ -1,12 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Logica.cursos;
 
 import Logica.usuarios.Estudiante;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,49 +12,48 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
-
-/**
- *
- * @author maida
- */
 @Entity
 public class InscripcionEdicion implements Serializable {
-    //Forainge key
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     @ManyToOne
     @JoinColumns({
-        @JoinColumn(name = "ESTUDIANTE_NICKNAME", referencedColumnName = "NICKNAME"),
-        @JoinColumn(name = "ESTUDIANTE_MAIL", referencedColumnName = "MAIL")
+            @JoinColumn(name = "ESTUDIANTE_NICKNAME", referencedColumnName = "NICKNAME"),
+            @JoinColumn(name = "ESTUDIANTE_MAIL", referencedColumnName = "MAIL")
     })
     private Estudiante estudiante;
 
     @ManyToOne
     private EdicionCurso edicionCurso;
 
-    private java.time.LocalDate fechaInscripcion;
+    private LocalDate fechaInscripcion;
 
+    // Constructores
     public InscripcionEdicion() {}
-    
-    //Metodos
-    public void setEstudiante(Estudiante estudiante){this.estudiante = estudiante;}
-    public Estudiante getEstudiante(){return estudiante;}
-    public void setEdicionCurso(EdicionCurso edicioncurso){this.edicionCurso=edicioncurso;}
-    public EdicionCurso getEdicionCurso(){return edicionCurso;}
-    public void setFechaInscripcion(java.time.LocalDate fechaInscripcion){this.fechaInscripcion = fechaInscripcion;}
-    public java.time.LocalDate getFechaInscripcion(){return fechaInscripcion;}
-    
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    
 
-    public Long getId() {
-        return id;
+    public InscripcionEdicion(LocalDate fechaInscripcion, EdicionCurso edicionCurso, Estudiante estudiante) {
+        this.fechaInscripcion = fechaInscripcion;
+        this.edicionCurso = edicionCurso;
+        this.estudiante = estudiante;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // Getters y Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public void setEstudiante(Estudiante estudiante) { this.estudiante = estudiante; }
+    public Estudiante getEstudiante() { return estudiante; }
+
+    public void setEdicionCurso(EdicionCurso edicionCurso) { this.edicionCurso = edicionCurso; }
+    public EdicionCurso getEdicionCurso() { return edicionCurso; }
+
+    public void setFechaInscripcion(LocalDate fechaInscripcion) { this.fechaInscripcion = fechaInscripcion; }
+    public LocalDate getFechaInscripcion() { return fechaInscripcion; }
 
     @Override
     public int hashCode() {
@@ -68,7 +64,6 @@ public class InscripcionEdicion implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof InscripcionEdicion)) {
             return false;
         }
@@ -83,5 +78,4 @@ public class InscripcionEdicion implements Serializable {
     public String toString() {
         return "Logica.InscripcionEdicion[ id=" + id + " ]";
     }
-    
 }

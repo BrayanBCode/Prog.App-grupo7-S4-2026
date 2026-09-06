@@ -6,14 +6,17 @@ package Presentacion;
 
 import Logica.controller.Fabrica;
 import Logica.controller.IController;
+import Persistencia.Conexion;
+import Presentacion.curso.JIAltaCurso;
 import Presentacion.curso.JIConsultaCurso;
-import Presentacion.curso.JIRegistroCurso;
 import Presentacion.edicionCurso.JIRegistroEdicionCurso;
 import Presentacion.edicionCurso.JIConsultaEdicionCurso;
 import Presentacion.edicionCurso.JIinscripcionEdicionCurso;
 import Presentacion.usuario.JIConsultaUsuario;
 import Presentacion.usuario.JIModificarUsuario;
 import Presentacion.usuario.JIRegistrarUsuario;
+import Testing.CargarDatosPrueba;
+
 import javax.swing.JInternalFrame;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
@@ -34,6 +37,10 @@ public class JFInicio extends javax.swing.JFrame {
         Fabrica f =  Fabrica.getInstance();
         var c = f.getUserControler();
         this.control = c;
+
+        // MOVER A OTRO LUGAR
+        // TEST DE BD
+        new CargarDatosPrueba(Conexion.getInstancia().getEntityManager()).cargar();
         
     }
 
@@ -116,7 +123,7 @@ public class JFInicio extends javax.swing.JFrame {
         jMenu3.add(MIConUsuario);
 
         MIConEdi.setText("Consulta Edicion Curso");
-        MIConEdi.addActionListener(this::MIRegistroCurActionPerformed);
+        MIConEdi.addActionListener(this::MIConEdiActionPerformed);
         jMenu3.add(MIConEdi);
 
         MIConCurso.setText("Consulta Curso");
@@ -170,12 +177,16 @@ public class JFInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_MIinscribcionEdiActionPerformed
 
     private void MIRegistroCurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MIRegistroCurActionPerformed
-        this.openInternalFrame(new JIRegistroCurso(control));
+        this.openInternalFrame(new JIAltaCurso(control));
     }                                          
 //GEN-LAST:event_MIRegistroCurActionPerformed
     private void MIConCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MIConCursoActionPerformed
         this.openInternalFrame(new JIConsultaCurso(control));
     }//GEN-LAST:event_MIConCursoActionPerformed
+
+    private void MIConEdiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MIConEdiActionPerformed
+        this.openInternalFrame(new JIConsultaEdicionCurso(control));
+    }//GEN-LAST:event_MIConEdiActionPerformed
 
 
     private JInternalFrame adjustInternalFrame(JInternalFrame I) {
