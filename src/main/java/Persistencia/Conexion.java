@@ -23,7 +23,5 @@ public class Conexion {
         return instancia;
     }
 
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
+    public EntityManager getEntityManager() {return emf.createEntityManager();}
 }

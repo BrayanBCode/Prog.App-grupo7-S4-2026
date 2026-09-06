@@ -34,6 +34,8 @@ public class JFInicio extends javax.swing.JFrame {
      */
     public JFInicio() {
         initComponents();
+        setVisible(true);
+
         Fabrica f =  Fabrica.getInstance();
         var c = f.getUserControler();
         this.control = c;
@@ -118,7 +120,7 @@ public class JFInicio extends javax.swing.JFrame {
 
         jMenu3.setText("Consulta");
 
-        MIConUsuario.setText("ConsultaUsuario");
+        MIConUsuario.setText("Consulta Usuario");
         MIConUsuario.addActionListener(this::MIConUsuarioActionPerformed);
         jMenu3.add(MIConUsuario);
 
