@@ -1,6 +1,6 @@
-package Testing;
 
-public class Test {
+
+public class Probando {
     public String hello(String name) {
         return "hello sr." + name;
     }

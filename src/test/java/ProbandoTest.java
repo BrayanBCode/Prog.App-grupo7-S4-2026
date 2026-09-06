@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
  */
-package Testing;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -15,9 +14,9 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author briha
  */
-public class TestTest {
+public class ProbandoTest {
     
-    public TestTest() {
+    public ProbandoTest() {
     }
     
     @BeforeAll
@@ -37,14 +36,14 @@ public class TestTest {
     }
 
     /**
-     * Test of hello method, of class Test.
+     * Test of hello method, of class Probando.
      */
     @Test
     public void testHello() {
         System.out.println("hello");
-        String name = "robin";
-        Testing.Test instance = new Testing.Test();
-        String expResult = "hello sr.robin";
+        String name = "pepe";
+        Probando instance = new Probando();
+        String expResult = "hello sr.pepe";
         String result = instance.hello(name);
         assertEquals(expResult, result);
     }

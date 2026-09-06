@@ -107,6 +107,14 @@
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
+            <!-- Plugin para ejecutar las pruebas unitarias (JUnit 5 + Java 21) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.6.0-M1</version>
+            </plugin>
+
+            <!-- Plugin de cobertura de código JaCoCo -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -119,14 +127,15 @@
                     </execution>
                     <execution>
                         <id>report</id>
-                        <phase>test</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
-            <!-- Compilacion en JDK 21, con el processor de EclipseLink para el metamodelo canonico -->
+
+            <!-- Compilador Maven -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -145,8 +154,7 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-
-            <!-- Genera un jar ejecutable con todas las dependencias incluidas -->
+            <!-- Jar ejecutable con dependencias -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
