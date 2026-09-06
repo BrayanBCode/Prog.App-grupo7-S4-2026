@@ -222,7 +222,7 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         );
 
         pack();
-    }// </editor-fold>                        
+    }// </editor-fold>//GEN-END:initComponents
 
     private void FNicknameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FNicknameActionPerformed
         // TODO add your handling code here:
