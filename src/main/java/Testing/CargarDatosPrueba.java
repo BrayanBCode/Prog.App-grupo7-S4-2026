@@ -55,15 +55,15 @@ public class CargarDatosPrueba {
             em.persist(di);
 
             // 2. DOCENTES
-            Docente ww = new Docente("heisenberg", "Walter", "White", "heisenberg@gmail.com", parseFecha("07/03/1956"), "");
-            Docente ok = new Docente("benkenobi", "Obi-Wan", "Kenobi", "benKenobi@gmail.com", parseFecha("02/04/1914"), "");
-            Docente ew = new Docente("waston", "Emma", "Watson", "e.watson@gmail.com", parseFecha("15/04/1990"), "");
-            Docente gh = new Docente("house", "Gregory", "House", "greghouse@gmail.com", parseFecha("15/05/1959"), "");
+            Docente ww = new Docente("heisenberg", "Walter", "White", "heisenberg@gmail.com", parseFecha("07/03/1956"), "placeholder.png");
+            Docente ok = new Docente("benkenobi", "Obi-Wan", "Kenobi", "benKenobi@gmail.com", parseFecha("02/04/1914"), "placeholder.png");
+            Docente ew = new Docente("waston", "Emma", "Watson", "e.watson@gmail.com", parseFecha("15/04/1990"), "placeholder.png");
+            Docente gh = new Docente("house", "Gregory", "House", "greghouse@gmail.com", parseFecha("15/05/1959"), "placeholder.png");
             Docente tc = new Docente("timmy", "Tim", "Cook", "tim.cook@apple.com", parseFecha("01/11/1960"), "");
-            Docente dr = new Docente("danny", "Daniel", "Riccio", "dan.riccio@gmail.com", parseFecha("05/07/1963"), "");
-            Docente ps = new Docente("phils", "Philip", "Schiller", "schiller@gmail.com", parseFecha("07/10/1961"), "");
-            Docente bs = new Docente("bruces", "Bruce", "Sewell", "sewell@gmail.com", parseFecha("03/12/1959"), "");
-            Docente ag = new Docente("adri", "Adriana", "García", "agarcia@gmail.com", parseFecha("28/07/1978"), "");
+            Docente dr = new Docente("danny", "Daniel", "Riccio", "dan.riccio@gmail.com", parseFecha("05/07/1963"), "placeholder.png");
+            Docente ps = new Docente("phils", "Philip", "Schiller", "schiller@gmail.com", parseFecha("07/10/1961"), "placeholder.png");
+            Docente bs = new Docente("bruces", "Bruce", "Sewell", "sewell@gmail.com", parseFecha("03/12/1959"), "placeholder.png");
+            Docente ag = new Docente("adri", "Adriana", "García", "agarcia@gmail.com", parseFecha("28/07/1978"), "placeholder.png");
 
             ww.getInstitutos().add(in); in.getDocentes().add(ww);
             ok.getInstitutos().add(in); in.getDocentes().add(ok);
