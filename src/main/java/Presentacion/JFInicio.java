@@ -20,6 +20,7 @@ import Presentacion.usuario.JIConsultaUsuario;
 import Presentacion.usuario.JIModificarUsuario;
 import Presentacion.usuario.JIRegistrarUsuario;
 import Testing.CargarDatosPrueba;
+import javax.swing.JDialog;
 
 import javax.swing.JInternalFrame;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -104,6 +105,11 @@ public class JFInicio extends javax.swing.JFrame {
         );
 
         jMenu1.setText("Inicio");
+        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu1MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Registros");
@@ -229,6 +235,13 @@ public class JFInicio extends javax.swing.JFrame {
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         this.openInternalFrame(new JIAgregarCursoPrograma(control));
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+        if(this.selectedFrame != null) {
+            this.selectedFrame.dispose();
+            this.selectedFrame = null;
+        }
+    }//GEN-LAST:event_jMenu1MouseClicked
 
 
     private JInternalFrame adjustInternalFrame(JInternalFrame I) {
