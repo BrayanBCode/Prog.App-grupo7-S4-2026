@@ -853,4 +853,16 @@ public class Controller implements IController {
             em.close();
         }
     }
+    
+   @Override
+   public List<String> listarInstitutos() {
+     EntityManager em = conexion.getEntityManager();
+     try {
+        return em.createQuery(
+            "SELECT i.nombre FROM Instituto i ORDER BY i.nombre", String.class)
+            .getResultList();
+    } finally {
+        em.close();
+    }
+}
 }

@@ -45,7 +45,7 @@ public interface IController {
     boolean existePrograma(String nombre);
     String[] obtenerDatosBasicosPrograma(String nombre);
     List<String[]> listarProgramasTabla();
-    
+    List<String> listarInstitutos();
     
 }
 
