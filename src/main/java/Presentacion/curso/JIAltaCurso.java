@@ -8,9 +8,13 @@ import Logica.controller.IController;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.JTextComponent;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -19,9 +23,10 @@ import java.util.List;
 public class JIAltaCurso extends javax.swing.JInternalFrame {
 
     private IController control;
-    // Nicknames en el mismo orden que se muestran en CDocente (el combo solo
-    // guarda el texto visible "Nombre Apellido (nickname)", no el nickname).
-    private List<String> docentesNicknames = new ArrayList<>();
+    private final List<String> docentesNicknames = new ArrayList<>();
+    // Proponer que sean un estándar estático inmutable
+    private final String admitedPattern = "[^a-zA-Z0-9 áéíóúÁÉÍÓÚñÑ]";
+    private final String patronDescripcion = "[^a-zA-Z0-9 áéíóúÁÉÍÓÚñÑ.,;:¿?¡!\\-\n\r]";
 
     /**
      * Creates new form JIAltaCurso
@@ -62,16 +67,35 @@ public class JIAltaCurso extends javax.swing.JInternalFrame {
         }
     }
 
-    private void clearAllFields() {
-        CDocente.removeAllItems();
-        docentesNicknames.clear();
-        txtNameCurso.setText("");
-        TxtADescripcion.setText("");
-        SDuracion.setValue(0);
-        SCantHoras.setValue(0);
-        SCantCreditos.setValue(0);
-        TxtURL.setText("");
-        ((DefaultTableModel) TPrevias.getModel()).setRowCount(0);
+    public void limpiarComponentes(Container contenedor) {
+        // Recorremos todos los componentes dentro del contenedor actual
+        for (Component componente : contenedor.getComponents()) {
+
+            // 1. Limpia JTextField, JTextArea, JPasswordField, etc.
+            if (componente instanceof JTextComponent) {
+                ((JTextComponent) componente).setText("");
+            }
+
+            // 2. Limpia Tablas (JTable) eliminando todas sus filas
+            else if (componente instanceof JTable) {
+                JTable tabla = (JTable) componente;
+                if (tabla.getModel() instanceof DefaultTableModel) {
+                    DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                    modelo.setRowCount(0); // Borra todas las filas de la tabla
+                }
+            }
+
+            // 3. Limpia Spinners (JSpinner) reiniciando su valor a 0 (o al mínimo)
+            else if (componente instanceof JSpinner) {
+                ((JSpinner) componente).setValue(0);
+            }
+
+            // 4. RECURSIVIDAD: Si el componente es otro contenedor (un JPanel, JScrollPane, etc.)
+            // llamamos a la función otra vez para revisar lo que tiene dentro.
+            else if (componente instanceof Container) {
+                limpiarComponentes((Container) componente);
+            }
+        }
     }
 
     private List<String> getPrevias() {
@@ -132,8 +156,6 @@ public class JIAltaCurso extends javax.swing.JInternalFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Docente:");
 
-        CDocente.addActionListener(this::CDocenteActionPerformed);
-
         lblNameCurso.setForeground(new java.awt.Color(255, 255, 255));
         lblNameCurso.setText("Nombre de curso:");
 
@@ -175,9 +197,16 @@ public class JIAltaCurso extends javax.swing.JInternalFrame {
             Class[] types = new Class [] {
                 java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane3.setViewportView(TPrevias);
@@ -309,16 +338,13 @@ public class JIAltaCurso extends javax.swing.JInternalFrame {
             }
 
             int indiceDocente = CDocente.getSelectedIndex();
-            if (indiceDocente < 0) {
+            if (indiceDocente < 0 | docentesNicknames.get(indiceDocente).isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tenés que elegir un docente.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            String nicknameDocente = docentesNicknames.get(indiceDocente);
 
+            String nicknameDocente = docentesNicknames.get(indiceDocente);
             String descripcion = TxtADescripcion.getText().trim();
-            // OJO: esto asume que ya cambiaste el "model" de SDuracion a SpinnerNumberModel
-            // en el Design (ver nota aparte). Si sigue siendo SpinnerDateModel, esta línea
-            // tira ClassCastException.
             int duracion = ((Number) SDuracion.getValue()).intValue();
             float cantHoras = ((Number) SCantHoras.getValue()).floatValue();
             int cantCreditos = ((Number) SCantCreditos.getValue()).intValue();
@@ -326,13 +352,47 @@ public class JIAltaCurso extends javax.swing.JInternalFrame {
 
             List<String> previas = getPrevias();
 
+            if (cantCreditos <= 0) {
+                JOptionPane.showMessageDialog(this, "El curso debe brindar creditos");
+                return;
+            }
+
+            if (duracion <= 0) {
+                JOptionPane.showMessageDialog(this, "Duración de curso invalida");
+                return;
+            }
+
+            if (url.isEmpty() | url.startsWith("http")) {
+                JOptionPane.showMessageDialog(this, "Debes ingresar una URL valida");
+                return;
+            }
+
+            // Mediante un Regex detecta si se utilizaron caracteres invalidos "?/-_. etc"
+            Pattern patternGeneric = Pattern.compile(admitedPattern);
+            for(String text : new String[]{nombreCurso, url, nombreInstituto, nicknameDocente}) {
+                Matcher m = patternGeneric.matcher(text);
+                if(m.find()) {
+                    JOptionPane.showMessageDialog(this, "Caracteres inválidos encontrados, revise los campos Curso, url, Instituto, Docente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+
+            }
+            // La descripcion es más permisiva por ende acepta más caracteres
+            Pattern patternDescripcion = Pattern.compile(patronDescripcion);
+            Matcher m = patternDescripcion.matcher(descripcion);
+
+            if(m.find()) {
+                JOptionPane.showMessageDialog(this, "Descripción invalida, caracteres inválidos encontrados", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
             control.altaCurso(nombreCurso, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, nicknameDocente, previas);
 
             JOptionPane.showMessageDialog(this, "Curso registrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "No se pudo registrar", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error inesperado: \nNo se pudo registrar", JOptionPane.ERROR_MESSAGE);
+            
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
@@ -342,13 +402,8 @@ public class JIAltaCurso extends javax.swing.JInternalFrame {
         loadPrevias(instituto);
     }//GEN-LAST:event_CInstitutoActionPerformed
 
-    private void CDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CDocenteActionPerformed
-        // No requiere acción: el nickname del docente se lee de docentesNicknames
-        // recién en btnAceptarActionPerformed, usando el índice seleccionado.
-    }//GEN-LAST:event_CDocenteActionPerformed
-
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        dispose(); // cierra el internal frame sin guardar nada
+        limpiarComponentes(this);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
