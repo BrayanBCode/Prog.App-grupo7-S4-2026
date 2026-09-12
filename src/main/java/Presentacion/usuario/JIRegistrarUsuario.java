@@ -76,6 +76,8 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         jLabel4.setMaximumSize(new java.awt.Dimension(57, 16));
         jLabel4.setMinimumSize(new java.awt.Dimension(57, 16));
 
+        FNombre.addActionListener(this::FNombreActionPerformed);
+
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Apellido:");
         jLabel5.setMaximumSize(new java.awt.Dimension(57, 16));
@@ -353,6 +355,10 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         }
        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void FNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FNombreActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
