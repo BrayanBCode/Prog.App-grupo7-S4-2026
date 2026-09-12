@@ -5,6 +5,7 @@
 package Presentacion.usuario;
 
 import Logica.controller.IController;
+import java.util.List;
 
 /**
  *
@@ -110,8 +111,6 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton3.setText("Cancelar");
-
-        FDocente2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -239,14 +238,29 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
     private void checkDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkDocenteActionPerformed
         boolean esDocente = checkDocente.isSelected();
 
-        // Habilita o deshabilita los componentes según el estado
-        FDocente1.setEnabled(esDocente);
-        FDocente2.setEnabled(esDocente);
+    // Habilita o deshabilita los componentes según el estado
+    FDocente1.setEnabled(esDocente);
+    FDocente2.setEnabled(esDocente);
 
-        // Si se desmarcó, limpia el texto del campo para no enviar datos viejos
-        if (!esDocente) {
-            FDocente2.setSelectedItem("");
+    if (esDocente) {
+        // Carga los institutos desde la lógica/controlador
+        FDocente2.removeAllItems();
+        try {
+            // Asumiendo que tu controlador tiene un método para listar institutos
+            // Ajusta "getInstitutos()" o "listarInstitutos()" según el nombre real de tu controlador
+            List<String> institutos = control.listarInstitutos(); 
+            for (String inst : institutos) {
+                FDocente2.addItem(inst);
+            }
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Error al cargar los institutos: " + e.getMessage(),
+                    "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
+    } else {
+        // Limpia las opciones del ComboBox
+        FDocente2.removeAllItems();
+    }
     }//GEN-LAST:event_checkDocenteActionPerformed
 
     private void FDocente2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FDocente2ActionPerformed
@@ -305,6 +319,7 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         // LocalDate.of() valida que la combinación exista realmente
         // (por ejemplo, 31/02/2000 no es una fecha válida).
         java.time.LocalDate fechaNac;
+     
         try {
             fechaNac = java.time.LocalDate.of(
                     (Integer) SAnio.getValue(),
