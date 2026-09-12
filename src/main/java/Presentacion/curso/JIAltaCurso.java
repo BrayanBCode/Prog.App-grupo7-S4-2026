@@ -11,7 +11,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -338,7 +337,7 @@ public class JIAltaCurso extends javax.swing.JInternalFrame {
             }
 
             int indiceDocente = CDocente.getSelectedIndex();
-            if (indiceDocente < 0 | docentesNicknames.get(indiceDocente).isEmpty()) {
+            if (indiceDocente < 0) {
                 JOptionPane.showMessageDialog(this, "Tenés que elegir un docente.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
                 return;
             }
@@ -362,21 +361,22 @@ public class JIAltaCurso extends javax.swing.JInternalFrame {
                 return;
             }
 
-            if (url.isEmpty() | url.startsWith("http")) {
+            if (url.isEmpty() || !url.startsWith("http")) {
                 JOptionPane.showMessageDialog(this, "Debes ingresar una URL valida");
                 return;
             }
 
             // Mediante un Regex detecta si se utilizaron caracteres invalidos "?/-_. etc"
             Pattern patternGeneric = Pattern.compile(admitedPattern);
-            for(String text : new String[]{nombreCurso, url, nombreInstituto, nicknameDocente}) {
+            for(String text : new String[]{nombreCurso, nombreInstituto, nicknameDocente}) {
                 Matcher m = patternGeneric.matcher(text);
                 if(m.find()) {
-                    JOptionPane.showMessageDialog(this, "Caracteres inválidos encontrados, revise los campos Curso, url, Instituto, Docente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Caracteres inválidos encontrados, revise los campos Curso, Instituto, Docente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
 
             }
+
             // La descripcion es más permisiva por ende acepta más caracteres
             Pattern patternDescripcion = Pattern.compile(patronDescripcion);
             Matcher m = patternDescripcion.matcher(descripcion);
