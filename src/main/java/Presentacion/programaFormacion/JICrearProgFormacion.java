@@ -155,8 +155,43 @@ public class JICrearProgFormacion extends javax.swing.JInternalFrame {
     }// </editor-fold>                        
 
     private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {
-        dispose();
+        limpiarComponentes(this); // Cancelar: limpia los campos, no cierra la pantalla
     }
+    public void limpiarComponentes(java.awt.Container contenedor) {
+        // Recorremos todos los componentes dentro del contenedor actual
+        for (java.awt.Component componente : contenedor.getComponents()) {
+
+            // 1. Limpia JTextField, JTextArea, JPasswordField, etc.
+            if (componente instanceof javax.swing.text.JTextComponent) {
+                ((javax.swing.text.JTextComponent) componente).setText("");
+            }
+
+            // 2. Limpia Tablas (JTable) eliminando todas sus filas
+            else if (componente instanceof javax.swing.JTable) {
+                javax.swing.JTable tabla = (javax.swing.JTable) componente;
+                if (tabla.getModel() instanceof javax.swing.table.DefaultTableModel) {
+                    javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tabla.getModel();
+                    modelo.setRowCount(0); // Borra todas las filas de la tabla
+                }
+            }
+
+            // 3. Limpia Spinners (JSpinner) reiniciando su valor a 0 (o al mínimo)
+            else if (componente instanceof javax.swing.JSpinner) {
+                try {
+                    ((javax.swing.JSpinner) componente).setValue(0);
+                } catch (IllegalArgumentException e) {
+                    // Spinners de fecha (SpinnerDateModel) no aceptan 0: se dejan como están.
+                }
+            }
+
+            // 4. RECURSIVIDAD: Si el componente es otro contenedor (un JPanel, JScrollPane, etc.)
+            // llamamos a la función otra vez para revisar lo que tiene dentro.
+            else if (componente instanceof java.awt.Container) {
+                limpiarComponentes((java.awt.Container) componente);
+            }
+        }
+    }
+
 
     private void jBtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {
         try {

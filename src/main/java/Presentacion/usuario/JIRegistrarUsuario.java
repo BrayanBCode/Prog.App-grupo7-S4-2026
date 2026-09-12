@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package Presentacion.usuario;
-import java.util.List;
+
 import Logica.controller.IController;
 
 /**
@@ -51,6 +51,7 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         checkDocente = new javax.swing.JCheckBox();
         FDocente1 = new javax.swing.JLabel();
+        FDocente2 = new javax.swing.JTextField();
         LabelDocente3 = new javax.swing.JLabel();
         SDia = new javax.swing.JSpinner();
         SMes = new javax.swing.JSpinner();
@@ -59,7 +60,6 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
-        FDocente2 = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(62, 67, 76));
         setBorder(null);
@@ -98,6 +98,8 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         FDocente1.setForeground(new java.awt.Color(255, 255, 255));
         FDocente1.setText("Instituto perteneciente: ");
 
+        FDocente2.addActionListener(this::FDocente2ActionPerformed);
+
         LabelDocente3.setForeground(new java.awt.Color(255, 255, 255));
         LabelDocente3.setText("Fecha de nacimiento: ");
 
@@ -110,113 +112,114 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton3.setText("Cancelar");
-
-        FDocente2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jButton3.addActionListener(this::jButton3ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(139, 139, 139)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(121, 121, 121))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LabelDocente3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE))
-                            .addComponent(seleccionImagen)
-                            .addComponent(FDocente1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 60, 60))
-                    .addComponent(FNombre, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(FApellido, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(FNickname, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(Fmail, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(checkDocente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(SDia, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(SMes, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(SAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(FDocente2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(139, 139, 139)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                                .addGap(121, 121, 121))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(30, 30, 30))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(LabelDocente3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                                .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                                                                .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                                                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                                                                .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                                                                .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE))
+                                                        .addComponent(seleccionImagen)
+                                                        .addComponent(FDocente1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(60, 60, 60))
+                                        .addComponent(FNombre, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(FApellido, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(FNickname, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(Fmail, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(checkDocente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(FDocente2, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGap(6, 6, 6)
+                                                                .addComponent(SDia, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                .addComponent(SMes, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                .addComponent(SAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(FNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(FApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(FNickname, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Fmail, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(checkDocente, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(FDocente1, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-                            .addComponent(FDocente2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LabelDocente3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(SDia)
-                                .addComponent(SMes)
-                                .addComponent(SAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(seleccionImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(26, 26, 26)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(FNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(FApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                                                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(FNickname, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(Fmail, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(checkDocente, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGap(6, 6, 6)
+                                                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(FDocente2, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                                                        .addComponent(FDocente1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(LabelDocente3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                .addComponent(SDia)
+                                                                .addComponent(SMes)
+                                                                .addComponent(SAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addGap(18, 18, 18)
+                                                .addComponent(seleccionImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGap(169, 169, 169))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())
         );
 
         pack();
@@ -229,30 +232,19 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
     private void checkDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkDocenteActionPerformed
         boolean esDocente = checkDocente.isSelected();
 
-    // Habilita o deshabilita los componentes según el estado
-    FDocente1.setEnabled(esDocente);
-    FDocente2.setEnabled(esDocente);
+        // Habilita o deshabilita los componentes según el estado
+        FDocente1.setEnabled(esDocente);
+        FDocente2.setEnabled(esDocente);
 
-    if (esDocente) {
-        // Carga los institutos desde la lógica/controlador
-        FDocente2.removeAllItems();
-        try {
-            // Asumiendo que tu controlador tiene un método para listar institutos
-            // Ajusta "getInstitutos()" o "listarInstitutos()" según el nombre real de tu controlador
-            List<String> institutos = control.listarInstitutos(); 
-            for (String inst : institutos) {
-                FDocente2.addItem(inst);
-            }
-        } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Error al cargar los institutos: " + e.getMessage(),
-                    "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        // Si se desmarcó, limpia el texto del campo para no enviar datos viejos
+        if (!esDocente) {
+            FDocente2.setText("");
         }
-    } else {
-        // Limpia las opciones del ComboBox
-        FDocente2.removeAllItems();
-    }
     }//GEN-LAST:event_checkDocenteActionPerformed
+
+    private void FDocente2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FDocente2ActionPerformed
+
+    }//GEN-LAST:event_FDocente2ActionPerformed
 
     private void seleccionImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionImagenActionPerformed
 
@@ -280,8 +272,7 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         String mail = Fmail.getText().trim();
         String nombre = FNombre.getText().trim();
         String apellido = FApellido.getText().trim();
-        
-        
+
         // Valido campos obligatorios
         if (nick.isEmpty() || mail.isEmpty() || nombre.isEmpty() || apellido.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -290,26 +281,46 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
                     javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if(((int)SDia.getValue()> 0 && (int) SDia.getValue() <= 31) && ((int)SMes.getValue()>0 && (int)SMes.getValue()<= 12) && (int)SAnio.getValue()>= 2000){
-           
-    
-        // Construyo la fecha desde los Spinners (Día, Mes, Año)
-        java.time.LocalDate fechaNac = java.time.LocalDate.of(
-                (Integer) SAnio.getValue(),
-                (Integer) SMes.getValue(),
-                (Integer) SDia.getValue()
-        );
 
-        String instituto = null;
+        // Valido el formato del correo electrónico.
+        // No alcanza con comprobar que contenga un "@": también debe tener
+        // texto antes y después, y un dominio con extensión.
+        String regexMail = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        if (!mail.matches(regexMail)) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Ingrese un correo electrónico válido.",
+                    "Correo inválido",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    if (checkDocente.isSelected() && FDocente2.getSelectedItem() != null) {
-         instituto = FDocente2.getSelectedItem().toString();
-      }
-            
-        if(mail.contains("@")){
-        
+        // Construyo la fecha desde los Spinners (Día, Mes, Año).
+        // LocalDate.of() valida que la combinación exista realmente
+        // (por ejemplo, 31/02/2000 no es una fecha válida).
+        java.time.LocalDate fechaNac;
         try {
+            fechaNac = java.time.LocalDate.of(
+                    (Integer) SAnio.getValue(),
+                    (Integer) SMes.getValue(),
+                    (Integer) SDia.getValue()
+            );
+        } catch (java.time.DateTimeException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "La fecha de nacimiento ingresada no es válida.",
+                    "Fecha inválida",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
+        // Manejar el campo opcional 'Instituto'
+        String instituto = FDocente2.getText().trim();
+
+        // Si el campo está deshabilitado o vacío, aseguramos enviarlo como null o vacío
+        if (!FDocente2.isEnabled() || instituto.isEmpty()) {
+            instituto = null;
+        }
+
+        try {
             // Ejecutar el Alta. Se envía además la ruta local de la imagen elegida
             // (puede ser null si no se seleccionó ninguna); es el Servidor Central,
             // a través de la capa Lógica, quien la copia a la carpeta especial de imágenes.
@@ -337,28 +348,16 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
                     "Error al registrar",
                     javax.swing.JOptionPane.ERROR_MESSAGE);
         }
-        }else{
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Por favor, Ingrese el caracter @ dentro del campo mail",
-                    "Error en el campo mail",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-       }else{
-             javax.swing.JOptionPane.showMessageDialog(this,
-                    "Por favor, Ingrese los valores de la fecha correctamente.",
-                    "Error en los valores de los campos fecha",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-       
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        limpiarComponentes(this); // Cancelar: limpia los campos, no cierra la pantalla
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField FApellido;
     private javax.swing.JLabel FDocente1;
-    private javax.swing.JComboBox<String> FDocente2;
+    private javax.swing.JTextField FDocente2;
     private javax.swing.JTextField FNickname;
     private javax.swing.JTextField FNombre;
     private javax.swing.JTextField Fmail;
@@ -379,4 +378,44 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JButton seleccionImagen;
     // End of variables declaration//GEN-END:variables
+
+    public void limpiarComponentes(java.awt.Container contenedor) {
+        // Recorremos todos los componentes dentro del contenedor actual
+        for (java.awt.Component componente : contenedor.getComponents()) {
+
+            // 1. Limpia JTextField, JTextArea, JPasswordField, etc.
+            if (componente instanceof javax.swing.text.JTextComponent) {
+                ((javax.swing.text.JTextComponent) componente).setText("");
+            }
+
+            // 2. Limpia Tablas (JTable) eliminando todas sus filas
+            else if (componente instanceof javax.swing.JTable) {
+                javax.swing.JTable tabla = (javax.swing.JTable) componente;
+                if (tabla.getModel() instanceof javax.swing.table.DefaultTableModel) {
+                    javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tabla.getModel();
+                    modelo.setRowCount(0); // Borra todas las filas de la tabla
+                }
+            }
+
+            // 3. Limpia Spinners (JSpinner) reiniciando su valor a 0 (o al mínimo)
+            else if (componente instanceof javax.swing.JSpinner) {
+                try {
+                    ((javax.swing.JSpinner) componente).setValue(0);
+                } catch (IllegalArgumentException e) {
+                    // Spinners de fecha (SpinnerDateModel) no aceptan 0: se dejan como están.
+                }
+            }
+
+            // 4. Limpia CheckBoxes
+            else if (componente instanceof javax.swing.JCheckBox) {
+                ((javax.swing.JCheckBox) componente).setSelected(false);
+            }
+
+            // 5. RECURSIVIDAD: Si el componente es otro contenedor (un JPanel, JScrollPane, etc.)
+            // llamamos a la función otra vez para revisar lo que tiene dentro.
+            else if (componente instanceof java.awt.Container) {
+                limpiarComponentes((java.awt.Container) componente);
+            }
+        }
+    }
 }
