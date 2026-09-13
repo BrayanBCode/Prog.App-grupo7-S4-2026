@@ -6,23 +6,13 @@ package Presentacion;
 
 import Logica.controller.Fabrica;
 import Logica.controller.IController;
-import Persistencia.Conexion;
-import Presentacion.EdicionCurso.JIRegistroEdicionCurso;
-import Presentacion.EdicionCurso.JIinscripcionEdicionCurso;
-import Presentacion.curso.JIAltaCurso;
-import Presentacion.curso.JIArbolCursos;
-import Presentacion.curso.JIConsultaCurso;
+import Presentacion.curso.JIRegistroCurso;
+import Presentacion.edicionCurso.JIRegistroEdicionCurso;
 import Presentacion.edicionCurso.JIConsultaEdicionCurso;
-import Presentacion.programaFormacion.JIAgregarCursoPrograma;
-import Presentacion.programaFormacion.JIConsultaProgFormacion;
-import Presentacion.programaFormacion.JICrearProgFormacion;
-import Presentacion.programaFormacion.JIModificarPrograma;
+import Presentacion.edicionCurso.JIinscripcionEdicionCurso;
 import Presentacion.usuario.JIConsultaUsuario;
 import Presentacion.usuario.JIModificarUsuario;
 import Presentacion.usuario.JIRegistrarUsuario;
-import Testing.CargarDatosPrueba;
-import javax.swing.JDialog;
-
 import javax.swing.JInternalFrame;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
@@ -40,15 +30,9 @@ public class JFInicio extends javax.swing.JFrame {
      */
     public JFInicio() {
         initComponents();
-        setVisible(true);
-
         Fabrica f =  Fabrica.getInstance();
         var c = f.getUserControler();
         this.control = c;
-
-        // MOVER A OTRO LUGAR
-        // TEST DE BD
-        new CargarDatosPrueba(Conexion.getInstancia().getEntityManager()).cargar();
         
     }
 
@@ -66,21 +50,15 @@ public class JFInicio extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
-        MIRegistoCli = new javax.swing.JMenuItem();
-        MIRegistroEdi = new javax.swing.JMenuItem();
-        MIRegistroCur = new javax.swing.JMenuItem();
-        MIinscribcionEdi = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        MIConUsuario = new javax.swing.JMenuItem();
-        MIConEdi = new javax.swing.JMenuItem();
-        MIConCurso = new javax.swing.JMenuItem();
-        MIArbolCursos = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -107,36 +85,23 @@ public class JFInicio extends javax.swing.JFrame {
         );
 
         jMenu1.setText("Inicio");
-        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu1MouseClicked(evt);
-            }
-        });
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Registros");
 
-        MIRegistoCli.setText("Registro Cliente");
-        MIRegistoCli.addActionListener(this::MIRegistoCliActionPerformed);
-        jMenu2.add(MIRegistoCli);
-
-        MIRegistroEdi.setText("Registro EdicionCurso");
-        MIRegistroEdi.addActionListener(this::MIRegistroEdiActionPerformed);
-        jMenu2.add(MIRegistroEdi);
-
-        MIRegistroCur.setText("Registro de Curso");
-        MIRegistroCur.addActionListener(this::MIRegistroCurActionPerformed);
-        jMenu2.add(MIRegistroCur);
-
-        MIinscribcionEdi.setText("Inscribir a EdicionCurso");
-        MIinscribcionEdi.addActionListener(this::MIinscribcionEdiActionPerformed);
-        jMenu2.add(MIinscribcionEdi);
-
-        jMenuItem1.setText("Registro Programa");
+        jMenuItem1.setText("Registro Cliente");
         jMenuItem1.addActionListener(this::jMenuItem1ActionPerformed);
         jMenu2.add(jMenuItem1);
 
-        jMenuItem5.setText("Agregar curso a Programa");
+        jMenuItem4.setText("Registro EdicionCurso");
+        jMenuItem4.addActionListener(this::jMenuItem4ActionPerformed);
+        jMenu2.add(jMenuItem4);
+
+        jMenuItem6.setText("Alta de Curso");
+        jMenuItem6.addActionListener(this::jMenuItem6ActionPerformed);
+        jMenu2.add(jMenuItem6);
+
+        jMenuItem5.setText("Inscribir a EdicionCurso");
         jMenuItem5.addActionListener(this::jMenuItem5ActionPerformed);
         jMenu2.add(jMenuItem5);
 
@@ -144,25 +109,13 @@ public class JFInicio extends javax.swing.JFrame {
 
         jMenu3.setText("Consulta");
 
-        MIConUsuario.setText("Consulta Usuario");
-        MIConUsuario.addActionListener(this::MIConUsuarioActionPerformed);
-        jMenu3.add(MIConUsuario);
-
-        MIConEdi.setText("Consulta Edicion Curso");
-        MIConEdi.addActionListener(this::MIConEdiActionPerformed);
-        jMenu3.add(MIConEdi);
-
-        MIConCurso.setText("Consulta Curso");
-        MIConCurso.addActionListener(this::MIConCursoActionPerformed);
-        jMenu3.add(MIConCurso);
-
-        MIArbolCursos.setText("Árbol Institutos/Cursos/Ediciones");
-        MIArbolCursos.addActionListener(this::MIArbolCursosActionPerformed);
-        jMenu3.add(MIArbolCursos);
-
-        jMenuItem2.setText("Consulta Programa");
+        jMenuItem2.setText("ConsultaUsuario");
         jMenuItem2.addActionListener(this::jMenuItem2ActionPerformed);
         jMenu3.add(jMenuItem2);
+
+        jMenuItem7.setText("Consulta Edicion Curso");
+        jMenuItem7.addActionListener(this::jMenuItem6ActionPerformed);
+        jMenu3.add(jMenuItem7);
 
         jMenuBar1.add(jMenu3);
 
@@ -171,10 +124,6 @@ public class JFInicio extends javax.swing.JFrame {
         jMenuItem3.setText("Modificar Usuario");
         jMenuItem3.addActionListener(this::jMenuItem3ActionPerformed);
         jMenu4.add(jMenuItem3);
-
-        jMenuItem4.setText("Modificar Programa");
-        jMenuItem4.addActionListener(this::jMenuItem4ActionPerformed);
-        jMenu4.add(jMenuItem4);
 
         jMenuBar1.add(jMenu4);
 
@@ -194,65 +143,30 @@ public class JFInicio extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void MIRegistoCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MIRegistoCliActionPerformed
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         this.openInternalFrame(new JIRegistrarUsuario(control));
-    }//GEN-LAST:event_MIRegistoCliActionPerformed
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void MIConUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MIConUsuarioActionPerformed
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         this.openInternalFrame(new JIConsultaUsuario(control));
-    }//GEN-LAST:event_MIConUsuarioActionPerformed
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         this.openInternalFrame(new JIModificarUsuario(control));
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void MIRegistroEdiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MIRegistroEdiActionPerformed
-        this.openInternalFrame(new JIRegistroEdicionCurso(control));
-    }//GEN-LAST:event_MIRegistroEdiActionPerformed
-
-    private void MIinscribcionEdiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MIinscribcionEdiActionPerformed
-        this.openInternalFrame(new JIinscripcionEdicionCurso(control));
-    }//GEN-LAST:event_MIinscribcionEdiActionPerformed
-
-    private void MIRegistroCurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MIRegistroCurActionPerformed
-        this.openInternalFrame(new JIAltaCurso(control));
-    }                                          
-//GEN-LAST:event_MIRegistroCurActionPerformed
-    private void MIConCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MIConCursoActionPerformed
-        this.openInternalFrame(new JIConsultaCurso(control));
-    }//GEN-LAST:event_MIConCursoActionPerformed
-
-    private void MIConEdiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MIConEdiActionPerformed
-        this.openInternalFrame(new JIConsultaEdicionCurso(control));
-    }//GEN-LAST:event_MIConEdiActionPerformed
-
-    private void MIArbolCursosActionPerformed(java.awt.event.ActionEvent evt) {
-        this.openInternalFrame(new JIArbolCursos(control));
-    }
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        this.openInternalFrame(new JICrearProgFormacion(control));
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        this.openInternalFrame(new JIConsultaProgFormacion(control));
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        this.openInternalFrame(new JIModificarPrograma(control));
+        this.openInternalFrame(new JIRegistroEdicionCurso(control));
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        this.openInternalFrame(new JIAgregarCursoPrograma(control));
+        this.openInternalFrame(new JIinscripcionEdicionCurso(control));
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
-    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
-        if(this.selectedFrame != null) {
-            this.selectedFrame.dispose();
-            this.selectedFrame = null;
-        }
-    }//GEN-LAST:event_jMenu1MouseClicked
-
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        this.openInternalFrame(new JIConsultaEdicionCurso(control));
+    }                                          
+//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private JInternalFrame adjustInternalFrame(JInternalFrame I) {
         var ui = (BasicInternalFrameUI) I.getUI();
@@ -285,14 +199,6 @@ public class JFInicio extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem MIConCurso;
-    private javax.swing.JMenuItem MIArbolCursos;
-    private javax.swing.JMenuItem MIConEdi;
-    private javax.swing.JMenuItem MIConUsuario;
-    private javax.swing.JMenuItem MIRegistoCli;
-    private javax.swing.JMenuItem MIRegistroCur;
-    private javax.swing.JMenuItem MIRegistroEdi;
-    private javax.swing.JMenuItem MIinscribcionEdi;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -304,6 +210,8 @@ public class JFInicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
