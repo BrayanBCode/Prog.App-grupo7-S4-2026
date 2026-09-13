@@ -128,13 +128,13 @@
     </dependency>
   </dependencies>
   <properties>
-    <mainClass>Main</mainClass>
-    <maven.compiler.source>21</maven.compiler.source>
-    <eclipselink.version>2.7.12</eclipselink.version>
     <maven.compiler.target>21</maven.compiler.target>
     <jakarta.persistence.version>2.2.3</jakarta.persistence.version>
+    <mainClass>Main</mainClass>
+    <maven.compiler.source>21</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <eclipselink.asm.version>9.4.0</eclipselink.asm.version>
     <mysql.connector.version>26.7.0</mysql.connector.version>
+    <eclipselink.version>2.7.12</eclipselink.version>
   </properties>
 </project>
