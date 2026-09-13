@@ -26,18 +26,6 @@ public class CargarDatosPrueba {
 
     private LocalDate parseFecha(String fecha) {return LocalDate.parse(fecha, fmt);}
 
-    // Misma carpeta que usa Controller.CARPETA_IMAGENES ("imagenes_usuarios").
-    // Acá NO hay que copiar nada: los archivos de prueba ya están puestos
-    // directamente en esa carpeta (placeholder.png, , ).
-    // Solo hace falta resolver la ruta ABSOLUTA para que new File(...) los
-    // encuentre sin importar desde dónde se ejecute la app o los tests.
-    private static final String CARPETA_IMAGENES = "imagenes_usuarios";
-
-    private String rutaImagen(String nombreArchivo) {
-        if (nombreArchivo == null || nombreArchivo.isBlank()) return null;
-        return new java.io.File(CARPETA_IMAGENES, nombreArchivo).getAbsolutePath();
-    }
-
     public boolean isBDloaded() {
         Long cantidadInstitutos = em.createQuery("SELECT COUNT(i) FROM Instituto i", Long.class)
                 .getSingleResult();
@@ -67,15 +55,15 @@ public class CargarDatosPrueba {
             em.persist(di);
 
             // 2. DOCENTES
-            Docente ww = new Docente("heisenberg", "Walter", "White", "heisenberg@gmail.com", parseFecha("07/03/1956"), rutaImagen("placeholder.png"));
-            Docente ok = new Docente("benkenobi", "Obi-Wan", "Kenobi", "benKenobi@gmail.com", parseFecha("02/04/1914"), rutaImagen("placeholder.png"));
-            Docente ew = new Docente("waston", "Emma", "Watson", "e.watson@gmail.com", parseFecha("15/04/1990"), rutaImagen("placeholder.png"));
-            Docente gh = new Docente("house", "Gregory", "House", "greghouse@gmail.com", parseFecha("15/05/1959"), rutaImagen("placeholder.png"));
-            Docente tc = new Docente("timmy", "Tim", "Cook", "tim.cook@apple.com", parseFecha("01/11/1960"), null);
-            Docente dr = new Docente("danny", "Daniel", "Riccio", "dan.riccio@gmail.com", parseFecha("05/07/1963"), rutaImagen(""));
-            Docente ps = new Docente("phils", "Philip", "Schiller", "schiller@gmail.com", parseFecha("07/10/1961"), rutaImagen("placeholder.png"));
-            Docente bs = new Docente("bruces", "Bruce", "Sewell", "sewell@gmail.com", parseFecha("03/12/1959"), rutaImagen(""));
-            Docente ag = new Docente("adri", "Adriana", "García", "agarcia@gmail.com", parseFecha("28/07/1978"), rutaImagen("placeholder.png"));
+            Docente ww = new Docente("heisenberg", "heisenberg@gmail.com", "Walter", "White", parseFecha("07/03/1956"), "placeholder.png");
+            Docente ok = new Docente("benkenobi", "benKenobi@gmail.com", "Obi-Wan", "Kenobi", parseFecha("02/04/1914"), "placeholder.png");
+            Docente ew = new Docente("waston", "e.watson@gmail.com", "Emma", "Watson", parseFecha("15/04/1990"), "placeholder.png");
+            Docente gh = new Docente("house", "greghouse@gmail.com", "Gregory", "House", parseFecha("15/05/1959"), "placeholder.png");
+            Docente tc = new Docente("timmy", "tim.cook@apple.com", "Tim", "Cook", parseFecha("01/11/1960"), "");
+            Docente dr = new Docente("danny", "dan.riccio@gmail.com", "Daniel", "Riccio", parseFecha("05/07/1963"), "placeholder.png");
+            Docente ps = new Docente("phils", "schiller@gmail.com", "Philip", "Schiller", parseFecha("07/10/1961"), "placeholder.png");
+            Docente bs = new Docente("bruces", "sewell@gmail.com", "Bruce", "Sewell", parseFecha("03/12/1959"), "placeholder.png");
+            Docente ag = new Docente("adri", "agarcia@gmail.com", "Adriana", "García", parseFecha("28/07/1978"), "placeholder.png");
 
             ww.getInstitutos().add(in); in.getDocentes().add(ww);
             ok.getInstitutos().add(in); in.getDocentes().add(ok);
@@ -92,12 +80,12 @@ public class CargarDatosPrueba {
             em.persist(ps); em.persist(bs); em.persist(ag);
 
             // 3. ESTUDIANTES
-            Estudiante el = new Estudiante("eleven11", "Eleven", "Twelve", "eleven11@gmail.com", parseFecha("31/12/1971"), null);
-            Estudiante co = new Estudiante("costas", "Gerardo", "Costas", "gcostas@gmail.com", parseFecha("15/11/1983"), null);
-            Estudiante ro = new Estudiante("roro", "Rodrigo", "Cotelo", "rcotelo@yahoo.com", parseFecha("02/08/1975"), null);
-            Estudiante ch = new Estudiante("chechi", "Cecilia", "Garrido", "cgarrido@hotmail.com", parseFecha("12/09/1987"), null);
-            Estudiante jw = new Estudiante("jeffw", "Jeff", "Williams", "jwilliams@gmail.com", parseFecha("27/11/1964"), null);
-            Estudiante we = new Estudiante("weiss", "Adrian", "Weiss", "aweiss@hotmail.com", parseFecha("23/12/1978"), null);
+            Estudiante el = new Estudiante("eleven11", "eleven11@gmail.com", "Eleven", "Twelve", parseFecha("31/12/1971"), "");
+            Estudiante co = new Estudiante("costas", "gcostas@gmail.com", "Gerardo", "Costas", parseFecha("15/11/1983"), "");
+            Estudiante ro = new Estudiante("roro", "rcotelo@yahoo.com", "Rodrigo", "Cotelo", parseFecha("02/08/1975"), "");
+            Estudiante ch = new Estudiante("chechi", "cgarrido@hotmail.com", "Cecilia", "Garrido", parseFecha("12/09/1987"), "");
+            Estudiante jw = new Estudiante("jeffw", "jwilliams@gmail.com", "Jeff", "Williams", parseFecha("27/11/1964"), "");
+            Estudiante we = new Estudiante("weiss", "aweiss@hotmail.com", "Adrian", "Weiss", parseFecha("23/12/1978"), "");
 
             em.persist(el); em.persist(co); em.persist(ro);
             em.persist(ch); em.persist(jw); em.persist(we);

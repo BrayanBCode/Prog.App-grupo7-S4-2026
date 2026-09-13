@@ -14,7 +14,7 @@
     <class>Logica.programaFormacion.InscripcionPrograma</class>
     <properties>
       <!-- Configuración JDBC (Cambia 'laboratorio_db' por el nombre real de tu BD) -->
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/laboratorio_db?serverTimezone=UTC&amp;zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3310/laboratorio_db?serverTimezone=UTC&amp;zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
       <property name="javax.persistence.jdbc.password" value="root"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

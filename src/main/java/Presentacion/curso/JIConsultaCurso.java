@@ -188,7 +188,15 @@ public class JIConsultaCurso extends javax.swing.JInternalFrame {
             new String [] {
                 "Nombre", "Descripcion"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tableCursos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableCursosMouseClicked(evt);
@@ -206,7 +214,15 @@ public class JIConsultaCurso extends javax.swing.JInternalFrame {
             new String [] {
                 "Edicion del curso"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tableEdiciones.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableEdicionesMouseClicked(evt);
@@ -234,7 +250,15 @@ public class JIConsultaCurso extends javax.swing.JInternalFrame {
             new String [] {
                 "Programa de formación"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tablePrograms.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableProgramsMouseClicked(evt);

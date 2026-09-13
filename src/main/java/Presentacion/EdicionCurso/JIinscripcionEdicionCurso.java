@@ -148,7 +148,15 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
             new String [] {
                 "Edicion"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTEdicion);
 
         jTCurso.setModel(new javax.swing.table.DefaultTableModel(
@@ -158,7 +166,15 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
             new String [] {
                 "Curso"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTCurso.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTCursoMouseClicked(evt);
@@ -169,18 +185,18 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
         jBtnSelecEstudiante.setText("Selec. Estudiante");
         jBtnSelecEstudiante.addActionListener(this::jBtnSelecEstudianteActionPerformed);
 
+        jTxtNickname.setEditable(false);
         jTxtNickname.setText("...");
-        jTxtNickname.setEnabled(false);
 
+        jTxtNombre.setEditable(false);
         jTxtNombre.setText("...");
-        jTxtNombre.setEnabled(false);
         jTxtNombre.addActionListener(this::jTxtNombreActionPerformed);
 
+        jTxtApellido.setEditable(false);
         jTxtApellido.setText("...");
-        jTxtApellido.setEnabled(false);
 
+        jTxtMail.setEditable(false);
         jTxtMail.setText("...");
-        jTxtMail.setEnabled(false);
 
         jLblNickname.setForeground(new java.awt.Color(255, 255, 255));
         jLblNickname.setText("Nickname:");
