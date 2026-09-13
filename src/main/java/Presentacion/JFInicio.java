@@ -10,7 +10,6 @@ import Persistencia.Conexion;
 import Presentacion.edicionCurso.JIRegistroEdicionCurso;
 import Presentacion.edicionCurso.JIinscripcionEdicionCurso;
 import Presentacion.curso.JIAltaCurso;
-import Presentacion.curso.JIArbolCursos;
 import Presentacion.curso.JIConsultaCurso;
 import Presentacion.edicionCurso.JIConsultaEdicionCurso;
 import Presentacion.programaFormacion.JIAgregarCursoPrograma;
@@ -76,7 +75,6 @@ public class JFInicio extends javax.swing.JFrame {
         MIConUsuario = new javax.swing.JMenuItem();
         MIConEdi = new javax.swing.JMenuItem();
         MIConCurso = new javax.swing.JMenuItem();
-        MIArbolCursos = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -156,10 +154,6 @@ public class JFInicio extends javax.swing.JFrame {
         MIConCurso.addActionListener(this::MIConCursoActionPerformed);
         jMenu3.add(MIConCurso);
 
-        MIArbolCursos.setText("Árbol Institutos/Cursos/Ediciones");
-        MIArbolCursos.addActionListener(this::MIArbolCursosActionPerformed);
-        jMenu3.add(MIArbolCursos);
-
         jMenuItem2.setText("Consulta Programa");
         jMenuItem2.addActionListener(this::jMenuItem2ActionPerformed);
         jMenu3.add(jMenuItem2);
@@ -226,10 +220,6 @@ public class JFInicio extends javax.swing.JFrame {
         this.openInternalFrame(new JIConsultaEdicionCurso(control));
     }//GEN-LAST:event_MIConEdiActionPerformed
 
-    private void MIArbolCursosActionPerformed(java.awt.event.ActionEvent evt) {
-        this.openInternalFrame(new JIArbolCursos(control));
-    }
-
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         this.openInternalFrame(new JICrearProgFormacion(control));
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -286,7 +276,6 @@ public class JFInicio extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem MIConCurso;
-    private javax.swing.JMenuItem MIArbolCursos;
     private javax.swing.JMenuItem MIConEdi;
     private javax.swing.JMenuItem MIConUsuario;
     private javax.swing.JMenuItem MIRegistoCli;
