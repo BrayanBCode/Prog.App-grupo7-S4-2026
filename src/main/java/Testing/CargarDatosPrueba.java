@@ -91,16 +91,22 @@ public class CargarDatosPrueba {
             em.persist(ch); em.persist(jw); em.persist(we);
 
             // 4. CURSOS
-            Curso c1 = new Curso("Talleres plenarios", "Talleres plenarios*: presentados por cuatro reconocidos matemáticos uruguayos...", 3, 15.0f, 1, parseFecha("01/02/2026"), "www.tmu.edu.uy", il);
-            Curso c2 = new Curso("Seminarios de Resolución de Problemas", "Seminario, todos los jueves en Facultad de Ingeniería...", 5, 30.0f, 2, parseFecha("12/07/2026"), "www.tmu.edu.uy", il);
-            Curso c3 = new Curso("Dalavuelta", "Dalavuelta es un proyecto de extensión que nace en el IIMPI...", 10, 60.0f, 4, parseFecha("25/06/2024"), "https://eva.fing.edu.uy/course/view.php?id=783#section-2", im);
-            Curso c4 = new Curso("Extensionismo Industrial", "El proyecto tiene como objetivo desarrollar intervenciones curriculares...", 12, 75.0f, 5, parseFecha("16/06/2025"), "https://eva.fing.edu.uy/course/view.php?id=783#section-2", im);
-            Curso c5 = new Curso("Inclusión Energética", "En el proyecto se conjuga el trabajo de docentes y estudiantes...", 6, 45.0f, 3, parseFecha("01/02/2026"), "https://eva.fing.edu.uy/course/view.php?id=783#section-2", im);
-            Curso c6 = new Curso("Flor del Ceibo", "Flor de Ceibo es un proyecto central de la Universidad de la República...", 15, 150.0f, 10, parseFecha("27/07/2008"), "http://www.flordeceibo.edu.uy/", di);
-            Curso c7 = new Curso("Taller de robótica educativa.", "La asignatura se organiza en dos etapas...", 8, 90.0f, 6, parseFecha("02/02/2024"), "https://eva.fing.edu.uy/course/view.php?id=1187", in);
-            Curso c8 = new Curso("Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela", "Se propone desarrollar una aplicación interactiva...", 9, 45.0f, 3, parseFecha("15/06/2026"), "https://eva.fing.edu.uy/mod/folder/view.php?id=89398", in);
-            Curso c9 = new Curso("Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación", "Se realizarán visitas a escuelas rurales...", 12, 60.0f, 4, parseFecha("24/05/2026"), "https://eva.fing.edu.uy/mod/folder/view.php?id=89398", in);
-            Curso c10 = new Curso("MicroBit", "El Centro Ceibal se encuentra distribuyendo placas micro:bit...", 15, 105.0f, 7, parseFecha("13/03/2026"), "https://www.fing.edu.uy/noticias/extension/modulo-de-tallerextension-microbit", ie);
+            // NOTA: se usa el constructor de 9 parámetros (con Docente) para que
+            // cada Curso quede con su "dueño" asignado — antes se usaba el de 8
+            // parámetros y Curso.docente quedaba en null para todos, lo que hacía
+            // que las queries "WHERE c.docente.nickname = :nick" no matchearan
+            // nunca a nadie. El docente elegido para cada curso es coherente con
+            // el instituto del curso y con quién dicta sus ediciones más abajo.
+            Curso c1 = new Curso("Talleres plenarios", "Talleres plenarios*: presentados por cuatro reconocidos matemáticos uruguayos...", 3, 15.0f, 1, parseFecha("01/02/2026"), "www.tmu.edu.uy", il, tc);
+            Curso c2 = new Curso("Seminarios de Resolución de Problemas", "Seminario, todos los jueves en Facultad de Ingeniería...", 5, 30.0f, 2, parseFecha("12/07/2026"), "www.tmu.edu.uy", il, tc);
+            Curso c3 = new Curso("Dalavuelta", "Dalavuelta es un proyecto de extensión que nace en el IIMPI...", 10, 60.0f, 4, parseFecha("25/06/2024"), "https://eva.fing.edu.uy/course/view.php?id=783#section-2", im, ps);
+            Curso c4 = new Curso("Extensionismo Industrial", "El proyecto tiene como objetivo desarrollar intervenciones curriculares...", 12, 75.0f, 5, parseFecha("16/06/2025"), "https://eva.fing.edu.uy/course/view.php?id=783#section-2", im, ps);
+            Curso c5 = new Curso("Inclusión Energética", "En el proyecto se conjuga el trabajo de docentes y estudiantes...", 6, 45.0f, 3, parseFecha("01/02/2026"), "https://eva.fing.edu.uy/course/view.php?id=783#section-2", im, ps);
+            Curso c6 = new Curso("Flor del Ceibo", "Flor de Ceibo es un proyecto central de la Universidad de la República...", 15, 150.0f, 10, parseFecha("27/07/2008"), "http://www.flordeceibo.edu.uy/", di, bs);
+            Curso c7 = new Curso("Taller de robótica educativa.", "La asignatura se organiza en dos etapas...", 8, 90.0f, 6, parseFecha("02/02/2024"), "https://eva.fing.edu.uy/course/view.php?id=1187", in, ww);
+            Curso c8 = new Curso("Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela", "Se propone desarrollar una aplicación interactiva...", 9, 45.0f, 3, parseFecha("15/06/2026"), "https://eva.fing.edu.uy/mod/folder/view.php?id=89398", in, ew);
+            Curso c9 = new Curso("Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación", "Se realizarán visitas a escuelas rurales...", 12, 60.0f, 4, parseFecha("24/05/2026"), "https://eva.fing.edu.uy/mod/folder/view.php?id=89398", in, ww);
+            Curso c10 = new Curso("MicroBit", "El Centro Ceibal se encuentra distribuyendo placas micro:bit...", 15, 105.0f, 7, parseFecha("13/03/2026"), "https://www.fing.edu.uy/noticias/extension/modulo-de-tallerextension-microbit", ie, gh);
 
             c2.getPrevias().add(c1);
             c3.getPrevias().add(c1);
@@ -110,47 +116,51 @@ public class CargarDatosPrueba {
             em.persist(c6); em.persist(c7); em.persist(c8); em.persist(c9); em.persist(c10);
 
             // 5. EDICIONES DE CURSOS
+            // NOTA: Docente.edicionesC es el lado dueño de la relación ManyToMany
+            // (EdicionCurso.docentes tiene mappedBy = "edicionesC"), así que la
+            // relación se arma agregando SIEMPRE desde el docente, nunca desde la
+            // edición: eN.getDocentes().add(...) no persiste nada en la base.
             EdicionCurso e1 = new EdicionCurso("Flor del Ceibo - 2010", c6, parseFecha("15/03/2010"), parseFecha("07/07/2010"), -1, parseFecha("16/02/2010"));
-            e1.getDocentes().add(bs);
+            bs.getEdicionesC().add(e1);
 
             EdicionCurso e2 = new EdicionCurso("Flor del Ceibo - 2012", c6, parseFecha("01/08/2012"), parseFecha("20/11/2012"), -1, parseFecha("10/07/2012"));
-            e2.getDocentes().add(bs); e2.getDocentes().add(ag);
+            bs.getEdicionesC().add(e2); ag.getEdicionesC().add(e2);
 
             EdicionCurso e3 = new EdicionCurso("Flor del Ceibo - 2025", c6, parseFecha("10/04/2025"), parseFecha("07/08/2025"), -1, parseFecha("06/03/2025"));
-            e3.getDocentes().add(bs); e3.getDocentes().add(ag);
+            bs.getEdicionesC().add(e3); ag.getEdicionesC().add(e3);
 
             EdicionCurso e4 = new EdicionCurso("Dalavuelta - 2025", c3, parseFecha("20/08/2024"), parseFecha("10/11/2024"), 15, parseFecha("20/07/2024"));
-            e4.getDocentes().add(ps);
+            ps.getEdicionesC().add(e4);
 
             EdicionCurso e5 = new EdicionCurso("Extensionismo Industrial - 2025", c4, parseFecha("10/08/2025"), parseFecha("10/11/2025"), 15, parseFecha("08/07/2025"));
-            e5.getDocentes().add(ps);
+            ps.getEdicionesC().add(e5);
 
             EdicionCurso e6 = new EdicionCurso("Inclusión Energética - 2026", c5, parseFecha("15/03/2026"), parseFecha("30/04/2026"), 30, parseFecha("20/02/2026"));
-            e6.getDocentes().add(ps);
+            ps.getEdicionesC().add(e6);
 
             EdicionCurso e7 = new EdicionCurso("Taller de robótica educativa - 2024", c7, parseFecha("10/03/2024"), parseFecha("10/05/2024"), 10, parseFecha("15/02/2024"));
-            e7.getDocentes().add(ww);
+            ww.getEdicionesC().add(e7);
 
             EdicionCurso e8 = new EdicionCurso("Taller de robótica educativa - 2026", c7, parseFecha("10/03/2026"), parseFecha("10/05/2026"), 10, parseFecha("15/02/2026"));
-            e8.getDocentes().add(ww); e8.getDocentes().add(ok);
+            ww.getEdicionesC().add(e8); ok.getEdicionesC().add(e8);
 
             EdicionCurso e9 = new EdicionCurso("Taller de robótica educativa-2026-2", c7, parseFecha("10/09/2026"), parseFecha("08/11/2026"), 20, parseFecha("15/08/2026"));
-            e9.getDocentes().add(ok); e9.getDocentes().add(ew);
+            ok.getEdicionesC().add(e9); ew.getEdicionesC().add(e9);
 
             EdicionCurso e10 = new EdicionCurso("Participación en investigación sobre el empleo del juego Komikan como recurso didáctico en la Escuela - 2026", c8, parseFecha("29/07/2026"), parseFecha("07/10/2026"), 5, parseFecha("10/07/2026"));
-            e10.getDocentes().add(ew);
+            ew.getEdicionesC().add(e10);
 
             EdicionCurso e11 = new EdicionCurso("Herramientas de apoyo a la enseñanza de inglés. Instalación y evaluación - 26", c9, parseFecha("15/09/2026"), parseFecha("15/12/2026"), 5, parseFecha("02/06/2026"));
-            e11.getDocentes().add(ww);
+            ww.getEdicionesC().add(e11);
 
             EdicionCurso e12 = new EdicionCurso("MicroBit-2026", c10, parseFecha("12/08/2026"), parseFecha("05/12/2026"), 30, parseFecha("02/07/2026"));
-            e12.getDocentes().add(gh);
+            gh.getEdicionesC().add(e12);
 
             EdicionCurso e13 = new EdicionCurso("Talleres plenarios - 2026", c1, parseFecha("10/03/2026"), parseFecha("30/03/2026"), -1, parseFecha("02/03/2026"));
-            e13.getDocentes().add(tc); e13.getDocentes().add(dr);
+            tc.getEdicionesC().add(e13); dr.getEdicionesC().add(e13);
 
             EdicionCurso e14 = new EdicionCurso("Seminarios de Resolución de Problemas - 2026", c2, parseFecha("10/09/2026"), parseFecha("20/10/2026"), -1, parseFecha("12/07/2026"));
-            e14.getDocentes().add(tc);
+            tc.getEdicionesC().add(e14);
 
             em.persist(e1); em.persist(e2); em.persist(e3); em.persist(e4); em.persist(e5);
             em.persist(e6); em.persist(e7); em.persist(e8); em.persist(e9); em.persist(e10);

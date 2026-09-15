@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;
@@ -25,8 +27,15 @@ public class Instituto implements Serializable {
     
     //Forainge key
     @ManyToMany
-    private List<Docente>docentes = new ArrayList<>();
-
+    @JoinTable(
+        name = "instituto_docente",
+        joinColumns = @JoinColumn(name = "instituto_nombre", referencedColumnName = "nombre"),
+        inverseJoinColumns = {
+            @JoinColumn(name = "docente_nickname", referencedColumnName = "nickname"),
+            @JoinColumn(name = "docente_mail", referencedColumnName = "Mail")
+        }
+    )
+    private List<Docente> docentes = new ArrayList<>();
     @OneToMany(mappedBy = "instituto")
     private List<Curso> cursos = new ArrayList<>();
 

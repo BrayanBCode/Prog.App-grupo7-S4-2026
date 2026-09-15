@@ -129,12 +129,17 @@ public class Controller implements IController {
         }
     }
 
-    private final Conexion conexion = Conexion.getInstancia();
-   
-    @Override
+        private final Conexion conexion = Conexion.getInstancia();
+     @Override
     public List<String> obtenerDataDocente(String nickname) {
         EntityManager em = conexion.getEntityManager();
         try {
+            // Institutos a los que pertenece el docente
+            List<String> institutos = em.createQuery(
+                "SELECT i.nombre FROM Docente d JOIN d.institutos i WHERE d.nickname = :nick", String.class)
+                .setParameter("nick", nickname)
+                .getResultList();
+
             // Cursos creados por el docente
             List<String> cursos = em.createQuery(
                 "SELECT c.nombre FROM Curso c WHERE c.docente.nickname = :nick", String.class)
@@ -156,7 +161,11 @@ public class Controller implements IController {
             // Formatea resultados para la vista
             List<String> resultado = new ArrayList<>();
 
-            resultado.add("--- CURSOS ---");
+            resultado.add("--- INSTITUTOS ---");
+            if (institutos.isEmpty()) resultado.add("(Sin institutos vinculados)");
+            else institutos.forEach(i -> resultado.add("- " + i));
+
+            resultado.add("\n--- CURSOS ---");
             if (cursos.isEmpty()) resultado.add("(Sin cursos registrados)");
             else cursos.forEach(c -> resultado.add("- " + c));
 
@@ -173,7 +182,6 @@ public class Controller implements IController {
             em.close();
         }
     }
-
     @Override
     public List<String> obtenerEdicionesYProgramas(String nickname) {
         EntityManager em = conexion.getEntityManager();
