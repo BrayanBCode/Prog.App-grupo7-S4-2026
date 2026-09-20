@@ -4,7 +4,7 @@
  */
 package Presentacion;
 
-import Logica.controller.ControllerVersion;
+import Logica.datatypes.ControllerVersion;
 import Logica.controller.Fabrica;
 import Logica.controller.IController;
 import Persistencia.Conexion;
@@ -21,7 +21,6 @@ import Presentacion.usuario.JIConsultaUsuario;
 import Presentacion.usuario.JIModificarUsuario;
 import Presentacion.usuario.JIRegistrarUsuario;
 import Testing.CargarDatosPrueba;
-import javax.swing.JDialog;
 
 import javax.swing.JInternalFrame;
 import javax.swing.plaf.basic.BasicInternalFrameUI;

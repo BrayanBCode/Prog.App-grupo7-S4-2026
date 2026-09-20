@@ -1,11 +1,14 @@
 package Logica.controller;
 
-import Logica.cursos.*;
-import Logica.usuarios.Docente;
-import Logica.usuarios.Estudiante;
-import Logica.programaFormacion.ProgramaFormacion;
-import Logica.usuarios.Usuario;
-import Logica.usuarios.UsuarioID;
+import Logica.entities.cursos.Curso;
+import Logica.entities.cursos.EdicionCurso;
+import Logica.entities.cursos.InscripcionEdicion;
+import Logica.entities.cursos.Instituto;
+import Logica.entities.usuarios.Docente;
+import Logica.entities.usuarios.Estudiante;
+import Logica.entities.programaFormacion.ProgramaFormacion;
+import Logica.entities.usuarios.Usuario;
+import Logica.entities.usuarios.UsuarioID;
 import java.time.LocalDate;
 import javax.persistence.EntityManager;
 import Persistencia.Conexion;

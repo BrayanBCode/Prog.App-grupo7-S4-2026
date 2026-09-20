@@ -1,19 +1,17 @@
 package Testing;
 
-import Logica.cursos.Curso;
-import Logica.cursos.EdicionCurso;
-import Logica.cursos.InscripcionEdicion;
-import Logica.cursos.Instituto;
-import Logica.programaFormacion.ProgramaFormacion;
-import Logica.usuarios.Docente;
-import Logica.usuarios.Estudiante;
+import Logica.entities.cursos.Curso;
+import Logica.entities.cursos.EdicionCurso;
+import Logica.entities.cursos.InscripcionEdicion;
+import Logica.entities.cursos.Instituto;
+import Logica.entities.programaFormacion.ProgramaFormacion;
+import Logica.entities.usuarios.Docente;
+import Logica.entities.usuarios.Estudiante;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class CargarDatosPrueba {
 

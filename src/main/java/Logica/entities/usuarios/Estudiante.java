@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Logica.usuarios;
+package Logica.entities.usuarios;
 
-import Logica.cursos.InscripcionEdicion;
-import Logica.programaFormacion.InscripcionPrograma;
+import Logica.entities.cursos.InscripcionEdicion;
+import Logica.entities.programaFormacion.InscripcionPrograma;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.ArrayList;

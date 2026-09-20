@@ -8,6 +8,8 @@ package Logica.controller;
  * @author maida
  */
 
+import Logica.datatypes.ControllerVersion;
+
 public class Fabrica {
     private static Fabrica INSTANCE;
     
