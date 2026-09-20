@@ -1,9 +1,29 @@
 package Logica.controller;
 
+import Logica.repositories.CursoRepository;
+import Logica.repositories.DocenteRepository;
+import Logica.repositories.InstitutoRepository;
+import Logica.services.CursoService;
+import Persistencia.Conexion;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public class ControllerV2 implements IController {
+
+    // Por ahora solo armamos la cadena de Curso (el resto de los services
+    // se van a ir agregando a medida que se migre cada caso de uso).
+    private final CursoService cursoService;
+
+    public ControllerV2() {
+        Conexion conexion = Conexion.getInstancia();
+        this.cursoService = new CursoService(
+                new CursoRepository(conexion),
+                new InstitutoRepository(conexion),
+                new DocenteRepository(conexion)
+        );
+    }
+
     @Override
     public void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen) {
 
@@ -141,7 +161,11 @@ public class ControllerV2 implements IController {
 
     @Override
     public void altaCurso(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas) throws Exception {
-
+        // Fijate el contraste: esto es TODO lo que hace ahora el Controller.
+        // Ya no arma queries, ni abre EntityManager, ni valida nada -- solo
+        // conecta la pantalla con el Service correspondiente.
+        cursoService.altaCurso(nombre, descripcion, duracion, cantHoras, cantCreditos,
+                url, nombreInstituto, nicknameDocente, previas);
     }
 
     @Override
