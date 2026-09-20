@@ -4,6 +4,7 @@
  */
 package Presentacion;
 
+import Logica.controller.ControllerVersion;
 import Logica.controller.Fabrica;
 import Logica.controller.IController;
 import Persistencia.Conexion;
@@ -42,7 +43,7 @@ public class JFInicio extends javax.swing.JFrame {
         setVisible(true);
 
         Fabrica f =  Fabrica.getInstance();
-        var c = f.getUserControler();
+        var c = f.getUserControler(ControllerVersion.v1);
         this.control = c;
 
         // MOVER A OTRO LUGAR

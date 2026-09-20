@@ -7,6 +7,7 @@ package Logica.controller;
  *
  * @author maida
  */
+
 public class Fabrica {
     private static Fabrica INSTANCE;
     
@@ -19,8 +20,12 @@ public class Fabrica {
         return INSTANCE;
     }
     
-    public IController getUserControler() {
-        return new Controller();
+    public IController getUserControler(ControllerVersion version) {
+        if(version == ControllerVersion.v2) {
+            return new ControllerV2();
+        }
+
+        return new ControllerV1();
     }
     
 }

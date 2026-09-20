@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.TypedQuery;
 
-public class Controller implements IController {
+public class ControllerV1 implements IController {
     // Carpeta especial del Servidor Central donde se guardan las imágenes de usuario.
     // Ajustá la ruta según cómo esté configurado tu Servidor Central.
     private static final String CARPETA_IMAGENES = "imagenes_usuarios";
@@ -62,7 +62,7 @@ public class Controller implements IController {
                 } else {
                     usuario = new Estudiante(nickname, mail, nombre, apellido, fechaNac, imagen);
                 }
-                usuario.setImagen(rutaImagenFinal); 
+                usuario.setImagen(rutaImagenFinal);
 
                 em.getTransaction().begin();
                 em.persist(usuario);
@@ -129,34 +129,34 @@ public class Controller implements IController {
         }
     }
 
-        private final Conexion conexion = Conexion.getInstancia();
-     @Override
+    private final Conexion conexion = Conexion.getInstancia();
+    @Override
     public List<String> obtenerDataDocente(String nickname) {
         EntityManager em = conexion.getEntityManager();
         try {
             // Institutos a los que pertenece el docente
             List<String> institutos = em.createQuery(
-                "SELECT i.nombre FROM Docente d JOIN d.institutos i WHERE d.nickname = :nick", String.class)
-                .setParameter("nick", nickname)
-                .getResultList();
+                            "SELECT i.nombre FROM Docente d JOIN d.institutos i WHERE d.nickname = :nick", String.class)
+                    .setParameter("nick", nickname)
+                    .getResultList();
 
             // Cursos creados por el docente
             List<String> cursos = em.createQuery(
-                "SELECT c.nombre FROM Curso c WHERE c.docente.nickname = :nick", String.class)
-                .setParameter("nick", nickname)
-                .getResultList();
+                            "SELECT c.nombre FROM Curso c WHERE c.docente.nickname = :nick", String.class)
+                    .setParameter("nick", nickname)
+                    .getResultList();
 
             // Ediciones asociadas al docente (relación ManyToMany)
             List<String> ediciones = em.createQuery(
-                "SELECT DISTINCT e.nombre FROM EdicionCurso e JOIN e.docentes d WHERE d.nickname = :nick", String.class)
-                .setParameter("nick", nickname)
-                .getResultList();
+                            "SELECT DISTINCT e.nombre FROM EdicionCurso e JOIN e.docentes d WHERE d.nickname = :nick", String.class)
+                    .setParameter("nick", nickname)
+                    .getResultList();
 
             // Programas de Formación que contienen cursos dictados por este docente
             List<String> programas = em.createQuery(
-                "SELECT DISTINCT p.nombre FROM ProgramaFormacion p JOIN p.cursos c WHERE c.docente.nickname = :nick", String.class)
-                .setParameter("nick", nickname)
-                .getResultList();
+                            "SELECT DISTINCT p.nombre FROM ProgramaFormacion p JOIN p.cursos c WHERE c.docente.nickname = :nick", String.class)
+                    .setParameter("nick", nickname)
+                    .getResultList();
 
             // Formatea resultados para la vista
             List<String> resultado = new ArrayList<>();
@@ -188,15 +188,15 @@ public class Controller implements IController {
         try {
             //  Ediciones de curso del estudiante
             List<String> ediciones = em.createQuery(
-                "SELECT ie.edicionCurso.nombre FROM InscripcionEdicion ie WHERE ie.estudiante.nickname = :nick", String.class)
-                .setParameter("nick", nickname)
-                .getResultList();
+                            "SELECT ie.edicionCurso.nombre FROM InscripcionEdicion ie WHERE ie.estudiante.nickname = :nick", String.class)
+                    .setParameter("nick", nickname)
+                    .getResultList();
 
             // Programas de formación del estudiante
             List<String> programas = em.createQuery(
-                "SELECT ip.pFormacion.nombre FROM InscripcionPrograma ip WHERE ip.estudiante.nickname = :nick", String.class)
-                .setParameter("nick", nickname)
-                .getResultList();
+                            "SELECT ip.pFormacion.nombre FROM InscripcionPrograma ip WHERE ip.estudiante.nickname = :nick", String.class)
+                    .setParameter("nick", nickname)
+                    .getResultList();
 
             // Une resultados en una sola lista
             List<String> resultado = new ArrayList<>(ediciones);
@@ -212,9 +212,9 @@ public class Controller implements IController {
         EntityManager em = conexion.getEntityManager();
         try {
             Long cantidad = em.createQuery(
-                "SELECT COUNT(d) FROM Docente d WHERE d.nickname = :nick", Long.class)
-                .setParameter("nick", nickname)
-                .getSingleResult();
+                            "SELECT COUNT(d) FROM Docente d WHERE d.nickname = :nick", Long.class)
+                    .setParameter("nick", nickname)
+                    .getSingleResult();
 
             return cantidad > 0; // Retorna TRUE si existe como docente
         } finally {
@@ -230,12 +230,12 @@ public class Controller implements IController {
             Usuario u = em.find(Usuario.class, id);
             if (u != null) {
                 return new String[]{
-                    u.getNickname(),
-                    u.getMail(),
-                    u.getNombreU(),
-                    u.getApellido(),
-                    u.getFechaNac() != null ? u.getFechaNac().toString() : "",
-                    u.getImagen()
+                        u.getNickname(),
+                        u.getMail(),
+                        u.getNombreU(),
+                        u.getApellido(),
+                        u.getFechaNac() != null ? u.getFechaNac().toString() : "",
+                        u.getImagen()
                 };
             }
             return null;
@@ -261,14 +261,14 @@ public class Controller implements IController {
             em.close();
         }
     }
-    
+
     public List<String> listarCursosPorInstituto(String nombreInstituto) {
         EntityManager em = conexion.getEntityManager();
         try {
             return em.createQuery(
-                "SELECT c.nombre FROM Curso c WHERE c.instituto.nombre = :nombreInst", String.class)
-                .setParameter("nombreInst", nombreInstituto)
-                .getResultList();
+                            "SELECT c.nombre FROM Curso c WHERE c.instituto.nombre = :nombreInst", String.class)
+                    .setParameter("nombreInst", nombreInstituto)
+                    .getResultList();
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
@@ -281,9 +281,9 @@ public class Controller implements IController {
         EntityManager em = conexion.getEntityManager();
         try {
             return em.createQuery(
-                "SELECT e.nombre FROM EdicionCurso e WHERE e.curso.nombre = :nombreCurso", String.class)
-                .setParameter("nombreCurso", nombreCurso)
-                .getResultList();
+                            "SELECT e.nombre FROM EdicionCurso e WHERE e.curso.nombre = :nombreCurso", String.class)
+                    .setParameter("nombreCurso", nombreCurso)
+                    .getResultList();
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
@@ -371,7 +371,7 @@ public class Controller implements IController {
             em.close();
         }
     }
-    
+
     @Override
     public void modificarPorgrama(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin) throws Exception{
         EntityManager em = Conexion.getInstancia().getEntityManager();
@@ -386,7 +386,7 @@ public class Controller implements IController {
             programa.setFechaFin(fechaFin);
             em.merge(programa);
             em.getTransaction().commit();
-            
+
         } finally{
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
@@ -394,25 +394,25 @@ public class Controller implements IController {
             em.close();
         }
     }
-    
 
-    
+
+
     @Override
 
     public List<String[]> listarProgramasTabla() {
         EntityManager em = conexion.getEntityManager();
         try {
             List<ProgramaFormacion> lista = em.createQuery(
-            "SELECT p FROM ProgramaFormacion p ORDER BY p.nombre", ProgramaFormacion.class).getResultList();
-        List<String[]> resultado = new ArrayList<>();
-        for (ProgramaFormacion p : lista) {
-            resultado.add(new String[]{ p.getNombre(), p.getDescripcion() });
+                    "SELECT p FROM ProgramaFormacion p ORDER BY p.nombre", ProgramaFormacion.class).getResultList();
+            List<String[]> resultado = new ArrayList<>();
+            for (ProgramaFormacion p : lista) {
+                resultado.add(new String[]{ p.getNombre(), p.getDescripcion() });
+            }
+            return resultado;
+        } finally {
+            em.close();
         }
-        return resultado;
-    } finally {
-        em.close();
     }
-}
 
     @Override
     public String[] obtenerDatosBasicosPrograma(String nombre) {
@@ -421,17 +421,17 @@ public class Controller implements IController {
             ProgramaFormacion p = em.find(ProgramaFormacion.class, nombre);
             if (p == null) return null;
             return new String[]{
-                p.getNombre(),
-                p.getDescripcion(),
-                p.getFechaInicio() != null ? p.getFechaInicio().toString() : "",
-                p.getFechaFin() != null ? p.getFechaFin().toString() : "",
-                p.getFechaAlta() != null ? p.getFechaAlta().toString() : ""
+                    p.getNombre(),
+                    p.getDescripcion(),
+                    p.getFechaInicio() != null ? p.getFechaInicio().toString() : "",
+                    p.getFechaFin() != null ? p.getFechaFin().toString() : "",
+                    p.getFechaAlta() != null ? p.getFechaAlta().toString() : ""
             };
         } finally {
             em.close();
         }
     }
-    
+
 
     @Override
     public List<String> listarNombreProgramas() {
@@ -448,8 +448,8 @@ public class Controller implements IController {
         EntityManager em = conexion.getEntityManager();
         try {
             return em.createQuery(
-                "SELECT c.nombre FROM Curso c ORDER BY c.nombre", String.class)
-                .getResultList();
+                            "SELECT c.nombre FROM Curso c ORDER BY c.nombre", String.class)
+                    .getResultList();
         } finally {
             em.close();
         }
@@ -476,8 +476,8 @@ public class Controller implements IController {
         EntityManager em = conexion.getEntityManager();
         try {
             return em.createQuery(
-                "SELECT i.nombre FROM Instituto i ORDER BY i.nombre", String.class)
-                .getResultList();
+                            "SELECT i.nombre FROM Instituto i ORDER BY i.nombre", String.class)
+                    .getResultList();
         } finally {
             em.close();
         }
@@ -489,9 +489,9 @@ public class Controller implements IController {
         try {
             // Acá se usa la relación Curso -> Instituto para filtrar
             List<Curso> lista = em.createQuery(
-                "SELECT c FROM Curso c WHERE c.instituto.nombre = :inst ORDER BY c.nombre", Curso.class)
-                .setParameter("inst", nombreInstituto)
-                .getResultList();
+                            "SELECT c FROM Curso c WHERE c.instituto.nombre = :inst ORDER BY c.nombre", Curso.class)
+                    .setParameter("inst", nombreInstituto)
+                    .getResultList();
 
             List<String[]> resultado = new ArrayList<>();
             for (Curso c : lista) {
@@ -511,9 +511,9 @@ public class Controller implements IController {
             // regla de negocio "Solo se pueden registrar cursos asociados al
             // Instituto que integran" (se vuelve a validar server-side en altaCurso).
             List<Docente> lista = em.createQuery(
-                "SELECT DISTINCT d FROM Docente d JOIN d.institutos i WHERE i.nombre = :inst", Docente.class)
-                .setParameter("inst", nombreInstituto)
-                .getResultList();
+                            "SELECT DISTINCT d FROM Docente d JOIN d.institutos i WHERE i.nombre = :inst", Docente.class)
+                    .setParameter("inst", nombreInstituto)
+                    .getResultList();
             List<String[]> resultado = new ArrayList<>();
             for (Docente d : lista) {
                 resultado.add(new String[]{ d.getNickname(), d.getNombreU() + " " + d.getApellido() + " (" + d.getNickname() + ")" });
@@ -552,9 +552,9 @@ public class Controller implements IController {
             // (lado dueño), así que hay que agregar la edición ahí, no al revés.
             for (String nickname : nicknamesDocentes) {
                 Docente docente = em.createQuery(
-                    "SELECT d FROM Docente d WHERE d.nickname = :nick", Docente.class)
-                    .setParameter("nick", nickname)
-                    .getSingleResult();
+                                "SELECT d FROM Docente d WHERE d.nickname = :nick", Docente.class)
+                        .setParameter("nick", nickname)
+                        .getSingleResult();
                 docente.getEdicionesC().add(edicion);
                 em.merge(docente);
             }
@@ -602,7 +602,7 @@ public class Controller implements IController {
             em.close();
         }
     }
-    
+
     @Override
     public List<String> obtenerDataPrograma(String nombrePrograma) throws Exception {
         EntityManager em = conexion.getEntityManager();
@@ -621,7 +621,7 @@ public class Controller implements IController {
             resultado.add("Cursos");
             List<Curso> cursos = programa.getCursos();
             if (cursos.isEmpty()) {
-            resultado.add("Sin Cursos Registrados");
+                resultado.add("Sin Cursos Registrados");
             } else {
                 for (Curso c : cursos) {
                     resultado.add("- " + c.getNombreC());
@@ -633,7 +633,7 @@ public class Controller implements IController {
             em.close();
         }
     }
-    
+
     @Override
     public List<String[]> listarEstudiantesTabla() {
         EntityManager em = conexion.getEntityManager();
@@ -655,10 +655,10 @@ public class Controller implements IController {
         try {
             LocalDate hoy = LocalDate.now();
             List<String> resultado = em.createQuery(
-                "SELECT e.nombre FROM EdicionCurso e WHERE e.curso.nombre = :curso AND e.fechaInicio <= :hoy AND e.fechaFin >= :hoy", String.class)
-                .setParameter("curso", nombreCurso)
-                .setParameter("hoy", hoy)
-                .getResultList();
+                            "SELECT e.nombre FROM EdicionCurso e WHERE e.curso.nombre = :curso AND e.fechaInicio <= :hoy AND e.fechaFin >= :hoy", String.class)
+                    .setParameter("curso", nombreCurso)
+                    .setParameter("hoy", hoy)
+                    .getResultList();
             return resultado.isEmpty() ? null : resultado.get(0);
         } finally {
             em.close();
@@ -670,10 +670,10 @@ public class Controller implements IController {
         EntityManager em = conexion.getEntityManager();
         try {
             Estudiante estudiante = em.createQuery(
-                "SELECT e FROM Estudiante e WHERE e.nickname = :nick AND e.Mail = :mail", Estudiante.class)
-                .setParameter("nick", nickname)
-                .setParameter("mail", mail)
-                .getSingleResult();
+                            "SELECT e FROM Estudiante e WHERE e.nickname = :nick AND e.Mail = :mail", Estudiante.class)
+                    .setParameter("nick", nickname)
+                    .setParameter("mail", mail)
+                    .getSingleResult();
 
             EdicionCurso edicion = em.find(EdicionCurso.class, nombreEdicion);
             if (edicion == null) {
@@ -681,10 +681,10 @@ public class Controller implements IController {
             }
 
             Long yaInscripto = em.createQuery(
-                "SELECT COUNT(i) FROM InscripcionEdicion i WHERE i.estudiante.nickname = :nick AND i.edicionCurso.nombre = :edicion", Long.class)
-                .setParameter("nick", nickname)
-                .setParameter("edicion", nombreEdicion)
-                .getSingleResult();
+                            "SELECT COUNT(i) FROM InscripcionEdicion i WHERE i.estudiante.nickname = :nick AND i.edicionCurso.nombre = :edicion", Long.class)
+                    .setParameter("nick", nickname)
+                    .setParameter("edicion", nombreEdicion)
+                    .getSingleResult();
             if (yaInscripto > 0) {
                 throw new Exception("El estudiante ya está inscripto en esta edición del curso.");
             }
@@ -692,9 +692,9 @@ public class Controller implements IController {
             // cupo == 0 se interpreta como "sin límite" (así se definió en Alta de Edición de Curso)
             if (edicion.getCupo() > 0) {
                 Long inscriptos = em.createQuery(
-                    "SELECT COUNT(i) FROM InscripcionEdicion i WHERE i.edicionCurso.nombre = :edicion", Long.class)
-                    .setParameter("edicion", nombreEdicion)
-                    .getSingleResult();
+                                "SELECT COUNT(i) FROM InscripcionEdicion i WHERE i.edicionCurso.nombre = :edicion", Long.class)
+                        .setParameter("edicion", nombreEdicion)
+                        .getSingleResult();
                 if (inscriptos >= edicion.getCupo()) {
                     throw new Exception("No hay cupos disponibles para esta edición.");
                 }
@@ -729,54 +729,54 @@ public class Controller implements IController {
             }
 
             String previas = c.getPrevias().isEmpty()
-                ? "(Sin previas)"
-                : c.getPrevias().stream().map(Curso::getNombreC).collect(Collectors.joining(", "));
+                    ? "(Sin previas)"
+                    : c.getPrevias().stream().map(Curso::getNombreC).collect(Collectors.joining(", "));
 
             String docente = c.getDocente() != null
-                ? c.getDocente().getNombreU() + " " + c.getDocente().getApellido() + " (" + c.getDocente().getNickname() + ")"
-                : "(Sin docente asignado)";
+                    ? c.getDocente().getNombreU() + " " + c.getDocente().getApellido() + " (" + c.getDocente().getNickname() + ")"
+                    : "(Sin docente asignado)";
 
 
 
             // {0}=nombre, {1}=descripcion, {2}=duracion, {3}=cantHoras, {4}=cantCreditos,
             // {5}=url, {6}=fechaRegistro, {7}=instituto, {8}=docente, {9}=previas
             return new String[]{
-                c.getNombreC(),
-                c.getDescripcion(),
-                String.valueOf(c.getDuracion()),
-                String.valueOf(c.getCanthoras()),
-                String.valueOf(c.getCantCreditos()),
-                c.getUrl(),
-                String.valueOf(c.getFechaRegistro()),
-                c.getInstituto() != null ? c.getInstituto().getNombre() : "",
-                docente,
-                previas
+                    c.getNombreC(),
+                    c.getDescripcion(),
+                    String.valueOf(c.getDuracion()),
+                    String.valueOf(c.getCanthoras()),
+                    String.valueOf(c.getCantCreditos()),
+                    c.getUrl(),
+                    String.valueOf(c.getFechaRegistro()),
+                    c.getInstituto() != null ? c.getInstituto().getNombre() : "",
+                    docente,
+                    previas
             };
         } finally {
             em.close();
         }
     }
-    
+
     @Override
     public List<String> listarProgramasPorCurso(String nombreCurso) {
         EntityManager em = conexion.getEntityManager();
         try {
             return em.createQuery(
-                "SELECT DISTINCT p.nombre FROM ProgramaFormacion p JOIN p.cursos c WHERE c.nombre = :nombreCurso ORDER BY p.nombre", String.class)
-                .setParameter("nombreCurso", nombreCurso)
-                .getResultList();
+                            "SELECT DISTINCT p.nombre FROM ProgramaFormacion p JOIN p.cursos c WHERE c.nombre = :nombreCurso ORDER BY p.nombre", String.class)
+                    .setParameter("nombreCurso", nombreCurso)
+                    .getResultList();
         } finally {
             em.close();
         }
     }
-    
+
     @Override
     public String[] obtenerEdicionCurso(String nombreEdicion) throws Exception {
         EntityManager em = conexion.getEntityManager();
         try {
             // Buscar la edición directamente por su atributo 'nombre' o usando em.find
             TypedQuery<EdicionCurso> query = em.createQuery(
-                "SELECT ed FROM EdicionCurso ed WHERE ed.nombre = :nombreEdicion", EdicionCurso.class);
+                    "SELECT ed FROM EdicionCurso ed WHERE ed.nombre = :nombreEdicion", EdicionCurso.class);
             query.setParameter("nombreEdicion", nombreEdicion);
 
             List<EdicionCurso> lista = query.getResultList();
@@ -788,12 +788,12 @@ public class Controller implements IController {
             EdicionCurso ed = lista.get(0);
 
             return new String[]{
-                ed.getNombre(),
-                ed.getCurso().getNombreC(),
-                String.valueOf(ed.getFechaInicio()),
-                String.valueOf(ed.getFechaFin()),
-                String.valueOf(ed.getCupo()),
-                String.valueOf(ed.getFechaPublicacion())
+                    ed.getNombre(),
+                    ed.getCurso().getNombreC(),
+                    String.valueOf(ed.getFechaInicio()),
+                    String.valueOf(ed.getFechaFin()),
+                    String.valueOf(ed.getCupo()),
+                    String.valueOf(ed.getFechaPublicacion())
             };
         } finally {
             em.close();
@@ -850,7 +850,7 @@ public class Controller implements IController {
             throw e;
         }
     }
-    
+
     @Override
     public boolean existePrograma(String nombre) {
         EntityManager em = conexion.getEntityManager();
@@ -861,16 +861,16 @@ public class Controller implements IController {
             em.close();
         }
     }
-    
-   @Override
-   public List<String> listarInstitutos() {
-     EntityManager em = conexion.getEntityManager();
-     try {
-        return em.createQuery(
-            "SELECT i.nombre FROM Instituto i ORDER BY i.nombre", String.class)
-            .getResultList();
-    } finally {
-        em.close();
+
+    @Override
+    public List<String> listarInstitutos() {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT i.nombre FROM Instituto i ORDER BY i.nombre", String.class)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
     }
-}
 }

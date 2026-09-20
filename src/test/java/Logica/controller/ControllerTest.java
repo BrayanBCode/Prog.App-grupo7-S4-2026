@@ -1,9 +1,6 @@
 package Logica.controller;
 
-import Logica.cursos.Instituto;
 import Logica.programaFormacion.ProgramaFormacion;
-import Logica.usuarios.Usuario;
-import Logica.usuarios.UsuarioID;
 import Persistencia.Conexion;
 
 import java.time.LocalDate;
@@ -38,7 +35,7 @@ public class ControllerTest {
 
     private static final String PREFIJO = "zzTest_";
 
-    private final Controller controller = new Controller();
+    private final ControllerV1 controller = new ControllerV1();
 
     @AfterEach
     public void limpiarDatosDePrueba() {
