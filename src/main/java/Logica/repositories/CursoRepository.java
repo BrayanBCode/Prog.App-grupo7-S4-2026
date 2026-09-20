@@ -8,6 +8,7 @@ import Persistencia.Conexion;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CursoRepository {
@@ -16,6 +17,20 @@ public class CursoRepository {
 
     public CursoRepository(Conexion conexion) {
         this.conexion = conexion;
+    }
+
+    public List<Curso> cursosPorInstituto(String nombreInstituto) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            // Acá se usa la relación Curso -> Instituto para filtrar
+            List<Curso> lista = em.createQuery(
+                            "SELECT c FROM Curso c WHERE c.instituto.nombre = :inst ORDER BY c.nombre", Curso.class)
+                    .setParameter("inst", nombreInstituto)
+                    .getResultList();
+            return lista;
+        } finally {
+            em.close();
+        }
     }
 
     /**
@@ -43,9 +58,7 @@ public class CursoRepository {
      * precio de mantener la transacción consistente. Para un proyecto de
      * este tamaño es una repetición aceptable.
      */
-    public void guardar(String nombre, String descripcion, int duracion, float cantHoras,
-                        int cantCreditos, String url, String nombreInstituto,
-                        String nicknameDocente, List<String> previas) {
+    public void guardar(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas) {
 
         EntityManager em = conexion.getEntityManager();
         try {

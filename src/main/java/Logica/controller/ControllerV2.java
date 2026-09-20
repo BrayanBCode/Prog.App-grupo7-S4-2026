@@ -2,8 +2,11 @@ package Logica.controller;
 
 import Logica.repositories.CursoRepository;
 import Logica.repositories.DocenteRepository;
+import Logica.repositories.EdicionCursoRepository;
 import Logica.repositories.InstitutoRepository;
 import Logica.services.CursoService;
+import Logica.services.EdicionCursoService;
+import Logica.services.InstitutoService;
 import Persistencia.Conexion;
 
 import java.time.LocalDate;
@@ -14,14 +17,20 @@ public class ControllerV2 implements IController {
     // Por ahora solo armamos la cadena de Curso (el resto de los services
     // se van a ir agregando a medida que se migre cada caso de uso).
     private final CursoService cursoService;
+    private final InstitutoService instituoService;
+    private final EdicionCursoService edicionCursoService;
 
     public ControllerV2() {
         Conexion conexion = Conexion.getInstancia();
-        this.cursoService = new CursoService(
-                new CursoRepository(conexion),
-                new InstitutoRepository(conexion),
-                new DocenteRepository(conexion)
-        );
+
+        InstitutoRepository institutoRepository = new InstitutoRepository(conexion);
+        CursoRepository cursoRepository = new CursoRepository(conexion);
+        DocenteRepository docenteRepository = new DocenteRepository(conexion);
+        EdicionCursoRepository edicionCursoRepository = new EdicionCursoRepository(conexion);
+
+        this.cursoService = new CursoService(cursoRepository, institutoRepository, docenteRepository);
+        this.instituoService = new InstitutoService(institutoRepository);
+        this.edicionCursoService = new EdicionCursoService(edicionCursoRepository, cursoRepository, docenteRepository);
     }
 
     @Override
@@ -96,12 +105,12 @@ public class ControllerV2 implements IController {
 
     @Override
     public List<String> listarNombresInstitutos() {
-        return List.of();
+        return instituoService.obtenerNombres();
     }
 
     @Override
     public List<String[]> listarCursosTabla(String nombreInstituto) {
-        return List.of();
+        return cursoService.obtenerCursosTabla(nombreInstituto);
     }
 
     @Override
@@ -146,7 +155,7 @@ public class ControllerV2 implements IController {
 
     @Override
     public String[] obtenerDataCurso(String nombreCurso) throws Exception {
-        return new String[0];
+        return cursoService.obtenerCurso(nombreCurso);
     }
 
     @Override
@@ -164,7 +173,7 @@ public class ControllerV2 implements IController {
         // Fijate el contraste: esto es TODO lo que hace ahora el Controller.
         // Ya no arma queries, ni abre EntityManager, ni valida nada -- solo
         // conecta la pantalla con el Service correspondiente.
-        cursoService.altaCurso(nombre, descripcion, duracion, cantHoras, cantCreditos,
+        cursoService.registrar(nombre, descripcion, duracion, cantHoras, cantCreditos,
                 url, nombreInstituto, nicknameDocente, previas);
     }
 

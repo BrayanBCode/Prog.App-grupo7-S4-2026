@@ -7,7 +7,9 @@ import Logica.repositories.CursoRepository;
 import Logica.repositories.DocenteRepository;
 import Logica.repositories.InstitutoRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Acá viven las reglas de negocio de Curso: qué es válido y qué no.
@@ -32,9 +34,7 @@ public class CursoService {
      * ControllerV1, solo que ahora divididas: cada "¿existe esto?" es una
      * lectura rápida a través del repository correspondiente.
      */
-    public void altaCurso(String nombre, String descripcion, int duracion, float cantHoras,
-                          int cantCreditos, String url, String nombreInstituto,
-                          String nicknameDocente, List<String> previas) throws Exception {
+    public void registrar(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas) throws Exception {
 
         Curso existente = cursoRepository.buscarPorNombre(nombre);
         if (existente != null) {
@@ -52,5 +52,43 @@ public class CursoService {
         }
 
         cursoRepository.guardar(nombre, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, nicknameDocente, previas);
+    }
+
+    public List<String[]> obtenerCursosTabla(String nombreInstituto) {
+        List<Curso> lista = cursoRepository.cursosPorInstituto(nombreInstituto);
+
+        List<String[]> resultado = new ArrayList<>();
+        for (Curso c : lista) {
+            resultado.add(new String[]{c.getNombreC(), c.getDescripcion()});
+        }
+
+        return resultado;
+    }
+
+    public String[] obtenerCurso(String nombreCurso) {
+        Curso c = cursoRepository.buscarPorNombre(nombreCurso);
+
+        // TODO: ESTO ES DE PRESENTACIÓN
+        String previas = c.getPrevias().isEmpty()
+                ? "(Sin previas)"
+                : c.getPrevias().stream().map(Curso::getNombreC).collect(Collectors.joining(", "));
+
+        // TODO: ESTO ES DE PRESENTACIÓN
+        String docente = c.getDocente() != null
+                ? c.getDocente().getNombreU() + " " + c.getDocente().getApellido() + " (" + c.getDocente().getNickname() + ")"
+                : "(Sin docente asignado)";
+
+        return new String[]{
+                c.getNombreC(),
+                c.getDescripcion(),
+                String.valueOf(c.getDuracion()),
+                String.valueOf(c.getCanthoras()),
+                String.valueOf(c.getCantCreditos()),
+                c.getUrl(),
+                String.valueOf(c.getFechaRegistro()),
+                c.getInstituto() != null ? c.getInstituto().getNombre() : "",
+                docente,
+                previas
+        };
     }
 }
