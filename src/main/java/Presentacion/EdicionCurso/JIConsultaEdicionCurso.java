@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author maida
  */
+
 public class JIConsultaEdicionCurso extends javax.swing.JInternalFrame {
     private IController control;
     /**

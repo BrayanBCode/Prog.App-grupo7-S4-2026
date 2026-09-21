@@ -12,7 +12,7 @@ import Presentacion.edicionCurso.JIRegistroEdicionCurso;
 import Presentacion.edicionCurso.JIinscripcionEdicionCurso;
 import Presentacion.curso.JIAltaCurso;
 import Presentacion.curso.JIConsultaCurso;
-import Presentacion.edicionCurso.JIConsultaEdicionCurso;
+import Presentacion.EdicionCurso.JIConsultaEdicionCurso;
 import Presentacion.programaFormacion.JIAgregarCursoPrograma;
 import Presentacion.programaFormacion.JIConsultaProgFormacion;
 import Presentacion.programaFormacion.JICrearProgFormacion;
