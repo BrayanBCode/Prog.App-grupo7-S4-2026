@@ -4,8 +4,6 @@
  */
 package Logica.controller;
 
-import Logica.usuarios.Estudiante;
-import Logica.usuarios.Usuario;
 import java.time.LocalDate;
 import java.util.List;
 

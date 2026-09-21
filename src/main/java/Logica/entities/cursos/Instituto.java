@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Logica.cursos;
+package Logica.entities.cursos;
 
-import Logica.usuarios.Docente;
+import Logica.entities.usuarios.Docente;
 import java.util.List;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.ManyToOne;
 
 /**
  *

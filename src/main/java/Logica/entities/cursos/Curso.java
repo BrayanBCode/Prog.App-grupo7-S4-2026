@@ -1,7 +1,7 @@
-package Logica.cursos;
+package Logica.entities.cursos;
 
-import Logica.programaFormacion.ProgramaFormacion;
-import Logica.usuarios.Docente;
+import Logica.entities.programaFormacion.ProgramaFormacion;
+import Logica.entities.usuarios.Docente;
 
 import java.util.List;
 import java.time.LocalDate;

@@ -1,6 +1,6 @@
-package Logica.cursos;
+package Logica.entities.cursos;
 
-import Logica.usuarios.Estudiante;
+import Logica.entities.usuarios.Estudiante;
 
 import java.io.Serializable;
 import java.time.LocalDate;

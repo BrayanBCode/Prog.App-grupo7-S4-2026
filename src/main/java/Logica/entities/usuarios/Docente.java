@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt 
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java 
  */
-package Logica.usuarios;
+package Logica.entities.usuarios;
 
-import Logica.cursos.Curso;
-import Logica.cursos.EdicionCurso;
-import Logica.cursos.Instituto;
+import Logica.entities.cursos.Curso;
+import Logica.entities.cursos.EdicionCurso;
+import Logica.entities.cursos.Instituto;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -1,23 +1,28 @@
 package Logica.controller;
 
-import Logica.cursos.*;
-import Logica.usuarios.Docente;
-import Logica.usuarios.Estudiante;
-import Logica.programaFormacion.ProgramaFormacion;
-import Logica.usuarios.Usuario;
-import Logica.usuarios.UsuarioID;
-import java.time.LocalDate;
-import javax.persistence.EntityManager;
+import Logica.entities.cursos.Curso;
+import Logica.entities.cursos.EdicionCurso;
+import Logica.entities.cursos.InscripcionEdicion;
+import Logica.entities.cursos.Instituto;
+import Logica.entities.programaFormacion.ProgramaFormacion;
+import Logica.entities.usuarios.Docente;
+import Logica.entities.usuarios.Estudiante;
+import Logica.entities.usuarios.Usuario;
+import Logica.entities.usuarios.UsuarioID;
 import Persistencia.Conexion;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.TypedQuery;
 
 public class ControllerV1 implements IController {
     // Carpeta especial del Servidor Central donde se guardan las imágenes de usuario.
     // Ajustá la ruta según cómo esté configurado tu Servidor Central.
     private static final String CARPETA_IMAGENES = "imagenes_usuarios";
+    private final Conexion conexion = Conexion.getInstancia();
 
     @Override
     public void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen) {
@@ -129,7 +134,6 @@ public class ControllerV1 implements IController {
         }
     }
 
-    private final Conexion conexion = Conexion.getInstancia();
     @Override
     public List<String> obtenerDataDocente(String nickname) {
         EntityManager em = conexion.getEntityManager();
@@ -182,6 +186,7 @@ public class ControllerV1 implements IController {
             em.close();
         }
     }
+
     @Override
     public List<String> obtenerEdicionesYProgramas(String nickname) {
         EntityManager em = conexion.getEntityManager();
@@ -251,7 +256,7 @@ public class ControllerV1 implements IController {
             List<Usuario> lista = em.createQuery("SELECT u FROM Usuario u", Usuario.class).getResultList();
             List<String[]> resultado = new ArrayList<>();
             for (Usuario u : lista) {
-                resultado.add(new String[]{ u.getNickname(), u.getMail() });
+                resultado.add(new String[]{u.getNickname(), u.getMail()});
             }
             return resultado;
         } catch (Exception e) {
@@ -373,12 +378,12 @@ public class ControllerV1 implements IController {
     }
 
     @Override
-    public void modificarPorgrama(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin) throws Exception{
+    public void modificarPorgrama(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin) throws Exception {
         EntityManager em = Conexion.getInstancia().getEntityManager();
         try {
-            ProgramaFormacion programa= em.find(ProgramaFormacion.class,nombre);
-            if(programa==null){
-                throw new Exception("No existe un programa de formacion con nombre: "+ nombre);
+            ProgramaFormacion programa = em.find(ProgramaFormacion.class, nombre);
+            if (programa == null) {
+                throw new Exception("No existe un programa de formacion con nombre: " + nombre);
             }
             em.getTransaction().begin();
             programa.setDescripcion(descripcion);
@@ -387,14 +392,13 @@ public class ControllerV1 implements IController {
             em.merge(programa);
             em.getTransaction().commit();
 
-        } finally{
+        } finally {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
             em.close();
         }
     }
-
 
 
     @Override
@@ -406,7 +410,7 @@ public class ControllerV1 implements IController {
                     "SELECT p FROM ProgramaFormacion p ORDER BY p.nombre", ProgramaFormacion.class).getResultList();
             List<String[]> resultado = new ArrayList<>();
             for (ProgramaFormacion p : lista) {
-                resultado.add(new String[]{ p.getNombre(), p.getDescripcion() });
+                resultado.add(new String[]{p.getNombre(), p.getDescripcion()});
             }
             return resultado;
         } finally {
@@ -463,7 +467,7 @@ public class ControllerV1 implements IController {
             List<String[]> resultado = new ArrayList<>();
             for (Docente d : lista) {
                 // {0}=nickname (lo usamos como identificador), {1}=texto a mostrar en la lista
-                resultado.add(new String[]{ d.getNickname(), d.getNombreU() + " " + d.getApellido() + " (" + d.getNickname() + ")" });
+                resultado.add(new String[]{d.getNickname(), d.getNombreU() + " " + d.getApellido() + " (" + d.getNickname() + ")"});
             }
             return resultado;
         } finally {
@@ -495,7 +499,7 @@ public class ControllerV1 implements IController {
 
             List<String[]> resultado = new ArrayList<>();
             for (Curso c : lista) {
-                resultado.add(new String[]{ c.getNombreC(), c.getDescripcion() });
+                resultado.add(new String[]{c.getNombreC(), c.getDescripcion()});
             }
             return resultado;
         } finally {
@@ -516,7 +520,7 @@ public class ControllerV1 implements IController {
                     .getResultList();
             List<String[]> resultado = new ArrayList<>();
             for (Docente d : lista) {
-                resultado.add(new String[]{ d.getNickname(), d.getNombreU() + " " + d.getApellido() + " (" + d.getNickname() + ")" });
+                resultado.add(new String[]{d.getNickname(), d.getNombreU() + " " + d.getApellido() + " (" + d.getNickname() + ")"});
             }
             return resultado;
         } finally {
@@ -569,6 +573,7 @@ public class ControllerV1 implements IController {
             em.close();
         }
     }
+
     @Override
     public void agregarCursoPrograma(String nombreP, String nombreC) throws Exception {
         EntityManager em = conexion.getEntityManager();
@@ -612,6 +617,7 @@ public class ControllerV1 implements IController {
             if (programa == null) {
                 throw new Exception("No existe un Programa de Formación con nombre: " + nombrePrograma);
             }
+            // TODO: ESTO VA EN LA CAPA DE PRESENTACIÓN
             List<String> resultado = new ArrayList<>();
             resultado.add("Nombre: " + programa.getNombre());
             resultado.add("Descripcion: " + programa.getDescripcion());
@@ -619,6 +625,7 @@ public class ControllerV1 implements IController {
             resultado.add("Fecha Fin: " + programa.getFechaFin());
             resultado.add("Fecha Alta: " + programa.getFechaAlta());
             resultado.add("Cursos");
+
             List<Curso> cursos = programa.getCursos();
             if (cursos.isEmpty()) {
                 resultado.add("Sin Cursos Registrados");
@@ -628,7 +635,7 @@ public class ControllerV1 implements IController {
                 }
             }
             return resultado;
-        }finally {
+        } finally {
 
             em.close();
         }
@@ -641,7 +648,7 @@ public class ControllerV1 implements IController {
             List<Estudiante> lista = em.createQuery("SELECT e FROM Estudiante e", Estudiante.class).getResultList();
             List<String[]> resultado = new ArrayList<>();
             for (Estudiante e : lista) {
-                resultado.add(new String[]{ e.getNickname(), e.getNombreU(), e.getApellido(), e.getMail() });
+                resultado.add(new String[]{e.getNickname(), e.getNombreU(), e.getApellido(), e.getMail()});
             }
             return resultado;
         } finally {
@@ -735,7 +742,6 @@ public class ControllerV1 implements IController {
             String docente = c.getDocente() != null
                     ? c.getDocente().getNombreU() + " " + c.getDocente().getApellido() + " (" + c.getDocente().getNickname() + ")"
                     : "(Sin docente asignado)";
-
 
 
             // {0}=nombre, {1}=descripcion, {2}=duracion, {3}=cantHoras, {4}=cantCreditos,

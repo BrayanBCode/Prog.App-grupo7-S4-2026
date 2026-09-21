@@ -1,6 +1,6 @@
 package Logica.controller;
 
-import Logica.programaFormacion.ProgramaFormacion;
+import Logica.entities.programaFormacion.ProgramaFormacion;
 import Persistencia.Conexion;
 
 import java.time.LocalDate;
