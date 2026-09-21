@@ -19,7 +19,8 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="MIRegistoCli">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Registro Cliente"/>
+                <Property name="text" type="java.lang.String" value="Registro Usuario"/>
+                <Property name="actionCommand" type="java.lang.String" value="Registro Usuario"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MIRegistoCliActionPerformed"/>

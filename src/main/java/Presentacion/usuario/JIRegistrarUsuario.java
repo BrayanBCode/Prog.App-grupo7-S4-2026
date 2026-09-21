@@ -6,7 +6,10 @@ package Presentacion.usuario;
 
 import Logica.controller.IController;
 import java.util.List;
-
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import javax.swing.JOptionPane;
 /**
  *
  * @author briha
@@ -29,6 +32,7 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         FDocente1.setEnabled(false);
 
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -53,21 +57,19 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         checkDocente = new javax.swing.JCheckBox();
         FDocente1 = new javax.swing.JLabel();
         LabelDocente3 = new javax.swing.JLabel();
-        SDia = new javax.swing.JSpinner();
-        SMes = new javax.swing.JSpinner();
-        SAnio = new javax.swing.JSpinner();
         seleccionImagen = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         FDocente2 = new javax.swing.JComboBox<>();
+        fechaNacimiento = new javax.swing.JSpinner();
 
         setBackground(new java.awt.Color(62, 67, 76));
         setBorder(null);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Registrar Cliente");
+        jLabel2.setText("Registrar Usuario");
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Ingrese los siguientes datos:");
@@ -102,8 +104,6 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         LabelDocente3.setForeground(new java.awt.Color(255, 255, 255));
         LabelDocente3.setText("Fecha de nacimiento: ");
 
-        SDia.setRequestFocusEnabled(false);
-
         seleccionImagen.setText("Seleccionar Imagen");
         seleccionImagen.addActionListener(this::seleccionImagenActionPerformed);
 
@@ -111,6 +111,12 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton3.setText("Cancelar");
+
+
+        fechaNacimiento.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        fechaNacimiento.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), new java.util.Date(946736880000L), null, java.util.Calendar.DAY_OF_MONTH));
+        fechaNacimiento.setEditor(new javax.swing.JSpinner.DateEditor(fechaNacimiento,"dd/MM/yyyy"));
+        fechaNacimiento.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -120,7 +126,7 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
                 .addGap(139, 139, 139)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE))
                 .addGap(121, 121, 121))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,24 +155,21 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
                         .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 60, 60))
                     .addComponent(FNombre, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(FApellido, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(FNickname, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(Fmail, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(checkDocente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(SDia, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(SMes, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(SAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(FDocente2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(FDocente2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(fechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(60, 60, 60)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -175,7 +178,7 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
                 .addGap(12, 12, 12)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -209,19 +212,19 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(FDocente1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LabelDocente3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(SDia)
-                                .addComponent(SMes)
-                                .addComponent(SAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(seleccionImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(LabelDocente3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(seleccionImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(34, 34, 34)
+                                .addComponent(fechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -318,27 +321,28 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
         // Construyo la fecha desde los Spinners (Día, Mes, Año).
         // LocalDate.of() valida que la combinación exista realmente
         // (por ejemplo, 31/02/2000 no es una fecha válida).
-        java.time.LocalDate fechaNac;
-     
+        LocalDate fechaNac;
         try {
-            fechaNac = java.time.LocalDate.of(
-                    (Integer) SAnio.getValue(),
-                    (Integer) SMes.getValue(),
-                    (Integer) SDia.getValue()
-            );
-        } catch (java.time.DateTimeException ex) {
-            javax.swing.JOptionPane.showMessageDialog(this,
+            Date fechaSeleccionada =(Date) fechaNacimiento.getValue();
+            fechaNac =fechaSeleccionada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(
+                    this,
                     "La fecha de nacimiento ingresada no es válida.",
                     "Fecha inválida",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+                    JOptionPane.WARNING_MESSAGE
+            );
+        
+
+    return;
+}
+        
 
         // Manejar el campo opcional 'Instituto'
         String instituto = (String) FDocente2.getSelectedItem();
 
         // Si el campo está deshabilitado o vacío, aseguramos enviarlo como null o vacío
-        if (!FDocente2.isEnabled() || instituto.isEmpty()) {
+        if (!FDocente2.isEnabled() || instituto.isBlank()) {
             instituto = null;
         }
 
@@ -384,10 +388,8 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JTextField FNombre;
     private javax.swing.JTextField Fmail;
     private javax.swing.JLabel LabelDocente3;
-    private javax.swing.JSpinner SAnio;
-    private javax.swing.JSpinner SDia;
-    private javax.swing.JSpinner SMes;
     private javax.swing.JCheckBox checkDocente;
+    private javax.swing.JSpinner fechaNacimiento;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
@@ -420,13 +422,18 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
             }
 
             // 3. Limpia Spinners (JSpinner) reiniciando su valor a 0 (o al mínimo)
-            else if (componente instanceof javax.swing.JSpinner) {
-                try {
-                    ((javax.swing.JSpinner) componente).setValue(0);
-                } catch (IllegalArgumentException e) {
-                    // Spinners de fecha (SpinnerDateModel) no aceptan 0: se dejan como están.
+            else if (componente instanceof javax.swing.JSpinner spinner) {
+
+                if (spinner.getModel() instanceof javax.swing.SpinnerDateModel) {
+
+                    spinner.setValue(new java.util.Date());
+
+                } else {
+
+                    spinner.setValue(0);
                 }
             }
+
 
             // 4. Limpia CheckBoxes
             else if (componente instanceof javax.swing.JCheckBox) {
@@ -440,4 +447,5 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
             }
         }
     }
+    
 }

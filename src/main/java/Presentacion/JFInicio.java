@@ -114,7 +114,8 @@ public class JFInicio extends javax.swing.JFrame {
 
         jMenu2.setText("Registros");
 
-        MIRegistoCli.setText("Registro Cliente");
+        MIRegistoCli.setText("Registro Usuario");
+        MIRegistoCli.setActionCommand("Registro Usuario");
         MIRegistoCli.addActionListener(this::MIRegistoCliActionPerformed);
         jMenu2.add(MIRegistoCli);
 
