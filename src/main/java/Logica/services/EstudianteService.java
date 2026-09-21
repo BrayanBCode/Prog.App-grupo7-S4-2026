@@ -15,11 +15,7 @@ public class EstudianteService {
     }
 
     public List<String[]> listarEstudiantesTabla() {
-        List<String[]> resultado = new ArrayList<>();
-        for (Estudiante e : estudianteRepository.listarTodos()) {
-            resultado.add(new String[]{e.getNickname(), e.getNombreU(), e.getApellido(), e.getMail()});
-        }
-        return resultado;
+        return aTabla(estudianteRepository.listarTodos());
     }
 
     /**
@@ -30,6 +26,17 @@ public class EstudianteService {
     public List<String> obtenerEdicionesYProgramas(String nickname) {
         List<String> resultado = new ArrayList<>(estudianteRepository.nombresEdicionesInscriptas(nickname));
         resultado.addAll(estudianteRepository.nombresProgramasInscriptos(nickname));
+        return resultado;
+    }
+
+    /**
+     * {0}=nickname, {1}=nombre, {2}=apellido, {3}=mail.
+     */
+    private List<String[]> aTabla(List<Estudiante> lista) {
+        List<String[]> resultado = new ArrayList<>();
+        for (Estudiante e : lista) {
+            resultado.add(new String[]{e.getNickname(), e.getNombreU(), e.getApellido(), e.getMail()});
+        }
         return resultado;
     }
 }

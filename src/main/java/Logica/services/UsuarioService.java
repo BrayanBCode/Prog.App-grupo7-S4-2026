@@ -94,15 +94,22 @@ public class UsuarioService {
     }
 
     public List<String[]> listarUsuariosTabla() {
-        List<String[]> resultado = new ArrayList<>();
-        for (Usuario u : usuarioRepository.listarTodos()) {
-            resultado.add(new String[]{u.getNickname(), u.getMail()});
-        }
-        return resultado;
+        return aTabla(usuarioRepository.listarTodos());
     }
 
     public boolean esDocente(String nickname) {
         return docenteRepository.existe(nickname);
+    }
+
+    /**
+     * {0}=nickname, {1}=mail -- así queda cada fila de la tabla de usuarios.
+     */
+    private List<String[]> aTabla(List<Usuario> lista) {
+        List<String[]> resultado = new ArrayList<>();
+        for (Usuario u : lista) {
+            resultado.add(new String[]{u.getNickname(), u.getMail()});
+        }
+        return resultado;
     }
 
     /**

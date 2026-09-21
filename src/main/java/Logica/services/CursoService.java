@@ -55,14 +55,7 @@ public class CursoService {
     }
 
     public List<String[]> obtenerCursosTabla(String nombreInstituto) {
-        List<Curso> lista = cursoRepository.cursosPorInstituto(nombreInstituto);
-
-        List<String[]> resultado = new ArrayList<>();
-        for (Curso c : lista) {
-            resultado.add(new String[]{c.getNombreC(), c.getDescripcion()});
-        }
-
-        return resultado;
+        return aTabla(cursoRepository.cursosPorInstituto(nombreInstituto));
     }
 
     /**
@@ -108,5 +101,16 @@ public class CursoService {
 
     public List<String> listarNombresPorInstituto(String nombreInstituto) {
         return cursoRepository.nombresPorInstituto(nombreInstituto);
+    }
+
+    /**
+     * {0}=nombre, {1}=descripcion -- así queda cada fila de la tabla de cursos.
+     */
+    private List<String[]> aTabla(List<Curso> lista) {
+        List<String[]> resultado = new ArrayList<>();
+        for (Curso c : lista) {
+            resultado.add(new String[]{c.getNombreC(), c.getDescripcion()});
+        }
+        return resultado;
     }
 }

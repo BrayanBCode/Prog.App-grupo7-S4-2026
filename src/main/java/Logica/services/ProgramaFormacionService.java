@@ -108,11 +108,7 @@ public class ProgramaFormacionService {
     }
 
     public List<String[]> listarProgramasTabla() {
-        List<String[]> resultado = new ArrayList<>();
-        for (ProgramaFormacion p : programaFormacionRepository.listarTodos()) {
-            resultado.add(new String[]{p.getNombre(), p.getDescripcion()});
-        }
-        return resultado;
+        return aTabla(programaFormacionRepository.listarTodos());
     }
 
     /**
@@ -129,5 +125,16 @@ public class ProgramaFormacionService {
                 p.getFechaFin() != null ? p.getFechaFin().toString() : "",
                 p.getFechaAlta() != null ? p.getFechaAlta().toString() : ""
         };
+    }
+
+    /**
+     * {0}=nombre, {1}=descripcion -- así queda cada fila de la tabla de programas.
+     */
+    private List<String[]> aTabla(List<ProgramaFormacion> lista) {
+        List<String[]> resultado = new ArrayList<>();
+        for (ProgramaFormacion p : lista) {
+            resultado.add(new String[]{p.getNombre(), p.getDescripcion()});
+        }
+        return resultado;
     }
 }

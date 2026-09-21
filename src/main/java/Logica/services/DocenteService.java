@@ -18,7 +18,7 @@ public class DocenteService {
         return aTabla(docenteRepository.listarTodos());
     }
 
-    public List<String[]> listarPorInstituto(String nombreInstituto) {
+    public List<String[]> porInstitutoTabla(String nombreInstituto) {
         return aTabla(docenteRepository.listarPorInstituto(nombreInstituto));
     }
 

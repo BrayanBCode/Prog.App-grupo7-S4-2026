@@ -92,7 +92,7 @@ public class ControllerV2 implements IController {
 
     @Override
     public List<String[]> listarDocentesPorInstituto(String nombreInstituto) {
-        return docenteService.listarPorInstituto(nombreInstituto);
+        return docenteService.porInstitutoTabla(nombreInstituto);
     }
 
     @Override
