@@ -4,26 +4,25 @@ import Logica.entities.cursos.Curso;
 import Logica.entities.cursos.EdicionCurso;
 import Logica.entities.cursos.InscripcionEdicion;
 import Logica.entities.cursos.Instituto;
+import Logica.entities.programaFormacion.ProgramaFormacion;
 import Logica.entities.usuarios.Docente;
 import Logica.entities.usuarios.Estudiante;
-import Logica.entities.programaFormacion.ProgramaFormacion;
 import Logica.entities.usuarios.Usuario;
 import Logica.entities.usuarios.UsuarioID;
-
-import java.time.LocalDate;
-import javax.persistence.EntityManager;
-
 import Persistencia.Conexion;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.TypedQuery;
 
 public class ControllerV1 implements IController {
     // Carpeta especial del Servidor Central donde se guardan las imágenes de usuario.
     // Ajustá la ruta según cómo esté configurado tu Servidor Central.
     private static final String CARPETA_IMAGENES = "imagenes_usuarios";
+    private final Conexion conexion = Conexion.getInstancia();
 
     @Override
     public void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen) {
@@ -134,8 +133,6 @@ public class ControllerV1 implements IController {
             throw new RuntimeException("No se pudo guardar la imagen del usuario: " + ex.getMessage(), ex);
         }
     }
-
-    private final Conexion conexion = Conexion.getInstancia();
 
     @Override
     public List<String> obtenerDataDocente(String nickname) {
@@ -620,6 +617,7 @@ public class ControllerV1 implements IController {
             if (programa == null) {
                 throw new Exception("No existe un Programa de Formación con nombre: " + nombrePrograma);
             }
+            // TODO: ESTO VA EN LA CAPA DE PRESENTACIÓN
             List<String> resultado = new ArrayList<>();
             resultado.add("Nombre: " + programa.getNombre());
             resultado.add("Descripcion: " + programa.getDescripcion());
@@ -627,6 +625,7 @@ public class ControllerV1 implements IController {
             resultado.add("Fecha Fin: " + programa.getFechaFin());
             resultado.add("Fecha Alta: " + programa.getFechaAlta());
             resultado.add("Cursos");
+
             List<Curso> cursos = programa.getCursos();
             if (cursos.isEmpty()) {
                 resultado.add("Sin Cursos Registrados");

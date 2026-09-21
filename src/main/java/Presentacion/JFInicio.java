@@ -42,7 +42,7 @@ public class JFInicio extends javax.swing.JFrame {
         setVisible(true);
 
         Fabrica f =  Fabrica.getInstance();
-        var c = f.getUserControler(ControllerVersion.v1);
+        var c = f.getUserControler(ControllerVersion.v2);
         this.control = c;
 
         // MOVER A OTRO LUGAR

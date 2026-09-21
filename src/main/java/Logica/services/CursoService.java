@@ -65,8 +65,18 @@ public class CursoService {
         return resultado;
     }
 
-    public String[] obtenerCurso(String nombreCurso) {
+    /**
+     * Caso de uso "Consulta de Curso". ControllerV1 validaba que el curso
+     * existiera antes de armar la respuesta -- ese chequeo se había perdido
+     * acá, y sin él esto tiraba NullPointerException en vez de un mensaje
+     * claro cuando el nombre no correspondía a ningún curso.
+     */
+    public String[] obtenerCurso(String nombreCurso) throws Exception {
         Curso c = cursoRepository.buscarPorNombre(nombreCurso);
+
+        if (c == null) {
+            throw new Exception("No se encontró el curso llamado: '" + nombreCurso + "'");
+        }
 
         // TODO: ESTO ES DE PRESENTACIÓN
         String previas = c.getPrevias().isEmpty()
@@ -90,5 +100,13 @@ public class CursoService {
                 docente,
                 previas
         };
+    }
+
+    public List<String> listarNombres() {
+        return cursoRepository.nombres();
+    }
+
+    public List<String> listarNombresPorInstituto(String nombreInstituto) {
+        return cursoRepository.nombresPorInstituto(nombreInstituto);
     }
 }

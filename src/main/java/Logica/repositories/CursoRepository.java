@@ -8,7 +8,6 @@ import Persistencia.Conexion;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CursoRepository {
@@ -99,6 +98,29 @@ public class CursoRepository {
                 em.getTransaction().rollback();
             }
             throw new RuntimeException(e);
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<String> nombres() {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT c.nombre FROM Curso c ORDER BY c.nombre", String.class)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<String> nombresPorInstituto(String nombreInstituto) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT c.nombre FROM Curso c WHERE c.instituto.nombre = :inst ORDER BY c.nombre", String.class)
+                    .setParameter("inst", nombreInstituto)
+                    .getResultList();
         } finally {
             em.close();
         }

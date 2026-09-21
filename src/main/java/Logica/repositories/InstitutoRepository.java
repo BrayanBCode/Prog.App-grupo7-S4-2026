@@ -44,4 +44,28 @@ public class InstitutoRepository {
             em.close();
         }
     }
+
+    /**
+     * Persiste un Instituto nuevo. El Service ya valido que el nombre no
+     * este vacio y que no exista otro igual.
+     */
+    public void guardar(String nombre) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            Instituto instituto = new Instituto();
+            instituto.setNombre(nombre);
+            em.persist(instituto);
+
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException(e);
+        } finally {
+            em.close();
+        }
+    }
 }
