@@ -8,6 +8,7 @@ import Logica.datatypes.ControllerVersion;
 import Logica.controller.Fabrica;
 import Logica.controller.IController;
 import Persistencia.Conexion;
+import Presentacion.Instituto.JIAltaInstituto;
 import Presentacion.edicionCurso.JIRegistroEdicionCurso;
 import Presentacion.edicionCurso.JIinscripcionEdicionCurso;
 import Presentacion.curso.JIAltaCurso;
@@ -39,6 +40,7 @@ public class JFInicio extends javax.swing.JFrame {
      */
     public JFInicio() {
         initComponents();
+        configurarVentana();
         setVisible(true);
 
         Fabrica f =  Fabrica.getInstance();
@@ -71,6 +73,7 @@ public class JFInicio extends javax.swing.JFrame {
         MIinscribcionEdi = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         MIConUsuario = new javax.swing.JMenuItem();
         MIConEdi = new javax.swing.JMenuItem();
@@ -86,22 +89,26 @@ public class JFInicio extends javax.swing.JFrame {
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 1003, Short.MAX_VALUE)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
+            .addGap(0, 771, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jMenu1.setText("Inicio");
@@ -115,7 +122,6 @@ public class JFInicio extends javax.swing.JFrame {
         jMenu2.setText("Registros");
 
         MIRegistoCli.setText("Registro Usuario");
-        MIRegistoCli.setActionCommand("Registro Usuario");
         MIRegistoCli.addActionListener(this::MIRegistoCliActionPerformed);
         jMenu2.add(MIRegistoCli);
 
@@ -138,6 +144,10 @@ public class JFInicio extends javax.swing.JFrame {
         jMenuItem5.setText("Agregar curso a Programa");
         jMenuItem5.addActionListener(this::jMenuItem5ActionPerformed);
         jMenu2.add(jMenuItem5);
+
+        jMenuItem6.setText("Registrar Instituto");
+        jMenuItem6.addActionListener(this::jMenuItem6ActionPerformed);
+        jMenu2.add(jMenuItem6);
 
         jMenuBar1.add(jMenu2);
 
@@ -244,15 +254,82 @@ public class JFInicio extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenu1MouseClicked
 
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+         this.openInternalFrame(new JIAltaInstituto(control));
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+
+    /**
+     * Ajusta la ventana principal a la resolucion de la pantalla del usuario.
+     * Este metodo esta fuera del bloque generado por el editor de formularios,
+     * asi que NetBeans no lo va a sobreescribir la proxima vez que guardes el .form.
+     */
+    private void configurarVentana() {
+        // El GroupLayout generado deja a jPanel1 en PREFERRED_SIZE en el eje
+        // vertical, asi que el escritorio no crece al agrandar/maximizar la
+        // ventana. Lo reemplazamos por BorderLayout, que si estira a los hijos.
+        getContentPane().setLayout(new java.awt.BorderLayout());
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        jPanel1.setLayout(new java.awt.BorderLayout());
+        jPanel1.add(jDesktopPane1, java.awt.BorderLayout.CENTER);
+
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+
+        // Si el usuario cambia el tamanio de la ventana, el internal frame abierto lo sigue
+        jDesktopPane1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                if (selectedFrame != null) {
+                    selectedFrame.setBounds(0, 0, jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
+                    selectedFrame.revalidate();
+                    selectedFrame.repaint();
+                }
+            }
+        });
+    }
 
     private JInternalFrame adjustInternalFrame(JInternalFrame I) {
         var ui = (BasicInternalFrameUI) I.getUI();
         ui.setNorthPane(null);
         I.setBorder(null);
+
+        // OJO: cada formulario (JIRegistrarUsuario, JIAltaCurso, etc.) define su
+        // color de fondo con "setBackground(...)" sobre el propio JInternalFrame
+        // (el "this" del initComponents generado), NO sobre su contentPane. Por
+        // eso el color hay que leerlo de "I" (el frame) y no de
+        // I.getContentPane(): leyendolo del contentPane se obtenia el gris por
+        // defecto de Swing, y ahi se perdia todo el contraste (texto blanco
+        // sobre gris claro, bordes que no se distinguian, etc.).
+        java.awt.Color fondo = I.getBackground();
+
+        // Cada formulario interno tiene su propio GroupLayout de tamaño fijo
+        // (Matisse). En vez de reescribir esos 12 formularios a mano sin poder
+        // probarlos, envolvemos el contenido original en un JScrollPane: si la
+        // pantalla es mas chica que el formulario, aparecen barras de scroll
+        // en vez de cortar controles. El formulario sigue sin estirarse para
+        // aprovechar pantallas grandes (eso es un ajuste aparte, por formulario).
+        java.awt.Container contenidoOriginal = I.getContentPane();
+        if (contenidoOriginal instanceof javax.swing.JComponent jc) {
+            jc.setOpaque(true);
+            jc.setBackground(fondo);
+        }
+
+        javax.swing.JScrollPane scroll = new javax.swing.JScrollPane(contenidoOriginal);
+        scroll.setBorder(null);
+        scroll.setOpaque(true);
+        scroll.getViewport().setOpaque(true);
+        scroll.getViewport().setBackground(fondo);
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
+
+        javax.swing.JPanel contenedor = new javax.swing.JPanel(new java.awt.BorderLayout());
+        contenedor.setBackground(fondo);
+        contenedor.add(scroll, java.awt.BorderLayout.CENTER);
+
+        I.setContentPane(contenedor);
         I.setBounds(0, 0, jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
         return I;
     }
-    
+
     private void openInternalFrame(JInternalFrame I) {
         
         // Elimina la JInternalFrame que este abierto antes de crear otro
@@ -294,6 +371,7 @@ public class JFInicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
