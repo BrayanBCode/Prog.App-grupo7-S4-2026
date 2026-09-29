@@ -3,15 +3,15 @@
   <persistence-unit name="DataBase" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <!-- Entidades Mapeadas -->
-    <class>Logica.entities.cursos.Instituto</class>
-    <class>Logica.entities.cursos.InscripcionEdicion</class>
-    <class>Logica.entities.cursos.Curso</class>
-    <class>Logica.entities.cursos.EdicionCurso</class>
-    <class>Logica.entities.usuarios.Docente</class>
-    <class>Logica.entities.usuarios.Estudiante</class>
-    <class>Logica.entities.usuarios.Usuario</class>
-    <class>Logica.entities.programaFormacion.ProgramaFormacion</class>
-    <class>Logica.entities.programaFormacion.InscripcionPrograma</class>
+    <class>ServidorCentral.Logica.entities.usuarios.Docente</class>
+    <class>ServidorCentral.Logica.entities.usuarios.Estudiante</class>
+    <class>ServidorCentral.Logica.entities.usuarios.Usuario</class>
+    <class>ServidorCentral.Logica.entities.cursos.Curso</class>
+    <class>ServidorCentral.Logica.entities.cursos.InscripcionEdicion</class>
+    <class>ServidorCentral.Logica.entities.cursos.Instituto</class>
+    <class>ServidorCentral.Logica.entities.cursos.EdicionCurso</class>
+    <class>ServidorCentral.Logica.entities.programaFormacion.InscripcionPrograma</class>
+    <class>ServidorCentral.Logica.entities.programaFormacion.ProgramaFormacion</class>
     <properties>
       <!-- Configuración JDBC (Cambia 'laboratorio_db' por el nombre real de tu BD) -->
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3310/laboratorio_db?serverTimezone=UTC&amp;zeroDateTimeBehavior=CONVERT_TO_NULL"/>

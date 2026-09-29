@@ -1,5 +1,5 @@
 
-import Presentacion.JFInicio;
+import ServidorCentral.Presentacion.JFInicio;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
