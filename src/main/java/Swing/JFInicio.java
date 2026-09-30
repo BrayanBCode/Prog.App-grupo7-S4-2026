@@ -7,7 +7,6 @@ package Swing;
 import ServidorCentral.Logica.datatypes.ControllerVersion;
 import ServidorCentral.Logica.controller.Fabrica;
 import ServidorCentral.Logica.controller.IController;
-import ServidorCentral.Persistencia.Conexion;
 import Swing.EdicionCurso.JIRegistroEdicionCurso;
 import Swing.EdicionCurso.JIinscripcionEdicionCurso;
 import Swing.curso.JIAltaCurso;
@@ -20,7 +19,6 @@ import Swing.programaFormacion.JIModificarPrograma;
 import Swing.usuario.JIConsultaUsuario;
 import Swing.usuario.JIModificarUsuario;
 import Swing.usuario.JIRegistrarUsuario;
-import ServidorCentral.Testing.CargarDatosPrueba;
 
 import javax.swing.JInternalFrame;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -45,9 +43,7 @@ public class JFInicio extends javax.swing.JFrame {
         var c = f.getUserControler(ControllerVersion.v2);
         this.control = c;
 
-        // MOVER A OTRO LUGAR
-        // TEST DE BD
-        new CargarDatosPrueba(Conexion.getInstancia().getEntityManager()).cargar();
+
         
     }
 
