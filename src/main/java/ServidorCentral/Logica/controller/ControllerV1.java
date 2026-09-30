@@ -133,6 +133,42 @@ public class ControllerV1 implements IController {
             throw new RuntimeException("No se pudo guardar la imagen del usuario: " + ex.getMessage(), ex);
         }
     }
+    
+        @Override
+    public List<String> listarDocentesEdicion(String nombreEdicion) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            List<Docente> docentes = em.createQuery(
+                            "SELECT DISTINCT d FROM EdicionCurso e JOIN e.docentes d WHERE e.nombre = :n", Docente.class)
+                    .setParameter("n", nombreEdicion)
+                    .getResultList();
+            List<String> resultado = new ArrayList<>();
+            for (Docente d : docentes) {
+                resultado.add(d.getNombreU() + " " + d.getApellido() + " (" + d.getNickname() + ")");
+            }
+            return resultado;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<String> listarEstudiantesEdicion(String nombreEdicion) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            List<Estudiante> estudiantes = em.createQuery(
+                            "SELECT i.estudiante FROM InscripcionEdicion i WHERE i.edicionCurso.nombre = :n", Estudiante.class)
+                    .setParameter("n", nombreEdicion)
+                    .getResultList();
+            List<String> resultado = new ArrayList<>();
+            for (Estudiante e : estudiantes) {
+                resultado.add(e.getNombreU() + " " + e.getApellido() + " (" + e.getNickname() + ")");
+            }
+            return resultado;
+        } finally {
+            em.close();
+        }
+    }
 
     @Override
     public List<String> obtenerDataDocente(String nickname) {

@@ -80,6 +80,23 @@ public class EdicionCursoService {
         edicionCursoRepository.guardar(nombreEdicion, nombreCurso, fechaInicio, fechaFin, cupo, nicknamesDocentes);
     }
 
+        /** Docentes de la edicion, con el formato "Nombre Apellido (nickname)". */
+    public List<String> listarDocentes(String nombreEdicion) {
+        List<String> resultado = new java.util.ArrayList<>();
+        for (ServidorCentral.Logica.entities.usuarios.Docente d : edicionCursoRepository.docentesDeEdicion(nombreEdicion)) {
+            resultado.add(d.getNombreU() + " " + d.getApellido() + " (" + d.getNickname() + ")");
+        }
+        return resultado;
+    }
+
+    /** Estudiantes inscriptos en la edicion, con el formato "Nombre Apellido (nickname)". */
+    public List<String> listarEstudiantes(String nombreEdicion) {
+        List<String> resultado = new java.util.ArrayList<>();
+        for (ServidorCentral.Logica.entities.usuarios.Estudiante e : edicionCursoRepository.estudiantesDeEdicion(nombreEdicion)) {
+            resultado.add(e.getNombreU() + " " + e.getApellido() + " (" + e.getNickname() + ")");
+        }
+        return resultado;
+    }
     /**
      * @return el nombre de la edicion que esta en curso hoy, o null.
      */

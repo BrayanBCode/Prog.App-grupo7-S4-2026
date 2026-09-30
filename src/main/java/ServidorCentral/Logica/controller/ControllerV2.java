@@ -71,6 +71,16 @@ public class ControllerV2 implements IController {
     public void modificarUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac) throws Exception {
         usuarioService.modificar(nickname, mail, nombre, apellido, fechaNac);
     }
+    
+        @Override
+    public List<String> listarDocentesEdicion(String nombreEdicion) {
+        return edicionCursoService.listarDocentes(nombreEdicion);
+    }
+
+    @Override
+    public List<String> listarEstudiantesEdicion(String nombreEdicion) {
+        return edicionCursoService.listarEstudiantes(nombreEdicion);
+    }
 
     @Override
     public List<String[]> listarUsuariosTabla() {

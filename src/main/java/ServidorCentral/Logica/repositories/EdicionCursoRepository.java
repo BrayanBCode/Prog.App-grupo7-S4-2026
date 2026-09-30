@@ -63,7 +63,35 @@ public class EdicionCursoRepository {
             em.close();
         }
     }
+    public List<Docente> docentesDeEdicion(String nombreEdicion) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT DISTINCT d FROM EdicionCurso e JOIN e.docentes d WHERE e.nombre = :n", Docente.class)
+                    .setParameter("n", nombreEdicion)
+                    .getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        } finally {
+            em.close();
+        }
+    }
 
+    public List<Estudiante> estudiantesDeEdicion(String nombreEdicion) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT i.estudiante FROM InscripcionEdicion i WHERE i.edicionCurso.nombre = :n", Estudiante.class)
+                    .setParameter("n", nombreEdicion)
+                    .getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        } finally {
+            em.close();
+        }
+    }
     public long contarInscriptos(String nombreEdicion) {
         EntityManager em = conexion.getEntityManager();
         try {

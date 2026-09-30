@@ -44,6 +44,7 @@ public interface IController {
     String[] obtenerDatosBasicosPrograma(String nombre);
     List<String[]> listarProgramasTabla();
     List<String> listarInstitutos();
-    
+    List<String> listarDocentesEdicion(String nombreEdicion);
+    List<String> listarEstudiantesEdicion(String nombreEdicion);
 }
 

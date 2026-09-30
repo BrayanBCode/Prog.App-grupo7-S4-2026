@@ -4,6 +4,14 @@
  */
 package ServidorCentral.Presentacion.usuario;
 
+import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Presentacion.usuario.JDEdicion;
+import ServidorCentral.Presentacion.usuario.JDPrograma;
+import ServidorCentral.Presentacion.usuario.Ui;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author maida
@@ -12,12 +20,114 @@ public class Datos_Estudiante extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Datos_Estudiante.class.getName());
 
+    private IController control;
+
     /**
      * Creates new form Datos_Usuarios
      */
     public Datos_Estudiante(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+
+    /**
+     * Crea el diálogo ya cargado con los datos del estudiante.
+     *
+     * @param datos         {nickname, email, nombre, apellido, fechaNacimiento, [rutaImagen]}
+     * @param rutaImagen    ruta de la imagen del usuario (puede ser null)
+     * @param inscripciones lista devuelta por control.obtenerEdicionesYProgramas(nickname)
+     * @param control       controlador, para abrir el detalle de ediciones y programas al hacer click
+     */
+    public Datos_Estudiante(java.awt.Frame parent, boolean modal,
+            String[] datos, String rutaImagen, List<String> inscripciones, IController control) {
+        this(parent, modal);
+        this.control = control;
+        cargarDatos(datos, rutaImagen, inscripciones);
+        ServidorCentral.Presentacion.usuario.Ui.ubicar(this, parent);
+        setTitle("Información de Estudiante");
+    }
+
+    // ---------------------------------------------------------------
+    // Carga de datos (fuera del bloque generado por el Form Editor)
+    // ---------------------------------------------------------------
+    private void cargarDatos(String[] datos, String rutaImagen, List<String> inscripciones) {
+
+        // --- Imagen ---
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.GRAY));
+        boolean conImagen = false;
+        if (rutaImagen != null && !rutaImagen.isEmpty()) {
+            java.io.File archivo = new java.io.File(rutaImagen);
+            if (archivo.exists()) {
+                javax.swing.ImageIcon icono = new javax.swing.ImageIcon(rutaImagen);
+                java.awt.Image esc = icono.getImage().getScaledInstance(212, 150, java.awt.Image.SCALE_SMOOTH);
+                jLabel1.setText("");
+                jLabel1.setIcon(new javax.swing.ImageIcon(esc));
+                conImagen = true;
+            }
+        }
+        if (!conImagen) {
+            jLabel1.setIcon(null);
+            jLabel1.setText("Sin imagen");
+        }
+
+        // --- Datos personales ---
+        Object[][] filas = {
+            {"Nickname", datos[0]},
+            {"Nombre", datos[2]},
+            {"Apellido", datos[3]},
+            {"Fecha de nacimiento", datos[4]},
+            {"Correo electrónico", datos[1]}
+        };
+        TablaDatosPersonales.setModel(new DefaultTableModel(filas, new String[]{"Campo", "Valor"}) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
+
+        // --- Ediciones de curso / Programas ---
+        // La lista trae ediciones y programas mezclados; se separan preguntando
+        // al controlador si el nombre corresponde a un programa de formación.
+        List<String> ediciones = new ArrayList<>();
+        List<String> programas = new ArrayList<>();
+        if (inscripciones != null) {
+            for (String item : inscripciones) {
+                if (control.existePrograma(item)) {
+                    programas.add(item);
+                } else {
+                    ediciones.add(item);
+                }
+            }
+        }
+        DefaultTableModel modelo = new DefaultTableModel(
+                new String[]{"Ediciones de curso", "Programas Inscripto"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        int filasTotal = Math.max(ediciones.size(), programas.size());
+        for (int i = 0; i < filasTotal; i++) {
+            modelo.addRow(new Object[]{
+                i < ediciones.size() ? ediciones.get(i) : "",
+                i < programas.size() ? programas.get(i) : ""
+            });
+        }
+        jTable1.setModel(modelo);
+
+        // --- Click: columna 0 = edición, columna 1 = programa ---
+        Ui.alClickear(jTable1, (fila, col) -> {
+            String nombre = Ui.texto(jTable1, fila, col);
+            if (nombre == null) {
+                return;
+            }
+            if (col == 0) {
+                JDEdicion.mostrar(this, control, nombre);
+            } else {
+                JDPrograma.mostrar(this, control, nombre);
+            }
+        });
     }
 
     /**
