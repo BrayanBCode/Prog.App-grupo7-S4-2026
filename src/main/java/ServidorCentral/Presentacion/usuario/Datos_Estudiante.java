@@ -5,9 +5,7 @@
 package ServidorCentral.Presentacion.usuario;
 
 import ServidorCentral.Logica.controller.IController;
-import ServidorCentral.Presentacion.usuario.JDEdicion;
-import ServidorCentral.Presentacion.usuario.JDPrograma;
-import ServidorCentral.Presentacion.usuario.Ui;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -146,6 +144,8 @@ public class Datos_Estudiante extends javax.swing.JDialog {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1366, 768));
+        setResizable(false);
 
         jLabel1.setText("Imagen");
 
