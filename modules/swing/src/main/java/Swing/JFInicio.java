@@ -77,10 +77,6 @@ public class JFInicio extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1366, 768));
-        setMinimumSize(new java.awt.Dimension(1366, 768));
-        setPreferredSize(new java.awt.Dimension(1366, 768));
-        setResizable(false);
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -114,7 +110,7 @@ public class JFInicio extends javax.swing.JFrame {
 
         jMenu2.setText("Registros");
 
-        MIRegistoCli.setText("Registro Usuario");
+        MIRegistoCli.setText("Registro Cliente");
         MIRegistoCli.addActionListener(this::MIRegistoCliActionPerformed);
         jMenu2.add(MIRegistoCli);
 
