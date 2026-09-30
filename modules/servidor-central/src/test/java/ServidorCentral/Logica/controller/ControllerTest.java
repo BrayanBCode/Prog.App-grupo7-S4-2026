@@ -100,7 +100,7 @@ public class ControllerTest {
                     .setParameter(1, PREFIJO + "%")
                     .executeUpdate();
 
-            em.createNativeQuery("DELETE FROM INSTITUTO_DOCENTE WHERE NICKNAME LIKE ?")
+            em.createNativeQuery("DELETE FROM instituto_docente WHERE docente_nickname LIKE ?")
                     .setParameter(1, PREFIJO + "%")
                     .executeUpdate();
 
