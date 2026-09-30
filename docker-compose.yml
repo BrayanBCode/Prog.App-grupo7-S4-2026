@@ -10,24 +10,16 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./db/init:/docker-entrypoint-initdb.d:ro
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
 
-  # Servicio OPCIONAL: compila y empaqueta el jar dentro de un contenedor con
-  # Maven, sin necesidad de instalar Maven en tu máquina.
-  # Uso: docker compose run --rm build
-  build:
-    image: maven:3.9-eclipse-temurin-21
-    working_dir: /app
+  tomcat:
+    image: tomcat:10.1-jdk21
+    container_name: server-tomcat
+    ports:
+      - "8080:8080"
     volumes:
-      - .:/app
-      - maven_repo:/root/.m2
-    command: ["mvn", "-B", "clean", "package"]
-    profiles:
-      - build
+      - ./servidor-web/target/servidor-web-TU_VERSION.war:/usr/local/tomcat/webapps/servidor-web.war
+    depends_on:
+      - server-mysql
 
 volumes:
   db_data:

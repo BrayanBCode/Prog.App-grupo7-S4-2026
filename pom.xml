@@ -19,7 +19,7 @@
     <modules>
         <module>modules/servidor-central</module>
         <module>modules/swing</module>
-        <!-- <module>modules/servidor-web</module> (se activa cuando tenga su pom.xml) -->
+        <module>modules/servidor-web</module>
     </modules>
 
     <build>
