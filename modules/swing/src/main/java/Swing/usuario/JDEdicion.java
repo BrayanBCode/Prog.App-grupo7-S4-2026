@@ -64,6 +64,8 @@ public class JDEdicion extends JDialog {
         contenido.add(new JLabel("Hacé click en el curso para ver su información."), BorderLayout.SOUTH);
         setContentPane(contenido);
 
+        setPreferredSize(new java.awt.Dimension(1366, 768));
+        setResizable(false);
         pack();
         Ui.ubicar(this, owner);
     }
