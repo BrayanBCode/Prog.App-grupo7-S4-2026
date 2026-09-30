@@ -1,19 +1,7 @@
 package ServidorCentral.Logica.controller;
 
-import ServidorCentral.Logica.repositories.CursoRepository;
-import ServidorCentral.Logica.repositories.DocenteRepository;
-import ServidorCentral.Logica.repositories.EdicionCursoRepository;
-import ServidorCentral.Logica.repositories.EstudianteRepository;
-import ServidorCentral.Logica.repositories.InstitutoRepository;
-import ServidorCentral.Logica.repositories.ProgramaFormacionRepository;
-import ServidorCentral.Logica.repositories.UsuarioRepository;
-import ServidorCentral.Logica.services.CursoService;
-import ServidorCentral.Logica.services.DocenteService;
-import ServidorCentral.Logica.services.EdicionCursoService;
-import ServidorCentral.Logica.services.EstudianteService;
-import ServidorCentral.Logica.services.InstitutoService;
-import ServidorCentral.Logica.services.ProgramaFormacionService;
-import ServidorCentral.Logica.services.UsuarioService;
+import ServidorCentral.Logica.repositories.*;
+import ServidorCentral.Logica.services.*;
 import ServidorCentral.Persistencia.Conexion;
 
 import java.time.LocalDate;

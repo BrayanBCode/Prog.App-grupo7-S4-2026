@@ -7,12 +7,13 @@ package ServidorCentral.Logica.entities.usuarios;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.cursos.Instituto;
-import java.util.List;
-import java.time.LocalDate;
-import java.util.ArrayList;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *

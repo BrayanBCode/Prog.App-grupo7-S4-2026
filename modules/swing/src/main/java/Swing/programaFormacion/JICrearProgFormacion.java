@@ -5,12 +5,11 @@
 package Swing.programaFormacion;
 
 import ServidorCentral.Logica.controller.IController;
+
+import javax.swing.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerDateModel;
 
 /**
  * Formulario JInternalFrame para crear un nuevo Programa de Formación.

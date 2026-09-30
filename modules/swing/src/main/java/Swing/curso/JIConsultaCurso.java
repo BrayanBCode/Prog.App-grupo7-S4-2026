@@ -5,10 +5,10 @@
 package Swing.curso;
 
 import ServidorCentral.Logica.controller.IController;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
+
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.List;
 
 /**
  *

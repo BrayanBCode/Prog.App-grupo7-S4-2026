@@ -5,8 +5,9 @@
 package Swing.programaFormacion;
 
 import ServidorCentral.Logica.controller.IController;
+
+import javax.swing.*;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 /**
  *

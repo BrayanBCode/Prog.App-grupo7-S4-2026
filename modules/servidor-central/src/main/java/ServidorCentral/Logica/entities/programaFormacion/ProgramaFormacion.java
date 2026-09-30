@@ -1,16 +1,17 @@
  package ServidorCentral.Logica.entities.programaFormacion;
 
-import ServidorCentral.Logica.entities.cursos.Curso;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+ import ServidorCentral.Logica.entities.cursos.Curso;
 
-@Entity
+ import javax.persistence.Entity;
+ import javax.persistence.Id;
+ import javax.persistence.ManyToMany;
+ import javax.persistence.OneToMany;
+ import java.io.Serializable;
+ import java.time.LocalDate;
+ import java.util.ArrayList;
+ import java.util.List;
+
+ @Entity
 public class ProgramaFormacion implements Serializable {
     
     private static final long serialVersionUID = 1L;

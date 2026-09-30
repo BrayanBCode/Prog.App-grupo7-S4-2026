@@ -6,11 +6,12 @@ package ServidorCentral.Logica.entities.usuarios;
 
 import ServidorCentral.Logica.entities.cursos.InscripcionEdicion;
 import ServidorCentral.Logica.entities.programaFormacion.InscripcionPrograma;
-import java.util.List;
-import java.time.LocalDate;
-import java.util.ArrayList;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *

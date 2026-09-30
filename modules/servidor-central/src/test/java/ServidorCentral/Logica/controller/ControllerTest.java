@@ -1,17 +1,14 @@
 package ServidorCentral.Logica.controller;
 
-import ServidorCentral.Logica.controller.ControllerV1;
 import ServidorCentral.Logica.entities.programaFormacion.ProgramaFormacion;
 import ServidorCentral.Persistencia.Conexion;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.EntityManager;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 

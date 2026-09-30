@@ -5,12 +5,10 @@
 package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IController;
-import Swing.usuario.JDEdicion;
-import Swing.usuario.JDPrograma;
-import Swing.usuario.Ui;
+
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *

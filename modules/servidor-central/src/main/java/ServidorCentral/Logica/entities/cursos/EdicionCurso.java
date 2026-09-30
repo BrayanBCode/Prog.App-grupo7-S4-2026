@@ -5,15 +5,12 @@
 package ServidorCentral.Logica.entities.cursos;
 
 import ServidorCentral.Logica.entities.usuarios.Docente;
-import java.util.List;
-import java.time.LocalDate;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import java.util.List;
 
 /**
  *

@@ -5,15 +5,11 @@
 package ServidorCentral.Logica.entities.cursos;
 
 import ServidorCentral.Logica.entities.usuarios.Docente;
-import java.util.List;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import java.util.List;
 
 /**
  *
@@ -27,12 +23,12 @@ public class Instituto implements Serializable {
     //Forainge key
     @ManyToMany
     @JoinTable(
-        name = "INSTITUTO_NOMBRE",
-        joinColumns = @JoinColumn(name = "INSTITUTO_NOMBRE", referencedColumnName = "NOMBRE"),
-        inverseJoinColumns = {
-            @JoinColumn(name = "DOCENTE_INSTITUTO", referencedColumnName = "NICKNAME"),
-            @JoinColumn(name = "DOCENTE_MAIL", referencedColumnName = "MAIL")
-        }
+            name = "instituto_docente",
+            joinColumns = @JoinColumn(name = "instituto_nombre", referencedColumnName = "NOMBRE"),
+            inverseJoinColumns = {
+                    @JoinColumn(name = "docente_nickname", referencedColumnName = "NICKNAME"),
+                    @JoinColumn(name = "docente_mail", referencedColumnName = "MAIL")
+            }
     )
     private List<Docente> docentes = new ArrayList<>();
     @OneToMany(mappedBy = "instituto")

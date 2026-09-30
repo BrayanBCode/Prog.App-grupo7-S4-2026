@@ -5,17 +5,11 @@
 package ServidorCentral.Logica.entities.programaFormacion;
 
 
-
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
-import java.time.LocalDate;
+
+import javax.persistence.*;
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
+import java.time.LocalDate;
 
 /**
  *

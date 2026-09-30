@@ -1,5 +1,4 @@
 
-import ServidorCentral.Persistencia.Conexion;
 import Swing.JFInicio;
 
 /*

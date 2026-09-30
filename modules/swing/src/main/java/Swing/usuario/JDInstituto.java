@@ -1,16 +1,11 @@
 package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IController;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.Window;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTable;
 
 /** Información completa de un instituto: sus cursos (clickeables) y sus docentes. */
 public class JDInstituto extends JDialog {

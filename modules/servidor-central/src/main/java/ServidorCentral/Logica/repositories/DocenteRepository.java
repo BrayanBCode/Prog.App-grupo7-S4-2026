@@ -85,7 +85,7 @@ public class DocenteRepository {
         EntityManager em = conexion.getEntityManager();
         try {
             return em.createQuery(
-                            "SELECT i.nombre FROM Docente d JOIN d.institutos i WHERE d.nickname = :nick", String.class)
+                            "SELECT i.nombre FROM Docente d JOIN d.institutos i where d.nickname = :nick", String.class)
                     .setParameter("nick", nickname)
                     .getResultList();
         } finally {

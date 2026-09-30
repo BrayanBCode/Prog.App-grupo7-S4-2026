@@ -4,14 +4,14 @@
  */
 package Swing;
 
-import ServidorCentral.Logica.datatypes.ControllerVersion;
 import ServidorCentral.Logica.controller.Fabrica;
 import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.datatypes.ControllerVersion;
+import Swing.EdicionCurso.JIConsultaEdicionCurso;
 import Swing.EdicionCurso.JIRegistroEdicionCurso;
 import Swing.EdicionCurso.JIinscripcionEdicionCurso;
 import Swing.curso.JIAltaCurso;
 import Swing.curso.JIConsultaCurso;
-import Swing.EdicionCurso.JIConsultaEdicionCurso;
 import Swing.programaFormacion.JIAgregarCursoPrograma;
 import Swing.programaFormacion.JIConsultaProgFormacion;
 import Swing.programaFormacion.JICrearProgFormacion;
@@ -20,7 +20,7 @@ import Swing.usuario.JIConsultaUsuario;
 import Swing.usuario.JIModificarUsuario;
 import Swing.usuario.JIRegistrarUsuario;
 
-import javax.swing.JInternalFrame;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**

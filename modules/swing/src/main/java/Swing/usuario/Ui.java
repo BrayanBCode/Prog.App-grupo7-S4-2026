@@ -1,18 +1,12 @@
 package Swing.usuario;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Window;
-import javax.swing.JDialog;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.function.BiConsumer;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 /** Utilidades compartidas por los diálogos de detalle (tablas de solo lectura, click en celda, errores). */
 public final class Ui {

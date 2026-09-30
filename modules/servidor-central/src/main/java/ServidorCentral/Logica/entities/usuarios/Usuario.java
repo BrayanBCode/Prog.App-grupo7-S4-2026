@@ -4,9 +4,9 @@
  */
 package ServidorCentral.Logica.entities.usuarios;
 
-import java.time.LocalDate;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  *
