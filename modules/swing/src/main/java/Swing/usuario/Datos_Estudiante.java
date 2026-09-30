@@ -144,7 +144,6 @@ public class Datos_Estudiante extends javax.swing.JDialog {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
         jLabel1.setText("Imagen");
 
         TablaDatosPersonales.setModel(new javax.swing.table.DefaultTableModel(
@@ -172,6 +171,7 @@ public class Datos_Estudiante extends javax.swing.JDialog {
             }
         ));
         jScrollPane2.setViewportView(jTable1);
+
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

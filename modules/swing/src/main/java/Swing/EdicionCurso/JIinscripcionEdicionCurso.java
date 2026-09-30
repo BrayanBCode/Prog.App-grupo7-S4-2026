@@ -9,6 +9,7 @@ import ServidorCentral.Logica.controller.IController;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,8 +23,8 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
     private String selectedCurso;
     private String selectedInsti;
     private String edicionSeleccionada;      // nombre de la edición vigente del curso elegido
-    private String estudianteNickname;       // nickname del estudiante elegido en el popup
-    private String estudianteMail;           // mail del estudiante elegido en el popup
+    // Estudiantes elegidos en el popup: cada elemento es {nickname, mail}
+    private final List<String[]> estudiantesSeleccionados = new ArrayList<>();
 
     /**
      * Creates new form JIinscripcionEdicionCurso
@@ -131,6 +132,7 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
 
         setBackground(new java.awt.Color(62, 67, 76));
         setForeground(new java.awt.Color(255, 255, 255));
+        setPreferredSize(new java.awt.Dimension(1366, 768));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -222,77 +224,82 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(732, 732, 732)
+                .addComponent(jBtnAceptar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jBtnSelecEstudiante)
+                .addGap(605, 605, 605))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 508, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLblSelecInsti)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
-                                .addComponent(jCBoxSelecInsti, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLblSelecInsti)
+                        .addGap(18, 18, 18)
+                        .addComponent(jCBoxSelecInsti, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(29, 29, 29)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(485, 485, 485))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jBtnCancelar)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLblMail, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLblApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLblNombre)
+                                        .addComponent(jLblNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(37, 37, 37)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jBtnSelecEstudiante)
-                                        .addComponent(jLblNickname, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addComponent(jBtnCancelar)
-                                            .addGap(28, 28, 28))
-                                        .addComponent(jLblMail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLblApellido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTxtNickname, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                                    .addComponent(jTxtApellido)
-                                    .addComponent(jTxtMail)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(28, 28, 28)
-                                        .addComponent(jBtnAceptar))
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                    .addComponent(jTxtNombre))))
-                        .addGap(20, 20, 20))))
+                                        .addComponent(jTxtNickname)
+                                        .addComponent(jTxtApellido)
+                                        .addComponent(jTxtMail)
+                                        .addComponent(jTxtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGap(525, 525, 525))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addGap(588, 588, 588)))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(32, 32, 32)
                 .addComponent(jLabel2)
-                .addGap(18, 18, 18)
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLblSelecInsti)
-                    .addComponent(jCBoxSelecInsti, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jCBoxSelecInsti, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLblSelecInsti))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jBtnSelecEstudiante)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTxtNickname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLblNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTxtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTxtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLblApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLblNickname, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTxtNickname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTxtNombre)
-                    .addComponent(jLblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jTxtMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLblMail, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLblApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTxtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLblMail, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTxtMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBtnCancelar)
-                    .addComponent(jBtnAceptar))
-                .addGap(14, 14, 14))
+                    .addComponent(jBtnAceptar)
+                    .addComponent(jBtnCancelar))
+                .addGap(52, 52, 52))
         );
 
         pack();
@@ -304,6 +311,9 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
 
     private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
         limpiarComponentes(this); // Cancelar: limpia los campos, no cierra la pantalla
+        estudiantesSeleccionados.clear();
+        selectedCurso = null;
+        edicionSeleccionada = null;
     }//GEN-LAST:event_jBtnCancelarActionPerformed
     public void limpiarComponentes(java.awt.Container contenedor) {
         // Recorremos todos los componentes dentro del contenedor actual
@@ -342,30 +352,52 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
 
 
     private void jBtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAceptarActionPerformed
-        try {
-            if (selectedCurso == null) {
-                JOptionPane.showMessageDialog(this, "Tenés que elegir un curso.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            if (edicionSeleccionada == null) {
-                JOptionPane.showMessageDialog(this, "El curso elegido no tiene una edición vigente.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            if (estudianteNickname == null) {
-                JOptionPane.showMessageDialog(this, "Tenés que seleccionar un estudiante.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            control.inscribirEstudianteEdicion(estudianteNickname, estudianteMail, edicionSeleccionada, LocalDate.now());
-
-            JOptionPane.showMessageDialog(this, "Inscripción registrada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
-
-        } catch (Exception e) {
-            System.out.println("Presentacion.inscEdicionCruso.JIinscripcionEdicionCurso.jBtnAceptarActionPerformed()");
-            System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(this, e.getMessage(), "No se pudo inscribir", JOptionPane.ERROR_MESSAGE);
+        if (selectedCurso == null) {
+            JOptionPane.showMessageDialog(this, "Tenés que elegir un curso.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
+            return;
         }
+        if (edicionSeleccionada == null) {
+            JOptionPane.showMessageDialog(this, "El curso elegido no tiene una edición vigente.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (estudiantesSeleccionados.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tenés que seleccionar al menos un estudiante.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Se inscribe a cada estudiante por separado: si uno falla (ya inscripto, cupo lleno, etc.)
+        // los demás igual se inscriben, y al final se informa el resultado de cada uno.
+        List<String[]> fallidos = new ArrayList<>();
+        StringBuilder errores = new StringBuilder();
+        int inscriptos = 0;
+        for (String[] est : estudiantesSeleccionados) {
+            try {
+                control.inscribirEstudianteEdicion(est[0], est[1], edicionSeleccionada, LocalDate.now());
+                inscriptos++;
+            } catch (Exception e) {
+                fallidos.add(est);
+                errores.append("- ").append(est[0]).append(": ").append(e.getMessage()).append("\n");
+            }
+        }
+
+        if (fallidos.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    inscriptos == 1 ? "Inscripción registrada correctamente."
+                                    : "Se inscribieron " + inscriptos + " estudiantes correctamente.",
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+            return;
+        }
+
+        // Quedan seleccionados solo los que no se pudieron inscribir
+        estudiantesSeleccionados.clear();
+        estudiantesSeleccionados.addAll(fallidos);
+        mostrarEstudiantesSeleccionados();
+
+        JOptionPane.showMessageDialog(this,
+                "Inscriptos correctamente: " + inscriptos + "\n"
+                + "No se pudo inscribir a " + fallidos.size() + ":\n" + errores,
+                "No se pudo inscribir a todos", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_jBtnAceptarActionPerformed
 
     private void jCBoxSelecInstiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBoxSelecInstiActionPerformed
@@ -407,6 +439,8 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
         for (String[] fila : control.listarEstudiantesTabla()) {
             modelo.addRow(new Object[]{ fila[0], fila[1], fila[2], fila[3] }); // Nickname, Nombre, Apellido, Email
         }
+        jDTEstudiantes.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        JDSelecEstudiante.setTitle("Seleccionar estudiantes (Ctrl o Shift para elegir varios)");
         JDSelecEstudiante.setLocationRelativeTo(this);
         JDSelecEstudiante.setSize(400, 350);
         JDSelecEstudiante.setVisible(true); // modal: el código se detiene acá hasta que cierren el popup
@@ -417,22 +451,41 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jDbtnCancelarActionPerformed
 
     private void jDAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDAceptarActionPerformed
-        int fila = jDTEstudiantes.getSelectedRow();
-        if (fila < 0) {
-            JOptionPane.showMessageDialog(JDSelecEstudiante, "Tenés que elegir un estudiante de la lista.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
+        int[] filas = jDTEstudiantes.getSelectedRows();
+        if (filas.length == 0) {
+            JOptionPane.showMessageDialog(JDSelecEstudiante, "Tenés que elegir al menos un estudiante de la lista.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        estudianteNickname = (String) jDTEstudiantes.getValueAt(fila, 0);
-        estudianteMail = (String) jDTEstudiantes.getValueAt(fila, 3);
-
-        jTxtNickname.setText(estudianteNickname);
-        jTxtNombre.setText((String) jDTEstudiantes.getValueAt(fila, 1));
-        jTxtApellido.setText((String) jDTEstudiantes.getValueAt(fila, 2));
-        jTxtMail.setText(estudianteMail);
+        estudiantesSeleccionados.clear();
+        for (int fila : filas) {
+            estudiantesSeleccionados.add(new String[]{
+                (String) jDTEstudiantes.getValueAt(fila, 0),   // nickname
+                (String) jDTEstudiantes.getValueAt(fila, 3),   // mail
+                (String) jDTEstudiantes.getValueAt(fila, 1),   // nombre
+                (String) jDTEstudiantes.getValueAt(fila, 2)    // apellido
+            });
+        }
+        mostrarEstudiantesSeleccionados();
 
         JDSelecEstudiante.setVisible(false);
     }//GEN-LAST:event_jDAceptarActionPerformed
+    
+    /** Muestra en los campos de solo lectura los datos de todos los estudiantes elegidos, separados por coma. */
+    private void mostrarEstudiantesSeleccionados() {
+        java.util.List<String> nicks = new ArrayList<>(), nombres = new ArrayList<>(),
+                apellidos = new ArrayList<>(), mails = new ArrayList<>();
+        for (String[] e : estudiantesSeleccionados) {
+            nicks.add(e[0]);
+            mails.add(e[1]);
+            nombres.add(e.length > 2 ? e[2] : "");
+            apellidos.add(e.length > 3 ? e[3] : "");
+        }
+        jTxtNickname.setText(String.join(", ", nicks));
+        jTxtNombre.setText(String.join(", ", nombres));
+        jTxtApellido.setText(String.join(", ", apellidos));
+        jTxtMail.setText(String.join(", ", mails));
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog JDSelecEstudiante;

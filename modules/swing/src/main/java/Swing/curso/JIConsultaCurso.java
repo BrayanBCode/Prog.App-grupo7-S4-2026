@@ -110,34 +110,13 @@ public class JIConsultaCurso extends javax.swing.JInternalFrame {
     }
 
     private void mostrarDetalleEdicion(String nombreEdicion) {
-        try {
-            String[] datos = control.obtenerEdicionCurso(nombreEdicion);
-
-            String mensaje = "DETALLES DE LA EDICIÓN DE CURSO:\n\n"
-                    + "Nombre: " + datos[0] + "\n"
-                    + "Curso: " + datos[1] + "\n"
-                    + "Fecha de inicio: " + datos[2] + "\n"
-                    + "Fecha de fin: " + datos[3] + "\n"
-                    + "Cupo: " + datos[4] + "\n"
-                    + "Fecha de publicación: " + datos[5];
-
-            JOptionPane.showMessageDialog(this, mensaje, "Información de Edición de Curso", JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        Swing.usuario.JDEdicion.mostrar(
+                javax.swing.SwingUtilities.getWindowAncestor(this), control, nombreEdicion);
     }
 
     private void mostrarDetallePrograma(String nombrePrograma) {
-        try {
-            List<String> datos = control.obtenerDataPrograma(nombrePrograma);
-            StringBuilder sb = new StringBuilder();
-            for (String linea : datos) {
-                sb.append(linea).append("\n");
-            }
-            JOptionPane.showMessageDialog(this, sb.toString(), "Información de Programa de Formación", JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        Swing.usuario.JDPrograma.mostrar(
+                javax.swing.SwingUtilities.getWindowAncestor(this), control, nombrePrograma);
     }
 
     private void limpiarTabla(javax.swing.JTable tabla) {
@@ -174,6 +153,7 @@ public class JIConsultaCurso extends javax.swing.JInternalFrame {
         txtAreaDetalle = new javax.swing.JTextArea();
 
         setBackground(new java.awt.Color(62, 67, 76));
+        setPreferredSize(new java.awt.Dimension(1366, 768));
 
         comboInstituto.setName("comboInstituto"); // NOI18N
         comboInstituto.addActionListener(this::comboInstitutoActionPerformed);
@@ -285,59 +265,65 @@ public class JIConsultaCurso extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGap(444, 444, 444)
+                    .addComponent(jScrollPaneEdiciones, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jScrollPanePrograms, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(273, 273, 273)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabelCursos)
+                        .addComponent(jLabelDetalle))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPaneCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jScrollPaneCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelEdiciones)
-                            .addComponent(jScrollPaneEdiciones, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelProgramas)
-                                .addGap(0, 65, Short.MAX_VALUE))
-                            .addComponent(jScrollPanePrograms, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelCursos)
-                            .addComponent(jLabelDetalle)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelInstituto)
-                                .addGap(23, 23, 23)
-                                .addComponent(comboInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabelTitulo))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGap(384, 384, 384)
+                .addComponent(jLabelInstituto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(comboInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(464, 464, 464)
+                .addComponent(jLabelEdiciones)
+                .addGap(100, 100, 100)
+                .addComponent(jLabelProgramas))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(528, 528, 528)
+                .addComponent(jLabelTitulo))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabelTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboInstituto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelInstituto))
-                .addGap(18, 18, 18)
-                .addComponent(jLabelCursos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelDetalle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelEdiciones)
-                    .addComponent(jLabelProgramas))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPaneEdiciones, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPanePrograms, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(13, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPaneCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabelCursos)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelDetalle)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabelProgramas)
+                            .addComponent(jLabelEdiciones))
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPanePrograms, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPaneEdiciones, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(205, Short.MAX_VALUE))
         );
 
         pack();
