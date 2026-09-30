@@ -27,11 +27,11 @@ public class Instituto implements Serializable {
     //Forainge key
     @ManyToMany
     @JoinTable(
-        name = "instituto_docente",
-        joinColumns = @JoinColumn(name = "instituto_nombre", referencedColumnName = "nombre"),
+        name = "INSTITUTO_NOMBRE",
+        joinColumns = @JoinColumn(name = "INSTITUTO_NOMBRE", referencedColumnName = "NOMBRE"),
         inverseJoinColumns = {
-            @JoinColumn(name = "docente_nickname", referencedColumnName = "nickname"),
-            @JoinColumn(name = "docente_mail", referencedColumnName = "Mail")
+            @JoinColumn(name = "DOCENTE_INSTITUTO", referencedColumnName = "NICKNAME"),
+            @JoinColumn(name = "DOCENTE_MAIL", referencedColumnName = "MAIL")
         }
     )
     private List<Docente> docentes = new ArrayList<>();

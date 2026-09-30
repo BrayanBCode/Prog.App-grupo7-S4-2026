@@ -23,7 +23,7 @@ public class Estudiante extends Usuario {
     private List<InscripcionEdicion> inscripciones = new ArrayList<>();
     
     @OneToMany(mappedBy= "estudiante")
-    private List<InscripcionPrograma> pInscripcion = new ArrayList<>();
+    private List<InscripcionPrograma> pInscripciones = new ArrayList<>();
     // Constructor vacío necesario para JPA
     public Estudiante() {
         super();
@@ -42,6 +42,7 @@ public class Estudiante extends Usuario {
     //Metodos
     public String getNombre(){return super.getNombreU();} //El super es para heredar el comportamiento del padre (poder acceder al atributo Nombre)
     public List<InscripcionEdicion> getInscripciones(){return inscripciones;}
+    public List<InscripcionPrograma> getInscripcionesProg(){return pInscripciones;}
     
     
     
