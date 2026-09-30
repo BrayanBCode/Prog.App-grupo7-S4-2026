@@ -12,6 +12,7 @@ import Swing.EdicionCurso.JIRegistroEdicionCurso;
 import Swing.EdicionCurso.JIinscripcionEdicionCurso;
 import Swing.curso.JIAltaCurso;
 import Swing.curso.JIConsultaCurso;
+import Swing.instituto.JIAltaInstituto;
 import Swing.programaFormacion.JIAgregarCursoPrograma;
 import Swing.programaFormacion.JIConsultaProgFormacion;
 import Swing.programaFormacion.JICrearProgFormacion;
@@ -67,6 +68,7 @@ public class JFInicio extends javax.swing.JFrame {
         MIinscribcionEdi = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        MIRegistroInsti = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         MIConUsuario = new javax.swing.JMenuItem();
         MIConEdi = new javax.swing.JMenuItem();
@@ -137,6 +139,10 @@ public class JFInicio extends javax.swing.JFrame {
         jMenuItem5.setText("Agregar curso a Programa");
         jMenuItem5.addActionListener(this::jMenuItem5ActionPerformed);
         jMenu2.add(jMenuItem5);
+
+        MIRegistroInsti.setText("Registro Instituto");
+        MIRegistroInsti.addActionListener(this::MIRegistroInstiActionPerformed);
+        jMenu2.add(MIRegistroInsti);
 
         jMenuBar1.add(jMenu2);
 
@@ -236,6 +242,10 @@ public class JFInicio extends javax.swing.JFrame {
         this.openInternalFrame(new JIAgregarCursoPrograma(control));
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
+    private void MIRegistroInstiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MIRegistroInstiActionPerformed
+        this.openInternalFrame(new JIAltaInstituto(control));
+    }//GEN-LAST:event_MIRegistroInstiActionPerformed
+
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
         if(this.selectedFrame != null) {
             this.selectedFrame.dispose();
@@ -281,6 +291,7 @@ public class JFInicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem MIRegistoCli;
     private javax.swing.JMenuItem MIRegistroCur;
     private javax.swing.JMenuItem MIRegistroEdi;
+    private javax.swing.JMenuItem MIRegistroInsti;
     private javax.swing.JMenuItem MIinscribcionEdi;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenu jMenu1;

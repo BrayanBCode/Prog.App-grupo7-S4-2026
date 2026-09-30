@@ -9,6 +9,7 @@ import ServidorCentral.Logica.controller.IController;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,8 +23,8 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
     private String selectedCurso;
     private String selectedInsti;
     private String edicionSeleccionada;      // nombre de la edición vigente del curso elegido
-    private String estudianteNickname;       // nickname del estudiante elegido en el popup
-    private String estudianteMail;           // mail del estudiante elegido en el popup
+    // Estudiantes elegidos en el popup: cada elemento es {nickname, mail}
+    private final List<String[]> estudiantesSeleccionados = new ArrayList<>();
 
     /**
      * Creates new form JIinscripcionEdicionCurso
@@ -310,6 +311,9 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
 
     private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
         limpiarComponentes(this); // Cancelar: limpia los campos, no cierra la pantalla
+        estudiantesSeleccionados.clear();
+        selectedCurso = null;
+        edicionSeleccionada = null;
     }//GEN-LAST:event_jBtnCancelarActionPerformed
     public void limpiarComponentes(java.awt.Container contenedor) {
         // Recorremos todos los componentes dentro del contenedor actual
@@ -348,30 +352,52 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
 
 
     private void jBtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAceptarActionPerformed
-        try {
-            if (selectedCurso == null) {
-                JOptionPane.showMessageDialog(this, "Tenés que elegir un curso.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            if (edicionSeleccionada == null) {
-                JOptionPane.showMessageDialog(this, "El curso elegido no tiene una edición vigente.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            if (estudianteNickname == null) {
-                JOptionPane.showMessageDialog(this, "Tenés que seleccionar un estudiante.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            control.inscribirEstudianteEdicion(estudianteNickname, estudianteMail, edicionSeleccionada, LocalDate.now());
-
-            JOptionPane.showMessageDialog(this, "Inscripción registrada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
-
-        } catch (Exception e) {
-            System.out.println("Presentacion.inscEdicionCruso.JIinscripcionEdicionCurso.jBtnAceptarActionPerformed()");
-            System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(this, e.getMessage(), "No se pudo inscribir", JOptionPane.ERROR_MESSAGE);
+        if (selectedCurso == null) {
+            JOptionPane.showMessageDialog(this, "Tenés que elegir un curso.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
+            return;
         }
+        if (edicionSeleccionada == null) {
+            JOptionPane.showMessageDialog(this, "El curso elegido no tiene una edición vigente.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (estudiantesSeleccionados.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tenés que seleccionar al menos un estudiante.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Se inscribe a cada estudiante por separado: si uno falla (ya inscripto, cupo lleno, etc.)
+        // los demás igual se inscriben, y al final se informa el resultado de cada uno.
+        List<String[]> fallidos = new ArrayList<>();
+        StringBuilder errores = new StringBuilder();
+        int inscriptos = 0;
+        for (String[] est : estudiantesSeleccionados) {
+            try {
+                control.inscribirEstudianteEdicion(est[0], est[1], edicionSeleccionada, LocalDate.now());
+                inscriptos++;
+            } catch (Exception e) {
+                fallidos.add(est);
+                errores.append("- ").append(est[0]).append(": ").append(e.getMessage()).append("\n");
+            }
+        }
+
+        if (fallidos.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    inscriptos == 1 ? "Inscripción registrada correctamente."
+                                    : "Se inscribieron " + inscriptos + " estudiantes correctamente.",
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+            return;
+        }
+
+        // Quedan seleccionados solo los que no se pudieron inscribir
+        estudiantesSeleccionados.clear();
+        estudiantesSeleccionados.addAll(fallidos);
+        mostrarEstudiantesSeleccionados();
+
+        JOptionPane.showMessageDialog(this,
+                "Inscriptos correctamente: " + inscriptos + "\n"
+                + "No se pudo inscribir a " + fallidos.size() + ":\n" + errores,
+                "No se pudo inscribir a todos", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_jBtnAceptarActionPerformed
 
     private void jCBoxSelecInstiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBoxSelecInstiActionPerformed
@@ -413,6 +439,8 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
         for (String[] fila : control.listarEstudiantesTabla()) {
             modelo.addRow(new Object[]{ fila[0], fila[1], fila[2], fila[3] }); // Nickname, Nombre, Apellido, Email
         }
+        jDTEstudiantes.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        JDSelecEstudiante.setTitle("Seleccionar estudiantes (Ctrl o Shift para elegir varios)");
         JDSelecEstudiante.setLocationRelativeTo(this);
         JDSelecEstudiante.setSize(400, 350);
         JDSelecEstudiante.setVisible(true); // modal: el código se detiene acá hasta que cierren el popup
@@ -423,22 +451,41 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jDbtnCancelarActionPerformed
 
     private void jDAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDAceptarActionPerformed
-        int fila = jDTEstudiantes.getSelectedRow();
-        if (fila < 0) {
-            JOptionPane.showMessageDialog(JDSelecEstudiante, "Tenés que elegir un estudiante de la lista.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
+        int[] filas = jDTEstudiantes.getSelectedRows();
+        if (filas.length == 0) {
+            JOptionPane.showMessageDialog(JDSelecEstudiante, "Tenés que elegir al menos un estudiante de la lista.", "Datos incompletos", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        estudianteNickname = (String) jDTEstudiantes.getValueAt(fila, 0);
-        estudianteMail = (String) jDTEstudiantes.getValueAt(fila, 3);
-
-        jTxtNickname.setText(estudianteNickname);
-        jTxtNombre.setText((String) jDTEstudiantes.getValueAt(fila, 1));
-        jTxtApellido.setText((String) jDTEstudiantes.getValueAt(fila, 2));
-        jTxtMail.setText(estudianteMail);
+        estudiantesSeleccionados.clear();
+        for (int fila : filas) {
+            estudiantesSeleccionados.add(new String[]{
+                (String) jDTEstudiantes.getValueAt(fila, 0),   // nickname
+                (String) jDTEstudiantes.getValueAt(fila, 3),   // mail
+                (String) jDTEstudiantes.getValueAt(fila, 1),   // nombre
+                (String) jDTEstudiantes.getValueAt(fila, 2)    // apellido
+            });
+        }
+        mostrarEstudiantesSeleccionados();
 
         JDSelecEstudiante.setVisible(false);
     }//GEN-LAST:event_jDAceptarActionPerformed
+    
+    /** Muestra en los campos de solo lectura los datos de todos los estudiantes elegidos, separados por coma. */
+    private void mostrarEstudiantesSeleccionados() {
+        java.util.List<String> nicks = new ArrayList<>(), nombres = new ArrayList<>(),
+                apellidos = new ArrayList<>(), mails = new ArrayList<>();
+        for (String[] e : estudiantesSeleccionados) {
+            nicks.add(e[0]);
+            mails.add(e[1]);
+            nombres.add(e.length > 2 ? e[2] : "");
+            apellidos.add(e.length > 3 ? e[3] : "");
+        }
+        jTxtNickname.setText(String.join(", ", nicks));
+        jTxtNombre.setText(String.join(", ", nombres));
+        jTxtApellido.setText(String.join(", ", apellidos));
+        jTxtMail.setText(String.join(", ", mails));
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog JDSelecEstudiante;

@@ -110,34 +110,13 @@ public class JIConsultaCurso extends javax.swing.JInternalFrame {
     }
 
     private void mostrarDetalleEdicion(String nombreEdicion) {
-        try {
-            String[] datos = control.obtenerEdicionCurso(nombreEdicion);
-
-            String mensaje = "DETALLES DE LA EDICIÓN DE CURSO:\n\n"
-                    + "Nombre: " + datos[0] + "\n"
-                    + "Curso: " + datos[1] + "\n"
-                    + "Fecha de inicio: " + datos[2] + "\n"
-                    + "Fecha de fin: " + datos[3] + "\n"
-                    + "Cupo: " + datos[4] + "\n"
-                    + "Fecha de publicación: " + datos[5];
-
-            JOptionPane.showMessageDialog(this, mensaje, "Información de Edición de Curso", JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        Swing.usuario.JDEdicion.mostrar(
+                javax.swing.SwingUtilities.getWindowAncestor(this), control, nombreEdicion);
     }
 
     private void mostrarDetallePrograma(String nombrePrograma) {
-        try {
-            List<String> datos = control.obtenerDataPrograma(nombrePrograma);
-            StringBuilder sb = new StringBuilder();
-            for (String linea : datos) {
-                sb.append(linea).append("\n");
-            }
-            JOptionPane.showMessageDialog(this, sb.toString(), "Información de Programa de Formación", JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        Swing.usuario.JDPrograma.mostrar(
+                javax.swing.SwingUtilities.getWindowAncestor(this), control, nombrePrograma);
     }
 
     private void limpiarTabla(javax.swing.JTable tabla) {

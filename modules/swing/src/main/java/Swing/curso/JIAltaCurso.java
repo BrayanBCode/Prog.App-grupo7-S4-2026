@@ -167,7 +167,7 @@ public class JIAltaCurso extends javax.swing.JInternalFrame {
         lblDescripcionCurso.setText("Descripción:");
 
         SDuracion.setModel(new javax.swing.SpinnerNumberModel());
-        SDuracion.setValue(1);
+        SDuracion.setValue(0);
 
         lblDuracion.setForeground(new java.awt.Color(255, 255, 255));
         lblDuracion.setText("Duracion:");
@@ -175,7 +175,7 @@ public class JIAltaCurso extends javax.swing.JInternalFrame {
         lblCantHoras.setForeground(new java.awt.Color(255, 255, 255));
         lblCantHoras.setText("Cant. horas:");
 
-        SCantHoras.setValue(1);
+        SCantHoras.setValue(0);
 
         lblCantCreditos.setForeground(new java.awt.Color(255, 255, 255));
         lblCantCreditos.setText("Cant. creditos:");

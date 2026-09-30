@@ -209,24 +209,11 @@ public class JIConsultaEdicionCurso extends javax.swing.JInternalFrame {
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         int fila = jTable2.getSelectedRow();
-    if (fila != -1) {
-        try {
+        if (fila != -1) {
             String edicionSeleccionada = jTable2.getValueAt(fila, 0).toString();
-            String[] datos = control.obtenerEdicionCurso(edicionSeleccionada);
-
-            String mensaje = "DETALLES DE LA EDICIÓN DE CURSO:\n\n"
-                    + "Nombre: " + datos[0] + "\n"
-                    + "Curso: " + datos[1] + "\n"
-                    + "Fecha de inicio: " + datos[2] + "\n"
-                    + "Fecha de fin: " + datos[3] + "\n"
-                    + "Cupo: " + datos[4] + "\n"
-                    + "Fecha de publicación: " + datos[5];
-
-            JOptionPane.showMessageDialog(this, mensaje, "Información de Edición de Curso", JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            Swing.usuario.JDEdicion.mostrar(
+                    javax.swing.SwingUtilities.getWindowAncestor(this), control, edicionSeleccionada);
         }
-    }
     }//GEN-LAST:event_jTable2MouseClicked
  
 
