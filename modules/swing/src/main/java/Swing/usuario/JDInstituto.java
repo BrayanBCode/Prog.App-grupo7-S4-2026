@@ -1,6 +1,8 @@
 package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +12,7 @@ import java.util.List;
 /** Información completa de un instituto: sus cursos (clickeables) y sus docentes. */
 public class JDInstituto extends JDialog {
 
-    public static void mostrar(Window owner, IController control, String nombreInstituto) {
+    public static void mostrar(Window owner, IControllerV2 control, String nombreInstituto) {
         try {
             new JDInstituto(owner, control, nombreInstituto).setVisible(true);
         } catch (Exception ex) {
@@ -18,7 +20,7 @@ public class JDInstituto extends JDialog {
         }
     }
 
-    private JDInstituto(Window owner, IController control, String nombre) {
+    private JDInstituto(Window owner, IControllerV2 control, String nombre) {
         super(owner, "Información de Instituto", ModalityType.MODELESS);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -39,9 +41,9 @@ public class JDInstituto extends JDialog {
 
         // Docentes del instituto ({0}=nickname, {1}=texto a mostrar)
         List<Object[]> filasDocentes = new ArrayList<>();
-        List<String[]> docentes = control.listarDocentesPorInstituto(nombre);
+        List<DTDocenteResumen> docentes = control.listarDocentesPorInstituto(nombre);
         if (docentes != null) {
-            for (String[] d : docentes) filasDocentes.add(new Object[]{d[1]});
+            for (DTDocenteResumen d : docentes) filasDocentes.add(new Object[]{d.nombre()});
         }
         JTable tDocentes = Ui.tabla(new String[]{"Docentes"}, filasDocentes);
 

@@ -1,5 +1,7 @@
 package ServidorCentral.Logica.services;
 
+import ServidorCentral.Logica.datatypes.DTUsuario;
+import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
 import ServidorCentral.Logica.entities.cursos.Instituto;
 import ServidorCentral.Logica.entities.usuarios.Usuario;
 import ServidorCentral.Logica.repositories.DocenteRepository;
@@ -78,22 +80,25 @@ public class UsuarioService {
         usuarioRepository.actualizarDatosBasicos(nickname, mail, nombre, apellido, fechaNac);
     }
 
-    public String[] obtenerDataUsuario(String nickname, String mail) {
+    /**
+     * @return los datos del usuario, o null si no existe.
+     */
+    public DTUsuario obtenerDataUsuario(String nickname, String mail) {
         Usuario u = usuarioRepository.buscarPorId(nickname, mail);
         if (u == null) {
             return null;
         }
-        return new String[]{
+        return new DTUsuario(
                 u.getNickname(),
                 u.getMail(),
                 u.getNombreU(),
                 u.getApellido(),
-                u.getFechaNac() != null ? u.getFechaNac().toString() : "",
+                u.getFechaNac(),
                 u.getImagen()
-        };
+        );
     }
 
-    public List<String[]> listarUsuariosTabla() {
+    public List<DTUsuarioResumen> listarUsuariosTabla() {
         return aTabla(usuarioRepository.listarTodos());
     }
 
@@ -102,12 +107,12 @@ public class UsuarioService {
     }
 
     /**
-     * {0}=nickname, {1}=mail -- así queda cada fila de la tabla de usuarios.
+     * Cada fila de la tabla de usuarios: nickname + mail.
      */
-    private List<String[]> aTabla(List<Usuario> lista) {
-        List<String[]> resultado = new ArrayList<>();
+    private List<DTUsuarioResumen> aTabla(List<Usuario> lista) {
+        List<DTUsuarioResumen> resultado = new ArrayList<>();
         for (Usuario u : lista) {
-            resultado.add(new String[]{u.getNickname(), u.getMail()});
+            resultado.add(new DTUsuarioResumen(u.getNickname(), u.getMail()));
         }
         return resultado;
     }
@@ -154,4 +159,4 @@ public class UsuarioService {
             throw new RuntimeException("No se pudo guardar la imagen del usuario: " + ex.getMessage(), ex);
         }
     }
-}
+}

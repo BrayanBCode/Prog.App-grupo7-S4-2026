@@ -1,6 +1,8 @@
 package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTCurso;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,16 +18,16 @@ public class JDCurso extends JDialog {
     };
     private static final int FILA_INSTITUTO = 7;
 
-    public static void mostrar(Window owner, IController control, String nombreCurso) {
+    public static void mostrar(Window owner, IControllerV2 control, String nombreCurso) {
         try {
-            String[] datos = control.obtenerDataCurso(nombreCurso);
+            DTCurso datos = control.obtenerDataCurso(nombreCurso);
             new JDCurso(owner, control, datos, nombreCurso).setVisible(true);
         } catch (Exception ex) {
             Ui.error(owner, ex.getMessage());
         }
     }
 
-    private JDCurso(Window owner, IController control, String[] d, String nombreCurso) {
+    private JDCurso(Window owner, IControllerV2 control, DTCurso d, String nombreCurso) {
         super(owner, "Información de Curso", ModalityType.MODELESS);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 

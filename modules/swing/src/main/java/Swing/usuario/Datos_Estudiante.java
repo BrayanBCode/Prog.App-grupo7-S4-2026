@@ -5,6 +5,7 @@
 package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.datatypes.DTUsuario;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author maida
  */
 public class Datos_Estudiante extends javax.swing.JDialog {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Datos_Estudiante.class.getName());
 
     private IController control;
@@ -37,7 +38,7 @@ public class Datos_Estudiante extends javax.swing.JDialog {
      * @param control       controlador, para abrir el detalle de ediciones y programas al hacer click
      */
     public Datos_Estudiante(java.awt.Frame parent, boolean modal,
-            String[] datos, String rutaImagen, List<String> inscripciones, IController control) {
+                            DTUsuario datos, String rutaImagen, List<String> inscripciones, IController control) {
         this(parent, modal);
         this.control = control;
         cargarDatos(datos, rutaImagen, inscripciones);
@@ -48,7 +49,7 @@ public class Datos_Estudiante extends javax.swing.JDialog {
     // ---------------------------------------------------------------
     // Carga de datos (fuera del bloque generado por el Form Editor)
     // ---------------------------------------------------------------
-    private void cargarDatos(String[] datos, String rutaImagen, List<String> inscripciones) {
+    private void cargarDatos(DTUsuario datos, String rutaImagen, List<String> inscripciones) {
 
         // --- Imagen ---
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -71,11 +72,11 @@ public class Datos_Estudiante extends javax.swing.JDialog {
 
         // --- Datos personales ---
         Object[][] filas = {
-            {"Nickname", datos[0]},
-            {"Nombre", datos[2]},
-            {"Apellido", datos[3]},
-            {"Fecha de nacimiento", datos[4]},
-            {"Correo electrónico", datos[1]}
+                {"Nickname", datos.nickname()},
+                {"Nombre", datos.nombre()},
+                {"Apellido", datos.apellido()},
+                {"Fecha de nacimiento", datos.fechaNac()},
+                {"Correo electrónico", datos.mail()}
         };
         TablaDatosPersonales.setModel(new DefaultTableModel(filas, new String[]{"Campo", "Valor"}) {
             @Override
@@ -108,8 +109,8 @@ public class Datos_Estudiante extends javax.swing.JDialog {
         int filasTotal = Math.max(ediciones.size(), programas.size());
         for (int i = 0; i < filasTotal; i++) {
             modelo.addRow(new Object[]{
-                i < ediciones.size() ? ediciones.get(i) : "",
-                i < programas.size() ? programas.get(i) : ""
+                    i < ediciones.size() ? ediciones.get(i) : "",
+                    i < programas.size() ? programas.get(i) : ""
             });
         }
         jTable1.setModel(modelo);
@@ -147,28 +148,28 @@ public class Datos_Estudiante extends javax.swing.JDialog {
         jLabel1.setText("Imagen");
 
         TablaDatosPersonales.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Campo", "Valor"
-            }
+                new Object[][]{
+                        {null, null},
+                        {null, null},
+                        {null, null},
+                        {null, null}
+                },
+                new String[]{
+                        "Campo", "Valor"
+                }
         ));
         jScrollPane1.setViewportView(TablaDatosPersonales);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Ediciones de curso", "Programas Inscripto"
-            }
+                new Object[][]{
+                        {null, null},
+                        {null, null},
+                        {null, null},
+                        {null, null}
+                },
+                new String[]{
+                        "Ediciones de curso", "Programas Inscripto"
+                }
         ));
         jScrollPane2.setViewportView(jTable1);
 
@@ -176,29 +177,29 @@ public class Datos_Estudiante extends javax.swing.JDialog {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(38, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(38, 38, 38)
+                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(38, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         pack();
@@ -211,7 +212,7 @@ public class Datos_Estudiante extends javax.swing.JDialog {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

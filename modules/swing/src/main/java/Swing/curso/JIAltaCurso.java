@@ -5,6 +5,7 @@
 package Swing.curso;
 
 import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -21,7 +22,7 @@ import java.util.regex.Pattern;
  */
 public class JIAltaCurso extends javax.swing.JInternalFrame {
 
-    private IController control;
+    private IControllerV2 control;
     private final List<String> docentesNicknames = new ArrayList<>();
     // Proponer que sean un estándar estático inmutable
     private final String admitedPattern = "[^a-zA-Z0-9 áéíóúÁÉÍÓÚñÑ]";
@@ -34,7 +35,7 @@ public class JIAltaCurso extends javax.swing.JInternalFrame {
         initComponents();
     }
 
-    public JIAltaCurso(IController c) {
+    public JIAltaCurso(IControllerV2 c) {
         initComponents();
         this.control = c;
 

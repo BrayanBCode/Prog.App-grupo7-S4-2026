@@ -5,6 +5,8 @@
 package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -14,9 +16,9 @@ import java.util.List;
 
 public class JIModificarUsuario extends javax.swing.JInternalFrame {
 
-    private IController control;
+    private IControllerV2 control;
 
-    public JIModificarUsuario(IController c) {
+    public JIModificarUsuario(IControllerV2 c) {
         initComponents();
         this.control = c;
         cargarTablaUsuarios();
@@ -24,14 +26,14 @@ public class JIModificarUsuario extends javax.swing.JInternalFrame {
     }
 
     private void cargarTablaUsuarios() {
-        List<String[]> datos = control.listarUsuariosTabla();
+        List<DTUsuarioResumen> datos = control.listarUsuariosTabla();
 
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
 
         if (datos != null) {
-            for (String[] fila : datos) {
-                model.addRow(fila);
+            for (DTUsuarioResumen fila : datos) {
+                model.addRow(new String[]{fila.nickname(), fila.mail()});
             }
         }
     }

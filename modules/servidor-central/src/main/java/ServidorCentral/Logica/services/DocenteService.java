@@ -1,5 +1,7 @@
 package ServidorCentral.Logica.services;
 
+import ServidorCentral.Logica.datatypes.DTDocenteDetalle;
+import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 import ServidorCentral.Logica.entities.usuarios.Docente;
 import ServidorCentral.Logica.repositories.DocenteRepository;
 
@@ -14,11 +16,11 @@ public class DocenteService {
         this.docenteRepository = docenteRepository;
     }
 
-    public List<String[]> listarDocentesTabla() {
+    public List<DTDocenteResumen> listarDocentesTabla() {
         return aTabla(docenteRepository.listarTodos());
     }
 
-    public List<String[]> porInstitutoTabla(String nombreInstituto) {
+    public List<DTDocenteResumen> porInstitutoTabla(String nombreInstituto) {
         return aTabla(docenteRepository.listarPorInstituto(nombreInstituto));
     }
 
@@ -26,45 +28,24 @@ public class DocenteService {
      * Caso de uso "Consulta de Docente": institutos, cursos, ediciones y
      * programas vinculados a ese docente.
      */
-    public List<String> obtenerData(String nickname) {
-        List<String> institutos = docenteRepository.nombresInstitutos(nickname);
-        List<String> cursos = docenteRepository.nombresCursos(nickname);
-        List<String> ediciones = docenteRepository.nombresEdiciones(nickname);
-        List<String> programas = docenteRepository.nombresProgramas(nickname);
-
-        // TODO: ESTE FORMATEO VA EN LA CAPA DE PRESENTACION
-        List<String> resultado = new ArrayList<>();
-
-        resultado.add("--- INSTITUTOS ---");
-        if (institutos.isEmpty()) resultado.add("(Sin institutos vinculados)");
-        else institutos.forEach(i -> resultado.add("- " + i));
-
-        resultado.add("\n--- CURSOS ---");
-        if (cursos.isEmpty()) resultado.add("(Sin cursos registrados)");
-        else cursos.forEach(c -> resultado.add("- " + c));
-
-        resultado.add("\n--- EDICIONES DE CURSOS ---");
-        if (ediciones.isEmpty()) resultado.add("(Sin ediciones asignadas)");
-        else ediciones.forEach(e -> resultado.add("- " + e));
-
-        resultado.add("\n--- PROGRAMAS DE FORMACIÓN ---");
-        if (programas.isEmpty()) resultado.add("(Sin programas vinculados)");
-        else programas.forEach(p -> resultado.add("- " + p));
-
-        return resultado;
+    public DTDocenteDetalle obtenerData(String nickname) {
+        return new DTDocenteDetalle(
+                docenteRepository.nombresInstitutos(nickname),
+                docenteRepository.nombresCursos(nickname),
+                docenteRepository.nombresEdiciones(nickname),
+                docenteRepository.nombresProgramas(nickname)
+        );
     }
 
     /**
-     * {0}=nickname (identificador), {1}=texto a mostrar en la lista.
+     * Datos basicos del docente. El texto "Nombre Apellido (nickname)" que
+     * antes armaba esta clase ahora lo arma la presentacion.
      */
-    private List<String[]> aTabla(List<Docente> lista) {
-        List<String[]> resultado = new ArrayList<>();
+    private List<DTDocenteResumen> aTabla(List<Docente> lista) {
+        List<DTDocenteResumen> resultado = new ArrayList<>();
         for (Docente d : lista) {
-            resultado.add(new String[]{
-                    d.getNickname(),
-                    d.getNombreU() + " " + d.getApellido() + " (" + d.getNickname() + ")"
-            });
+            resultado.add(new DTDocenteResumen(d.getNickname(), d.getNombreU(), d.getApellido()));
         }
         return resultado;
     }
-}
+}

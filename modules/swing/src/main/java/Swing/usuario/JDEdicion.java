@@ -1,6 +1,10 @@
 package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTDocenteResumen;
+import ServidorCentral.Logica.datatypes.DTEdicionCurso;
+import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,41 +19,56 @@ public class JDEdicion extends JDialog {
     };
     private static final int FILA_CURSO = 1;
 
-    public static void mostrar(Window owner, IController control, String nombreEdicion) {
+    public static void mostrar(Window owner, IControllerV2 control, String nombreEdicion) {
         try {
-            String[] datos = control.obtenerEdicionCurso(nombreEdicion);
+            DTEdicionCurso datos = control.obtenerEdicionCurso(nombreEdicion);
             new JDEdicion(owner, control, datos, nombreEdicion).setVisible(true);
         } catch (Exception ex) {
             Ui.error(owner, ex.getMessage());
         }
     }
 
-    private JDEdicion(Window owner, IController control, String[] d, String nombreEdicion) {
+    private JDEdicion(Window owner, IControllerV2 control, DTEdicionCurso d, String nombreEdicion) {
         super(owner, "Información de Edición de Curso", ModalityType.MODELESS);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
+        // Mismo orden que ETIQUETAS. Los valores son los que antes venían en el String[].
+        String[] valores = {
+                d.nombre(),
+                d.nombreCurso(),
+                texto(d.fechaInicio()),
+                texto(d.fechaFin()),
+                String.valueOf(d.cupo()),
+                texto(d.fechaPublicacion())
+        };
+
         List<Object[]> filas = new ArrayList<>();
-        for (int i = 0; i < ETIQUETAS.length && i < d.length; i++) {
-            filas.add(new Object[]{ETIQUETAS[i], d[i]});
+        for (int i = 0; i < ETIQUETAS.length && i < valores.length; i++) {
+            filas.add(new Object[]{ETIQUETAS[i], valores[i]});
         }
         JTable tDatos = Ui.tabla(new String[]{"Campo", "Valor"}, filas);
         Ui.alClickear(tDatos, (f, c) -> {
-            if (f == FILA_CURSO && d.length > FILA_CURSO && d[FILA_CURSO] != null && !d[FILA_CURSO].isEmpty()) {
-                JDCurso.mostrar(this, control, d[FILA_CURSO]);
+            String curso = d.nombreCurso();
+            if (f == FILA_CURSO && curso != null && !curso.isEmpty()) {
+                JDCurso.mostrar(this, control, curso);
             }
         });
 
         List<Object[]> filasDoc = new ArrayList<>();
-        List<String> docentes = control.listarDocentesEdicion(nombreEdicion);
+        List<DTDocenteResumen> docentes = control.listarDocentesEdicion(nombreEdicion);
         if (docentes != null) {
-            for (String x : docentes) filasDoc.add(new Object[]{x});
+            for (DTDocenteResumen doc : docentes) {
+                filasDoc.add(new Object[]{nombreCompleto(doc.nombre(), doc.apellido(), doc.nickname())});
+            }
         }
         JTable tDocentes = Ui.tabla(new String[]{"Docentes"}, filasDoc);
 
         List<Object[]> filasEst = new ArrayList<>();
-        List<String> estudiantes = control.listarEstudiantesEdicion(nombreEdicion);
+        List<DTEstudianteResumen> estudiantes = control.listarEstudiantesEdicion(nombreEdicion);
         if (estudiantes != null) {
-            for (String x : estudiantes) filasEst.add(new Object[]{x});
+            for (DTEstudianteResumen est : estudiantes) {
+                filasEst.add(new Object[]{nombreCompleto(est.nombre(), est.apellido(), est.nickname())});
+            }
         }
         JTable tEstudiantes = Ui.tabla(new String[]{"Estudiantes inscriptos"}, filasEst);
 
@@ -66,5 +85,15 @@ public class JDEdicion extends JDialog {
 
         pack();
         Ui.ubicar(this, owner);
+    }
+
+    /** Convierte cualquier valor a texto; null queda como "" en vez de "null". */
+    private static String texto(Object o) {
+        return o == null ? "" : o.toString();
+    }
+
+    /** Arma "Nombre Apellido (nickname)", el formato que antes venía ya armado desde el controller. */
+    private static String nombreCompleto(String nombre, String apellido, String nickname) {
+        return nombre + " " + apellido + " (" + nickname + ")";
     }
 }

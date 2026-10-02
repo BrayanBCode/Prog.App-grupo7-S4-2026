@@ -1,7 +1,11 @@
 package ServidorCentral.Logica.services;
 
+import ServidorCentral.Logica.datatypes.DTDocenteResumen;
+import ServidorCentral.Logica.datatypes.DTEdicionCurso;
+import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
+import ServidorCentral.Logica.entities.usuarios.Docente;
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
 import ServidorCentral.Logica.repositories.CursoRepository;
 import ServidorCentral.Logica.repositories.DocenteRepository;
@@ -9,6 +13,7 @@ import ServidorCentral.Logica.repositories.EdicionCursoRepository;
 import ServidorCentral.Logica.repositories.EstudianteRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EdicionCursoService {
@@ -28,21 +33,21 @@ public class EdicionCursoService {
         return edicionCursoRepository.obtenerNombres(nombreCurso);
     }
 
-    public String[] obtenerPorNombre(String nombreEdicion) throws Exception {
+    public DTEdicionCurso obtenerPorNombre(String nombreEdicion) throws Exception {
         EdicionCurso ed = edicionCursoRepository.obtenerPorNombres(nombreEdicion);
 
         if(ed == null) {
             throw new Exception("No se encontró la edición llamada: '" + nombreEdicion + "'");
         }
 
-        return new String[]{
+        return new DTEdicionCurso(
                 ed.getNombre(),
                 ed.getCurso().getNombreC(),
-                String.valueOf(ed.getFechaInicio()),
-                String.valueOf(ed.getFechaFin()),
-                String.valueOf(ed.getCupo()),
-                String.valueOf(ed.getFechaPublicacion())
-        };
+                ed.getFechaInicio(),
+                ed.getFechaFin(),
+                ed.getCupo(),
+                ed.getFechaPublicacion()
+        );
     }
 
     /**
@@ -80,23 +85,24 @@ public class EdicionCursoService {
         edicionCursoRepository.guardar(nombreEdicion, nombreCurso, fechaInicio, fechaFin, cupo, nicknamesDocentes);
     }
 
-        /** Docentes de la edicion, con el formato "Nombre Apellido (nickname)". */
-    public List<String> listarDocentes(String nombreEdicion) {
-        List<String> resultado = new java.util.ArrayList<>();
-        for (ServidorCentral.Logica.entities.usuarios.Docente d : edicionCursoRepository.docentesDeEdicion(nombreEdicion)) {
-            resultado.add(d.getNombreU() + " " + d.getApellido() + " (" + d.getNickname() + ")");
+    /** Docentes de la edicion. */
+    public List<DTDocenteResumen> listarDocentes(String nombreEdicion) {
+        List<DTDocenteResumen> resultado = new ArrayList<>();
+        for (Docente d : edicionCursoRepository.docentesDeEdicion(nombreEdicion)) {
+            resultado.add(new DTDocenteResumen(d.getNickname(), d.getNombreU(), d.getApellido()));
         }
         return resultado;
     }
 
-    /** Estudiantes inscriptos en la edicion, con el formato "Nombre Apellido (nickname)". */
-    public List<String> listarEstudiantes(String nombreEdicion) {
-        List<String> resultado = new java.util.ArrayList<>();
-        for (ServidorCentral.Logica.entities.usuarios.Estudiante e : edicionCursoRepository.estudiantesDeEdicion(nombreEdicion)) {
-            resultado.add(e.getNombreU() + " " + e.getApellido() + " (" + e.getNickname() + ")");
+    /** Estudiantes inscriptos en la edicion. */
+    public List<DTEstudianteResumen> listarEstudiantes(String nombreEdicion) {
+        List<DTEstudianteResumen> resultado = new ArrayList<>();
+        for (Estudiante e : edicionCursoRepository.estudiantesDeEdicion(nombreEdicion)) {
+            resultado.add(new DTEstudianteResumen(e.getNickname(), e.getNombreU(), e.getApellido(), e.getMail()));
         }
         return resultado;
     }
+
     /**
      * @return el nombre de la edicion que esta en curso hoy, o null.
      */

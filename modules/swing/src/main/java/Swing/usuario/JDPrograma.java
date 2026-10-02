@@ -1,6 +1,9 @@
 package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTProgramaFormacion;
+import ServidorCentral.Logica.datatypes.DTProgramaResumen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,38 +17,42 @@ public class JDPrograma extends JDialog {
         "Nombre", "Descripción", "Fecha de inicio", "Fecha de fin", "Fecha de alta"
     };
 
-    public static void mostrar(Window owner, IController control, String nombrePrograma) {
+    public static void mostrar(Window owner, IControllerV2 control, String nombrePrograma) {
         try {
-            String[] datos = control.obtenerDatosBasicosPrograma(nombrePrograma);
+            DTProgramaFormacion datos = control.obtenerDatosBasicosPrograma(nombrePrograma);
             if (datos == null) {
                 Ui.error(owner, "No existe un Programa de Formación con nombre: " + nombrePrograma);
                 return;
             }
-            List<String> detalle = control.obtenerDataPrograma(nombrePrograma);
-            new JDPrograma(owner, control, datos, detalle).setVisible(true);
+            new JDPrograma(owner, control, datos).setVisible(true);
         } catch (Exception ex) {
             Ui.error(owner, ex.getMessage());
         }
     }
 
-    private JDPrograma(Window owner, IController control, String[] d, List<String> detalle) {
+    private JDPrograma(Window owner, IControllerV2 control, DTProgramaFormacion d) {
         super(owner, "Información de Programa de Formación", ModalityType.MODELESS);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
+        // Mismo orden que ETIQUETAS.
+        String[] valores = {
+                d.nombre(),
+                d.descripcion(),
+                aTexto(d.fechaInicio()),
+                aTexto(d.fechaFin()),
+                aTexto(d.fechaAlta())
+        };
+
         List<Object[]> filas = new ArrayList<>();
-        for (int i = 0; i < ETIQUETAS.length && i < d.length; i++) {
-            filas.add(new Object[]{ETIQUETAS[i], d[i]});
+        for (int i = 0; i < ETIQUETAS.length && i < valores.length; i++) {
+            filas.add(new Object[]{ETIQUETAS[i], valores[i]});
         }
         JTable tDatos = Ui.tabla(new String[]{"Campo", "Valor"}, filas);
 
-        // obtenerDataPrograma devuelve "... , Cursos, - curso1, - curso2"
+        // Los cursos ya vienen como lista de nombres: no hay que filtrar ni recortar texto.
         List<Object[]> filasCursos = new ArrayList<>();
-        if (detalle != null) {
-            for (String linea : detalle) {
-                if (linea != null && linea.startsWith("- ")) {
-                    filasCursos.add(new Object[]{linea.substring(2).trim()});
-                }
-            }
+        for (String curso : d.cursos()) {
+            filasCursos.add(new Object[]{curso});
         }
         JTable tCursos = Ui.tabla(new String[]{"Cursos del programa"}, filasCursos);
         Ui.alClickear(tCursos, (f, c) -> {
@@ -62,5 +69,10 @@ public class JDPrograma extends JDialog {
 
         pack();
         Ui.ubicar(this, owner);
+    }
+
+    /** null queda como "" en vez de la palabra "null". */
+    private static String aTexto(Object o) {
+        return o == null ? "" : o.toString();
     }
 }

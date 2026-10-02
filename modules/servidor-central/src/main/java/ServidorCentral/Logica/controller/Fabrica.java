@@ -22,12 +22,25 @@ public class Fabrica {
         return INSTANCE;
     }
     
+    /**
+     * Controller "viejo" (ControllerV1, devuelve String[]).
+     * ControllerV2 ya no implementa IController porque devuelve DataTypes:
+     * para usarlo pedirlo con {@link #getControllerV2()}.
+     */
     public IController getUserControler(ControllerVersion version) {
         if(version == ControllerVersion.v2) {
-            return new ControllerV2();
+            throw new UnsupportedOperationException(
+                    "ControllerV2 devuelve DataTypes y ya no implementa IController. Use Fabrica.getInstance().getControllerV2().");
         }
 
         return new ControllerV1();
+    }
+
+    /**
+     * Controller en capas, que devuelve DataTypes.
+     */
+    public IControllerV2 getControllerV2() {
+        return new ControllerV2();
     }
     
 }

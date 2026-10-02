@@ -5,6 +5,7 @@
 package Swing.EdicionCurso;
 
 import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -15,11 +16,11 @@ import java.util.List;
  * @author maida
  */
 public class JIConsultaEdicionCurso extends javax.swing.JInternalFrame {
-    private IController control;
+    private IControllerV2 control;
     /**
      * Creates new form JIConsultaEdicionCurso
      */
-    public JIConsultaEdicionCurso(IController c) {
+    public JIConsultaEdicionCurso(IControllerV2 c) {
         initComponents();
         this.control = c;
         cargarInstitutos();
