@@ -4,7 +4,7 @@
  */
 package Swing.curso;
 
-import ServidorCentral.Logica.controller.IController;
+
 import ServidorCentral.Logica.controller.IControllerV2;
 import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 

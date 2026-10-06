@@ -5,7 +5,6 @@
 package Swing;
 
 import ServidorCentral.Logica.controller.Fabrica;
-import ServidorCentral.Logica.controller.IController;
 import ServidorCentral.Logica.controller.IControllerV2;
 import ServidorCentral.Logica.datatypes.ControllerVersion;
 import Swing.EdicionCurso.JIConsultaEdicionCurso;

@@ -4,7 +4,7 @@
  */
 package Swing.EdicionCurso;
 
-import ServidorCentral.Logica.controller.IController;
+
 import ServidorCentral.Logica.controller.IControllerV2;
 
 import javax.swing.*;

@@ -27,7 +27,7 @@ public class Fabrica {
      * ControllerV2 ya no implementa IController porque devuelve DataTypes:
      * para usarlo pedirlo con {@link #getControllerV2()}.
      */
-    public IController getUserControler(ControllerVersion version) {
+    public IControllerV2 getUserControler(ControllerVersion version) {
         if(version == ControllerVersion.v2) {
             throw new UnsupportedOperationException(
                     "ControllerV2 devuelve DataTypes y ya no implementa IController. Use Fabrica.getInstance().getControllerV2().");
