@@ -11,6 +11,9 @@ import Swing.EdicionCurso.JIConsultaEdicionCurso;
 import Swing.EdicionCurso.JIRegistroEdicionCurso;
 import Swing.EdicionCurso.JIinscripcionEdicionCurso;
 import Swing.Instituto.JIAltaInstituto;
+import Swing.categoria.JIAltaCategoria;
+import ServidorCentral.Logica.seguridad.CasoDeUso;
+import ServidorCentral.Logica.seguridad.Rol;
 import Swing.curso.JIAltaCurso;
 import Swing.curso.JIConsultaCurso;
 import Swing.programaFormacion.JIAgregarCursoPrograma;
@@ -33,6 +36,9 @@ public class JFInicio extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFInicio.class.getName());
     private JInternalFrame selectedFrame = null;
 
+    // La Estacion de Trabajo la usa SOLO el Administrador (no hay login en Swing).
+    private static final Rol ROL_ESTACION_TRABAJO = Rol.ADMINISTRADOR;
+
     /**
      * Creates new form Fprueba
      */
@@ -43,6 +49,9 @@ public class JFInicio extends javax.swing.JFrame {
         Fabrica f =  Fabrica.getInstance();
         IControllerV2 c = f.getControllerV2();
         this.control = c;
+
+        // Cada caso de uso se muestra solo si el actor Administrador puede ejecutarlo.
+        MIRegistroCategoria.setVisible(CasoDeUso.ALTA_CATEGORIA.permitidoPara(ROL_ESTACION_TRABAJO));
 
 
         
@@ -69,6 +78,7 @@ public class JFInicio extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         MIRegistroInsti = new javax.swing.JMenuItem();
+        MIRegistroCategoria = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         MIConUsuario = new javax.swing.JMenuItem();
         MIConEdi = new javax.swing.JMenuItem();
@@ -143,6 +153,10 @@ public class JFInicio extends javax.swing.JFrame {
         MIRegistroInsti.setText("Registro Instituto");
         MIRegistroInsti.addActionListener(this::MIRegistroInstiActionPerformed);
         jMenu2.add(MIRegistroInsti);
+
+        MIRegistroCategoria.setText("Registro Categoría");
+        MIRegistroCategoria.addActionListener(this::MIRegistroCategoriaActionPerformed);
+        jMenu2.add(MIRegistroCategoria);
 
         jMenuBar1.add(jMenu2);
 
@@ -246,6 +260,10 @@ public class JFInicio extends javax.swing.JFrame {
         this.openInternalFrame(new JIAltaInstituto(control));
     }//GEN-LAST:event_MIRegistroInstiActionPerformed
 
+    private void MIRegistroCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MIRegistroCategoriaActionPerformed
+        this.openInternalFrame(new JIAltaCategoria(control));
+    }//GEN-LAST:event_MIRegistroCategoriaActionPerformed
+
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
         if(this.selectedFrame != null) {
             this.selectedFrame.dispose();
@@ -289,6 +307,7 @@ public class JFInicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem MIConEdi;
     private javax.swing.JMenuItem MIConUsuario;
     private javax.swing.JMenuItem MIRegistoCli;
+    private javax.swing.JMenuItem MIRegistroCategoria;
     private javax.swing.JMenuItem MIRegistroCur;
     private javax.swing.JMenuItem MIRegistroEdi;
     private javax.swing.JMenuItem MIRegistroInsti;

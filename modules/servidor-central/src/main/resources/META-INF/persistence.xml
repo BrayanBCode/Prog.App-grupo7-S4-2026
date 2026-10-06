@@ -9,6 +9,7 @@
     <class>ServidorCentral.Logica.entities.cursos.Curso</class>
     <class>ServidorCentral.Logica.entities.cursos.InscripcionEdicion</class>
     <class>ServidorCentral.Logica.entities.cursos.Instituto</class>
+    <class>ServidorCentral.Logica.entities.cursos.Categoria</class>
     <class>ServidorCentral.Logica.entities.cursos.EdicionCurso</class>
     <class>ServidorCentral.Logica.entities.programaFormacion.InscripcionPrograma</class>
     <class>ServidorCentral.Logica.entities.programaFormacion.ProgramaFormacion</class>

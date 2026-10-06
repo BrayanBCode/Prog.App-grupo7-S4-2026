@@ -9,6 +9,7 @@ import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
 import ServidorCentral.Logica.datatypes.DTProgramaFormacion;
 import ServidorCentral.Logica.datatypes.DTProgramaResumen;
+import ServidorCentral.Logica.datatypes.DTSesion;
 import ServidorCentral.Logica.datatypes.DTUsuario;
 import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
 
@@ -25,6 +26,11 @@ import java.util.List;
  */
 public interface IControllerV2 {
     void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen, String contraseña);
+    /** Inicio de Sesion (Visitante): nickname o mail + contraseña. Tira IllegalArgumentException si no son validos. */
+    DTSesion iniciarSesion(String identificador, String contraseña);
+    /** Alta de Categoria (Administrador, Estacion de Trabajo). El nombre es unico. */
+    void altaCategoria(String nombre) throws Exception;
+    List<String> listarCategorias();
     void altaInstituto(String nombre) throws Exception;
     void modificarUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac) throws Exception;
     void crearPrograma(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta)throws Exception;

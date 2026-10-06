@@ -1,0 +1,169 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    margin: 0;
+}
+
+/* Paginas de una sola tarjeta centrada (ej. login) */
+body.centrado {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* ---- Cabezal comun ---- */
+.cabezal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1.5rem;
+    background: #ffffff;
+    border-bottom: 1px solid #dddddd;
+}
+
+.cabezal .logo {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #0056b3;
+    text-decoration: none;
+}
+
+.cabezal .acciones {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cabezal .acciones a,
+.btn-link {
+    color: #0056b3;
+    font-size: 1rem;
+    text-decoration: underline;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.form-inline {
+    display: inline;
+    margin: 0;
+}
+
+.usuario-actual {
+    color: #333333;
+    font-weight: bold;
+}
+
+.rol {
+    margin-left: 0.4rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: normal;
+    color: #ffffff;
+    background: #6c757d;
+}
+
+.rol-ESTUDIANTE { background: #28a745; }
+.rol-DOCENTE { background: #0056b3; }
+
+.contenido {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.login-card {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-card h2 {
+    margin-top: 0;
+    color: #333333;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: #555555;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #0056b3;
+}
+
+/* Mensaje de error/advertencia */
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.button-group {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+}
+
+.btn {
+    flex: 1;
+    padding: 0.7rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #0056b3;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #004085;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #ffffff;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}

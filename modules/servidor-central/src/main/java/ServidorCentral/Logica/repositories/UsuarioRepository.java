@@ -75,6 +75,35 @@ public class UsuarioRepository {
         }
     }
 
+    /**
+     * Para el Inicio de Sesion: el visitante escribe su nickname O su correo.
+     * Usuario es abstracta (TABLE_PER_CLASS), por eso se consulta Docente y
+     * Estudiante por separado, igual que en existeNickname / existeMail.
+     *
+     * @return el Docente o Estudiante que coincida, o null si no hay ninguno.
+     */
+    public Usuario buscarPorNicknameOMail(String identificador) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            List<Docente> docentes = em.createQuery(
+                            "SELECT d FROM Docente d WHERE d.nickname = :id OR d.Mail = :id", Docente.class)
+                    .setParameter("id", identificador)
+                    .setMaxResults(1)
+                    .getResultList();
+            if (!docentes.isEmpty()) {
+                return docentes.get(0);
+            }
+            List<Estudiante> estudiantes = em.createQuery(
+                            "SELECT e FROM Estudiante e WHERE e.nickname = :id OR e.Mail = :id", Estudiante.class)
+                    .setParameter("id", identificador)
+                    .setMaxResults(1)
+                    .getResultList();
+            return estudiantes.isEmpty() ? null : estudiantes.get(0);
+        } finally {
+            em.close();
+        }
+    }
+
     public List<Usuario> listarTodos() {
         EntityManager em = conexion.getEntityManager();
         try {

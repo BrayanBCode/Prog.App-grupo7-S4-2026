@@ -1,0 +1,29 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%--
+  Cabezal comun a todas las paginas. Cada opcion se muestra segun el actor:
+  ${puede.XXX} sale de la matriz CasoDeUso (ver AccesoFilter), asi que NO se
+  decide el rol aca: solo se pregunta "puede este actor ejecutar este caso de uso?".
+--%>
+<header class="cabezal">
+    <a class="logo" href="${pageContext.request.contextPath}/inicio">edExt</a>
+
+    <nav class="acciones">
+        <%-- Visitante --%>
+        <c:if test="${puede.INICIO_SESION}">
+            <a href="${pageContext.request.contextPath}/login">Iniciar Sesión</a>
+        </c:if>
+        <%-- Aca va el link "Registrarse" (ALTA_USUARIO) cuando se implemente:
+             <c:if test="${puede.ALTA_USUARIO}"> ... </c:if> --%>
+
+        <%-- Estudiante / Docente --%>
+        <c:if test="${puede.CIERRE_SESION}">
+            <span class="usuario-actual">
+                <c:out value="${usuarioActual.nickname}"/>
+                <span class="rol rol-${rol}"><c:out value="${rol.etiqueta}"/></span>
+            </span>
+            <form class="form-inline" method="post" action="${pageContext.request.contextPath}/logout">
+                <button type="submit" class="btn-link">Cerrar Sesión</button>
+            </form>
+        </c:if>
+    </nav>
+</header>

@@ -9,6 +9,7 @@ import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
 import ServidorCentral.Logica.datatypes.DTProgramaFormacion;
 import ServidorCentral.Logica.datatypes.DTProgramaResumen;
+import ServidorCentral.Logica.datatypes.DTSesion;
 import ServidorCentral.Logica.datatypes.DTUsuario;
 import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
 import ServidorCentral.Logica.repositories.*;
@@ -33,6 +34,7 @@ public class ControllerV2 implements IControllerV2 {
     private final EstudianteService estudianteService;
     private final CursoService cursoService;
     private final InstitutoService instituoService;
+    private final CategoriaService categoriaService;
     private final EdicionCursoService edicionCursoService;
     private final ProgramaFormacionService programaFormacionService;
 
@@ -41,6 +43,7 @@ public class ControllerV2 implements IControllerV2 {
 
         // Capa de acceso a datos
         InstitutoRepository institutoRepository = new InstitutoRepository(conexion);
+        CategoriaRepository categoriaRepository = new CategoriaRepository(conexion);
         CursoRepository cursoRepository = new CursoRepository(conexion);
         DocenteRepository docenteRepository = new DocenteRepository(conexion);
         EstudianteRepository estudianteRepository = new EstudianteRepository(conexion);
@@ -54,6 +57,7 @@ public class ControllerV2 implements IControllerV2 {
         this.estudianteService = new EstudianteService(estudianteRepository);
         this.cursoService = new CursoService(cursoRepository, institutoRepository, docenteRepository);
         this.instituoService = new InstitutoService(institutoRepository);
+        this.categoriaService = new CategoriaService(categoriaRepository);
         this.edicionCursoService = new EdicionCursoService(edicionCursoRepository, cursoRepository, docenteRepository, estudianteRepository);
         this.programaFormacionService = new ProgramaFormacionService(programaFormacionRepository, cursoRepository);
     }
@@ -120,6 +124,25 @@ public class ControllerV2 implements IControllerV2 {
     @Override
     public List<DTEstudianteResumen> listarEstudiantesTabla() {
         return estudianteService.listarEstudiantesTabla();
+    }
+
+    @Override
+    public DTSesion iniciarSesion(String identificador, String contraseña) {
+        return usuarioService.autenticar(identificador, contraseña);
+    }
+
+    // ---------------------------------------------------------------
+    // CATEGORIAS
+    // ---------------------------------------------------------------
+
+    @Override
+    public void altaCategoria(String nombre) throws Exception {
+        categoriaService.registrar(nombre);
+    }
+
+    @Override
+    public List<String> listarCategorias() {
+        return categoriaService.obtenerNombres();
     }
 
     // ---------------------------------------------------------------

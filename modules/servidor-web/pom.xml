@@ -23,6 +23,18 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- JSTL (<c:if>, <c:choose>) para los JSP; Tomcat 10+ usa el namespace jakarta -->
+        <dependency>
+            <groupId>jakarta.servlet.jsp.jstl</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
         <dependency>
             <groupId>uy.edu.utec.maldonado</groupId>
             <artifactId>servidor-central</artifactId>

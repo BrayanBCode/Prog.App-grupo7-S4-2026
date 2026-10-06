@@ -1,12 +1,15 @@
 package ServidorCentral.Logica.services;
 
+import ServidorCentral.Logica.datatypes.DTSesion;
 import ServidorCentral.Logica.datatypes.DTUsuario;
 import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
 import ServidorCentral.Logica.entities.cursos.Instituto;
+import ServidorCentral.Logica.entities.usuarios.Docente;
 import ServidorCentral.Logica.entities.usuarios.Usuario;
 import ServidorCentral.Logica.repositories.DocenteRepository;
 import ServidorCentral.Logica.repositories.InstitutoRepository;
 import ServidorCentral.Logica.repositories.UsuarioRepository;
+import ServidorCentral.Logica.seguridad.Rol;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -66,6 +69,41 @@ public class UsuarioService {
         } else {
             usuarioRepository.guardarEstudiante(nickname, mail, nombre, apellido, fechaNac, rutaImagenFinal, contraseña);
         }
+    }
+
+    private static final String MSG_CREDENCIALES_INVALIDAS =
+            "Nickname/Email o contraseña incorrectos. Por favor, reingrese sus datos.";
+
+    /**
+     * Caso de uso "Inicio de Sesion" (actor: Visitante). Verifica nickname o mail
+     * + contrasena y devuelve los datos de sesion con el ROL del usuario:
+     * DOCENTE si esta en la tabla de docentes, ESTUDIANTE en caso contrario.
+     * El Administrador no inicia sesion en la web, asi que nunca se devuelve ese rol.
+     *
+     * Usuario inexistente y contrasena incorrecta dan EL MISMO mensaje, para no
+     * revelar cuales nicknames/mails existen.
+     *
+     * @throws IllegalArgumentException si los datos no son validos.
+     */
+    public DTSesion autenticar(String identificador, String contraseña) {
+        if (identificador == null || identificador.trim().isEmpty()
+                || contraseña == null || contraseña.isEmpty()) {
+            throw new IllegalArgumentException(MSG_CREDENCIALES_INVALIDAS);
+        }
+
+        Usuario u = usuarioRepository.buscarPorNicknameOMail(identificador.trim());
+        // Usuarios cargados antes de existir la contrasena tienen null: no pueden entrar.
+        String guardada = (u == null) ? null : u.getContraseña();
+
+        boolean ok = guardada != null && java.security.MessageDigest.isEqual(
+                guardada.getBytes(java.nio.charset.StandardCharsets.UTF_8),
+                contraseña.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        if (!ok) {
+            throw new IllegalArgumentException(MSG_CREDENCIALES_INVALIDAS);
+        }
+
+        Rol rol = (u instanceof Docente) ? Rol.DOCENTE : Rol.ESTUDIANTE;
+        return new DTSesion(u.getNickname(), u.getMail(), u.getNombreU(), u.getApellido(), u.getImagen(), rol);
     }
 
     /**
