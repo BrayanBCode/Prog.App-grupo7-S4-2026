@@ -6,6 +6,7 @@ package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IController;
 import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTUsuario;
 import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
 
 import javax.swing.*;
@@ -207,7 +208,7 @@ public class JIModificarUsuario extends javax.swing.JInternalFrame {
         String nickname = jTable1.getValueAt(fila, 0).toString();
         String mail = jTable1.getValueAt(fila, 1).toString();
 
-        String[] datos = control.obtenerDataUsuario(nickname, mail);
+        DTUsuario datos = control.obtenerDataUsuario(nickname, mail);
 
         if (datos == null) {
             JOptionPane.showMessageDialog(this, "El usuario seleccionado ya no existe.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -216,14 +217,21 @@ public class JIModificarUsuario extends javax.swing.JInternalFrame {
             return;
         }
 
-        // datos = {nickname, mail, nombre, apellido, fechaNac (yyyy-MM-dd) o ""}
-        FNickname.setText(datos[0]);
-        Fmail.setText(datos[1]);
-        FNombre.setText(datos[2]);
-        FApellido.setText(datos[3]);
+        FNickname.setText(datos.nickname());
+        Fmail.setText(datos.mail());
+        FNombre.setText(datos.nombre());
+        FApellido.setText(datos.apellido());
 
-        if (datos[4] != null && !datos[4].isEmpty()) {
-            LocalDate f = LocalDate.parse(datos[4]);
+        // fechaNac puede venir como LocalDate o como texto yyyy-MM-dd; null o vacio = sin fecha
+        Object fn = datos.fechaNac();
+        LocalDate f = null;
+        if (fn instanceof LocalDate) {
+            f = (LocalDate) fn;
+        } else if (fn != null && !fn.toString().isEmpty()) {
+            f = LocalDate.parse(fn.toString());
+        }
+
+        if (f != null) {
             SDia.setValue(f.getDayOfMonth());
             SMes.setValue(f.getMonthValue());
             SAnio.setValue(f.getYear());

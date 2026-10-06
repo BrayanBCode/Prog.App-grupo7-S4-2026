@@ -32,16 +32,30 @@ public class JDCurso extends JDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         // Datos del curso
+        // Mismo orden que ETIQUETAS.
+        String[] valores = {
+                texto(d.nombre()),
+                texto(d.descripcion()),
+                texto(d.duracion()),
+                texto(d.cantHoras()),
+                texto(d.cantCreditos()),
+                texto(d.url()),
+                texto(d.fechaRegistro()),
+                texto(d.instituto()),
+                texto(d.docente()),
+                texto(d.previas())
+        };
         List<Object[]> filas = new ArrayList<>();
-        for (int i = 0; i < ETIQUETAS.length && i < d.length; i++) {
-            filas.add(new Object[]{ETIQUETAS[i], d[i]});
+        for (int i = 0; i < ETIQUETAS.length && i < valores.length; i++) {
+            filas.add(new Object[]{ETIQUETAS[i], valores[i]});
         }
         JTable tDatos = Ui.tabla(new String[]{"Campo", "Valor"}, filas);
         tDatos.getColumnModel().getColumn(0).setPreferredWidth(140);
         tDatos.getColumnModel().getColumn(1).setPreferredWidth(420);
         Ui.alClickear(tDatos, (f, c) -> {
-            if (f == FILA_INSTITUTO && d.length > FILA_INSTITUTO && d[FILA_INSTITUTO] != null && !d[FILA_INSTITUTO].isEmpty()) {
-                JDInstituto.mostrar(this, control, d[FILA_INSTITUTO]);
+            String instituto = texto(d.instituto());
+            if (f == FILA_INSTITUTO && !instituto.isEmpty()) {
+                JDInstituto.mostrar(this, control, instituto);
             }
         });
 
@@ -82,5 +96,23 @@ public class JDCurso extends JDialog {
 
         pack();
         Ui.ubicar(this, owner);
+    }
+
+    /** Convierte cualquier valor a texto: null queda como "" y las colecciones se unen con coma. */
+    private static String texto(Object o) {
+        if (o == null) {
+            return "";
+        }
+        if (o instanceof java.util.Collection<?>) {
+            StringBuilder sb = new StringBuilder();
+            for (Object e : (java.util.Collection<?>) o) {
+                if (sb.length() > 0) {
+                    sb.append(", ");
+                }
+                sb.append(e);
+            }
+            return sb.toString();
+        }
+        return o.toString();
     }
 }

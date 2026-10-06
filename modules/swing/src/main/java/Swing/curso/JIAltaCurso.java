@@ -6,6 +6,7 @@ package Swing.curso;
 
 import ServidorCentral.Logica.controller.IController;
 import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -52,9 +53,13 @@ public class JIAltaCurso extends javax.swing.JInternalFrame {
         CDocente.removeAllItems();
         docentesNicknames.clear();
 
-        for(var d : control.listarDocentesPorInstituto(instituto)) {
-            docentesNicknames.add(d[0]); // nickname
-            CDocente.addItem(d[1]);      // texto a mostrar
+        List<DTDocenteResumen> docentes = control.listarDocentesPorInstituto(instituto);
+        if (docentes == null) {
+            return;
+        }
+        for (DTDocenteResumen d : docentes) {
+            docentesNicknames.add(d.nickname());
+            CDocente.addItem(d.nombre() + " " + d.apellido() + " (" + d.nickname() + ")");
         }
     }
 

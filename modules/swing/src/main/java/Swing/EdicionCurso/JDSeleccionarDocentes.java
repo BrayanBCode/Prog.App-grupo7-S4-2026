@@ -1,5 +1,7 @@
 package Swing.EdicionCurso;
 
+import ServidorCentral.Logica.datatypes.DTDocenteResumen;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,14 +18,14 @@ public class JDSeleccionarDocentes extends JDialog {
     private final List<String> nicknames;
     private List<String> seleccionConfirmada = null; // null = se canceló
 
-    public JDSeleccionarDocentes(Frame owner, List<String[]> docentesDisponibles, List<String> seleccionadosPrevios) {
+    public JDSeleccionarDocentes(Frame owner, List<DTDocenteResumen> docentesDisponibles, List<String> seleccionadosPrevios) {
         super(owner, "Seleccionar docentes", true); // true = modal
 
         this.nicknames = new ArrayList<>();
         DefaultListModel<String> modelo = new DefaultListModel<>();
-        for (String[] docente : docentesDisponibles) {
-            this.nicknames.add(docente[0]);
-            modelo.addElement(docente[1]);
+        for (DTDocenteResumen docente : docentesDisponibles) {
+            this.nicknames.add(docente.nickname());
+            modelo.addElement(docente.nombre() + " " + docente.apellido() + " (" + docente.nickname() + ")");
         }
 
         lista = new JList<>(modelo);

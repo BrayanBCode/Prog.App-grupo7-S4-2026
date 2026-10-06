@@ -4,7 +4,9 @@
  */
 package Swing.programaFormacion;
 
-import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTProgramaFormacion;
+import ServidorCentral.Logica.datatypes.DTProgramaResumen;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,20 +18,22 @@ import java.util.List;
  */
 public class JIConsultaProgFormacion extends javax.swing.JInternalFrame {
 
-    private IController control;
+    private IControllerV2 control;
 
-    public JIConsultaProgFormacion(IController c) {
+    public JIConsultaProgFormacion(IControllerV2 c) {
         initComponents();
         this.control = c;
         cargarTablaProgramas();
     }
 
     private void cargarTablaProgramas() {
-        List<String[]> datos = control.listarProgramasTabla();
+        List<DTProgramaResumen> datos = control.listarProgramasTabla();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
         if (datos != null) {
-            for (String[] fila : datos) model.addRow(fila);
+            for (DTProgramaResumen fila : datos) {
+                model.addRow(new Object[]{fila.nombre(), fila.descripcion()});
+            }
         }
     }
 
@@ -129,8 +133,23 @@ public class JIConsultaProgFormacion extends javax.swing.JInternalFrame {
 
         String nombre = jTable1.getValueAt(fila, 0).toString();
         try {
-            List<String> datos = control.obtenerDataPrograma(nombre);
-            jTextArea1.setText(String.join("\n", datos));
+            DTProgramaFormacion datos = control.obtenerDataPrograma(nombre);
+            StringBuilder sb = new StringBuilder();
+            sb.append("Nombre: ").append(datos.nombre()).append("\n");
+            sb.append("Descripción: ").append(datos.descripcion()).append("\n");
+            sb.append("Fecha de inicio: ").append(datos.fechaInicio()).append("\n");
+            sb.append("Fecha de fin: ").append(datos.fechaFin()).append("\n");
+            sb.append("Fecha de alta: ").append(datos.fechaAlta()).append("\n");
+            sb.append("Cursos:");
+            if (datos.cursos() == null || datos.cursos().isEmpty()) {
+                sb.append("\n(Sin cursos asociados)");
+            } else {
+                for (String curso : datos.cursos()) {
+                    sb.append("\n- ").append(curso);
+                }
+            }
+            jTextArea1.setText(sb.toString());
+            jTextArea1.setCaretPosition(0);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             jTextArea1.setText("");

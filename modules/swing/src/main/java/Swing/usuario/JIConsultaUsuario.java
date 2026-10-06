@@ -3,6 +3,7 @@ package Swing.usuario;
 import ServidorCentral.Logica.controller.IController;
 import ServidorCentral.Logica.controller.IControllerV2;
 import ServidorCentral.Logica.datatypes.DTDocenteDetalle;
+import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
 import ServidorCentral.Logica.datatypes.DTUsuario;
 import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
 
@@ -142,7 +143,7 @@ public class JIConsultaUsuario extends javax.swing.JInternalFrame {
 
             // Se asume que datos[5] trae la ruta/nombre de archivo de la imagen
             // del usuario en el Servidor Central (puede ser null si no tiene imagen).
-            String rutaImagen = (datos.imagen().length() > 5) ? datos.imagen() : null;
+            String rutaImagen = (datos.imagen() != null && datos.imagen().length() > 5) ? datos.imagen() : null;
 
             // Ventana principal (dueña de los diálogos)
             java.awt.Window ventana = SwingUtilities.getWindowAncestor(this);
@@ -152,12 +153,16 @@ public class JIConsultaUsuario extends javax.swing.JInternalFrame {
             // seguir clickeando otros usuarios sin cerrar los que ya están abiertos.
             javax.swing.JDialog dialogo;
             if (control.esDocente(nickname)) {
-                // DOCENTE -> Datos_Docente
-                DTDocenteDetalle actividadDocente = control.obtenerDataDocente(nickname);
-                dialogo = new Datos_Docente(padre, false, datos, rutaImagen, actividadDocente, control);
-            } else {
+            // DOCENTE -> Datos_Docente
+                 DTDocenteDetalle actividadDocente = control.obtenerDataDocente(nickname);
+    
+                // Convertimos o extraemos la lista que requiere Datos_Docente (ejemplo: ediciones)
+                     List<String> listaActividades = actividadDocente.ediciones(); 
+    
+                dialogo = new Datos_Docente(padre, false, datos, rutaImagen, listaActividades, control);
+                }else {
                 // ESTUDIANTE -> Datos_Estudiante
-                List<String> inscripciones = control.obtenerEdicionesYProgramas(nickname);
+                DTInscripcionesEstudiante inscripciones = control.obtenerEdicionesYProgramas(nickname);
                 dialogo = new Datos_Estudiante(padre, false, datos, rutaImagen, inscripciones, control);
             }
 

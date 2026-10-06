@@ -4,7 +4,9 @@
  */
 package Swing.programaFormacion;
 
-import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTProgramaFormacion;
+import ServidorCentral.Logica.datatypes.DTProgramaResumen;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -17,12 +19,12 @@ import java.util.List;
  */
 public class JIModificarPrograma extends javax.swing.JInternalFrame {
 
-    private IController control;
+    private IControllerV2 control;
 
     /**
      * Creates new form JIModificarPrograma
      */
-    public JIModificarPrograma(IController c) {
+    public JIModificarPrograma(IControllerV2 c) {
         initComponents();
         this.control = c;
         cargarTablaProgramas();
@@ -30,11 +32,13 @@ public class JIModificarPrograma extends javax.swing.JInternalFrame {
     }
 
     private void cargarTablaProgramas() {
-        List<String[]> datos = control.listarProgramasTabla();
+        List<DTProgramaResumen> datos = control.listarProgramasTabla();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
         if (datos != null) {
-            for (String[] fila : datos) model.addRow(fila);
+            for (DTProgramaResumen fila : datos) {
+                model.addRow(new Object[]{fila.nombre(), fila.descripcion()});
+            }
         }
     }
 
@@ -233,7 +237,7 @@ public class JIModificarPrograma extends javax.swing.JInternalFrame {
         if (fila == -1) return;
 
         String nombre = jTable1.getValueAt(fila, 0).toString();
-        String[] datos = control.obtenerDatosBasicosPrograma(nombre);
+        DTProgramaFormacion datos = control.obtenerDatosBasicosPrograma(nombre);
 
         if (datos == null) {
             JOptionPane.showMessageDialog(this, "El programa seleccionado ya no existe.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -242,16 +246,15 @@ public class JIModificarPrograma extends javax.swing.JInternalFrame {
             return;
         }
 
-        // datos = {nombre, descripcion, fechaInicio, fechaFin, fechaAlta}
-        FNombre.setText(datos[0]);
-        FDescripcion.setText(datos[1]);
+        FNombre.setText(datos.nombre());
+        FDescripcion.setText(datos.descripcion());
 
-        LocalDate fInicio = LocalDate.parse(datos[2]);
+        LocalDate fInicio = aFecha(datos.fechaInicio());
         SInicioDia.setValue(fInicio.getDayOfMonth());
         SInicioMes.setValue(fInicio.getMonthValue());
         SInicioAnio.setValue(fInicio.getYear());
 
-        LocalDate fFin = LocalDate.parse(datos[3]);
+        LocalDate fFin = aFecha(datos.fechaFin());
         SFinDia.setValue(fFin.getDayOfMonth());
         SFinMes.setValue(fFin.getMonthValue());
         SFinAnio.setValue(fFin.getYear());
@@ -296,6 +299,14 @@ public class JIModificarPrograma extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         limpiarFormulario();
+    }
+
+    /** La fecha puede venir como LocalDate o como texto yyyy-MM-dd. */
+    private static LocalDate aFecha(Object o) {
+        if (o instanceof LocalDate) {
+            return (LocalDate) o;
+        }
+        return LocalDate.parse(String.valueOf(o));
     }
 
     // Variables declaration - do not modify                     

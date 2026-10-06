@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package Swing.instituto;
+package Swing.Instituto;
 
-import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
@@ -13,12 +13,12 @@ import javax.swing.JOptionPane;
  */
 public class JIAltaInstituto extends javax.swing.JInternalFrame {
 
-    private IController control;
+    private IControllerV2 control;
 
     // Mismo criterio de caracteres válidos que usa el Alta de Curso para nombres
     private static final Pattern CARACTERES_INVALIDOS = Pattern.compile("[^a-zA-Z0-9 áéíóúÁÉÍÓÚñÑ]");
 
-    public JIAltaInstituto(IController c) {
+    public JIAltaInstituto(IControllerV2 c) {
         initComponents();
         this.control = c;
     }

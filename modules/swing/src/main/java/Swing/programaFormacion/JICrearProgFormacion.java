@@ -4,7 +4,7 @@
  */
 package Swing.programaFormacion;
 
-import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
 
 import javax.swing.*;
 import java.time.LocalDate;
@@ -16,7 +16,7 @@ import java.util.Date;
  */
 public class JICrearProgFormacion extends javax.swing.JInternalFrame {
 
-    private IController control;
+    private IControllerV2 control;
 
     /**
      * Constructor por defecto para el diseñador gráfico de NetBeans.
@@ -28,7 +28,7 @@ public class JICrearProgFormacion extends javax.swing.JInternalFrame {
     /**
      * Constructor principal que recibe el controlador del sistema.
      */
-    public JICrearProgFormacion(IController c) {
+    public JICrearProgFormacion(IControllerV2 c) {
         initComponents();
         this.control = c;
     }

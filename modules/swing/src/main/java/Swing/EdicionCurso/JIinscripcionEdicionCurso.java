@@ -4,7 +4,9 @@
  */
 package Swing.EdicionCurso;
 
-import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTCursoResumen;
+import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -18,7 +20,7 @@ import java.util.List;
  */
 public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
 
-    private IController control;
+    private IControllerV2 control;
 
     private String selectedCurso;
     private String selectedInsti;
@@ -29,7 +31,7 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
     /**
      * Creates new form JIinscripcionEdicionCurso
      */
-    public JIinscripcionEdicionCurso(IController c) {
+    public JIinscripcionEdicionCurso(IControllerV2 c) {
         initComponents();        
         this.control = c;
 
@@ -409,9 +411,9 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
         
         this.selectedInsti = instiSelect;
         
-        List<String[]> cursos = control.listarCursosTabla(instiSelect);
-        for(String[] f : cursos) {
-            m.addRow(new Object[]{ f[0], f[1] });
+        List<DTCursoResumen> cursos = control.listarCursosTabla(instiSelect);
+        for(DTCursoResumen curso : cursos) {
+            m.addRow(new Object[]{ curso.nombre(), curso.descripcion() });
         }
     }//GEN-LAST:event_jCBoxSelecInstiActionPerformed
 
@@ -436,8 +438,8 @@ public class JIinscripcionEdicionCurso extends javax.swing.JInternalFrame {
     private void jBtnSelecEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSelecEstudianteActionPerformed
         DefaultTableModel modelo = (DefaultTableModel) jDTEstudiantes.getModel();
         modelo.setRowCount(0);
-        for (String[] fila : control.listarEstudiantesTabla()) {
-            modelo.addRow(new Object[]{ fila[0], fila[1], fila[2], fila[3] }); // Nickname, Nombre, Apellido, Email
+        for (DTEstudianteResumen est : control.listarEstudiantesTabla()) {
+            modelo.addRow(new Object[]{ est.nickname(), est.nombre(), est.apellido(), est.mail() }); // Nickname, Nombre, Apellido, Email
         }
         jDTEstudiantes.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         JDSelecEstudiante.setTitle("Seleccionar estudiantes (Ctrl o Shift para elegir varios)");

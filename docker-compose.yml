@@ -11,16 +11,7 @@ services:
       - db_data:/var/lib/mysql
       - ./db/init:/docker-entrypoint-initdb.d:ro
 
-  tomcat:
-    image: tomcat:10.1-jdk21
-    container_name: server-tomcat
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./servidor-web/target/servidor-web-TU_VERSION.war:/usr/local/tomcat/webapps/servidor-web.war
-    depends_on:
-      - server-mysql
-
+ 
 volumes:
   db_data:
   maven_repo:

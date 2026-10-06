@@ -4,7 +4,8 @@
  */
 package Swing.usuario;
 
-import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
 import ServidorCentral.Logica.datatypes.DTUsuario;
 
 import javax.swing.table.DefaultTableModel;
@@ -19,7 +20,7 @@ public class Datos_Estudiante extends javax.swing.JDialog {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Datos_Estudiante.class.getName());
 
-    private IController control;
+    private IControllerV2 control;
 
     /**
      * Creates new form Datos_Usuarios
@@ -34,11 +35,11 @@ public class Datos_Estudiante extends javax.swing.JDialog {
      *
      * @param datos         {nickname, email, nombre, apellido, fechaNacimiento, [rutaImagen]}
      * @param rutaImagen    ruta de la imagen del usuario (puede ser null)
-     * @param inscripciones lista devuelta por control.obtenerEdicionesYProgramas(nickname)
+     * @param inscripciones DataType devuelto por control.obtenerEdicionesYProgramas(nickname)
      * @param control       controlador, para abrir el detalle de ediciones y programas al hacer click
      */
     public Datos_Estudiante(java.awt.Frame parent, boolean modal,
-                            DTUsuario datos, String rutaImagen, List<String> inscripciones, IController control) {
+                            DTUsuario datos, String rutaImagen, DTInscripcionesEstudiante inscripciones, IControllerV2 control) {
         this(parent, modal);
         this.control = control;
         cargarDatos(datos, rutaImagen, inscripciones);
@@ -49,7 +50,7 @@ public class Datos_Estudiante extends javax.swing.JDialog {
     // ---------------------------------------------------------------
     // Carga de datos (fuera del bloque generado por el Form Editor)
     // ---------------------------------------------------------------
-    private void cargarDatos(DTUsuario datos, String rutaImagen, List<String> inscripciones) {
+    private void cargarDatos(DTUsuario datos, String rutaImagen, DTInscripcionesEstudiante inscripciones) {
 
         // --- Imagen ---
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -86,17 +87,15 @@ public class Datos_Estudiante extends javax.swing.JDialog {
         });
 
         // --- Ediciones de curso / Programas ---
-        // La lista trae ediciones y programas mezclados; se separan preguntando
-        // al controlador si el nombre corresponde a un programa de formación.
+        // El DataType ya trae ediciones y programas por separado.
         List<String> ediciones = new ArrayList<>();
         List<String> programas = new ArrayList<>();
         if (inscripciones != null) {
-            for (String item : inscripciones) {
-                if (control.existePrograma(item)) {
-                    programas.add(item);
-                } else {
-                    ediciones.add(item);
-                }
+            if (inscripciones.ediciones() != null) {
+                ediciones.addAll(inscripciones.ediciones());
+            }
+            if (inscripciones.programas() != null) {
+                programas.addAll(inscripciones.programas());
             }
         }
         DefaultTableModel modelo = new DefaultTableModel(
