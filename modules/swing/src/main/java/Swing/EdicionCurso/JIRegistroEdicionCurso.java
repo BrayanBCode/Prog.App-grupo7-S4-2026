@@ -4,7 +4,9 @@
  */
 package Swing.EdicionCurso;
 
-import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTCursoResumen;
+import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 
 import javax.swing.*;
 import java.time.LocalDate;
@@ -20,13 +22,13 @@ public class JIRegistroEdicionCurso extends javax.swing.JInternalFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JIRegistroEdicionCurso.class.getName());
     private List<String> docentesSeleccionados = new java.util.ArrayList<>();
-    private IController control;
+    private IControllerV2 control;
     private String cursoSeleccionado; // nombre del curso elegido en jTable1
         
     /**
      * Creates new form JFRegistroEdicionCurso
      */
-    public JIRegistroEdicionCurso(IController c) {
+    public JIRegistroEdicionCurso(IControllerV2 c) {
         initComponents();
         this.control = c;
 
@@ -256,9 +258,9 @@ public class JIRegistroEdicionCurso extends javax.swing.JInternalFrame {
         modelo.setRowCount(0);
         if (institutoSeleccionado == null) return;
 
-        List<String[]> cursos = control.listarCursosTabla(institutoSeleccionado);
-        for (String[] fila : cursos) {
-            modelo.addRow(new Object[]{ fila[0], fila[1] }); // nombre, descripcion
+        List<DTCursoResumen> cursos = control.listarCursosTabla(institutoSeleccionado);
+        for (DTCursoResumen curso : cursos) {
+            modelo.addRow(new Object[]{ curso.nombre(), curso.descripcion() });
         }
     }
 
@@ -270,7 +272,7 @@ public class JIRegistroEdicionCurso extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        List<String[]> docentesDisponibles = control.listarDocentesTabla();
+        List<DTDocenteResumen> docentesDisponibles = control.listarDocentesTabla();
 
         JDSeleccionarDocentes popup = new JDSeleccionarDocentes(
             (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this),

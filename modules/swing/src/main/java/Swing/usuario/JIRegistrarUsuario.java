@@ -5,6 +5,7 @@
 package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
 
-    private IController control;
+    private IControllerV2 control;
 
     // Ruta absoluta de la imagen elegida por el administrador para el usuario.
     // Queda en null si no se seleccionó ninguna imagen.
@@ -26,7 +27,7 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
     /**
      * Creates new form JIUsuario
      */
-    public JIRegistrarUsuario(IController c) {
+    public JIRegistrarUsuario(IControllerV2 c) {
         initComponents();
         this.control = c;
         FDocente2.setEnabled(false);

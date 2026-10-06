@@ -5,6 +5,9 @@
 package Swing.curso;
 
 import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTCurso;
+import ServidorCentral.Logica.datatypes.DTCursoResumen;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,12 +19,12 @@ import java.util.List;
  */
 public class JIConsultaCurso extends javax.swing.JInternalFrame {
 
-    private IController control;
+    private IControllerV2 control;
     
     /**
      * Creates new form JIConsultaCurso
      */
-    public JIConsultaCurso(IController c) {
+    public JIConsultaCurso(IControllerV2 c) {
         initComponents();
         this.control = c;
         cargarInstitutos();
@@ -58,26 +61,26 @@ public class JIConsultaCurso extends javax.swing.JInternalFrame {
         }
 
         DefaultTableModel modelo = (DefaultTableModel) tableCursos.getModel();
-        List<String[]> cursos = control.listarCursosTabla(nombreInstituto);
-        for (String[] curso : cursos) {
-            modelo.addRow(new Object[]{curso[0], curso[1]});
+        List<DTCursoResumen> cursos = control.listarCursosTabla(nombreInstituto);
+        for (DTCursoResumen curso : cursos) {
+            modelo.addRow(new Object[]{curso.nombre(), curso.descripcion()});
         }
     }
 
     private void mostrarDetalleCurso(String nombreCurso) {
         try {
-            String[] datos = control.obtenerDataCurso(nombreCurso);
+            DTCurso datos = control.obtenerDataCurso(nombreCurso);
 
-            String detalle = "Nombre: " + datos[0] + "\n"
-                    + "Descripción: " + datos[1] + "\n"
-                    + "Duración: " + datos[2] + "\n"
-                    + "Cant. horas: " + datos[3] + "\n"
-                    + "Cant. créditos: " + datos[4] + "\n"
-                    + "URL: " + datos[5] + "\n"
-                    + "Fecha de registro: " + datos[6] + "\n"
-                    + "Instituto: " + datos[7] + "\n"
-                    + "Docente: " + datos[8] + "\n"
-                    + "Previas: " + datos[9];
+            String detalle = "Nombre: " + datos.nombre() + "\n"
+                    + "Descripción: " + datos.descripcion() + "\n"
+                    + "Duración: " + datos.duracion() + "\n"
+                    + "Cant. horas: " + datos.cantHoras() + "\n"
+                    + "Cant. créditos: " + datos.cantCreditos() + "\n"
+                    + "URL: " + datos.url() + "\n"
+                    + "Fecha de registro: " + datos.fechaRegistro() + "\n"
+                    + "Instituto: " + datos.instituto() + "\n"
+                    + "Docente: " + datos.docente() + "\n"
+                    + "Previas: " + datos.previas();
 
             txtAreaDetalle.setText(detalle);
             txtAreaDetalle.setCaretPosition(0);

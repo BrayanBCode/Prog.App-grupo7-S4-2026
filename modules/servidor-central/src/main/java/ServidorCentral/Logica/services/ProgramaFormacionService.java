@@ -1,5 +1,7 @@
 package ServidorCentral.Logica.services;
 
+import ServidorCentral.Logica.datatypes.DTProgramaFormacion;
+import ServidorCentral.Logica.datatypes.DTProgramaResumen;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.programaFormacion.ProgramaFormacion;
 import ServidorCentral.Logica.repositories.CursoRepository;
@@ -23,31 +25,19 @@ public class ProgramaFormacionService {
         return programaFormacionRepository.obtenerPorCurso(nombreCurso);
     }
 
-    public List<String> obtenerPorNombre(String nombrePrograma) throws Exception {
+    /**
+     * Caso de uso "Consulta de Programa de Formacion".
+     *
+     * @throws Exception si el programa no existe.
+     */
+    public DTProgramaFormacion obtenerPorNombre(String nombrePrograma) throws Exception {
         ProgramaFormacion pf = programaFormacionRepository.obtenerPorNombre(nombrePrograma);
 
         if (pf == null) {
             throw new Exception("No existe un Programa de Formación con nombre: " + nombrePrograma);
         }
 
-        // TODO: ESTO VA EN LA CAPA DE PRESENTACIÓN
-        List<String> resultado = new ArrayList<>();
-        resultado.add("Nombre: " + pf.getNombre());
-        resultado.add("Descripcion: " + pf.getDescripcion());
-        resultado.add("Fecha Inicio: " + pf.getFechaInicio());
-        resultado.add("Fecha Fin: " + pf.getFechaFin());
-        resultado.add("Fecha Alta: " + pf.getFechaAlta());
-        resultado.add("Cursos");
-
-        List<String> cursos = programaFormacionRepository.nombresCursosDelPrograma(nombrePrograma);
-        if (cursos.isEmpty()) {
-            resultado.add("Sin Cursos Registrados");
-        } else {
-            for (String nombreCurso : cursos) {
-                resultado.add("- " + nombreCurso);
-            }
-        }
-        return resultado;
+        return aDT(pf);
     }
 
     /**
@@ -107,34 +97,39 @@ public class ProgramaFormacionService {
         return programaFormacionRepository.nombres();
     }
 
-    public List<String[]> listarProgramasTabla() {
+    public List<DTProgramaResumen> listarProgramasTabla() {
         return aTabla(programaFormacionRepository.listarTodos());
     }
 
     /**
-     * @return {nombre, descripcion, fechaInicio, fechaFin, fechaAlta} o
-     * null si el programa no existe.
+     * Igual que obtenerPorNombre, pero devuelve null (en vez de lanzar
+     * excepcion) si el programa no existe.
      */
-    public String[] obtenerDatosBasicos(String nombre) {
+    public DTProgramaFormacion obtenerDatosBasicos(String nombre) {
         ProgramaFormacion p = programaFormacionRepository.obtenerPorNombre(nombre);
         if (p == null) return null;
-        return new String[]{
-                p.getNombre(),
-                p.getDescripcion(),
-                p.getFechaInicio() != null ? p.getFechaInicio().toString() : "",
-                p.getFechaFin() != null ? p.getFechaFin().toString() : "",
-                p.getFechaAlta() != null ? p.getFechaAlta().toString() : ""
-        };
+        return aDT(p);
+    }
+
+    private DTProgramaFormacion aDT(ProgramaFormacion pf) {
+        return new DTProgramaFormacion(
+                pf.getNombre(),
+                pf.getDescripcion(),
+                pf.getFechaInicio(),
+                pf.getFechaFin(),
+                pf.getFechaAlta(),
+                programaFormacionRepository.nombresCursosDelPrograma(pf.getNombre())
+        );
     }
 
     /**
-     * {0}=nombre, {1}=descripcion -- así queda cada fila de la tabla de programas.
+     * Cada fila de la tabla de programas: nombre + descripcion.
      */
-    private List<String[]> aTabla(List<ProgramaFormacion> lista) {
-        List<String[]> resultado = new ArrayList<>();
+    private List<DTProgramaResumen> aTabla(List<ProgramaFormacion> lista) {
+        List<DTProgramaResumen> resultado = new ArrayList<>();
         for (ProgramaFormacion p : lista) {
-            resultado.add(new String[]{p.getNombre(), p.getDescripcion()});
+            resultado.add(new DTProgramaResumen(p.getNombre(), p.getDescripcion()));
         }
         return resultado;
     }
-}
+}

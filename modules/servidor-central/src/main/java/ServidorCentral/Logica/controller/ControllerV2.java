@@ -1,5 +1,16 @@
 package ServidorCentral.Logica.controller;
 
+import ServidorCentral.Logica.datatypes.DTCurso;
+import ServidorCentral.Logica.datatypes.DTCursoResumen;
+import ServidorCentral.Logica.datatypes.DTDocenteDetalle;
+import ServidorCentral.Logica.datatypes.DTDocenteResumen;
+import ServidorCentral.Logica.datatypes.DTEdicionCurso;
+import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
+import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
+import ServidorCentral.Logica.datatypes.DTProgramaFormacion;
+import ServidorCentral.Logica.datatypes.DTProgramaResumen;
+import ServidorCentral.Logica.datatypes.DTUsuario;
+import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
 import ServidorCentral.Logica.repositories.*;
 import ServidorCentral.Logica.services.*;
 import ServidorCentral.Persistencia.Conexion;
@@ -9,12 +20,13 @@ import java.util.List;
 
 /**
  * Controller en capas: NO abre EntityManager, no arma queries y no valida
- * nada. Su unico trabajo es conectar la pantalla (Swing) con el Service
- * que corresponde.
+ * nada. Su unico trabajo es conectar la pantalla (Swing / Servidor Web) con
+ * el Service que corresponde. Devuelve DataTypes (paquete datatypes), nunca
+ * String[] ni entidades JPA.
  * <p>
  * [ Controller ] -> [ Service ] -> [ Repository ] -> [ Base de Datos ]
  */
-public class ControllerV2 implements IController {
+public class ControllerV2 implements IControllerV2 {
 
     private final UsuarioService usuarioService;
     private final DocenteService docenteService;
@@ -51,32 +63,32 @@ public class ControllerV2 implements IController {
     // ---------------------------------------------------------------
 
     @Override
-    public void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen,String contraseña) {
-        usuarioService.registrar(nickname, mail, nombre, apellido, fechaNac, instituto, imagen, contraseña);
+    public void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen, String contraseña) {
+        usuarioService.registrar(nickname, mail, nombre, apellido, fechaNac, instituto, imagen,contraseña);
     }
 
     @Override
     public void modificarUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac) throws Exception {
         usuarioService.modificar(nickname, mail, nombre, apellido, fechaNac);
     }
-    
-        @Override
-    public List<String> listarDocentesEdicion(String nombreEdicion) {
+
+    @Override
+    public List<DTDocenteResumen> listarDocentesEdicion(String nombreEdicion) {
         return edicionCursoService.listarDocentes(nombreEdicion);
     }
 
     @Override
-    public List<String> listarEstudiantesEdicion(String nombreEdicion) {
+    public List<DTEstudianteResumen> listarEstudiantesEdicion(String nombreEdicion) {
         return edicionCursoService.listarEstudiantes(nombreEdicion);
     }
 
     @Override
-    public List<String[]> listarUsuariosTabla() {
+    public List<DTUsuarioResumen> listarUsuariosTabla() {
         return usuarioService.listarUsuariosTabla();
     }
 
     @Override
-    public String[] obtenerDataUsuario(String nickname, String mail) {
+    public DTUsuario obtenerDataUsuario(String nickname, String mail) {
         return usuarioService.obtenerDataUsuario(nickname, mail);
     }
 
@@ -86,27 +98,27 @@ public class ControllerV2 implements IController {
     }
 
     @Override
-    public List<String> obtenerEdicionesYProgramas(String nickname) {
+    public DTInscripcionesEstudiante obtenerEdicionesYProgramas(String nickname) {
         return estudianteService.obtenerEdicionesYProgramas(nickname);
     }
 
     @Override
-    public List<String> obtenerDataDocente(String nickname) {
+    public DTDocenteDetalle obtenerDataDocente(String nickname) {
         return docenteService.obtenerData(nickname);
     }
 
     @Override
-    public List<String[]> listarDocentesTabla() {
+    public List<DTDocenteResumen> listarDocentesTabla() {
         return docenteService.listarDocentesTabla();
     }
 
     @Override
-    public List<String[]> listarDocentesPorInstituto(String nombreInstituto) {
+    public List<DTDocenteResumen> listarDocentesPorInstituto(String nombreInstituto) {
         return docenteService.porInstitutoTabla(nombreInstituto);
     }
 
     @Override
-    public List<String[]> listarEstudiantesTabla() {
+    public List<DTEstudianteResumen> listarEstudiantesTabla() {
         return estudianteService.listarEstudiantesTabla();
     }
 
@@ -140,7 +152,7 @@ public class ControllerV2 implements IController {
     }
 
     @Override
-    public List<String[]> listarCursosTabla(String nombreInstituto) {
+    public List<DTCursoResumen> listarCursosTabla(String nombreInstituto) {
         return cursoService.obtenerCursosTabla(nombreInstituto);
     }
 
@@ -155,7 +167,7 @@ public class ControllerV2 implements IController {
     }
 
     @Override
-    public String[] obtenerDataCurso(String nombreCurso) throws Exception {
+    public DTCurso obtenerDataCurso(String nombreCurso) throws Exception {
         return cursoService.obtenerCurso(nombreCurso);
     }
 
@@ -174,7 +186,7 @@ public class ControllerV2 implements IController {
     }
 
     @Override
-    public String[] obtenerEdicionCurso(String nombreEdicion) throws Exception {
+    public DTEdicionCurso obtenerEdicionCurso(String nombreEdicion) throws Exception {
         return edicionCursoService.obtenerPorNombre(nombreEdicion);
     }
 
@@ -208,7 +220,7 @@ public class ControllerV2 implements IController {
     }
 
     @Override
-    public List<String> obtenerDataPrograma(String nombrePrograma) throws Exception {
+    public DTProgramaFormacion obtenerDataPrograma(String nombrePrograma) throws Exception {
         return programaFormacionService.obtenerPorNombre(nombrePrograma);
     }
 
@@ -228,12 +240,12 @@ public class ControllerV2 implements IController {
     }
 
     @Override
-    public String[] obtenerDatosBasicosPrograma(String nombre) {
+    public DTProgramaFormacion obtenerDatosBasicosPrograma(String nombre) {
         return programaFormacionService.obtenerDatosBasicos(nombre);
     }
 
     @Override
-    public List<String[]> listarProgramasTabla() {
+    public List<DTProgramaResumen> listarProgramasTabla() {
         return programaFormacionService.listarProgramasTabla();
     }
 }

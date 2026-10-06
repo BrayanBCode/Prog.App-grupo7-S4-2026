@@ -5,6 +5,8 @@
 package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTUsuario;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public class Datos_Docente extends javax.swing.JDialog {
     private javax.swing.JLabel labelImagen;
     private javax.swing.JTable tablaDatos;
     private javax.swing.JTable tablaActividad;
-    private IController control;
+    private IControllerV2 control;
 
     /**
      * Creates new form Datos_Docente
@@ -41,7 +43,7 @@ public class Datos_Docente extends javax.swing.JDialog {
      * @param control    controlador, para abrir el detalle de institutos, cursos, ediciones y programas
      */
     public Datos_Docente(java.awt.Frame parent, boolean modal,
-            String[] datos, String rutaImagen, List<String> actividad, IController control) {
+                         DTUsuario datos, String rutaImagen, List<String> actividad, IControllerV2 control) {
         this(parent, modal);
         this.control = control;
         construirInterfaz();
@@ -87,7 +89,7 @@ public class Datos_Docente extends javax.swing.JDialog {
         getContentPane().add(contenido, java.awt.BorderLayout.CENTER);
     }
 
-    private void cargarDatos(String[] datos, String rutaImagen, List<String> actividad) {
+    private void cargarDatos(DTUsuario datos, String rutaImagen, List<String> actividad) {
 
         // --- Imagen ---
         boolean conImagen = false;
@@ -106,11 +108,11 @@ public class Datos_Docente extends javax.swing.JDialog {
 
         // --- Datos personales ---
         Object[][] filas = {
-            {"Nickname", datos[0]},
-            {"Nombre", datos[2]},
-            {"Apellido", datos[3]},
-            {"Fecha de nacimiento", datos[4]},
-            {"Correo electrónico", datos[1]}
+            {"Nickname", datos.nickname()},
+            {"Nombre", datos.nombre()},
+            {"Apellido", datos.apellido()},
+            {"Fecha de nacimiento", datos.fechaNac()},
+            {"Correo electrónico", datos.mail()}
         };
         tablaDatos.setModel(new DefaultTableModel(filas, new String[]{"Campo", "Valor"}) {
             @Override

@@ -4,7 +4,7 @@
  */
 package Swing.programaFormacion;
 
-import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
 
 import javax.swing.*;
 import java.util.List;
@@ -15,9 +15,9 @@ import java.util.List;
  */
 public class JIAgregarCursoPrograma extends javax.swing.JInternalFrame {
 
-    private IController control;
+    private IControllerV2 control;
 
-    public JIAgregarCursoPrograma(IController c) {
+    public JIAgregarCursoPrograma(IControllerV2 c) {
         initComponents();
         this.control = c;
         cargarCombos();

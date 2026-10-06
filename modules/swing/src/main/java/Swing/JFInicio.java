@@ -6,13 +6,14 @@ package Swing;
 
 import ServidorCentral.Logica.controller.Fabrica;
 import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
 import ServidorCentral.Logica.datatypes.ControllerVersion;
 import Swing.EdicionCurso.JIConsultaEdicionCurso;
 import Swing.EdicionCurso.JIRegistroEdicionCurso;
 import Swing.EdicionCurso.JIinscripcionEdicionCurso;
+import Swing.Instituto.JIAltaInstituto;
 import Swing.curso.JIAltaCurso;
 import Swing.curso.JIConsultaCurso;
-import Swing.instituto.JIAltaInstituto;
 import Swing.programaFormacion.JIAgregarCursoPrograma;
 import Swing.programaFormacion.JIConsultaProgFormacion;
 import Swing.programaFormacion.JICrearProgFormacion;
@@ -29,7 +30,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author maida
  */
 public class JFInicio extends javax.swing.JFrame {
-    private IController control;
+    private IControllerV2 control;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFInicio.class.getName());
     private JInternalFrame selectedFrame = null;
 
@@ -41,7 +42,7 @@ public class JFInicio extends javax.swing.JFrame {
         setVisible(true);
 
         Fabrica f =  Fabrica.getInstance();
-        var c = f.getUserControler(ControllerVersion.v2);
+        IControllerV2 c = f.getControllerV2();
         this.control = c;
 
 

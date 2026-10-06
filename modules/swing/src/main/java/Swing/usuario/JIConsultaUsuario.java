@@ -1,6 +1,11 @@
 package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IController;
+import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTDocenteDetalle;
+import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
+import ServidorCentral.Logica.datatypes.DTUsuario;
+import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -17,7 +22,7 @@ import java.util.List;
  */
 public class JIConsultaUsuario extends javax.swing.JInternalFrame {
 
-    private IController control;
+    private IControllerV2 control;
 
     // Ventanas de usuario abiertas (nickname -> diálogo), para no duplicarlas
     private final java.util.Map<String, javax.swing.JDialog> ventanasAbiertas = new java.util.HashMap<>();
@@ -25,7 +30,7 @@ public class JIConsultaUsuario extends javax.swing.JInternalFrame {
     /**
      * Creates new form NewJInternalFrame
      */
-    public JIConsultaUsuario(IController c) {
+    public JIConsultaUsuario(IControllerV2 c) {
         initComponents();
 
         this.control = c;
@@ -34,14 +39,14 @@ public class JIConsultaUsuario extends javax.swing.JInternalFrame {
 
     private void cargarTablaUsuarios() {
         // La vista solo maneja arreglos de Strings, sin importar la clase Usuario
-        List<String[]> datos = control.listarUsuariosTabla();
+        List<DTUsuarioResumen> datos = control.listarUsuariosTabla();
 
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
 
         if (datos != null) {
-            for (String[] fila : datos) {
-                model.addRow(fila); // Agrega directamente la fila a la tabla
+            for (DTUsuarioResumen fila : datos) {
+                model.addRow(new String[] {fila.nickname(), fila.mail()}); // Agrega directamente la fila a la tabla
             }
         }
     }
@@ -128,7 +133,7 @@ public class JIConsultaUsuario extends javax.swing.JInternalFrame {
                 return;
             }
 
-            String[] datos = control.obtenerDataUsuario(nickname, mail);
+            DTUsuario datos = control.obtenerDataUsuario(nickname, mail);
 
             // Verificamos primero que el usuario exista
             if (datos == null) {
@@ -138,7 +143,7 @@ public class JIConsultaUsuario extends javax.swing.JInternalFrame {
 
             // Se asume que datos[5] trae la ruta/nombre de archivo de la imagen
             // del usuario en el Servidor Central (puede ser null si no tiene imagen).
-            String rutaImagen = (datos.length > 5) ? datos[5] : null;
+            String rutaImagen = (datos.imagen() != null && datos.imagen().length() > 5) ? datos.imagen() : null;
 
             // Ventana principal (dueña de los diálogos)
             java.awt.Window ventana = SwingUtilities.getWindowAncestor(this);
@@ -148,12 +153,16 @@ public class JIConsultaUsuario extends javax.swing.JInternalFrame {
             // seguir clickeando otros usuarios sin cerrar los que ya están abiertos.
             javax.swing.JDialog dialogo;
             if (control.esDocente(nickname)) {
-                // DOCENTE -> Datos_Docente
-                List<String> actividadDocente = control.obtenerDataDocente(nickname);
-                dialogo = new Datos_Docente(padre, false, datos, rutaImagen, actividadDocente, control);
-            } else {
+            // DOCENTE -> Datos_Docente
+                 DTDocenteDetalle actividadDocente = control.obtenerDataDocente(nickname);
+    
+                // Convertimos o extraemos la lista que requiere Datos_Docente (ejemplo: ediciones)
+                     List<String> listaActividades = actividadDocente.ediciones(); 
+    
+                dialogo = new Datos_Docente(padre, false, datos, rutaImagen, listaActividades, control);
+                }else {
                 // ESTUDIANTE -> Datos_Estudiante
-                List<String> inscripciones = control.obtenerEdicionesYProgramas(nickname);
+                DTInscripcionesEstudiante inscripciones = control.obtenerEdicionesYProgramas(nickname);
                 dialogo = new Datos_Estudiante(padre, false, datos, rutaImagen, inscripciones, control);
             }
 

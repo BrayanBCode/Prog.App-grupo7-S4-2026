@@ -1,5 +1,7 @@
 package ServidorCentral.Logica.services;
 
+import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
+import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
 import ServidorCentral.Logica.repositories.EstudianteRepository;
 
@@ -14,29 +16,27 @@ public class EstudianteService {
         this.estudianteRepository = estudianteRepository;
     }
 
-    public List<String[]> listarEstudiantesTabla() {
+    public List<DTEstudianteResumen> listarEstudiantesTabla() {
         return aTabla(estudianteRepository.listarTodos());
     }
 
     /**
-     * Ediciones de curso + programas de formacion en los que esta
-     * inscripto el estudiante, todo en una sola lista (como lo esperaba
-     * la vista de consulta de usuario).
+     * Ediciones de curso y programas de formacion en los que esta
+     * inscripto el estudiante, separados en dos listas. Si la vista los
+     * quiere en una sola lista, los junta ella.
      */
-    public List<String> obtenerEdicionesYProgramas(String nickname) {
-        List<String> resultado = new ArrayList<>(estudianteRepository.nombresEdicionesInscriptas(nickname));
-        resultado.addAll(estudianteRepository.nombresProgramasInscriptos(nickname));
-        return resultado;
+    public DTInscripcionesEstudiante obtenerEdicionesYProgramas(String nickname) {
+        return new DTInscripcionesEstudiante(
+                estudianteRepository.nombresEdicionesInscriptas(nickname),
+                estudianteRepository.nombresProgramasInscriptos(nickname)
+        );
     }
 
-    /**
-     * {0}=nickname, {1}=nombre, {2}=apellido, {3}=mail.
-     */
-    private List<String[]> aTabla(List<Estudiante> lista) {
-        List<String[]> resultado = new ArrayList<>();
+    private List<DTEstudianteResumen> aTabla(List<Estudiante> lista) {
+        List<DTEstudianteResumen> resultado = new ArrayList<>();
         for (Estudiante e : lista) {
-            resultado.add(new String[]{e.getNickname(), e.getNombreU(), e.getApellido(), e.getMail()});
+            resultado.add(new DTEstudianteResumen(e.getNickname(), e.getNombreU(), e.getApellido(), e.getMail()));
         }
         return resultado;
     }
-}
+}

@@ -1,5 +1,8 @@
 package ServidorCentral.Logica.services;
 
+import ServidorCentral.Logica.datatypes.DTCurso;
+import ServidorCentral.Logica.datatypes.DTCursoResumen;
+import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.Instituto;
 import ServidorCentral.Logica.entities.usuarios.Docente;
@@ -9,7 +12,6 @@ import ServidorCentral.Logica.repositories.InstitutoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Acá viven las reglas de negocio de Curso: qué es válido y qué no.
@@ -54,7 +56,7 @@ public class CursoService {
         cursoRepository.guardar(nombre, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, nicknameDocente, previas);
     }
 
-    public List<String[]> obtenerCursosTabla(String nombreInstituto) {
+    public List<DTCursoResumen> obtenerCursosTabla(String nombreInstituto) {
         return aTabla(cursoRepository.cursosPorInstituto(nombreInstituto));
     }
 
@@ -64,35 +66,39 @@ public class CursoService {
      * acá, y sin él esto tiraba NullPointerException en vez de un mensaje
      * claro cuando el nombre no correspondía a ningún curso.
      */
-    public String[] obtenerCurso(String nombreCurso) throws Exception {
+    public DTCurso obtenerCurso(String nombreCurso) throws Exception {
         Curso c = cursoRepository.buscarPorNombre(nombreCurso);
 
         if (c == null) {
             throw new Exception("No se encontró el curso llamado: '" + nombreCurso + "'");
         }
 
-        // TODO: ESTO ES DE PRESENTACIÓN
-        String previas = c.getPrevias().isEmpty()
-                ? "(Sin previas)"
-                : c.getPrevias().stream().map(Curso::getNombreC).collect(Collectors.joining(", "));
+        // Los textos "(Sin previas)" / "(Sin docente asignado)" los pone la presentacion.
+        List<String> previas = new ArrayList<>();
+        for (Curso previa : c.getPrevias()) {
+            previas.add(previa.getNombreC());
+        }
 
-        // TODO: ESTO ES DE PRESENTACIÓN
-        String docente = c.getDocente() != null
-                ? c.getDocente().getNombreU() + " " + c.getDocente().getApellido() + " (" + c.getDocente().getNickname() + ")"
-                : "(Sin docente asignado)";
+        DTDocenteResumen docente = null;
+        if (c.getDocente() != null) {
+            docente = new DTDocenteResumen(
+                    c.getDocente().getNickname(),
+                    c.getDocente().getNombreU(),
+                    c.getDocente().getApellido());
+        }
 
-        return new String[]{
+        return new DTCurso(
                 c.getNombreC(),
                 c.getDescripcion(),
-                String.valueOf(c.getDuracion()),
-                String.valueOf(c.getCanthoras()),
-                String.valueOf(c.getCantCreditos()),
+                c.getDuracion(),
+                c.getCanthoras(),
+                c.getCantCreditos(),
                 c.getUrl(),
-                String.valueOf(c.getFechaRegistro()),
-                c.getInstituto() != null ? c.getInstituto().getNombre() : "",
+                c.getFechaRegistro(),
+                c.getInstituto() != null ? c.getInstituto().getNombre() : null,
                 docente,
                 previas
-        };
+        );
     }
 
     public List<String> listarNombres() {
@@ -104,13 +110,13 @@ public class CursoService {
     }
 
     /**
-     * {0}=nombre, {1}=descripcion -- así queda cada fila de la tabla de cursos.
+     * Cada fila de la tabla de cursos: nombre + descripcion.
      */
-    private List<String[]> aTabla(List<Curso> lista) {
-        List<String[]> resultado = new ArrayList<>();
+    private List<DTCursoResumen> aTabla(List<Curso> lista) {
+        List<DTCursoResumen> resultado = new ArrayList<>();
         for (Curso c : lista) {
-            resultado.add(new String[]{c.getNombreC(), c.getDescripcion()});
+            resultado.add(new DTCursoResumen(c.getNombreC(), c.getDescripcion()));
         }
         return resultado;
     }
-}
+}
