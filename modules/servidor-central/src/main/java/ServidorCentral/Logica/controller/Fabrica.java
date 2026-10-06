@@ -27,7 +27,7 @@ public class Fabrica {
             return new ControllerV2();
         }
 
-        return new ControllerV1();
+        return new ControllerV2();
     }
     
 }

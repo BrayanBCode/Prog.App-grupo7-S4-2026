@@ -38,7 +38,7 @@ public class UsuarioService {
      * ControllerV1 y asi lo espera la vista Swing: la firma de
      * IController.altaUsuario no declara throws.
      */
-    public void registrar(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen) {
+    public void registrar(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen,String contraseña) {
 
         if (usuarioRepository.existeNickname(nickname) || usuarioRepository.existeMail(mail)) {
             throw new IllegalArgumentException("El Nickname o el Email ya se encuentran registrados en el sistema.");
@@ -60,9 +60,9 @@ public class UsuarioService {
         String rutaImagenFinal = guardarImagenUsuario(nickname, imagen);
 
         if (esDocente) {
-            usuarioRepository.guardarDocente(nickname, mail, nombre, apellido, fechaNac, rutaImagenFinal, instituto.trim());
+            usuarioRepository.guardarDocente(nickname, mail, nombre, apellido, fechaNac, rutaImagenFinal, instituto.trim(),contraseña);
         } else {
-            usuarioRepository.guardarEstudiante(nickname, mail, nombre, apellido, fechaNac, rutaImagenFinal);
+            usuarioRepository.guardarEstudiante(nickname, mail, nombre, apellido, fechaNac, rutaImagenFinal,contraseña);
         }
     }
 
@@ -89,7 +89,8 @@ public class UsuarioService {
                 u.getNombreU(),
                 u.getApellido(),
                 u.getFechaNac() != null ? u.getFechaNac().toString() : "",
-                u.getImagen()
+                u.getImagen(),
+                u.getContraseña()
         };
     }
 

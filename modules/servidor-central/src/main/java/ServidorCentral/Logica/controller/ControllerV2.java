@@ -51,8 +51,8 @@ public class ControllerV2 implements IController {
     // ---------------------------------------------------------------
 
     @Override
-    public void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen) {
-        usuarioService.registrar(nickname, mail, nombre, apellido, fechaNac, instituto, imagen);
+    public void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen,String contraseña) {
+        usuarioService.registrar(nickname, mail, nombre, apellido, fechaNac, instituto, imagen, contraseña);
     }
 
     @Override

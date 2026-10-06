@@ -38,8 +38,8 @@ public class Docente extends Usuario {
     // Constructor que llama a Usuario. La relación con el Instituto se arma
     // desde afuera (Controller) usando el lado dueño de la relación
     // (Instituto.getDocentes().add(docente)), no con un campo String suelto.
-    public Docente(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String imagen) {
-        super(nickname, mail, nombre, apellido, fechaNac, imagen);
+    public Docente(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String imagen,String contraseña) {
+        super(nickname, mail, nombre, apellido, fechaNac, imagen,contraseña);
     }
 
     public List<EdicionCurso> getEdicionesC(){return edicionesC;}

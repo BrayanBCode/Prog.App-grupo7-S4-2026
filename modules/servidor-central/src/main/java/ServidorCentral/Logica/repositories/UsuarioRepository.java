@@ -87,14 +87,15 @@ public class UsuarioRepository {
     /**
      * Da de alta un Estudiante. Todo dentro de la misma transaccion.
      */
-    public void guardarEstudiante(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String imagen) {
+    public void guardarEstudiante(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String imagen,String contraseña) {
         EntityManager em = conexion.getEntityManager();
         try {
             em.getTransaction().begin();
 
-            Estudiante estudiante = new Estudiante(nickname, mail, nombre, apellido, fechaNac, imagen);
+            Estudiante estudiante = new Estudiante(nickname, mail, nombre, apellido, fechaNac, imagen,contraseña);
             estudiante.setImagen(imagen);
             em.persist(estudiante);
+            
 
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -113,12 +114,12 @@ public class UsuarioRepository {
      * ManyToMany: si no se agrega ahi, el docente queda creado pero
      * suelto (y nunca podria dictar cursos).
      */
-    public void guardarDocente(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String imagen, String nombreInstituto) {
+    public void guardarDocente(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String imagen, String nombreInstituto,String Contraseña) {
         EntityManager em = conexion.getEntityManager();
         try {
             em.getTransaction().begin();
 
-            Docente docente = new Docente(nickname, mail, nombre, apellido, fechaNac, imagen);
+            Docente docente = new Docente(nickname, mail, nombre, apellido, fechaNac, imagen,Contraseña);
             docente.setImagen(imagen);
             em.persist(docente);
 
