@@ -10,8 +10,11 @@
     <nav class="acciones">
         <%-- Visitante --%>
         <c:if test="${puede.INICIO_SESION}">
-            <a href="${pageContext.request.contextPath}/login">Iniciar SesiÃ³n</a>
-        </c:if>
+            <a href="${pageContext.request.contextPath}/login">Iniciar sesión</a>
+    </c:if>
+    <c:if test="${puede.ALTA_USUARIO}">
+        <a href="${pageContext.request.contextPath}/registro">Registrarse</a>
+    </c:if>
         <%-- Aca va el link "Registrarse" (ALTA_USUARIO) cuando se implemente:
              <c:if test="${puede.ALTA_USUARIO}"> ... </c:if> --%>
 
