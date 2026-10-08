@@ -39,7 +39,7 @@ public class JIAgregarCursoPrograma extends javax.swing.JInternalFrame {
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
@@ -117,9 +117,9 @@ public class JIAgregarCursoPrograma extends javax.swing.JInternalFrame {
         );
 
         pack();
-    }// </editor-fold>                        
+    }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String programa = (String) jComboBoxPrograma.getSelectedItem();
         String curso = (String) jComboBoxCurso.getSelectedItem();
 
@@ -136,11 +136,11 @@ public class JIAgregarCursoPrograma extends javax.swing.JInternalFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "No se pudo agregar", JOptionPane.ERROR_MESSAGE);
         }
-    }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         limpiarComponentes(this); // Cancelar: limpia los campos, no cierra la pantalla
-    }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public void limpiarComponentes(java.awt.Container contenedor) {
         // Recorremos todos los componentes dentro del contenedor actual
@@ -178,7 +178,7 @@ public class JIAgregarCursoPrograma extends javax.swing.JInternalFrame {
     }
 
 
-    // Variables declaration - do not modify                     
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBoxCurso;
@@ -186,5 +186,5 @@ public class JIAgregarCursoPrograma extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    // End of variables declaration                   
+    // End of variables declaration//GEN-END:variables
 }

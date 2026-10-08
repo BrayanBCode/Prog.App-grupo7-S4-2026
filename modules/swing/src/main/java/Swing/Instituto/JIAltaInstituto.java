@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package Swing.Instituto;
+package Swing.instituto;
 
 import ServidorCentral.Logica.controller.IControllerV2;
 import java.util.regex.Pattern;
@@ -24,7 +24,7 @@ public class JIAltaInstituto extends javax.swing.JInternalFrame {
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jLblTitulo = new javax.swing.JLabel();
@@ -91,14 +91,14 @@ public class JIAltaInstituto extends javax.swing.JInternalFrame {
         );
 
         pack();
-    }// </editor-fold>
+    }// </editor-fold>//GEN-END:initComponents
 
-    private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
         jTxtNombre.setText(""); // Cancelar: limpia el campo, no cierra la pantalla
         jTxtNombre.requestFocusInWindow();
-    }
+    }//GEN-LAST:event_jBtnCancelarActionPerformed
 
-    private void jBtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jBtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAceptarActionPerformed
         String nombre = jTxtNombre.getText().trim();
 
         if (nombre.isEmpty()) {
@@ -119,13 +119,13 @@ public class JIAltaInstituto extends javax.swing.JInternalFrame {
             // Nombre repetido, vacío, etc.: se conserva lo escrito
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error al registrar instituto", JOptionPane.ERROR_MESSAGE);
         }
-    }
+    }//GEN-LAST:event_jBtnAceptarActionPerformed
 
-    // Variables declaration - do not modify
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnAceptar;
     private javax.swing.JButton jBtnCancelar;
     private javax.swing.JLabel jLblNombre;
     private javax.swing.JLabel jLblTitulo;
     private javax.swing.JTextField jTxtNombre;
-    // End of variables declaration
+    // End of variables declaration//GEN-END:variables
 }
