@@ -30,166 +30,152 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace min="-2" pref="139" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="2" attributes="0">
-                  <Component id="jLabel2" alignment="2" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel3" alignment="2" pref="0" max="32767" attributes="0"/>
+        <Group type="102" attributes="0">
+          <EmptySpace min="-2" pref="139" max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="2" attributes="0">
+            <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+            <Component id="jLabel3" pref="0" max="32767" attributes="0"/>
+          </Group>
+          <EmptySpace min="-2" pref="121" max="-2" attributes="0"/>
+        </Group>
+        <Group type="102" alignment="1" attributes="0">
+          <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+          <Component id="jButton3" min="-2" pref="106" max="-2" attributes="0"/>
+          <EmptySpace max="32767" attributes="0"/>
+          <Component id="jButton1" min="-2" pref="108" max="-2" attributes="0"/>
+          <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+        </Group>
+        <Group type="102" attributes="0">
+          <EmptySpace max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="0" attributes="0">
+            <Component id="jLabel8" max="32767" attributes="0"/>
+            <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                <Component id="JConfContraseña" min="-2" pref="149" max="-2" attributes="0"/>
+                <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Component id="jLabel5" alignment="0" pref="140" max="32767" attributes="0"/>
+                  <Component id="jLabel4" alignment="0" pref="140" max="32767" attributes="0"/>
+                  <Component id="jLabel7" alignment="0" pref="140" max="32767" attributes="0"/>
+                  <Component id="jLabel6" alignment="0" pref="140" max="32767" attributes="0"/>
+                </Group>
+                <Component id="JContraseña" min="-2" pref="99" max="-2" attributes="0"/>
+                <Component id="FDocente1" min="-2" pref="153" max="-2" attributes="0"/>
+                <Component id="LabelDocente3" min="-2" pref="140" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="121" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+            </Group>
           </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-              <Component id="jButton3" min="-2" pref="106" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-          </Group>
-          <Group type="102" attributes="0">
+          <EmptySpace max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="0" attributes="0">
+            <Group type="102" attributes="0">
+              <Component id="filler1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel8" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="JConfContraseña" min="-2" pref="149" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="jLabel5" alignment="0" pref="140" max="32767" attributes="0"/>
-                              <Component id="jLabel4" alignment="0" pref="140" max="32767" attributes="0"/>
-                              <Component id="jLabel7" alignment="0" pref="140" max="32767" attributes="0"/>
-                              <Component id="jLabel6" alignment="0" pref="140" max="32767" attributes="0"/>
-                          </Group>
-                          <Component id="JContraseña" min="-2" pref="99" max="-2" attributes="0"/>
-                          <Component id="FDocente1" alignment="0" min="-2" pref="153" max="-2" attributes="0"/>
-                          <Component id="LabelDocente3" alignment="0" min="-2" pref="140" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                <Component id="checkDocente" alignment="1" max="32767" attributes="0"/>
+                <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                    <Component id="FNombre" alignment="1" max="32767" attributes="0"/>
+                    <Component id="FApellido" alignment="1" max="32767" attributes="0"/>
+                    <Component id="FNickname" alignment="1" max="32767" attributes="0"/>
+                    <Component id="Fmail" alignment="1" max="32767" attributes="0"/>
+                    <Component id="FConfContraseña" max="32767" attributes="0"/>
+                    <Component id="FContraseña" alignment="1" max="32767" attributes="0"/>
                   </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="filler1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="checkDocente" alignment="1" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="FNombre" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="FApellido" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="FNickname" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="Fmail" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="FConfContraseña" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="FContraseña" alignment="1" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                  </Group>
-                  <Component id="FDocente2" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                      <Component id="SFechaNac" max="32767" attributes="0"/>
-                  </Group>
-              </Group>
+            </Group>
+            <Component id="FDocente2" max="32767" attributes="0"/>
+            <Group type="102" attributes="0">
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <Component id="SFechaNac" max="32767" attributes="0"/>
+            </Group>
           </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="seleccionImagen" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-          </Group>
+        </Group>
+        <Group type="102" attributes="0">
+          <EmptySpace max="-2" attributes="0"/>
+          <Component id="seleccionImagen" min="-2" max="-2" attributes="0"/>
+          <EmptySpace max="32767" attributes="0"/>
+        </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="200" max="-2" attributes="0"/>
-              <Component id="filler1" min="-2" pref="297" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="247" max="32767" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabel3" max="32767" attributes="0"/>
-              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+        <Group type="102" attributes="0">
+          <EmptySpace min="-2" pref="200" max="-2" attributes="0"/>
+          <Component id="filler1" min="-2" pref="297" max="-2" attributes="0"/>
+          <EmptySpace min="0" pref="247" max="32767" attributes="0"/>
+        </Group>
+        <Group type="102" attributes="0">
+          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+          <EmptySpace max="-2" attributes="0"/>
+          <Component id="jLabel3" max="32767" attributes="0"/>
+          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="0" attributes="0">
+            <Component id="filler1" min="-2" pref="297" max="-2" attributes="0"/>
+            <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="filler1" min="-2" pref="297" max="-2" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel4" min="-2" pref="27" max="-2" attributes="0"/>
-                          <Component id="FNombre" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                              <Component id="jLabel5" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                              <Component id="jLabel6" min="-2" pref="24" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="FApellido" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="FNickname" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="Fmail" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="FContraseña" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                              <Component id="FConfContraseña" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="checkDocente" min="-2" pref="35" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel7" max="32767" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="JContraseña" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                              <Component id="JConfContraseña" min="-2" pref="33" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jLabel8" min="-2" pref="26" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="FNombre" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="23" max="32767" attributes="0"/>
-                      <Component id="FApellido" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="33" max="32767" attributes="0"/>
-                      <Component id="FNickname" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="37" max="32767" attributes="0"/>
-                      <Component id="Fmail" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="checkDocente" min="-2" pref="35" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="FDocente2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="36" max="32767" attributes="0"/>
-                      <Component id="SFechaNac" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
-                  </Group>
+                <Component id="jLabel4" min="-2" pref="27" max="-2" attributes="0"/>
+                <Component id="FNombre" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="FDocente1" min="-2" pref="25" max="-2" attributes="0"/>
-                  <Component id="FDocente2" alignment="0" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="jLabel5" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                  <Component id="jLabel6" min="-2" pref="24" max="-2" attributes="0"/>
+                </Group>
+                <Group type="102" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="FApellido" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  <Component id="FNickname" min="-2" max="-2" attributes="0"/>
+                </Group>
               </Group>
-              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="SFechaNac" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="LabelDocente3" alignment="3" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="seleccionImagen" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jButton3" alignment="3" pref="30" max="32767" attributes="0"/>
-                  <Component id="jButton1" alignment="3" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                <Group type="102" attributes="0">
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="Fmail" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  <Component id="FContraseña" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="FConfContraseña" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="checkDocente" min="-2" pref="35" max="-2" attributes="0"/>
+                </Group>
+                <Group type="102" attributes="0">
+                  <Component id="jLabel7" max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="JContraseña" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  <Component id="JConfContraseña" min="-2" pref="33" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jLabel8" min="-2" pref="26" max="-2" attributes="0"/>
+                </Group>
               </Group>
-              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+            </Group>
           </Group>
+          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="0" attributes="0">
+            <Component id="FDocente1" min="-2" pref="25" max="-2" attributes="0"/>
+            <Component id="FDocente2" min="-2" max="-2" attributes="0"/>
+          </Group>
+          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="3" attributes="0">
+            <Component id="SFechaNac" min="-2" max="-2" attributes="0"/>
+            <Component id="LabelDocente3" max="32767" attributes="0"/>
+          </Group>
+          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+          <Component id="seleccionImagen" max="32767" attributes="0"/>
+          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="3" attributes="0">
+            <Component id="jButton3" pref="30" max="32767" attributes="0"/>
+            <Component id="jButton1" max="32767" attributes="0"/>
+          </Group>
+          <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+        </Group>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -354,25 +340,25 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="JContrase&#xf1;a">
+    <Component class="javax.swing.JLabel" name="JContraseña">
       <Properties>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Contrase&#xf1;a:"/>
+        <Property name="text" type="java.lang.String" value="Contraseña:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="FConfContrase&#xf1;a">
+    <Component class="javax.swing.JTextField" name="FConfContraseña">
     </Component>
-    <Component class="javax.swing.JLabel" name="JConfContrase&#xf1;a">
+    <Component class="javax.swing.JLabel" name="JConfContraseña">
       <Properties>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Confirmaci&#xf3;n contrase&#xf1;a:"/>
+        <Property name="text" type="java.lang.String" value="Confirmación contraseña:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="FContrase&#xf1;a">
+    <Component class="javax.swing.JTextField" name="FContraseña">
     </Component>
   </SubComponents>
 </Form>

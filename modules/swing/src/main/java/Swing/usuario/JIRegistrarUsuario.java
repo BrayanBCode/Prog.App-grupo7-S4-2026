@@ -284,9 +284,9 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
     }
     }//GEN-LAST:event_checkDocenteActionPerformed
 
-    private void FDocente2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FDocente2ActionPerformed
+    private void FDocente2ActionPerformed(java.awt.event.ActionEvent evt) {                                          
 
-    }//GEN-LAST:event_FDocente2ActionPerformed
+    }                                         
 
     private void seleccionImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionImagenActionPerformed
 
@@ -418,9 +418,9 @@ public class JIRegistrarUsuario extends javax.swing.JInternalFrame {
     private LocalDate toLocalDate(Date fecha) {
         return fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         limpiarFormulario(); // Cancelar: limpia los campos, no cierra la pantalla
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }                                        
 
     private void SFechaNacStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_SFechaNacStateChanged
         // TODO add your handling code here:
