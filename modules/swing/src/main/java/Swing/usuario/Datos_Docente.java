@@ -5,10 +5,10 @@
 package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTDocenteDetalle;
 import ServidorCentral.Logica.datatypes.DTUsuario;
 
 import javax.swing.table.DefaultTableModel;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +16,7 @@ import java.util.List;
  * @author maida
  */
 public class Datos_Docente extends javax.swing.JDialog {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Datos_Docente.class.getName());
 
     // Componentes armados a mano (no dependen del Form Editor)
@@ -38,11 +38,11 @@ public class Datos_Docente extends javax.swing.JDialog {
      *
      * @param datos      {nickname, email, nombre, apellido, fechaNacimiento, [rutaImagen]}
      * @param rutaImagen ruta de la imagen del usuario (puede ser null)
-     * @param actividad  lista devuelta por control.obtenerDataDocente(nickname)
+     * @param actividad  detalle devuelto por control.obtenerDataDocente(nickname)
      * @param control    controlador, para abrir el detalle de institutos, cursos, ediciones y programas
      */
     public Datos_Docente(java.awt.Frame parent, boolean modal,
-                         DTUsuario datos, String rutaImagen, List<String> actividad, IControllerV2 control) {
+                         DTUsuario datos, String rutaImagen, DTDocenteDetalle actividad, IControllerV2 control) {
         this(parent, modal);
         this.control = control;
         construirInterfaz();
@@ -88,7 +88,7 @@ public class Datos_Docente extends javax.swing.JDialog {
         getContentPane().add(contenido, java.awt.BorderLayout.CENTER);
     }
 
-    private void cargarDatos(DTUsuario datos, String rutaImagen, List<String> actividad) {
+    private void cargarDatos(DTUsuario datos, String rutaImagen, DTDocenteDetalle actividad) {
 
         // --- Imagen ---
         boolean conImagen = false;
@@ -107,11 +107,11 @@ public class Datos_Docente extends javax.swing.JDialog {
 
         // --- Datos personales ---
         Object[][] filas = {
-            {"Nickname", datos.nickname()},
-            {"Nombre", datos.nombre()},
-            {"Apellido", datos.apellido()},
-            {"Fecha de nacimiento", datos.fechaNac()},
-            {"Correo electrónico", datos.mail()}
+                {"Nickname", datos.nickname()},
+                {"Nombre", datos.nombre()},
+                {"Apellido", datos.apellido()},
+                {"Fecha de nacimiento", datos.fechaNac()},
+                {"Correo electrónico", datos.mail()}
         };
         tablaDatos.setModel(new DefaultTableModel(filas, new String[]{"Campo", "Valor"}) {
             @Override
@@ -121,32 +121,13 @@ public class Datos_Docente extends javax.swing.JDialog {
         });
 
         // --- Actividad académica, separada por columnas ---
-        // obtenerDataDocente devuelve secciones ("--- INSTITUTOS ---", "--- CURSOS ---", ...)
-        // seguidas de items "- nombre". Se reparten en una columna por tipo.
-        List<List<String>> columnas = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            columnas.add(new ArrayList<>());
-        }
-        int seccion = -1;
-        if (actividad != null) {
-            for (String linea : actividad) {
-                String t = linea == null ? "" : linea.trim();
-                if (t.startsWith("---")) {
-                    if (t.contains("EDICIONES")) {
-                        seccion = 2;
-                    } else if (t.contains("CURSOS")) {
-                        seccion = 1;
-                    } else if (t.contains("INSTITUTOS")) {
-                        seccion = 0;
-                    } else if (t.contains("PROGRAMAS")) {
-                        seccion = 3;
-                    }
-                } else if (t.startsWith("- ") && seccion >= 0) {
-                    columnas.get(seccion).add(t.substring(2).trim());
-                }
-                // Los "(Sin ...)" se ignoran: la celda queda vacía.
-            }
-        }
+        // El DTDocenteDetalle ya trae una lista por tipo (nunca null, pueden estar vacías).
+        // Orden de columnas: 0 = instituto, 1 = curso, 2 = edición, 3 = programa.
+        // Si una lista está vacía, su columna queda con celdas vacías.
+        List<List<String>> columnas = actividad == null
+                ? List.of(List.of(), List.of(), List.of(), List.of())
+                : List.of(actividad.institutos(), actividad.cursos(),
+                actividad.ediciones(), actividad.programas());
         DefaultTableModel modelo = new DefaultTableModel(
                 new String[]{"Instituto", "Curso", "Edición de curso", "Programa de formación"}, 0) {
             @Override
@@ -196,12 +177,12 @@ public class Datos_Docente extends javax.swing.JDialog {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 300, Short.MAX_VALUE)
         );
 
         pack();
@@ -214,7 +195,7 @@ public class Datos_Docente extends javax.swing.JDialog {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

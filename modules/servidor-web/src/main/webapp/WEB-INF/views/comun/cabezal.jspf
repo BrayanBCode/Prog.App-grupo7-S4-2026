@@ -3,20 +3,45 @@
   Cabezal comun a todas las paginas. Cada opcion se muestra segun el actor:
   ${puede.XXX} sale de la matriz CasoDeUso (ver AccesoFilter), asi que NO se
   decide el rol aca: solo se pregunta "puede este actor ejecutar este caso de uso?".
---%>
-<header class="cabezal">
-    <a class="logo" href="${pageContext.request.contextPath}/inicio">edExt</a>
 
-    <nav class="acciones">
+  Estructura:
+    - flecha (menu-boton): abre/cierra el menu con los accesos a los casos de uso
+    - logo
+    - acciones (derecha): iniciar sesion, registrarse, usuario actual, cerrar sesion
+    - menu-casos: panel desplegable; cada grupo y cada link aparecen solo si
+      el actor tiene permiso. Si un grupo queda sin links, no se dibuja.
+
+  Casos de uso que NO van en el menu a proposito:
+    - INICIO_SESION, ALTA_USUARIO, CIERRE_SESION: ya estan a la derecha.
+    - SEGUIR_USUARIO, DEJAR_DE_SEGUIR_USUARIO: son botones dentro de la consulta de un usuario.
+    - BUSCAR_CURSOS_Y_PROGRAMAS: es un buscador (letra 7.5), no un link.
+    - ALTA_CATEGORIA: es de la Estacion de Trabajo.
+
+  Este archivo tiene que guardarse en UTF-8 (por las tildes).
+--%>
+<c:set var="raiz" value="${pageContext.request.contextPath}"/>
+
+<header class="cabezal">
+    <div class="cabezal-izq">
+        <button type="button" id="menu-boton" class="menu-boton"
+                aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-casos">
+            <svg class="menu-flecha" viewBox="0 0 24 24" width="20" height="20"
+                 aria-hidden="true" focusable="false">
+                <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <a class="logo" href="${raiz}/inicio">edExt</a>
+    </div>
+
+    <nav class="acciones" aria-label="Sesión">
         <%-- Visitante --%>
         <c:if test="${puede.INICIO_SESION}">
-            <a href="${pageContext.request.contextPath}/login">Iniciar sesión</a>
-    </c:if>
-    <c:if test="${puede.ALTA_USUARIO}">
-        <a href="${pageContext.request.contextPath}/registro">Registrarse</a>
-    </c:if>
-        <%-- Aca va el link "Registrarse" (ALTA_USUARIO) cuando se implemente:
-             <c:if test="${puede.ALTA_USUARIO}"> ... </c:if> --%>
+            <a href="${raiz}/login">Iniciar sesión</a>
+        </c:if>
+        <c:if test="${puede.ALTA_USUARIO}">
+            <a href="${raiz}/registro">Registrarse</a>
+        </c:if>
 
         <%-- Estudiante / Docente --%>
         <c:if test="${puede.CIERRE_SESION}">
@@ -24,9 +49,95 @@
                 <c:out value="${usuarioActual.nickname}"/>
                 <span class="rol rol-${rol}"><c:out value="${rol.etiqueta}"/></span>
             </span>
-            <form class="form-inline" method="post" action="${pageContext.request.contextPath}/logout">
-                <button type="submit" class="btn-link">Cerrar SesiÃ³n</button>
+            <form class="form-inline" method="post" action="${raiz}/logout">
+                <button type="submit" class="btn-link">Cerrar sesión</button>
             </form>
         </c:if>
     </nav>
+
+    <%-- Menu desplegable. Oculto por defecto; menu.js lo abre y lo cierra. --%>
+    <nav id="menu-casos" class="menu-casos" aria-label="Menú principal" hidden>
+
+        <%-- Consultas: Visitante, Estudiante y Docente --%>
+        <c:if test="${puede.CONSULTA_CURSO or puede.CONSULTA_EDICION_CURSO
+                      or puede.CONSULTA_PROGRAMA_FORMACION or puede.CONSULTA_USUARIO}">
+            <section class="menu-grupo">
+                <h2>Explorar</h2>
+                <ul>
+                    <c:if test="${puede.CONSULTA_CURSO}">
+                        <li><a href="${raiz}/cursos">Cursos</a></li>
+                    </c:if>
+                    <c:if test="${puede.CONSULTA_EDICION_CURSO}">
+                        <li><a href="${raiz}/ediciones">Ediciones de cursos</a></li>
+                    </c:if>
+                    <c:if test="${puede.CONSULTA_PROGRAMA_FORMACION}">
+                        <li><a href="${raiz}/programas">Programas de formación</a></li>
+                    </c:if>
+                    <c:if test="${puede.CONSULTA_USUARIO}">
+                        <li><a href="${raiz}/usuarios">Usuarios</a></li>
+                    </c:if>
+                </ul>
+            </section>
+        </c:if>
+
+        <%-- Cuenta: Estudiante y Docente --%>
+        <c:if test="${puede.MODIFICAR_DATOS_USUARIO}">
+            <section class="menu-grupo">
+                <h2>Mi cuenta</h2>
+                <ul>
+                    <li><a href="${raiz}/usuario/modificar">Modificar mis datos</a></li>
+                </ul>
+            </section>
+        </c:if>
+
+        <%-- Estudiante --%>
+        <c:if test="${puede.INSCRIPCION_EDICION_CURSO or puede.INSCRIPCION_PROGRAMA_FORMACION
+                      or puede.LISTAR_RESULTADOS_INSCRIPCIONES}">
+            <section class="menu-grupo">
+                <h2>Mis estudios</h2>
+                <ul>
+                    <c:if test="${puede.INSCRIPCION_EDICION_CURSO}">
+                        <li><a href="${raiz}/edicion/inscripcion">Inscribirme a una edición</a></li>
+                    </c:if>
+                    <c:if test="${puede.INSCRIPCION_PROGRAMA_FORMACION}">
+                        <li><a href="${raiz}/programa/inscripcion">Inscribirme a un programa</a></li>
+                    </c:if>
+                    <c:if test="${puede.LISTAR_RESULTADOS_INSCRIPCIONES}">
+                        <li><a href="${raiz}/inscripciones/resultados">Resultados de mis inscripciones</a></li>
+                    </c:if>
+                </ul>
+            </section>
+        </c:if>
+
+        <%-- Docente --%>
+        <c:if test="${puede.ALTA_CURSO or puede.ALTA_EDICION_CURSO or puede.CREAR_PROGRAMA_FORMACION
+                      or puede.AGREGAR_CURSO_A_PROGRAMA or puede.SELECCIONAR_ESTUDIANTES_EDICION
+                      or puede.LISTAR_ACEPTADOS_EDICION}">
+            <section class="menu-grupo">
+                <h2>Docencia</h2>
+                <ul>
+                    <c:if test="${puede.ALTA_CURSO}">
+                        <li><a href="${raiz}/curso/alta">Crear curso</a></li>
+                    </c:if>
+                    <c:if test="${puede.ALTA_EDICION_CURSO}">
+                        <li><a href="${raiz}/edicion/alta">Crear edición de un curso</a></li>
+                    </c:if>
+                    <c:if test="${puede.CREAR_PROGRAMA_FORMACION}">
+                        <li><a href="${raiz}/programa/alta">Crear programa de formación</a></li>
+                    </c:if>
+                    <c:if test="${puede.AGREGAR_CURSO_A_PROGRAMA}">
+                        <li><a href="${raiz}/programa/agregar-curso">Agregar curso a un programa</a></li>
+                    </c:if>
+                    <c:if test="${puede.SELECCIONAR_ESTUDIANTES_EDICION}">
+                        <li><a href="${raiz}/edicion/seleccionar">Seleccionar estudiantes de una edición</a></li>
+                    </c:if>
+                    <c:if test="${puede.LISTAR_ACEPTADOS_EDICION}">
+                        <li><a href="${raiz}/edicion/aceptados">Ver estudiantes aceptados</a></li>
+                    </c:if>
+                </ul>
+            </section>
+        </c:if>
+    </nav>
 </header>
+
+<script src="${raiz}/js/menu.js" defer></script>
