@@ -59,8 +59,7 @@
     <nav id="menu-casos" class="menu-casos" aria-label="Menú principal" hidden>
 
         <%-- Consultas: Visitante, Estudiante y Docente --%>
-        <c:if test="${puede.CONSULTA_CURSO or puede.CONSULTA_EDICION_CURSO
-                      or puede.CONSULTA_PROGRAMA_FORMACION or puede.CONSULTA_USUARIO}">
+        <c:if test="${puede.CONSULTA_CURSO or puede.CONSULTA_EDICION_CURSO or puede.CONSULTA_USUARIO}">
             <section class="menu-grupo">
                 <h2>Explorar</h2>
                 <ul>
@@ -69,9 +68,6 @@
                     </c:if>
                     <c:if test="${puede.CONSULTA_EDICION_CURSO}">
                         <li><a href="${raiz}/ediciones">Ediciones de cursos</a></li>
-                    </c:if>
-                    <c:if test="${puede.CONSULTA_PROGRAMA_FORMACION}">
-                        <li><a href="${raiz}/programas">Programas de formación</a></li>
                     </c:if>
                     <c:if test="${puede.CONSULTA_USUARIO}">
                         <li><a href="${raiz}/usuarios">Usuarios</a></li>
@@ -91,16 +87,12 @@
         </c:if>
 
         <%-- Estudiante --%>
-        <c:if test="${puede.INSCRIPCION_EDICION_CURSO or puede.INSCRIPCION_PROGRAMA_FORMACION
-                      or puede.LISTAR_RESULTADOS_INSCRIPCIONES}">
+        <c:if test="${puede.INSCRIPCION_EDICION_CURSO or puede.LISTAR_RESULTADOS_INSCRIPCIONES}">
             <section class="menu-grupo">
                 <h2>Mis estudios</h2>
                 <ul>
                     <c:if test="${puede.INSCRIPCION_EDICION_CURSO}">
                         <li><a href="${raiz}/edicion/inscripcion">Inscribirme a una edición</a></li>
-                    </c:if>
-                    <c:if test="${puede.INSCRIPCION_PROGRAMA_FORMACION}">
-                        <li><a href="${raiz}/programa/inscripcion">Inscribirme a un programa</a></li>
                     </c:if>
                     <c:if test="${puede.LISTAR_RESULTADOS_INSCRIPCIONES}">
                         <li><a href="${raiz}/inscripciones/resultados">Resultados de mis inscripciones</a></li>
@@ -110,8 +102,9 @@
         </c:if>
 
         <%-- Docente --%>
-        <c:if test="${puede.ALTA_CURSO or puede.ALTA_EDICION_CURSO or puede.CREAR_PROGRAMA_FORMACION
-                      or puede.AGREGAR_CURSO_A_PROGRAMA or puede.SELECCIONAR_ESTUDIANTES_EDICION
+        <c:if test="${puede.ALTA_CURSO or puede.ALTA_EDICION_CURSO 
+                      or puede.AGREGAR_CURSO_A_PROGRAMA 
+                      or puede.SELECCIONAR_ESTUDIANTES_EDICION
                       or puede.LISTAR_ACEPTADOS_EDICION}">
             <section class="menu-grupo">
                 <h2>Docencia</h2>
@@ -121,12 +114,6 @@
                     </c:if>
                     <c:if test="${puede.ALTA_EDICION_CURSO}">
                         <li><a href="${raiz}/edicion/alta">Crear edición de un curso</a></li>
-                    </c:if>
-                    <c:if test="${puede.CREAR_PROGRAMA_FORMACION}">
-                        <li><a href="${raiz}/programa/alta">Crear programa de formación</a></li>
-                    </c:if>
-                    <c:if test="${puede.AGREGAR_CURSO_A_PROGRAMA}">
-                        <li><a href="${raiz}/programa/agregar-curso">Agregar curso a un programa</a></li>
                     </c:if>
                     <c:if test="${puede.SELECCIONAR_ESTUDIANTES_EDICION}">
                         <li><a href="${raiz}/edicion/seleccionar">Seleccionar estudiantes de una edición</a></li>
