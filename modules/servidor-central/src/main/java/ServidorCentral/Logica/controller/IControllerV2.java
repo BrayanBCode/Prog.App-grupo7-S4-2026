@@ -6,15 +6,18 @@ import ServidorCentral.Logica.datatypes.DTDocenteDetalle;
 import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
+import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
 import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
 import ServidorCentral.Logica.datatypes.DTProgramaFormacion;
 import ServidorCentral.Logica.datatypes.DTProgramaResumen;
 import ServidorCentral.Logica.datatypes.DTSesion;
 import ServidorCentral.Logica.datatypes.DTUsuario;
 import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
+import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Contrato del Controller en capas (ControllerV2).
@@ -58,11 +61,28 @@ public interface IControllerV2 {
     List<String> listarProgramasPorCurso(String nombreCurso);
     DTEdicionCurso obtenerEdicionCurso(String nombreEdicion)throws Exception;
     void altaCurso(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas) throws Exception;
+    /** Alta de Curso eligiendo categorias (cada una debe existir). */
+    void altaCurso(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas, List<String> categorias) throws Exception;
     boolean existePrograma(String nombre);
     DTProgramaFormacion obtenerDatosBasicosPrograma(String nombre);
     List<DTProgramaResumen> listarProgramasTabla();
     List<String> listarInstitutos();
     List<DTDocenteResumen> listarDocentesEdicion(String nombreEdicion);
     List<DTEstudianteResumen> listarEstudiantesEdicion(String nombreEdicion);
+    /** Inscripcion a Programa de Formacion (Estudiante). Falla si el programa no existe o ya esta inscripto. */
+    void inscribirEstudiantePrograma(String nickname, String mail, String nombrePrograma, LocalDate fechaInscripcion) throws Exception;
+    /** Seguir a un Usuario (Estudiante/Docente), por nickname. Falla si no existe, es uno mismo o ya lo sigue. */
+    void seguirUsuario(String nicknameSeguidor, String nicknameSeguido) throws Exception;
+    boolean estaSiguiendo(String nicknameSeguidor, String nicknameSeguido);
+    /** Nicknames de los usuarios que sigue este usuario. */
+    List<String> listarSeguidos(String nickname);
+    /** Nicknames de los usuarios que siguen a este usuario. */
+    List<String> listarSeguidores(String nickname);
+    /** Seleccionar estudiantes (Docente): inscripciones de la edicion con su estado. El docente debe participar en la edicion. */
+    List<DTInscripcionEdicion> listarInscripcionesEdicion(String nicknameDocente, String nombreEdicion) throws Exception;
+    /** Listar aceptados (Docente): solo inscripciones en estado Aceptada. El docente debe participar en la edicion. */
+    List<DTInscripcionEdicion> listarAceptadosEdicion(String nicknameDocente, String nombreEdicion) throws Exception;
+    /** Guarda la seleccion: nickname del estudiante -> ACEPTADA o RECHAZADA (solo desde INSCRIPTO). Todo o nada. */
+    void seleccionarEstudiantes(String nicknameDocente, String nombreEdicion, Map<String, EstadoInscripcion> estados) throws Exception;
 }
 

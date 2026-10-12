@@ -3,8 +3,11 @@ package ServidorCentral.Logica.services;
 import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
+import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
+import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
+import ServidorCentral.Logica.entities.cursos.InscripcionEdicion;
 import ServidorCentral.Logica.entities.usuarios.Docente;
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
 import ServidorCentral.Logica.repositories.CursoRepository;
@@ -14,7 +17,9 @@ import ServidorCentral.Logica.repositories.EstudianteRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EdicionCursoService {
     private final EdicionCursoRepository edicionCursoRepository;
@@ -99,6 +104,92 @@ public class EdicionCursoService {
         List<DTEstudianteResumen> resultado = new ArrayList<>();
         for (Estudiante e : edicionCursoRepository.estudiantesDeEdicion(nombreEdicion)) {
             resultado.add(new DTEstudianteResumen(e.getNickname(), e.getNombreU(), e.getApellido(), e.getMail()));
+        }
+        return resultado;
+    }
+
+    /**
+     * Caso de uso "Seleccionar estudiantes para una edicion de curso" (paso de consulta):
+     * todas las inscripciones de la edicion con su estado. Solo un docente de esa edicion.
+     */
+    public List<DTInscripcionEdicion> listarInscripciones(String nicknameDocente, String nombreEdicion) throws Exception {
+        verificarDocenteDeEdicion(nicknameDocente, nombreEdicion);
+        return aDTInscripciones(edicionCursoRepository.inscripcionesDeEdicion(nombreEdicion), null);
+    }
+
+    /** Caso de uso "Listar aceptados a una edicion de curso": solo las inscripciones en estado Aceptada. */
+    public List<DTInscripcionEdicion> listarAceptados(String nicknameDocente, String nombreEdicion) throws Exception {
+        verificarDocenteDeEdicion(nicknameDocente, nombreEdicion);
+        return aDTInscripciones(edicionCursoRepository.inscripcionesDeEdicion(nombreEdicion), EstadoInscripcion.ACEPTADA);
+    }
+
+    /**
+     * Caso de uso "Seleccionar estudiantes para una edicion de curso" (guardar la seleccion).
+     * Segun la Tabla 1 solo se puede pasar de Inscripto a Aceptada o Rechazada: no se puede volver
+     * a Inscripto ni cambiar una inscripcion que ya fue resuelta. Si algo no es valido no se guarda nada.
+     *
+     * @param estados nickname del estudiante -> nuevo estado (Aceptada o Rechazada)
+     */
+    public void seleccionarEstudiantes(String nicknameDocente, String nombreEdicion, Map<String, EstadoInscripcion> estados) throws Exception {
+        verificarDocenteDeEdicion(nicknameDocente, nombreEdicion);
+
+        if (estados == null || estados.isEmpty()) {
+            throw new Exception("No hay ninguna selección para guardar.");
+        }
+
+        Map<String, InscripcionEdicion> porNickname = new LinkedHashMap<>();
+        for (InscripcionEdicion i : edicionCursoRepository.inscripcionesDeEdicion(nombreEdicion)) {
+            porNickname.put(i.getEstudiante().getNickname(), i);
+        }
+
+        Map<String, EstadoInscripcion> cambios = new LinkedHashMap<>();
+        for (Map.Entry<String, EstadoInscripcion> e : estados.entrySet()) {
+            InscripcionEdicion insc = porNickname.get(e.getKey());
+            if (insc == null) {
+                throw new Exception("El estudiante " + e.getKey() + " no está inscripto en esta edición.");
+            }
+            EstadoInscripcion nuevo = e.getValue();
+            if (nuevo != EstadoInscripcion.ACEPTADA && nuevo != EstadoInscripcion.RECHAZADA) {
+                throw new Exception("El estado debe ser Aceptada o Rechazada.");
+            }
+            if (insc.getEstado() == nuevo) {
+                continue; // ya estaba asi: no hay nada que cambiar
+            }
+            if (insc.getEstado() != EstadoInscripcion.INSCRIPTO) {
+                throw new Exception("La inscripción de " + e.getKey() + " ya fue resuelta (" + insc.getEstado().getEtiqueta() + ").");
+            }
+            cambios.put(e.getKey(), nuevo);
+        }
+
+        if (!cambios.isEmpty()) {
+            edicionCursoRepository.actualizarEstados(nombreEdicion, cambios);
+        }
+    }
+
+    /** La edicion debe existir y el docente debe participar en ella (letra: "edicion de curso en que participa"). */
+    private void verificarDocenteDeEdicion(String nicknameDocente, String nombreEdicion) throws Exception {
+        EdicionCurso edicion = edicionCursoRepository.obtenerPorNombres(nombreEdicion);
+        if (edicion == null) {
+            throw new Exception("La edición de curso seleccionada no existe.");
+        }
+        for (Docente d : edicionCursoRepository.docentesDeEdicion(nombreEdicion)) {
+            if (d.getNickname().equals(nicknameDocente)) {
+                return;
+            }
+        }
+        throw new Exception("El docente no participa en esta edición de curso.");
+    }
+
+    /** Convierte las inscripciones a DTO; si filtro no es null, deja solo las de ese estado. */
+    private List<DTInscripcionEdicion> aDTInscripciones(List<InscripcionEdicion> lista, EstadoInscripcion filtro) {
+        List<DTInscripcionEdicion> resultado = new ArrayList<>();
+        for (InscripcionEdicion i : lista) {
+            if (filtro != null && i.getEstado() != filtro) {
+                continue;
+            }
+            Estudiante e = i.getEstudiante();
+            resultado.add(new DTInscripcionEdicion(e.getNickname(), e.getMail(), e.getNombreU(), e.getApellido(),
+                    i.getFechaInscripcion(), i.getEstado()));
         }
         return resultado;
     }

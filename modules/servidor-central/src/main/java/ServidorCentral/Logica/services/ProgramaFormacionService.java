@@ -4,7 +4,9 @@ import ServidorCentral.Logica.datatypes.DTProgramaFormacion;
 import ServidorCentral.Logica.datatypes.DTProgramaResumen;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.programaFormacion.ProgramaFormacion;
+import ServidorCentral.Logica.entities.usuarios.Estudiante;
 import ServidorCentral.Logica.repositories.CursoRepository;
+import ServidorCentral.Logica.repositories.EstudianteRepository;
 import ServidorCentral.Logica.repositories.ProgramaFormacionRepository;
 
 import java.time.LocalDate;
@@ -14,10 +16,30 @@ import java.util.List;
 public class ProgramaFormacionService {
     private final ProgramaFormacionRepository programaFormacionRepository;
     private final CursoRepository cursoRepository;
+    private final EstudianteRepository estudianteRepository;
 
-    public ProgramaFormacionService(ProgramaFormacionRepository programaFormacionRepository, CursoRepository cursoRepository) {
+    public ProgramaFormacionService(ProgramaFormacionRepository programaFormacionRepository, CursoRepository cursoRepository, EstudianteRepository estudianteRepository) {
         this.programaFormacionRepository = programaFormacionRepository;
         this.cursoRepository = cursoRepository;
+        this.estudianteRepository = estudianteRepository;
+    }
+
+    /**
+     * Caso de uso "Inscripcion a Programa de Formacion": el estudiante y el programa tienen que
+     * existir y el estudiante no puede inscribirse dos veces al mismo programa.
+     */
+    public void inscribirEstudiante(String nickname, String mail, String nombrePrograma, LocalDate fechaInscripcion) throws Exception {
+        Estudiante estudiante = estudianteRepository.buscarPorNicknameYMail(nickname, mail);
+        if (estudiante == null) {
+            throw new Exception("El estudiante seleccionado no existe.");
+        }
+        if (!programaFormacionRepository.existe(nombrePrograma)) {
+            throw new Exception("No existe un Programa de Formación con nombre: " + nombrePrograma);
+        }
+        if (programaFormacionRepository.existeInscripcion(nickname, nombrePrograma)) {
+            throw new Exception("El estudiante ya está inscripto en este programa de formación.");
+        }
+        programaFormacionRepository.inscribir(nickname, mail, nombrePrograma, fechaInscripcion);
     }
 
 

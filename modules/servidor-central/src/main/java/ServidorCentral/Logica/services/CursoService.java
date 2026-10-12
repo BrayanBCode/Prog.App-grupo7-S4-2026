@@ -3,9 +3,11 @@ package ServidorCentral.Logica.services;
 import ServidorCentral.Logica.datatypes.DTCurso;
 import ServidorCentral.Logica.datatypes.DTCursoResumen;
 import ServidorCentral.Logica.datatypes.DTDocenteResumen;
+import ServidorCentral.Logica.entities.cursos.Categoria;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.Instituto;
 import ServidorCentral.Logica.entities.usuarios.Docente;
+import ServidorCentral.Logica.repositories.CategoriaRepository;
 import ServidorCentral.Logica.repositories.CursoRepository;
 import ServidorCentral.Logica.repositories.DocenteRepository;
 import ServidorCentral.Logica.repositories.InstitutoRepository;
@@ -24,11 +26,13 @@ public class CursoService {
     private final CursoRepository cursoRepository;
     private final InstitutoRepository institutoRepository;
     private final DocenteRepository docenteRepository;
+    private final CategoriaRepository categoriaRepository;
 
-    public CursoService(CursoRepository cursoRepository, InstitutoRepository institutoRepository, DocenteRepository docenteRepository) {
+    public CursoService(CursoRepository cursoRepository, InstitutoRepository institutoRepository, DocenteRepository docenteRepository, CategoriaRepository categoriaRepository) {
         this.cursoRepository = cursoRepository;
         this.institutoRepository = institutoRepository;
         this.docenteRepository = docenteRepository;
+        this.categoriaRepository = categoriaRepository;
     }
 
     /**
@@ -37,6 +41,14 @@ public class CursoService {
      * lectura rápida a través del repository correspondiente.
      */
     public void registrar(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas) throws Exception {
+        registrar(nombre, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, nicknameDocente, previas, null);
+    }
+
+    /**
+     * Alta de Curso con categorias (letra 6.1 / 6.2): cada categoria elegida
+     * tiene que existir. Sin categorias (null o vacia) el curso se da de alta igual.
+     */
+    public void registrar(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas, List<String> categorias) throws Exception {
 
         Curso existente = cursoRepository.buscarPorNombre(nombre);
         if (existente != null) {
@@ -53,7 +65,15 @@ public class CursoService {
             throw new Exception("El docente seleccionado no existe.");
         }
 
-        cursoRepository.guardar(nombre, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, nicknameDocente, previas);
+        if (categorias != null) {
+            for (String nombreCategoria : categorias) {
+                if (categoriaRepository.buscarPorNombre(nombreCategoria) == null) {
+                    throw new Exception("La categoría seleccionada no existe: " + nombreCategoria);
+                }
+            }
+        }
+
+        cursoRepository.guardar(nombre, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, nicknameDocente, previas, categorias);
     }
 
     public List<DTCursoResumen> obtenerCursosTabla(String nombreInstituto) {
@@ -87,6 +107,11 @@ public class CursoService {
                     c.getDocente().getApellido());
         }
 
+        List<String> categorias = new ArrayList<>();
+        for (Categoria cat : c.getCategorias()) {
+            categorias.add(cat.getNombre());
+        }
+
         return new DTCurso(
                 c.getNombreC(),
                 c.getDescripcion(),
@@ -97,7 +122,8 @@ public class CursoService {
                 c.getFechaRegistro(),
                 c.getInstituto() != null ? c.getInstituto().getNombre() : null,
                 docente,
-                previas
+                previas,
+                categorias
         );
     }
 

@@ -27,6 +27,9 @@ public class InscripcionEdicion implements Serializable {
 
     private LocalDate fechaInscripcion;
 
+    @Enumerated(EnumType.STRING)
+    private EstadoInscripcion estado = EstadoInscripcion.INSCRIPTO;
+
     // Constructores
     public InscripcionEdicion() {}
 
@@ -48,6 +51,9 @@ public class InscripcionEdicion implements Serializable {
 
     public void setFechaInscripcion(LocalDate fechaInscripcion) { this.fechaInscripcion = fechaInscripcion; }
     public LocalDate getFechaInscripcion() { return fechaInscripcion; }
+
+    public EstadoInscripcion getEstado() { return estado; }
+    public void setEstado(EstadoInscripcion estado) { this.estado = estado; }
 
     @Override
     public int hashCode() {

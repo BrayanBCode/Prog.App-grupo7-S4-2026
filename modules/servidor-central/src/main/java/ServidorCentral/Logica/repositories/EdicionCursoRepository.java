@@ -2,6 +2,7 @@ package ServidorCentral.Logica.repositories;
 
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
+import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 import ServidorCentral.Logica.entities.cursos.InscripcionEdicion;
 import ServidorCentral.Logica.entities.usuarios.Docente;
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
@@ -11,6 +12,7 @@ import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class EdicionCursoRepository {
     private final Conexion conexion;
@@ -92,6 +94,52 @@ public class EdicionCursoRepository {
             em.close();
         }
     }
+    /** Inscripciones de la edicion (con su estudiante cargado), de la mas antigua a la mas nueva. */
+    public List<InscripcionEdicion> inscripcionesDeEdicion(String nombreEdicion) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT i FROM InscripcionEdicion i JOIN FETCH i.estudiante WHERE i.edicionCurso.nombre = :n ORDER BY i.fechaInscripcion, i.id",
+                            InscripcionEdicion.class)
+                    .setParameter("n", nombreEdicion)
+                    .getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Guarda, en una sola transaccion, el nuevo estado de las inscripciones indicadas
+     * (clave: nickname del estudiante). Las inscripciones que no figuran en el mapa no se tocan.
+     */
+    public void actualizarEstados(String nombreEdicion, Map<String, EstadoInscripcion> estadosPorNickname) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            List<InscripcionEdicion> lista = em.createQuery(
+                            "SELECT i FROM InscripcionEdicion i WHERE i.edicionCurso.nombre = :n", InscripcionEdicion.class)
+                    .setParameter("n", nombreEdicion)
+                    .getResultList();
+            for (InscripcionEdicion i : lista) {
+                EstadoInscripcion nuevo = estadosPorNickname.get(i.getEstudiante().getNickname());
+                if (nuevo != null) {
+                    i.setEstado(nuevo);
+                }
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException(e);
+        } finally {
+            em.close();
+        }
+    }
+
     public long contarInscriptos(String nombreEdicion) {
         EntityManager em = conexion.getEntityManager();
         try {

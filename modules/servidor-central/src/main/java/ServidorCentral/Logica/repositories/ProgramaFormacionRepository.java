@@ -1,7 +1,9 @@
 package ServidorCentral.Logica.repositories;
 
 import ServidorCentral.Logica.entities.cursos.Curso;
+import ServidorCentral.Logica.entities.programaFormacion.InscripcionPrograma;
 import ServidorCentral.Logica.entities.programaFormacion.ProgramaFormacion;
+import ServidorCentral.Logica.entities.usuarios.Estudiante;
 import ServidorCentral.Persistencia.Conexion;
 
 import javax.persistence.EntityManager;
@@ -116,6 +118,50 @@ public class ProgramaFormacionRepository {
      * Agrega un curso ya existente al programa. Busca ambos aca adentro
      * para que queden managed dentro de la misma transaccion.
      */
+    public boolean existeInscripcion(String nickname, String nombrePrograma) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            Long cantidad = em.createQuery(
+                            "SELECT COUNT(i) FROM InscripcionPrograma i WHERE i.estudiante.nickname = :nick AND i.pFormacion.nombre = :programa", Long.class)
+                    .setParameter("nick", nickname)
+                    .setParameter("programa", nombrePrograma)
+                    .getSingleResult();
+            return cantidad > 0;
+        } finally {
+            em.close();
+        }
+    }
+
+    /** Persiste la inscripcion del estudiante al programa en la fecha indicada. */
+    public void inscribir(String nickname, String mail, String nombrePrograma, LocalDate fechaInscripcion) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            Estudiante estudiante = em.createQuery(
+                            "SELECT e FROM Estudiante e WHERE e.nickname = :nick AND e.Mail = :mail", Estudiante.class)
+                    .setParameter("nick", nickname)
+                    .setParameter("mail", mail)
+                    .getSingleResult();
+            ProgramaFormacion programa = em.find(ProgramaFormacion.class, nombrePrograma);
+
+            InscripcionPrograma inscripcion = new InscripcionPrograma();
+            inscripcion.setEstudiante(estudiante);
+            inscripcion.setpFormacion(programa);
+            inscripcion.setFechaInscripcion(fechaInscripcion);
+            em.persist(inscripcion);
+
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException(e);
+        } finally {
+            em.close();
+        }
+    }
+
     public void agregarCurso(String nombrePrograma, String nombreCurso) {
         EntityManager em = conexion.getEntityManager();
         try {
