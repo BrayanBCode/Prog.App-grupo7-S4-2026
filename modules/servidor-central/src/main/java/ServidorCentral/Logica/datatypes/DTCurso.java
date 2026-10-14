@@ -9,6 +9,7 @@ import java.util.List;
  *   <li>docente: null si el curso no tiene docente asignado.</li>
  *   <li>previas: nombres de los cursos previos; nunca null (puede estar vacia).</li>
  *   <li>categorias: nombres de las categorias del curso; nunca null (puede estar vacia).</li>
+ *   <li>imagen: ruta relativa a la carpeta de imagenes; null si no tiene.</li>
  * </ul>
  */
 public record DTCurso(
@@ -22,17 +23,18 @@ public record DTCurso(
         String instituto,
         DTDocenteResumen docente,
         List<String> previas,
-        List<String> categorias) {
+        List<String> categorias,
+        String imagen) {
 
     public DTCurso {
         previas = previas == null ? List.of() : List.copyOf(previas);
         categorias = categorias == null ? List.of() : List.copyOf(categorias);
     }
 
-    /** Constructor sin categorias (curso sin categoria asociada). */
+    /** Constructor sin categorias ni imagen. */
     public DTCurso(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos,
                    String url, LocalDate fechaRegistro, String instituto, DTDocenteResumen docente,
                    List<String> previas) {
-        this(nombre, descripcion, duracion, cantHoras, cantCreditos, url, fechaRegistro, instituto, docente, previas, null);
+        this(nombre, descripcion, duracion, cantHoras, cantCreditos, url, fechaRegistro, instituto, docente, previas, null, null);
     }
 }

@@ -44,5 +44,22 @@
 
     <build>
         <finalName>servidor-web</finalName>
+        <plugins>
+            <!-- Las imagenes viven en /imagenes (raiz del repo) y se copian a /imagenes de la webapp:
+                 en la BD se guarda la ruta relativa a esa carpeta (ej. cursos/Flor_del_Ceibo.jpg). -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>${project.basedir}/../../imagenes</directory>
+                            <targetPath>imagenes</targetPath>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

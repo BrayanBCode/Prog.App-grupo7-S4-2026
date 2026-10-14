@@ -11,6 +11,7 @@ import ServidorCentral.Logica.repositories.CategoriaRepository;
 import ServidorCentral.Logica.repositories.CursoRepository;
 import ServidorCentral.Logica.repositories.DocenteRepository;
 import ServidorCentral.Logica.repositories.InstitutoRepository;
+import ServidorCentral.Persistencia.AlmacenImagenes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,14 @@ public class CursoService {
      * tiene que existir. Sin categorias (null o vacia) el curso se da de alta igual.
      */
     public void registrar(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas, List<String> categorias) throws Exception {
+        registrar(nombre, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, nicknameDocente, previas, categorias, null);
+    }
+
+    /**
+     * Igual que el anterior, con imagen opcional (ruta de un archivo local JPG/PNG):
+     * se copia a la carpeta de imagenes y en la BD queda la ruta relativa.
+     */
+    public void registrar(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas, List<String> categorias, String imagen) throws Exception {
 
         Curso existente = cursoRepository.buscarPorNombre(nombre);
         if (existente != null) {
@@ -73,7 +82,8 @@ public class CursoService {
             }
         }
 
-        cursoRepository.guardar(nombre, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, nicknameDocente, previas, categorias);
+        String rutaImagen = AlmacenImagenes.guardar(imagen, AlmacenImagenes.CURSOS, nombre);
+        cursoRepository.guardar(nombre, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, nicknameDocente, previas, categorias, rutaImagen);
     }
 
     public List<DTCursoResumen> obtenerCursosTabla(String nombreInstituto) {
@@ -123,13 +133,15 @@ public class CursoService {
                 c.getInstituto() != null ? c.getInstituto().getNombre() : null,
                 docente,
                 previas,
-                categorias
+                categorias,
+                c.getImagen()
         );
     }
 
     public List<String> listarNombres() {
         return cursoRepository.nombres();
     }
+
 
     public List<String> listarNombresPorInstituto(String nombreInstituto) {
         return cursoRepository.nombresPorInstituto(nombreInstituto);

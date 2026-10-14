@@ -10,6 +10,7 @@ import ServidorCentral.Logica.repositories.DocenteRepository;
 import ServidorCentral.Logica.repositories.InstitutoRepository;
 import ServidorCentral.Logica.repositories.UsuarioRepository;
 import ServidorCentral.Logica.seguridad.Rol;
+import ServidorCentral.Persistencia.AlmacenImagenes;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,9 +22,6 @@ import java.util.List;
  * EntityManager: para eso estan los Repository.
  */
 public class UsuarioService {
-
-    // Carpeta especial del Servidor Central donde se guardan las imagenes.
-    private static final String CARPETA_IMAGENES = "imagenes_usuarios";
 
     private final UsuarioRepository usuarioRepository;
     private final InstitutoRepository institutoRepository;
@@ -156,45 +154,27 @@ public class UsuarioService {
     }
 
     /**
-     * Copia la imagen elegida por el administrador (ruta local en su PC) a
-     * la carpeta de imagenes del Servidor Central, renombrandola con el
-     * nickname para evitar colisiones.
+     * Consulta de Usuario desde el sitio web, donde se navega por nickname (es unico).
+     * @return los datos del usuario, o null si no existe.
+     */
+    public DTUsuario obtenerPorNickname(String nickname) {
+        if (nickname == null || nickname.isBlank()) {
+            return null;
+        }
+        Usuario u = usuarioRepository.buscarPorNicknameOMail(nickname.trim());
+        if (u == null || !u.getNickname().equals(nickname.trim())) {
+            return null;
+        }
+        return obtenerDataUsuario(u.getNickname(), u.getMail());
+    }
+
+    /**
+     * Copia la imagen elegida (ruta local) a la carpeta de imagenes, con el nickname
+     * como nombre para evitar colisiones.
      *
-     * @return la ruta final a persistir, o null si no se eligio imagen.
+     * @return la ruta relativa a persistir, o null si no se eligio imagen.
      */
     private String guardarImagenUsuario(String nickname, String rutaImagenOrigen) {
-        if (rutaImagenOrigen == null || rutaImagenOrigen.isEmpty()) {
-            return null;
-        }
-
-        java.io.File origen = new java.io.File(rutaImagenOrigen);
-        if (!origen.exists()) {
-            return null;
-        }
-
-        // Validacion de formato por seguridad (ademas del filtro de la vista)
-        String nombreOrigen = origen.getName().toLowerCase();
-        String extension = nombreOrigen.substring(nombreOrigen.lastIndexOf('.') + 1);
-        if (!extension.equals("jpg") && !extension.equals("jpeg") && !extension.equals("png")) {
-            throw new IllegalArgumentException("Formato de imagen no soportado. Use JPG o PNG.");
-        }
-
-        try {
-            java.io.File carpetaDestino = new java.io.File(CARPETA_IMAGENES);
-            if (!carpetaDestino.exists()) {
-                carpetaDestino.mkdirs();
-            }
-
-            java.io.File destino = new java.io.File(carpetaDestino, nickname + "." + extension);
-            java.nio.file.Files.copy(
-                    origen.toPath(),
-                    destino.toPath(),
-                    java.nio.file.StandardCopyOption.REPLACE_EXISTING
-            );
-
-            return destino.getPath();
-        } catch (java.io.IOException ex) {
-            throw new RuntimeException("No se pudo guardar la imagen del usuario: " + ex.getMessage(), ex);
-        }
+        return AlmacenImagenes.guardar(rutaImagenOrigen, AlmacenImagenes.USUARIOS, nickname);
     }
 }

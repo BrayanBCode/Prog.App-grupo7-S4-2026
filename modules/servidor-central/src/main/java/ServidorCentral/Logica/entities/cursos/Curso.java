@@ -19,6 +19,7 @@ public class Curso implements Serializable {
     private int cantCreditos;
     private LocalDate fechaRegistro;
     private String url;
+    private String imagen;   // ruta relativa a la carpeta de imagenes (puede ser null)
 
     // Foreign keys
     @ManyToOne
@@ -93,4 +94,6 @@ public class Curso implements Serializable {
     public void setCantCreditos(int cantCreditos) { this.cantCreditos = cantCreditos; }
     public void setUrl(String url) { this.url = url; }
     public void setFechaRegistro(LocalDate fechaRegistro) { this.fechaRegistro = fechaRegistro; }
+    public String getImagen() { return imagen; }
+    public void setImagen(String imagen) { this.imagen = imagen; }
 }

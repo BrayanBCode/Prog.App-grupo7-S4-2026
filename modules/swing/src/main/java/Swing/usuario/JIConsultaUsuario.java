@@ -142,7 +142,8 @@ public class JIConsultaUsuario extends javax.swing.JInternalFrame {
 
             // Se asume que datos[5] trae la ruta/nombre de archivo de la imagen
             // del usuario en el Servidor Central (puede ser null si no tiene imagen).
-            String rutaImagen = (datos.imagen() != null && datos.imagen().length() > 5) ? datos.imagen() : null;
+            // La BD guarda la ruta RELATIVA a la carpeta de imagenes: se resuelve contra esa carpeta.
+            String rutaImagen = ServidorCentral.Persistencia.AlmacenImagenes.rutaAbsoluta(datos.imagen());
 
             // Ventana principal (dueña de los diálogos)
             java.awt.Window ventana = SwingUtilities.getWindowAncestor(this);

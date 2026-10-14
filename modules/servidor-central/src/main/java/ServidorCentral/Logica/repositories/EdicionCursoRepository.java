@@ -175,6 +175,10 @@ public class EdicionCursoRepository {
      * (lado dueño), asi que la edicion se agrega ahi, no al reves.
      */
     public void guardar(String nombreEdicion, String nombreCurso, LocalDate fechaInicio, LocalDate fechaFin, int cupo, List<String> nicknamesDocentes) {
+        guardar(nombreEdicion, nombreCurso, fechaInicio, fechaFin, cupo, nicknamesDocentes, null);
+    }
+
+    public void guardar(String nombreEdicion, String nombreCurso, LocalDate fechaInicio, LocalDate fechaFin, int cupo, List<String> nicknamesDocentes, String imagen) {
         EntityManager em = conexion.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -182,6 +186,7 @@ public class EdicionCursoRepository {
             Curso curso = em.find(Curso.class, nombreCurso);
 
             EdicionCurso edicion = new EdicionCurso(nombreEdicion, curso, fechaInicio, fechaFin, cupo, LocalDate.now());
+            edicion.setImagen(imagen);
             em.persist(edicion);
 
             if (nicknamesDocentes != null) {

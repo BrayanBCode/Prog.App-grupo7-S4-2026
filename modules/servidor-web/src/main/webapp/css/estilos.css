@@ -74,11 +74,6 @@ body.centrado {
 .rol-ESTUDIANTE { background: #28a745; }
 .rol-DOCENTE { background: #0056b3; }
 
-.contenido {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 0 1.5rem;
-}
 
 .login-card {
     background: #ffffff;
@@ -277,4 +272,240 @@ body.centrado {
     .menu-flecha {
         transition: none;
     }
+}
+
+/* ======================================================================
+   Sprint 2: marco general (cabezal + lateral + contenido), fichas y tablas
+   ====================================================================== */
+
+.pagina {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 1.5rem auto;
+    padding: 0 1.5rem;
+}
+
+.contenido {
+    min-width: 0;
+    background: #ffffff;
+    border: 1px solid #e3e6ea;
+    border-radius: 8px;
+    padding: 1.5rem 1.8rem 2rem;
+}
+
+/* Paginas viejas que no usan el marco (ej. registro) */
+body > .contenido {
+    max-width: 900px;
+    margin: 2rem auto;
+    background: none;
+    border: none;
+}
+
+.contenido h1 { margin-top: 0; color: #222222; }
+.contenido h2 { margin: 1.8rem 0 0.8rem; font-size: 1.15rem; color: #333333; }
+
+.lateral {
+    align-self: start;
+    position: sticky;
+    top: 1rem;
+    background: #ffffff;
+    border: 1px solid #e3e6ea;
+    border-radius: 8px;
+    padding: 0.4rem 0 0.8rem;
+}
+
+.lateral h2 {
+    margin: 0;
+    padding: 0.9rem 1.1rem 0.3rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #6c757d;
+}
+
+.lateral ul { list-style: none; margin: 0; padding: 0; }
+
+.lateral a {
+    display: block;
+    padding: 0.4rem 1.1rem;
+    color: #333333;
+    text-decoration: none;
+}
+
+.lateral a:hover { background: #eef4fb; color: #0056b3; }
+
+.tenue { color: #6c757d; }
+
+a { color: #0056b3; }
+
+/* Usuario logueado en el cabezal */
+a.usuario-actual {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+}
+
+/* Imagenes (tag e:imagen). Sin imagen se dibuja un recuadro con la inicial. */
+.img { object-fit: cover; background: #e9eef5; }
+
+.img-vacia {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #0056b3;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: #e3ecf7;
+}
+
+.avatar-mini { width: 28px; height: 28px; border-radius: 50%; font-size: 0.8rem; }
+.avatar { border-radius: 50%; }
+
+.ficha {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.ficha-img {
+    flex: 0 0 auto;
+    width: 180px;
+    height: 135px;
+    border-radius: 8px;
+    font-size: 3rem;
+}
+
+.ficha-img.avatar { width: 140px; height: 140px; border-radius: 50%; }
+
+.ficha h1 { margin-bottom: 0.3rem; }
+.ficha p { margin: 0.3rem 0; }
+
+.datos {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.45rem 1.2rem;
+    margin: 1rem 0;
+}
+
+.datos dt { font-weight: bold; color: #555555; }
+.datos dd { margin: 0; }
+
+/* Tarjetas (listas de cursos, ediciones, programas, usuarios) */
+.tarjetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1rem;
+}
+
+.tarjeta {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #e3e6ea;
+    border-radius: 8px;
+    color: inherit;
+    text-decoration: none;
+    background: #ffffff;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.tarjeta:hover { border-color: #0056b3; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
+
+.tarjeta-img { width: 100%; height: 130px; font-size: 2.4rem; }
+
+.tarjeta-cuerpo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.8rem 0.9rem;
+}
+
+.tarjeta-cuerpo .tenue { font-size: 0.85rem; }
+
+.recorte {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.9rem;
+    color: #444444;
+}
+
+.tarjeta-usuario { flex-direction: row; align-items: center; }
+.tarjeta-usuario .avatar { width: 56px; height: 56px; margin-left: 0.9rem; flex: 0 0 auto; font-size: 1.4rem; }
+
+.accesos { margin-top: 1.5rem; }
+
+/* Chips (institutos y categorias) */
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.4rem 0; }
+
+.chip {
+    padding: 0.3rem 0.8rem;
+    border: 1px solid #c9d6e6;
+    border-radius: 999px;
+    background: #f3f7fc;
+    color: #0056b3;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.chip:hover { background: #0056b3; color: #ffffff; }
+
+.lista { padding-left: 1.2rem; line-height: 1.8; }
+
+/* Tablas */
+.tabla { width: 100%; border-collapse: collapse; margin: 0.5rem 0 1rem; font-size: 0.95rem; }
+.tabla th, .tabla td { padding: 0.55rem 0.7rem; border-bottom: 1px solid #e3e6ea; text-align: left; vertical-align: middle; }
+.tabla th { background: #f4f6f9; color: #555555; font-size: 0.85rem; }
+.tabla tbody tr:hover { background: #fafbfd; }
+
+/* Estado de una inscripcion */
+.estado {
+    display: inline-block;
+    padding: 0.1rem 0.6rem;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+.estado-INSCRIPTO { background: #fff3cd; color: #856404; }
+.estado-ACEPTADA { background: #d4edda; color: #155724; }
+.estado-RECHAZADA { background: #f8d7da; color: #721c24; }
+
+/* Formularios del sitio */
+.formulario { max-width: 640px; }
+.formulario textarea,
+.formulario select[multiple] {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.fila-campos { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end; }
+.fila-campos .form-group { flex: 1 1 150px; }
+
+fieldset.form-group { border: 1px solid #e3e6ea; border-radius: 4px; padding: 0.6rem 0.9rem; }
+fieldset.form-group legend { font-weight: bold; color: #555555; padding: 0 0.3rem; }
+
+.check, .radio { display: inline-flex; align-items: center; gap: 0.3rem; margin-right: 1rem; font-weight: normal; }
+.form-group .check input, .form-group .radio input { width: auto; }
+
+.btn-auto { flex: 0 0 auto; display: inline-block; padding: 0.55rem 1.2rem; }
+
+.columnas { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+/* Pantallas angostas: el lateral pasa arriba del contenido */
+@media (max-width: 760px) {
+    .pagina { grid-template-columns: 1fr; padding: 0 1rem; }
+    .lateral { position: static; }
+    .lateral ul { display: flex; flex-wrap: wrap; }
+    .ficha { flex-direction: column; }
+    .columnas { grid-template-columns: 1fr; }
+    .contenido { padding: 1rem; }
 }

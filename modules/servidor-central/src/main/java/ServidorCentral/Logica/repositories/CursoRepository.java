@@ -64,6 +64,11 @@ public class CursoRepository {
 
     /** Igual que el anterior, y ademas asocia el curso a las categorias indicadas (por nombre). */
     public void guardar(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas, List<String> categorias) {
+        guardar(nombre, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, nicknameDocente, previas, categorias, null);
+    }
+
+    /** Igual que el anterior, guardando tambien la ruta relativa de la imagen (puede ser null). */
+    public void guardar(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas, List<String> categorias, String imagen) {
 
         EntityManager em = conexion.getEntityManager();
         try {
@@ -86,6 +91,7 @@ public class CursoRepository {
             curso.setFechaRegistro(LocalDate.now());
             curso.setInstituto(instituto);
             curso.setDocente(docente);
+            curso.setImagen(imagen);
 
             if (previas != null) {
                 for (String nombrePrevia : previas) {
@@ -128,6 +134,7 @@ public class CursoRepository {
             em.close();
         }
     }
+
 
     public List<String> nombresPorInstituto(String nombreInstituto) {
         EntityManager em = conexion.getEntityManager();

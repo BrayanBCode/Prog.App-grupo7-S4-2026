@@ -1,5 +1,6 @@
 package ServidorCentral.Logica.repositories;
 
+import ServidorCentral.Logica.entities.cursos.InscripcionEdicion;
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
 import ServidorCentral.Persistencia.Conexion;
 
@@ -63,6 +64,34 @@ public class EstudianteRepository {
         try {
             return em.createQuery(
                             "SELECT ip.pFormacion.nombre FROM InscripcionPrograma ip WHERE ip.estudiante.nickname = :nick", String.class)
+                    .setParameter("nick", nickname)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    /** Inscripciones a ediciones del estudiante (con edicion y curso cargados), de la mas nueva a la mas vieja. */
+    public List<InscripcionEdicion> inscripcionesDe(String nickname) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT ie FROM InscripcionEdicion ie JOIN FETCH ie.edicionCurso e JOIN FETCH e.curso "
+                                    + "WHERE ie.estudiante.nickname = :nick ORDER BY ie.fechaInscripcion DESC", InscripcionEdicion.class)
+                    .setParameter("nick", nickname)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    /** Programas en los que se inscribio el estudiante, con la fecha de inscripcion. */
+    public List<Object[]> programasConFecha(String nickname) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT ip.pFormacion.nombre, ip.fechaInscripcion FROM InscripcionPrograma ip "
+                                    + "WHERE ip.estudiante.nickname = :nick ORDER BY ip.fechaInscripcion DESC", Object[].class)
                     .setParameter("nick", nickname)
                     .getResultList();
         } finally {

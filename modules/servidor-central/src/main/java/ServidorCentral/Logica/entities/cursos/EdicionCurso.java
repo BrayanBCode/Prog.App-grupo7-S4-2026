@@ -34,6 +34,7 @@ public class EdicionCurso implements Serializable {
     private LocalDate fechaFin;
     private int cupo = 0;
     private LocalDate fechaPublicacion;
+    private String imagen;   // ruta relativa a la carpeta de imagenes (puede ser null)
 
     // Constructor vacío necesario para JPA
     public EdicionCurso() {
@@ -67,6 +68,9 @@ public class EdicionCurso implements Serializable {
 
     public LocalDate getFechaPublicacion(){return fechaPublicacion;}
     public void setFechaPublicacion(LocalDate fechaPublicacion){this.fechaPublicacion = fechaPublicacion;}
+
+    public String getImagen(){return imagen;}
+    public void setImagen(String imagen){this.imagen = imagen;}
     
     private static final long serialVersionUID = 1L;
 

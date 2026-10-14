@@ -7,6 +7,8 @@ import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
+import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
+import ServidorCentral.Logica.datatypes.DTProgramaInscripto;
 import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
 import ServidorCentral.Logica.datatypes.DTProgramaFormacion;
 import ServidorCentral.Logica.datatypes.DTProgramaResumen;
@@ -84,5 +86,16 @@ public interface IControllerV2 {
     List<DTInscripcionEdicion> listarAceptadosEdicion(String nicknameDocente, String nombreEdicion) throws Exception;
     /** Guarda la seleccion: nickname del estudiante -> ACEPTADA o RECHAZADA (solo desde INSCRIPTO). Todo o nada. */
     void seleccionarEstudiantes(String nicknameDocente, String nombreEdicion, Map<String, EstadoInscripcion> estados) throws Exception;
-}
 
+    // ---------------- Sprint 2: Servidor Web ----------------
+    /** Consulta de Usuario por nickname (el sitio web navega por nickname). null si no existe. */
+    DTUsuario obtenerUsuario(String nickname);
+    /** Inscripciones a ediciones del estudiante, con su estado (Inscripto / Aceptada / Rechazada). */
+    List<DTInscripcionEstudiante> listarInscripcionesEstudiante(String nickname);
+    /** Programas de formacion a los que se inscribio el estudiante. */
+    List<DTProgramaInscripto> listarProgramasEstudiante(String nickname);
+    /** Alta de Curso (Servidor Web) con imagen opcional (ruta de un archivo local JPG/PNG, o null). */
+    void altaCursoConImagen(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas, String imagen) throws Exception;
+    /** Alta de Edicion de Curso con imagen opcional. */
+    void altaEdicionCurso(String nombreEdicion, String nombreCurso, LocalDate fechaInicio, LocalDate fechaFin, int cupo, List<String> nicknamesDocentes, String imagen) throws Exception;
+}

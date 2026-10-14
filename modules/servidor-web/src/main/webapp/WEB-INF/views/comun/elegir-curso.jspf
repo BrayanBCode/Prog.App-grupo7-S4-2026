@@ -1,0 +1,32 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%--
+  Primer paso comun de varios casos de uso: "el usuario indica el instituto que brinda
+  el curso y el sistema lista los cursos asociados".
+  Lo prepara BaseServlet.elegirCurso(...). Atributos:
+    accion            -> ruta del caso de uso (ej. /edicion/inscripcion)
+    filtro, cursos    -> instituto elegido y sus cursos (si ya se eligio)
+--%>
+<c:choose>
+    <c:when test="${not empty filtro}">
+        <p>Cursos de <strong><c:out value="${filtro}"/></strong>:
+            <a href="${raiz}${accion}" class="tenue">(cambiar)</a></p>
+        <c:if test="${empty cursos}"><p class="tenue">No hay cursos asociados.</p></c:if>
+        <ul class="lista">
+            <c:forEach var="cur" items="${cursos}">
+                <c:url var="uCurso" value="${accion}"><c:param name="curso" value="${cur}"/></c:url>
+                <li><a href="${uCurso}"><c:out value="${cur}"/></a></li>
+            </c:forEach>
+        </ul>
+    </c:when>
+    <c:otherwise>
+        <p>Indicá el instituto que brinda el curso.</p>
+        <h2>Institutos</h2>
+        <div class="chips">
+            <c:forEach var="inst" items="${institutosMenu}">
+                <c:url var="uInst" value="${accion}"><c:param name="instituto" value="${inst}"/></c:url>
+                <a class="chip" href="${uInst}"><c:out value="${inst}"/></a>
+            </c:forEach>
+        </div>
+    </c:otherwise>
+</c:choose>

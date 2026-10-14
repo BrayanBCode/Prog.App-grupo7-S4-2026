@@ -1,5 +1,4 @@
 package ServidorCentral.Logica.controller;
-
 import ServidorCentral.Logica.datatypes.DTCurso;
 import ServidorCentral.Logica.datatypes.DTCursoResumen;
 import ServidorCentral.Logica.datatypes.DTDocenteDetalle;
@@ -7,6 +6,8 @@ import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
+import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
+import ServidorCentral.Logica.datatypes.DTProgramaInscripto;
 import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
 import ServidorCentral.Logica.datatypes.DTProgramaFormacion;
 import ServidorCentral.Logica.datatypes.DTProgramaResumen;
@@ -17,11 +18,9 @@ import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 import ServidorCentral.Logica.repositories.*;
 import ServidorCentral.Logica.services.*;
 import ServidorCentral.Persistencia.Conexion;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-
 /**
  * Controller en capas: NO abre EntityManager, no arma queries y no valida
  * nada. Su unico trabajo es conectar la pantalla (Swing / Servidor Web) con
@@ -31,7 +30,6 @@ import java.util.Map;
  * [ Controller ] -> [ Service ] -> [ Repository ] -> [ Base de Datos ]
  */
 public class ControllerV2 implements IControllerV2 {
-
     private final UsuarioService usuarioService;
     private final DocenteService docenteService;
     private final EstudianteService estudianteService;
@@ -41,10 +39,8 @@ public class ControllerV2 implements IControllerV2 {
     private final EdicionCursoService edicionCursoService;
     private final ProgramaFormacionService programaFormacionService;
     private final SeguimientoService seguimientoService;
-
     public ControllerV2() {
         Conexion conexion = Conexion.getInstancia();
-
         // Capa de acceso a datos
         InstitutoRepository institutoRepository = new InstitutoRepository(conexion);
         CategoriaRepository categoriaRepository = new CategoriaRepository(conexion);
@@ -55,7 +51,6 @@ public class ControllerV2 implements IControllerV2 {
         EdicionCursoRepository edicionCursoRepository = new EdicionCursoRepository(conexion);
         ProgramaFormacionRepository programaFormacionRepository = new ProgramaFormacionRepository(conexion);
         SeguimientoRepository seguimientoRepository = new SeguimientoRepository(conexion);
-
         // Capa de reglas de negocio
         this.usuarioService = new UsuarioService(usuarioRepository, institutoRepository, docenteRepository);
         this.docenteService = new DocenteService(docenteRepository);
@@ -322,5 +317,35 @@ public class ControllerV2 implements IControllerV2 {
     @Override
     public List<DTProgramaResumen> listarProgramasTabla() {
         return programaFormacionService.listarProgramasTabla();
+    }
+
+    // ---------------------------------------------------------------
+    // SPRINT 2 - SERVIDOR WEB
+    // ---------------------------------------------------------------
+
+    @Override
+    public DTUsuario obtenerUsuario(String nickname) {
+        return usuarioService.obtenerPorNickname(nickname);
+    }
+
+    @Override
+    public List<DTInscripcionEstudiante> listarInscripcionesEstudiante(String nickname) {
+        return estudianteService.listarInscripciones(nickname);
+    }
+
+    @Override
+    public List<DTProgramaInscripto> listarProgramasEstudiante(String nickname) {
+        return estudianteService.listarProgramas(nickname);
+    }
+
+    @Override
+    public void altaCursoConImagen(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas, String imagen) throws Exception {
+        cursoService.registrar(nombre, descripcion, duracion, cantHoras, cantCreditos,
+                url, nombreInstituto, nicknameDocente, previas, null, imagen);
+    }
+
+    @Override
+    public void altaEdicionCurso(String nombreEdicion, String nombreCurso, LocalDate fechaInicio, LocalDate fechaFin, int cupo, List<String> nicknamesDocentes, String imagen) throws Exception {
+        edicionCursoService.registrar(nombreEdicion, nombreCurso, fechaInicio, fechaFin, cupo, nicknamesDocentes, imagen);
     }
 }

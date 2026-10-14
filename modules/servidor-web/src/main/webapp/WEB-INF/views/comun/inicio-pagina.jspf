@@ -1,0 +1,44 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%--
+  Marco general de las paginas (letra 7.1, Figura 2): cabezal fijo, lateral con
+  institutos, y la parte central donde se realiza cada caso de uso.
+  Uso:  <c:set var="titulo" value="..."/>
+        <%@ include file="/WEB-INF/views/comun/inicio-pagina.jspf" %>
+        ...contenido...
+        <%@ include file="/WEB-INF/views/comun/fin-pagina.jspf" %>
+--%>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><c:out value="${titulo}"/> - edExt</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
+</head>
+<body>
+<%@ include file="/WEB-INF/views/comun/cabezal.jspf" %>
+
+<div class="pagina">
+    <aside class="lateral" aria-label="Institutos">
+        <section>
+            <h2>Institutos</h2>
+            <ul>
+                <c:forEach var="inst" items="${institutosMenu}">
+                    <c:url var="urlInstituto" value="/cursos"><c:param name="instituto" value="${inst}"/></c:url>
+                    <li><a href="${urlInstituto}"><c:out value="${inst}"/></a></li>
+                </c:forEach>
+            </ul>
+        </section>
+    </aside>
+
+    <main class="contenido">
+        <c:if test="${not empty flash}">
+            <div class="alert-success" role="status"><c:out value="${flash}"/></div>
+        </c:if>
+        <c:if test="${not empty flashError}">
+            <div class="alert-danger" role="alert"><c:out value="${flashError}"/></div>
+        </c:if>
+        <c:if test="${not empty error}">
+            <div class="alert-danger" role="alert"><c:out value="${error}"/></div>
+        </c:if>

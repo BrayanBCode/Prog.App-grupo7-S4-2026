@@ -14,6 +14,7 @@ import ServidorCentral.Logica.repositories.CursoRepository;
 import ServidorCentral.Logica.repositories.DocenteRepository;
 import ServidorCentral.Logica.repositories.EdicionCursoRepository;
 import ServidorCentral.Logica.repositories.EstudianteRepository;
+import ServidorCentral.Persistencia.AlmacenImagenes;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -51,7 +52,8 @@ public class EdicionCursoService {
                 ed.getFechaInicio(),
                 ed.getFechaFin(),
                 ed.getCupo(),
-                ed.getFechaPublicacion()
+                ed.getFechaPublicacion(),
+                ed.getImagen()
         );
     }
 
@@ -61,6 +63,11 @@ public class EdicionCursoService {
      * tienen que ser coherentes y los docentes tienen que existir.
      */
     public void registrar(String nombreEdicion, String nombreCurso, LocalDate fechaInicio, LocalDate fechaFin, int cupo, List<String> nicknamesDocentes) throws Exception {
+        registrar(nombreEdicion, nombreCurso, fechaInicio, fechaFin, cupo, nicknamesDocentes, null);
+    }
+
+    /** Igual que el anterior, con imagen opcional (ruta de un archivo local JPG/PNG). */
+    public void registrar(String nombreEdicion, String nombreCurso, LocalDate fechaInicio, LocalDate fechaFin, int cupo, List<String> nicknamesDocentes, String imagen) throws Exception {
 
         // El nombre de la edicion es unico (es su @Id)
         EdicionCurso existente = edicionCursoRepository.obtenerPorNombres(nombreEdicion);
@@ -87,7 +94,8 @@ public class EdicionCursoService {
             }
         }
 
-        edicionCursoRepository.guardar(nombreEdicion, nombreCurso, fechaInicio, fechaFin, cupo, nicknamesDocentes);
+        String rutaImagen = AlmacenImagenes.guardar(imagen, AlmacenImagenes.EDICIONES, nombreEdicion);
+        edicionCursoRepository.guardar(nombreEdicion, nombreCurso, fechaInicio, fechaFin, cupo, nicknamesDocentes, rutaImagen);
     }
 
     /** Docentes de la edicion. */

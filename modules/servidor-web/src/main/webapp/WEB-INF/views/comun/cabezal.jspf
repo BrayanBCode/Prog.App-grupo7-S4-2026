@@ -1,4 +1,6 @@
+<%@ page pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="e" tagdir="/WEB-INF/tags" %>
 <%--
   Cabezal comun a todas las paginas. Cada opcion se muestra segun el actor:
   ${puede.XXX} sale de la matriz CasoDeUso (ver AccesoFilter), asi que NO se
@@ -7,24 +9,21 @@
   Estructura:
     - flecha (menu-boton): abre/cierra el menu con los accesos a los casos de uso
     - logo
-    - acciones (derecha): iniciar sesion, registrarse, usuario actual, cerrar sesion
+    - acciones (derecha): iniciar sesion, registrarse, usuario actual (link a su perfil), cerrar sesion
     - menu-casos: panel desplegable; cada grupo y cada link aparecen solo si
       el actor tiene permiso. Si un grupo queda sin links, no se dibuja.
 
   Casos de uso que NO van en el menu a proposito:
     - INICIO_SESION, ALTA_USUARIO, CIERRE_SESION: ya estan a la derecha.
-    - SEGUIR_USUARIO, DEJAR_DE_SEGUIR_USUARIO: son botones dentro de la consulta de un usuario.
-    - BUSCAR_CURSOS_Y_PROGRAMAS: es un buscador (letra 7.5), no un link.
-    - ALTA_CATEGORIA: es de la Estacion de Trabajo.
-
-  Este archivo tiene que guardarse en UTF-8 (por las tildes).
+    - SEGUIR_USUARIO: es un boton dentro de la consulta de un usuario.
+    - ALTA_CATEGORIA y Programas de Formacion: no corresponden a este grupo (requerimientos en gris).
 --%>
 <c:set var="raiz" value="${pageContext.request.contextPath}"/>
 
 <header class="cabezal">
     <div class="cabezal-izq">
         <button type="button" id="menu-boton" class="menu-boton"
-                aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-casos">
+                aria-label="Abrir menÃº" aria-expanded="false" aria-controls="menu-casos">
             <svg class="menu-flecha" viewBox="0 0 24 24" width="20" height="20"
                  aria-hidden="true" focusable="false">
                 <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4"
@@ -34,65 +33,54 @@
         <a class="logo" href="${raiz}/inicio">edExt</a>
     </div>
 
-    <nav class="acciones" aria-label="Sesión">
+    <nav class="acciones" aria-label="SesiÃ³n">
         <%-- Visitante --%>
         <c:if test="${puede.INICIO_SESION}">
-            <a href="${raiz}/login">Iniciar sesión</a>
+            <a href="${raiz}/login">Iniciar sesiÃ³n</a>
         </c:if>
         <c:if test="${puede.ALTA_USUARIO}">
             <a href="${raiz}/registro">Registrarse</a>
         </c:if>
 
-        <%-- Estudiante / Docente --%>
+        <%-- Estudiante / Docente: nombre (link a su perfil = Consulta de Usuario) y cierre de sesion --%>
         <c:if test="${puede.CIERRE_SESION}">
-            <span class="usuario-actual">
+            <c:url var="urlMiPerfil" value="/usuarios"><c:param name="nick" value="${usuarioActual.nickname}"/></c:url>
+            <a class="usuario-actual" href="${urlMiPerfil}" title="Mi perfil">
+                <e:imagen ruta="${usuarioActual.imagen}" alt="${usuarioActual.nickname}" clase="avatar-mini"/>
                 <c:out value="${usuarioActual.nickname}"/>
                 <span class="rol rol-${rol}"><c:out value="${rol.etiqueta}"/></span>
-            </span>
+            </a>
             <form class="form-inline" method="post" action="${raiz}/logout">
-                <button type="submit" class="btn-link">Cerrar sesión</button>
+                <button type="submit" class="btn-link">Cerrar sesiÃ³n</button>
             </form>
         </c:if>
     </nav>
 
     <%-- Menu desplegable. Oculto por defecto; menu.js lo abre y lo cierra. --%>
-    <nav id="menu-casos" class="menu-casos" aria-label="Menú principal" hidden>
+    <nav id="menu-casos" class="menu-casos" aria-label="MenÃº principal" hidden>
 
-        <%-- Consultas: Visitante, Estudiante y Docente --%>
-        <c:if test="${puede.CONSULTA_CURSO or puede.CONSULTA_EDICION_CURSO or puede.CONSULTA_USUARIO}">
-            <section class="menu-grupo">
-                <h2>Explorar</h2>
-                <ul>
-                    <c:if test="${puede.CONSULTA_CURSO}">
-                        <li><a href="${raiz}/cursos">Cursos</a></li>
-                    </c:if>
-                    <c:if test="${puede.CONSULTA_EDICION_CURSO}">
-                        <li><a href="${raiz}/ediciones">Ediciones de cursos</a></li>
-                    </c:if>
-                    <c:if test="${puede.CONSULTA_USUARIO}">
-                        <li><a href="${raiz}/usuarios">Usuarios</a></li>
-                    </c:if>
-                </ul>
-            </section>
-        </c:if>
-
-        <%-- Cuenta: Estudiante y Docente --%>
-        <c:if test="${puede.MODIFICAR_DATOS_USUARIO}">
-            <section class="menu-grupo">
-                <h2>Mi cuenta</h2>
-                <ul>
-                    <li><a href="${raiz}/usuario/modificar">Modificar mis datos</a></li>
-                </ul>
-            </section>
-        </c:if>
+        <section class="menu-grupo">
+            <h2>Explorar</h2>
+            <ul>
+                <c:if test="${puede.CONSULTA_CURSO}">
+                    <li><a href="${raiz}/cursos">Cursos</a></li>
+                </c:if>
+                <c:if test="${puede.CONSULTA_EDICION_CURSO}">
+                    <li><a href="${raiz}/ediciones">Ediciones de cursos</a></li>
+                </c:if>
+                <c:if test="${puede.CONSULTA_USUARIO}">
+                    <li><a href="${raiz}/usuarios">Usuarios</a></li>
+                </c:if>
+            </ul>
+        </section>
 
         <%-- Estudiante --%>
         <c:if test="${puede.INSCRIPCION_EDICION_CURSO or puede.LISTAR_RESULTADOS_INSCRIPCIONES}">
             <section class="menu-grupo">
-                <h2>Mis estudios</h2>
+                <h2>Inscripciones</h2>
                 <ul>
                     <c:if test="${puede.INSCRIPCION_EDICION_CURSO}">
-                        <li><a href="${raiz}/edicion/inscripcion">Inscribirme a una edición</a></li>
+                        <li><a href="${raiz}/edicion/inscripcion">Inscribirme a una ediciÃ³n</a></li>
                     </c:if>
                     <c:if test="${puede.LISTAR_RESULTADOS_INSCRIPCIONES}">
                         <li><a href="${raiz}/inscripciones/resultados">Resultados de mis inscripciones</a></li>
@@ -102,8 +90,7 @@
         </c:if>
 
         <%-- Docente --%>
-        <c:if test="${puede.ALTA_CURSO or puede.ALTA_EDICION_CURSO 
-                      or puede.AGREGAR_CURSO_A_PROGRAMA 
+        <c:if test="${puede.ALTA_CURSO or puede.ALTA_EDICION_CURSO
                       or puede.SELECCIONAR_ESTUDIANTES_EDICION
                       or puede.LISTAR_ACEPTADOS_EDICION}">
             <section class="menu-grupo">
@@ -113,10 +100,10 @@
                         <li><a href="${raiz}/curso/alta">Crear curso</a></li>
                     </c:if>
                     <c:if test="${puede.ALTA_EDICION_CURSO}">
-                        <li><a href="${raiz}/edicion/alta">Crear edición de un curso</a></li>
+                        <li><a href="${raiz}/edicion/alta">Crear ediciÃ³n de un curso</a></li>
                     </c:if>
                     <c:if test="${puede.SELECCIONAR_ESTUDIANTES_EDICION}">
-                        <li><a href="${raiz}/edicion/seleccionar">Seleccionar estudiantes de una edición</a></li>
+                        <li><a href="${raiz}/edicion/seleccionar">Seleccionar estudiantes de una ediciÃ³n</a></li>
                     </c:if>
                     <c:if test="${puede.LISTAR_ACEPTADOS_EDICION}">
                         <li><a href="${raiz}/edicion/aceptados">Ver estudiantes aceptados</a></li>

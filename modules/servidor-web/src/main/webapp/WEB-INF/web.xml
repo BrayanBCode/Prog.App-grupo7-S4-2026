@@ -12,5 +12,7 @@
 
     <session-config>
         <session-timeout>30</session-timeout>
+        <!-- La sesion viaja solo en la cookie: sin ";jsessionid=" en los links -->
+        <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 </web-app>
