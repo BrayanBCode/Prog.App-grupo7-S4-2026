@@ -35,6 +35,13 @@
             <version>3.0.1</version>
         </dependency>
 
+        <!-- Bootstrap 5 empaquetado como jar: Tomcat lo sirve en /webjars/bootstrap/5.3.3/... (funciona sin internet) -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>5.3.3</version>
+        </dependency>
+
         <dependency>
             <groupId>uy.edu.utec.maldonado</groupId>
             <artifactId>servidor-central</artifactId>

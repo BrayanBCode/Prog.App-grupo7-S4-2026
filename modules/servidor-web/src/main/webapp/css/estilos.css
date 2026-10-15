@@ -363,6 +363,8 @@ a.usuario-actual {
 
 .avatar-mini { width: 28px; height: 28px; border-radius: 50%; font-size: 0.8rem; }
 .avatar { border-radius: 50%; }
+.avatar-md { flex: 0 0 auto; width: 56px; height: 56px; font-size: 1.4rem; }
+.avatar-lg { flex: 0 0 auto; width: 120px; height: 120px; font-size: 2.6rem; }
 
 .ficha {
     display: flex;

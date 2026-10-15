@@ -21,9 +21,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 /**
- * Lo que comparten todos los servlets del sitio: el controller del Servidor Central
- * y algunos ayudantes (leer parametros, mostrar una vista, mensajes "flash", imagenes subidas).
- * La logica de negocio NO va aca: siempre se le pide al controller.
+ * Lo que comparten todos los servlets del sitio
  */
 public abstract class BaseServlet extends HttpServlet {
 
@@ -40,7 +38,7 @@ public abstract class BaseServlet extends HttpServlet {
     }
 
     /**
-     * Prepara el paso "elegir instituto y luego un curso" (ver comun/elegir-curso.jspf).
+     * Prepara el caso "elegir instituto y luego un curso" (ver comun/elegir-curso.jspf).
      * Si ya vino ?instituto=, carga los cursos del instituto.
      */
     protected void elegirCurso(HttpServletRequest req, String accion) {

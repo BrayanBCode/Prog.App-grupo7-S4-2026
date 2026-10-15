@@ -14,6 +14,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><c:out value="${titulo}"/> - edExt</title>
+    <%-- Bootstrap solo en las vistas que ya se migraron: <c:set var="usarBootstrap" value="${true}"/> antes del include.
+         Va ANTES de estilos.css para que el cabezal y el lateral propios sigan mandando. --%>
+    <c:if test="${usarBootstrap}">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    </c:if>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
 </head>
 <body>
