@@ -1,7 +1,6 @@
 package ServidorCentral.Logica.services;
 
 import ServidorCentral.Logica.datatypes.DTCurso;
-import ServidorCentral.Logica.entities.cursos.Categoria;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
@@ -9,7 +8,6 @@ import ServidorCentral.Logica.entities.cursos.InscripcionEdicion;
 import ServidorCentral.Logica.entities.cursos.Instituto;
 import ServidorCentral.Logica.entities.usuarios.Docente;
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
-import ServidorCentral.Logica.repositories.CategoriaRepository;
 import ServidorCentral.Logica.repositories.CursoRepository;
 import ServidorCentral.Logica.repositories.DocenteRepository;
 import ServidorCentral.Logica.repositories.InstitutoRepository;
@@ -22,20 +20,17 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Pruebas SIN base de datos: categorias en Alta/Consulta de Curso y estado de
- * las inscripciones a ediciones (letra 6.1, 6.2 y Tabla 1).
+ * Pruebas SIN base de datos: Alta/Consulta de Curso y estado de
+ * las inscripciones a ediciones (letra 6.2 y Tabla 1).
  */
-class CursoCategoriaServiceTest {
+class CursoServiceTest {
 
     private final Instituto instituto = new Instituto("INCO");
     private final Docente docente = new Docente("benkenobi", "benkenobi@gmail.com", "Obi-Wan", "Kenobi",
             LocalDate.of(1914, 4, 2), null, "1234");
 
-    /** Categorias "existentes" en este escenario. */
-    private final List<String> categoriasExistentes = List.of("Social", "Educativos");
-    /** Lo ultimo que se mando a guardar (nombre -> categorias). */
+    /** Nombre del ultimo curso que se mando a guardar. */
     private String guardadoNombre;
-    private List<String> guardadoCategorias;
     private Curso cursoExistente;
 
     private CursoService servicio() {
@@ -48,9 +43,8 @@ class CursoCategoriaServiceTest {
             @Override
             public void guardar(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos,
                                 String url, String nombreInstituto, String nicknameDocente,
-                                List<String> previas, List<String> categorias) {
+                                List<String> previas, String imagen) {
                 guardadoNombre = nombre;
-                guardadoCategorias = categorias;
             }
         };
         InstitutoRepository institutos = new InstitutoRepository(null) {
@@ -65,75 +59,41 @@ class CursoCategoriaServiceTest {
                 return "benkenobi".equals(nickname) ? docente : null;
             }
         };
-        CategoriaRepository categorias = new CategoriaRepository(null) {
-            @Override
-            public Categoria buscarPorNombre(String nombre) {
-                return categoriasExistentes.contains(nombre) ? new Categoria(nombre) : null;
-            }
-        };
-        return new CursoService(cursos, institutos, docentes, categorias);
+        return new CursoService(cursos, institutos, docentes);
     }
 
     @Test
-    void altaCursoConCategoriasExistentes_guardaLasCategorias() throws Exception {
-        servicio().registrar("Robotica", "desc", 4, 60f, 8, "url", "INCO", "benkenobi", null,
-                List.of("Social", "Educativos"));
-
-        assertEquals("Robotica", guardadoNombre);
-        assertEquals(List.of("Social", "Educativos"), guardadoCategorias);
-    }
-
-    @Test
-    void altaCursoConCategoriaInexistente_fallaYNoGuarda() {
-        Exception e = assertThrows(Exception.class, () ->
-                servicio().registrar("Robotica", "desc", 4, 60f, 8, "url", "INCO", "benkenobi", null,
-                        List.of("Social", "Inventada")));
-
-        assertTrue(e.getMessage().contains("Inventada"));
-        assertNull(guardadoNombre);
-    }
-
-    @Test
-    void altaCursoSinCategorias_siguePermitido() throws Exception {
+    void altaCurso_guardaElCurso() throws Exception {
         servicio().registrar("Robotica", "desc", 4, 60f, 8, "url", "INCO", "benkenobi", null);
 
         assertEquals("Robotica", guardadoNombre);
-        assertNull(guardadoCategorias);
     }
 
     @Test
-    void altaCursoRepetido_fallaAunqueTengaCategorias() {
+    void altaCursoRepetido_fallaYNoGuarda() {
         cursoExistente = new Curso("Robotica", "d", 1, 1f, 1, LocalDate.now(), "u", instituto, docente);
 
         assertThrows(Exception.class, () ->
-                servicio().registrar("Robotica", "desc", 4, 60f, 8, "url", "INCO", "benkenobi", null,
-                        List.of("Social")));
+                servicio().registrar("Robotica", "desc", 4, 60f, 8, "url", "INCO", "benkenobi", null));
         assertNull(guardadoNombre);
     }
 
     @Test
-    void consultaCurso_devuelveSusCategorias() throws Exception {
+    void consultaCurso_devuelveSusDatos() throws Exception {
         cursoExistente = new Curso("Robotica", "d", 1, 1f, 1, LocalDate.now(), "u", instituto, docente);
-        cursoExistente.getCategorias().add(new Categoria("Social"));
-        cursoExistente.getCategorias().add(new Categoria("Educativos"));
 
         DTCurso dt = servicio().obtenerCurso("Robotica");
 
-        assertEquals(List.of("Social", "Educativos"), dt.categorias());
+        assertEquals("Robotica", dt.nombre());
+        assertEquals("INCO", dt.instituto());
+        assertTrue(dt.previas().isEmpty());
     }
 
     @Test
-    void consultaCursoSinCategorias_devuelveListaVacia() throws Exception {
-        cursoExistente = new Curso("Robotica", "d", 1, 1f, 1, LocalDate.now(), "u", instituto, docente);
-
-        assertTrue(servicio().obtenerCurso("Robotica").categorias().isEmpty());
-    }
-
-    @Test
-    void dtCursoSinCategoriasEnElConstructor_nuncaTieneNull() {
-        DTCurso dt = new DTCurso("C", "d", 1, 1f, 1, "u", LocalDate.now(), "INCO", null, new ArrayList<>());
-        assertNotNull(dt.categorias());
-        assertTrue(dt.categorias().isEmpty());
+    void dtCursoSinPreviasEnElConstructor_nuncaTieneNull() {
+        DTCurso dt = new DTCurso("C", "d", 1, 1f, 1, "u", LocalDate.now(), "INCO", null, null);
+        assertNotNull(dt.previas());
+        assertTrue(dt.previas().isEmpty());
     }
 
     // ---------------- Estado de las inscripciones (Tabla 1) ----------------

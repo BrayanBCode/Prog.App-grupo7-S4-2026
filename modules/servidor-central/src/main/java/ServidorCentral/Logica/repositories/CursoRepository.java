@@ -1,6 +1,5 @@
 package ServidorCentral.Logica.repositories;
 
-import ServidorCentral.Logica.entities.cursos.Categoria;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.Instituto;
 import ServidorCentral.Logica.entities.usuarios.Docente;
@@ -62,13 +61,8 @@ public class CursoRepository {
         guardar(nombre, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, nicknameDocente, previas, null);
     }
 
-    /** Igual que el anterior, y ademas asocia el curso a las categorias indicadas (por nombre). */
-    public void guardar(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas, List<String> categorias) {
-        guardar(nombre, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, nicknameDocente, previas, categorias, null);
-    }
-
     /** Igual que el anterior, guardando tambien la ruta relativa de la imagen (puede ser null). */
-    public void guardar(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas, List<String> categorias, String imagen) {
+    public void guardar(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas, String imagen) {
 
         EntityManager em = conexion.getEntityManager();
         try {
@@ -98,15 +92,6 @@ public class CursoRepository {
                     Curso previa = em.find(Curso.class, nombrePrevia);
                     if (previa != null) {
                         curso.getPrevias().add(previa);
-                    }
-                }
-            }
-
-            if (categorias != null) {
-                for (String nombreCategoria : categorias) {
-                    Categoria categoria = em.find(Categoria.class, nombreCategoria);
-                    if (categoria != null) {
-                        curso.getCategorias().add(categoria);
                     }
                 }
             }

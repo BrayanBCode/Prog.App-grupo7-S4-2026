@@ -10,9 +10,6 @@ import ServidorCentral.Logica.datatypes.ControllerVersion;
 import Swing.EdicionCurso.JIConsultaEdicionCurso;
 import Swing.EdicionCurso.JIRegistroEdicionCurso;
 import Swing.EdicionCurso.JIinscripcionEdicionCurso;
-import Swing.categoria.JIAltaCategoria;
-import ServidorCentral.Logica.seguridad.CasoDeUso;
-import ServidorCentral.Logica.seguridad.Rol;
 import Swing.curso.JIAltaCurso;
 import Swing.curso.JIConsultaCurso;
 import Swing.instituto.JIAltaInstituto;
@@ -36,9 +33,6 @@ public class JFInicio extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFInicio.class.getName());
     private JInternalFrame selectedFrame = null;
 
-    // La Estacion de Trabajo la usa SOLO el Administrador (no hay login en Swing).
-    private static final Rol ROL_ESTACION_TRABAJO = Rol.ADMINISTRADOR;
-
     /**
      * Creates new form Fprueba
      */
@@ -50,8 +44,9 @@ public class JFInicio extends javax.swing.JFrame {
         IControllerV2 c = f.getControllerV2();
         this.control = c;
 
-        // Cada caso de uso se muestra solo si el actor Administrador puede ejecutarlo.
-        MIRegistroCategoria.setVisible(CasoDeUso.ALTA_CATEGORIA.permitidoPara(ROL_ESTACION_TRABAJO));
+        // Alta de Categoria no corresponde al grupo (requerimiento en gris).
+        // TODO: borrar el item MIRegistroCategoria desde el diseñador de NetBeans.
+        MIRegistroCategoria.setVisible(false);
 
 
         
@@ -261,7 +256,6 @@ public class JFInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_MIRegistroInstiActionPerformed
 
     private void MIRegistroCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MIRegistroCategoriaActionPerformed
-        this.openInternalFrame(new JIAltaCategoria(control));
     }//GEN-LAST:event_MIRegistroCategoriaActionPerformed
 
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked

@@ -24,19 +24,9 @@ class CasoDeUsoTest {
     }
 
     @Test
-    void altaDeCategoria_loEjecutaSoloElAdministrador() {
-        assertTrue(CasoDeUso.ALTA_CATEGORIA.permitidoPara(Rol.ADMINISTRADOR));
-        assertFalse(CasoDeUso.ALTA_CATEGORIA.permitidoPara(Rol.VISITANTE));
-        assertFalse(CasoDeUso.ALTA_CATEGORIA.permitidoPara(Rol.ESTUDIANTE));
-        assertFalse(CasoDeUso.ALTA_CATEGORIA.permitidoPara(Rol.DOCENTE));
-    }
-
-    @Test
     void elAdministradorNoEjecutaNingunCasoDeUsoDeLaWeb() {
         for (CasoDeUso cu : CasoDeUso.values()) {
-            if (cu != CasoDeUso.ALTA_CATEGORIA) {
-                assertFalse(cu.permitidoPara(Rol.ADMINISTRADOR), cu + " no debe estar disponible para el administrador");
-            }
+            assertFalse(cu.permitidoPara(Rol.ADMINISTRADOR), cu + " no debe estar disponible para el administrador");
         }
     }
 
