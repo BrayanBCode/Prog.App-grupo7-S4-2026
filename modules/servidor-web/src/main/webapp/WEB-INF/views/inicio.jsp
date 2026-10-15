@@ -16,10 +16,6 @@
 </c:choose>
 
 <div class="tarjetas accesos">
-    <a class="tarjeta" href="${raiz}/cursos"><span class="tarjeta-cuerpo"><strong>Cursos</strong>
-        <span class="tenue">Por instituto</span></span></a>
-    <a class="tarjeta" href="${raiz}/ediciones"><span class="tarjeta-cuerpo"><strong>Ediciones</strong>
-        <span class="tenue">Fechas, cupos y docentes</span></span></a>
     <a class="tarjeta" href="${raiz}/usuarios"><span class="tarjeta-cuerpo"><strong>Usuarios</strong>
         <span class="tenue">Estudiantes y docentes</span></span></a>
 </div>

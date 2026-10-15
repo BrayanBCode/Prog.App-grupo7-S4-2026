@@ -13,20 +13,7 @@
             <c:out value="${perfil.nickname()}"/> · <c:out value="${perfil.mail()}"/>
             <span class="badge ${esDocente ? 'text-bg-primary' : 'text-bg-success'} ms-1">${esDocente ? 'Docente' : 'Estudiante'}</span>
         </p>
-        <%-- Seguir a un Usuario: solo con sesion, y no a uno mismo --%>
-        <c:if test="${puede.SEGUIR_USUARIO and not propio}">
-            <c:choose>
-                <c:when test="${loSigo}">
-                    <span class="badge rounded-pill text-bg-light border">✓ Lo seguís</span>
-                </c:when>
-                <c:otherwise>
-                    <form method="post" action="${raiz}/usuarios/seguir">
-                        <input type="hidden" name="nick" value="<c:out value='${perfil.nickname()}'/>">
-                        <button type="submit" class="btn btn-primary btn-sm">Seguir</button>
-                    </form>
-                </c:otherwise>
-            </c:choose>
-        </c:if>
+        <%-- TODO 4.6: boton Seguir --%>
     </div>
 </div>
 
@@ -73,26 +60,19 @@
     <div class="tab-pane" id="tab-cursos" role="tabpanel">
         <c:choose>
             <c:when test="${esDocente}">
-                <c:if test="${propio}"></c:if>
                 <c:if test="${empty ediciones}"><p class="text-body-secondary">No participa en ninguna edición.</p></c:if>
                 <c:if test="${not empty ediciones}">
+                    <%-- TODO 4.1/4.2: links a curso y edicion. TODO 4.8: "Ver aceptados" en el perfil propio --%>
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">
-                            <thead class="table-light"><tr><th>Edición</th><th>Curso</th><th>Inicio</th><th>Fin</th>
-                                <c:if test="${propio}"><th>Selección de estudiantes</th></c:if></tr></thead>
+                            <thead class="table-light"><tr><th>Edición</th><th>Curso</th><th>Inicio</th><th>Fin</th></tr></thead>
                             <tbody>
                             <c:forEach var="ed" items="${ediciones}">
-                                <c:url var="uEd" value="/ediciones"><c:param name="nombre" value="${ed.nombre()}"/></c:url>
-                                <c:url var="uCur" value="/cursos"><c:param name="nombre" value="${ed.nombreCurso()}"/></c:url>
                                 <tr>
-                                    <td><a href="${uEd}"><c:out value="${ed.nombre()}"/></a></td>
-                                    <td><a href="${uCur}"><c:out value="${ed.nombreCurso()}"/></a></td>
+                                    <td><c:out value="${ed.nombre()}"/></td>
+                                    <td><c:out value="${ed.nombreCurso()}"/></td>
                                     <td><e:fecha valor="${ed.fechaInicio()}"/></td>
                                     <td><e:fecha valor="${ed.fechaFin()}"/></td>
-                                    <c:if test="${propio}">
-                                        <c:url var="uAcep" value="/edicion/aceptados"><c:param name="edicion" value="${ed.nombre()}"/></c:url>
-                                        <td><a class="btn btn-outline-primary btn-sm" href="${uAcep}">Ver aceptados</a></td>
-                                    </c:if>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -108,11 +88,9 @@
                             <thead class="table-light"><tr><th>Edición</th><th>Curso</th><th>Fecha</th><th>Estado</th></tr></thead>
                             <tbody>
                             <c:forEach var="i" items="${inscripciones}">
-                                <c:url var="uEd" value="/ediciones"><c:param name="nombre" value="${i.edicion()}"/></c:url>
-                                <c:url var="uCur" value="/cursos"><c:param name="nombre" value="${i.curso()}"/></c:url>
                                 <tr>
-                                    <td><a href="${uEd}"><c:out value="${i.edicion()}"/></a></td>
-                                    <td><a href="${uCur}"><c:out value="${i.curso()}"/></a></td>
+                                    <td><c:out value="${i.edicion()}"/></td>
+                                    <td><c:out value="${i.curso()}"/></td>
                                     <td><e:fecha valor="${i.fechaInscripcion()}"/></td>
                                     <td><e:estado valor="${i.estado()}"/></td>
                                 </tr>

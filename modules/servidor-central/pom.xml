@@ -102,6 +102,38 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
+                    <!-- Meta de la letra: 80% de sentencias en Logica. Por ahora solo avisa
+                         (haltOnFailure=false); repositories necesita la base y programaFormacion
+                         no corresponde al grupo, por eso quedan fuera del calculo. -->
+                    <execution>
+                        <id>check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <haltOnFailure>false</haltOnFailure>
+                            <includes>
+                                <include>ServidorCentral/Logica/**</include>
+                            </includes>
+                            <excludes>
+                                <exclude>ServidorCentral/Logica/repositories/**</exclude>
+                                <exclude>ServidorCentral/Logica/entities/programaFormacion/**</exclude>
+                            </excludes>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.80</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 

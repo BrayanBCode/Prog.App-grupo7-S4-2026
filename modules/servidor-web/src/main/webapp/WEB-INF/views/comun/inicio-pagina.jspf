@@ -30,8 +30,8 @@
             <h2>Institutos</h2>
             <ul>
                 <c:forEach var="inst" items="${institutosMenu}">
-                    <c:url var="urlInstituto" value="/cursos"><c:param name="instituto" value="${inst}"/></c:url>
-                    <li><a href="${urlInstituto}"><c:out value="${inst}"/></a></li>
+                    <%-- TODO 4.1: link a la Consulta de Curso filtrada por instituto --%>
+                    <li><c:out value="${inst}"/></li>
                 </c:forEach>
             </ul>
         </section>

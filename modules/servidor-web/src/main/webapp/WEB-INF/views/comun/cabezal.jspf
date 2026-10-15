@@ -62,55 +62,12 @@
         <section class="menu-grupo">
             <h2>Explorar</h2>
             <ul>
-                <c:if test="${puede.CONSULTA_CURSO}">
-                    <li><a href="${raiz}/cursos">Cursos</a></li>
-                </c:if>
-                <c:if test="${puede.CONSULTA_EDICION_CURSO}">
-                    <li><a href="${raiz}/ediciones">Ediciones de cursos</a></li>
-                </c:if>
                 <c:if test="${puede.CONSULTA_USUARIO}">
                     <li><a href="${raiz}/usuarios">Usuarios</a></li>
                 </c:if>
             </ul>
         </section>
-
-        <%-- Estudiante --%>
-        <c:if test="${puede.INSCRIPCION_EDICION_CURSO or puede.LISTAR_RESULTADOS_INSCRIPCIONES}">
-            <section class="menu-grupo">
-                <h2>Inscripciones</h2>
-                <ul>
-                    <c:if test="${puede.INSCRIPCION_EDICION_CURSO}">
-                        <li><a href="${raiz}/edicion/inscripcion">Inscribirme a una edición</a></li>
-                    </c:if>
-                    <c:if test="${puede.LISTAR_RESULTADOS_INSCRIPCIONES}">
-                        <li><a href="${raiz}/inscripciones/resultados">Resultados de mis inscripciones</a></li>
-                    </c:if>
-                </ul>
-            </section>
-        </c:if>
-
-        <%-- Docente --%>
-        <c:if test="${puede.ALTA_CURSO or puede.ALTA_EDICION_CURSO
-                      or puede.SELECCIONAR_ESTUDIANTES_EDICION
-                      or puede.LISTAR_ACEPTADOS_EDICION}">
-            <section class="menu-grupo">
-                <h2>Docencia</h2>
-                <ul>
-                    <c:if test="${puede.ALTA_CURSO}">
-                        <li><a href="${raiz}/curso/alta">Crear curso</a></li>
-                    </c:if>
-                    <c:if test="${puede.ALTA_EDICION_CURSO}">
-                        <li><a href="${raiz}/edicion/alta">Crear edición de un curso</a></li>
-                    </c:if>
-                    <c:if test="${puede.SELECCIONAR_ESTUDIANTES_EDICION}">
-                        <li><a href="${raiz}/edicion/seleccionar">Seleccionar estudiantes de una edición</a></li>
-                    </c:if>
-                    <c:if test="${puede.LISTAR_ACEPTADOS_EDICION}">
-                        <li><a href="${raiz}/edicion/aceptados">Ver estudiantes aceptados</a></li>
-                    </c:if>
-                </ul>
-            </section>
-        </c:if>
+        <%-- Los grupos Inscripciones (Estudiante) y Docencia (Docente) vuelven al rehacer cada caso de uso (Fase 4). --%>
     </nav>
 </header>
 

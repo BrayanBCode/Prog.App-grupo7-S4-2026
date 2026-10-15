@@ -37,19 +37,6 @@ public abstract class BaseServlet extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/views/" + jsp).forward(req, resp);
     }
 
-    /**
-     * Prepara el caso "elegir instituto y luego un curso" (ver comun/elegir-curso.jspf).
-     * Si ya vino ?instituto=, carga los cursos del instituto.
-     */
-    protected void elegirCurso(HttpServletRequest req, String accion) {
-        req.setAttribute("accion", accion);
-        String instituto = param(req, "instituto");
-        if (!instituto.isEmpty()) {
-            req.setAttribute("filtro", instituto);
-            req.setAttribute("cursos", controller.listarCursosPorInstituto(instituto));
-        }
-    }
-
     /** Parametro sin espacios a los costados; "" si no vino. */
     protected static String param(HttpServletRequest req, String nombre) {
         String v = req.getParameter(nombre);
