@@ -52,7 +52,7 @@ public class AccesoFilter implements Filter {
     // TODO DEBUG: quitar antes de la entrega. Con true, cualquier usuario con sesion
     // (Estudiante o Docente) ve y puede abrir TODOS los casos de uso, para probar los menus.
     // Las reglas de negocio del Servidor Central se siguen aplicando.
-    private static final boolean DEBUG_VER_TODO = true;
+    private static final boolean DEBUG_VER_TODO = false;
 
     /** Permisos ya calculados por rol (la matriz no cambia en ejecucion). */
     private static final Map<Rol, Map<String, Boolean>> PERMISOS_POR_ROL = new EnumMap<>(Rol.class);
@@ -122,6 +122,7 @@ public class AccesoFilter implements Filter {
     }
 
     private static boolean esEstatico(String ruta) {
-        return ruta.startsWith("/css/") || ruta.startsWith("/js/") || ruta.startsWith("/imagenes/");
+        return ruta.startsWith("/css/") || ruta.startsWith("/js/") || ruta.startsWith("/imagenes/")
+                || ruta.startsWith("/webjars/");
     }
 }

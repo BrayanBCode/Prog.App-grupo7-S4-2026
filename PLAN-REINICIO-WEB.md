@@ -1,0 +1,163 @@
+# Plan de reinicio – Servidor Web
+
+**Objetivo:** arrancar en limpio con lo que funciona, borrar el resto y rehacer los casos de uso **de a uno**,
+cada uno con sus tests del Servidor Central y siguiendo el diseño de las figuras de la letra.
+
+> ⏰ Entrega final: **18/10 23:59**. Al borrar los casos de uso que andan mal, los mínimos que dependen de ellos
+> quedan **sin implementar hasta rehacerlos**. Prioridad absoluta: rehacer los mínimos (Fase 4, filas 4.1–4.8).
+
+---
+
+## 1. Qué se queda y qué se borra
+
+| Pieza | Decisión |
+|---|---|
+| Matriz `CasoDeUso` + `AccesoFilter` | ✅ Se queda (los permisos de todos los casos de uso siguen definidos en la matriz). |
+| `BaseServlet` y utilidades | ✅ Se queda, mejorando el manejo de fotos (Fase 2). |
+| Marco común (`inicio-pagina`, `cabezal`, `fin-pagina`) | ✅ Se queda, ajustado al esquema de la Figura 2 (Fase 1). |
+| Tags `e:imagen`, `e:fecha`, `e:estado` | ✅ Se quedan. |
+| Inicio / Cierre de Sesión | ✅ Se queda. |
+| Alta de Usuario (registro) | ✅ Se queda (solo se adapta al nuevo manejo de fotos). |
+| Consulta de Usuario | ✅ Se queda y se mejora (Fase 3). |
+| Página de inicio (`/inicio`) | ✅ Se queda. |
+| Consulta de Curso, Consulta de Edición | 🗑️ Se borran y se rehacen. |
+| Alta de Curso, Alta de Edición | 🗑️ Se borran y se rehacen. |
+| Inscripción a Edición, Seleccionar Estudiantes, Listar Aceptados | 🗑️ Se borran y se rehacen. |
+| Listar resultados de inscripciones, Seguir Usuario | 🗑️ Se borran y se rehacen. Seguir era el botón del perfil: se saca del perfil hasta rehacerlo. |
+
+En el **Servidor Central** no se borra nada todavía: Swing usa muchos de esos métodos. Lo que quede sin uso
+se limpia al rehacer cada caso de uso.
+
+---
+
+## 2. Reglas para todo lo nuevo ("terminado" significa…)
+
+1. **Diseño según la letra.** La pantalla sigue la figura correspondiente (Figuras 2 a 6 de la Tarea 2): misma
+   estructura y mismos elementos. No se agregan ni se inventan pantallas. Bootstrap se usa solo como herramienta
+   para armar esa estructura.
+2. **Central primero.** El controller devuelve lo que la vista necesita **en una sola llamada**
+   (`List<DTCurso>`, no una lista de nombres + una llamada por cada uno).
+3. **Tests del controller.** Cada método nuevo o modificado del controller tiene sus tests JUnit: caso feliz y cada
+   error de la letra. Con esto se va sumando a la cobertura del 80% (Fase 0).
+4. **Errores tipados.** El central tira `ReglaNegocioException` con un mensaje para el usuario. El servlet muestra
+   solo ese mensaje; cualquier otro error → mensaje genérico + log.
+5. **Servlet fino.** Hereda de `BaseServlet`, lee parámetros, llama **un** método del controller y elige la vista.
+6. **POST → Redirect → GET** con `flash` en toda acción que modifica datos.
+7. **Permiso** en la matriz `CasoDeUso` y la ruta en `RUTAS_PROTEGIDAS`.
+8. **Prueba manual** con cada rol que corresponde.
+
+---
+
+## 3. Fase 0 – Limpieza y base de tests (½ día)
+
+### 0.A Ramas y limpieza
+- [ ] Unificar ramas en `web-v2`: mergear `quitar-categoria` (sin categorías) y `ConsultaUsuarioWeb`.
+- [ ] Quitar el modo debug (`DEBUG_VER_TODO`).
+- [ ] **Borrar del módulo web** los servlets y JSP de los casos de uso marcados 🗑️:
+  - Servlets: `CursoServlet`, `EdicionesServlet`, `AltaCursoServlet`, `AltaEdicionServlet`, `InscripcionEdicionServlet`,
+    `SeleccionarEstudiantesServlet`, `AceptadosServlet`, `ResultadosInscripcionesServlet`, `SeguirUsuarioServlet`.
+  - Vistas: `views/curso/*`, `views/edicion/*`, `views/usuario/resultados.jsp`, `views/comun/elegir-curso.jspf`.
+  - En `AccesoFilter`: las rutas de esos servlets en `RUTAS_PROTEGIDAS`.
+  - En el cabezal y el perfil: los links y botones a esas páginas.
+- [ ] Verificar que compila y que Login, Registro, Consulta de Usuario e Inicio andan.
+
+### 0.B Tests y cobertura
+JaCoCo ya está configurado en `servidor-central/pom.xml`; falta usarlo como control.
+- [ ] Medir la cobertura actual: `mvn -pl modules/servidor-central verify` → `target/site/jacoco/index.html`.
+- [ ] Revisar `ControllerTest` (44 tests que usan la base real): no aparecieron en la última corrida de `mvn test`.
+      Hacer que corran o pasarlos a tests sin base, como los de `services/`.
+- [ ] Agregar a JaCoCo la regla `check`: **mínimo 80% de sentencias en el paquete `Logica`**. El build falla si baja.
+- [ ] Anotar en este plan la cobertura de partida y en qué clases falta más.
+
+**Listo cuando:** el web compila solo con lo que se queda y `mvn verify` informa la cobertura real.
+
+---
+
+## 4. Fase 1 – Marco según la Figura 2 (½ día)
+
+- [ ] Juntar en `docs/figuras/` las capturas de las Figuras 2 a 6 de la letra, para tenerlas a mano al maquetar.
+- [ ] Ajustar el marco común al esquema de la Figura 2:
+  - Cabezal fijo en todas las páginas: logo, links **Iniciar sesión** y **Registrarse**; con sesión, nombre e
+    imagen reducida del usuario, link a su perfil y **Cerrar sesión** (Figura 3).
+  - Lateral con los **institutos** (las categorías no corresponden al grupo).
+  - Parte central donde se ejecuta cada caso de uso.
+- [ ] Cargar Bootstrap en todo el sitio, sacar el interruptor `usarBootstrap` y borrar de `estilos.css` lo que choca.
+
+---
+
+## 5. Fase 2 – Fotos (½ día)
+
+Hoy el servlet guarda la foto en un temporal, le pasa **la ruta** al central y después la borra. Ese código está
+duplicado (`BaseServlet.imagenTemporal` y `AltaUsuarioServlet.guardarImagenTemporal`).
+
+- [ ] Central: `record DTImagen(byte[] contenido, String extension)`.
+- [ ] Central: `AlmacenImagenes.guardar(DTImagen, subcarpeta, nombreBase)`: valida JPG/PNG y tamaño máximo.
+      La versión con ruta queda solo para Swing y delega en la nueva.
+- [ ] Web: `BaseServlet.leerImagen(req, campo)` → `DTImagen` directo desde el `Part`, sin temporales.
+- [ ] Alta de Usuario hereda de `BaseServlet` y usa `leerImagen`; se borra `guardarImagenTemporal`.
+- [ ] Tests de `AlmacenImagenes` con carpeta temporal: guarda JPG/PNG, rechaza otros formatos, limpia el nombre.
+
+---
+
+## 6. Fase 3 – Consulta de Usuario (½ día)
+
+- [ ] Central: `listarUsuarios()` → `List<DTUsuario>` en una consulta.
+- [ ] Central: `obtenerPerfil(nickConsultado, nickQueMira)` → `DTPerfil` con todo lo que muestra la página;
+      la regla de qué ve cada rol queda en el central, con sus tests.
+- [ ] Web: `UsuariosServlet` con una llamada para la lista y una para el perfil.
+- [ ] Vista según la **Figura 6** (pestañas del perfil).
+- [ ] Visibilidad acordada:
+  - Visitante: datos básicos + foto.
+  - Estudiante: + inscripciones Inscripto/Aceptada + programas + seguidores (+ Seguir, cuando se rehaga 4.6).
+  - Docente: + todas las inscripciones, también Rechazadas.
+  - El propio estudiante ve sus Rechazadas; el propio docente tiene "Ver aceptados".
+
+---
+
+## 7. Fase 4 – Casos de uso de a uno
+
+Orden por dependencias. Cada fila: rama corta → merge a `web-v2`.
+
+| # | Caso de uso | Rol | Figura | Depende de |
+|---|---|---|---|---|
+| 4.1 | Consulta de Curso | Todos | Figura 3 | Fase 1 |
+| 4.2 | Consulta de Edición | Todos | Figura 4 | 4.1 |
+| 4.3 | Alta de Curso | Docente | — | 4.1, Fase 2 |
+| 4.4 | Alta de Edición | Docente | — | 4.3 |
+| 4.5 | Inscripción a Edición | Estudiante | — | 4.2 |
+| 4.6 | Seguir Usuario | Est./Doc. | — | Fase 3 |
+| 4.7 | Seleccionar Estudiantes | Docente | Figura 5 | 4.5 |
+| 4.8 | Listar Aceptados | Docente | — | 4.7 |
+| 4.9 | *(opcional)* Listar resultados de inscripciones | Estudiante | — | 4.7 |
+| 4.10 | *(opcional)* Dejar de Seguir | Est./Doc. | — | 4.6 |
+| 4.11 | *(opcional)* Modificar Datos de Usuario | Est./Doc. | — | Fase 2 |
+
+Ciclo de cada caso de uso:
+1. Leer el caso de uso y su figura en la letra; anotar reglas y mensajes de error.
+2. Central: método del controller con DataTypes completos + `ReglaNegocioException` + **tests del controller**.
+3. Web: servlet fino + JSP según la figura + permiso en la matriz.
+4. Prueba manual con cada rol.
+5. Revisar la cobertura (`mvn verify`); no debe bajar.
+6. Merge.
+
+Ya se sabe que hay que corregir:
+- **Edición vigente:** si hay dos vigentes del mismo curso hoy se toma la primera al azar; definir criterio y testearlo.
+
+---
+
+## 8. Fuera de alcance
+
+- Categorías, Programas de Formación en la web y Ranking (en gris para el grupo).
+- Tests del módulo web o de interfaz (la letra pide tests solo del Servidor Central).
+- Rediseños que no estén en las figuras de la letra.
+
+---
+
+## 9. Riesgos
+
+| Riesgo | Mitigación |
+|---|---|
+| Borrar casos de uso deja mínimos sin hacer al 18/10 | El código borrado queda en el historial de git (rama `quitar-categoria`, commit `0621404`); si no llega a rehacerse, se puede recuperar el viejo. Hacer 4.1–4.8 antes que cualquier opcional. |
+| Cambiar firmas del controller rompe Swing | Mantener los métodos que usa Swing (`@Deprecated`) hasta adaptarlo. |
+| No llegar al 80% de cobertura | Tests del controller en cada caso de uso + JaCoCo `check` desde la Fase 0 para ver el avance cada día. |
+| Datos de prueba dependen de la fecha | Revisar las ediciones vigentes antes de probar. |

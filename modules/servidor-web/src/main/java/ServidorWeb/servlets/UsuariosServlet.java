@@ -7,6 +7,7 @@ import ServidorCentral.Logica.datatypes.DTSesion;
 import ServidorCentral.Logica.datatypes.DTUsuario;
 import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
+import ServidorCentral.Logica.seguridad.Rol;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,10 +22,10 @@ import java.util.List;
  * Caso de uso "Consulta de Usuario" (Visitante, Estudiante, Docente).
  * <ul>
  *   <li>/usuarios          -> lista de todos los usuarios</li>
- *   <li>/usuarios?nick=X   -> perfil: datos basicos e imagen; ediciones si es docente;
- *       inscripciones (Inscripto/Aceptada) y programas si es estudiante. En el perfil
- *       propio el estudiante ve tambien las Rechazadas y el docente tiene acceso a
- *       "Listar aceptados" de sus ediciones.</li>
+ *   <li>/usuarios?nick=X   -> perfil: datos basicos e imagen (lo unico que ve el Visitante).
+ *       Con sesion se ve ademas: ediciones si es docente; inscripciones (Inscripto/Aceptada)
+ *       y programas si es estudiante; seguidores. Las Rechazadas las ven el propio estudiante
+ *       y los docentes. En su perfil el docente tiene acceso a "Listar aceptados".</li>
  * </ul>
  */
 @WebServlet("/usuarios")
@@ -67,27 +68,31 @@ public class UsuariosServlet extends BaseServlet {
         }
 
         DTSesion yo = usuario(req);
+        
         boolean propio = yo != null && yo.getNickname().equals(u.nickname());
         boolean esDocente = controller.esDocente(u.nickname());
+        boolean verDetalle = yo != null;
+        boolean verRechazadas = propio || (yo != null && yo.getRol() == Rol.DOCENTE);
 
         if (esDocente) {
             DTDocenteDetalle detalle = controller.obtenerDataDocente(u.nickname());
-            List<DTEdicionCurso> ediciones = new ArrayList<>();
-            for (String ed : detalle.ediciones()) {
-                try {
-                    ediciones.add(controller.obtenerEdicionCurso(ed));
-                } catch (Exception ignorada) {
-                    // edicion borrada entre consultas
-                }
-            }
-            ediciones.sort((a, b) -> b.fechaInicio().compareTo(a.fechaInicio()));
             req.setAttribute("institutos", detalle.institutos());
-            req.setAttribute("ediciones", ediciones);
-        } else {
+            if (verDetalle) {
+                List<DTEdicionCurso> ediciones = new ArrayList<>();
+                for (String ed : detalle.ediciones()) {
+                    try {
+                        ediciones.add(controller.obtenerEdicionCurso(ed));
+                    } catch (Exception ignorada) {
+                        // edicion borrada entre consultas
+                    }
+                }
+                ediciones.sort((a, b) -> b.fechaInicio().compareTo(a.fechaInicio()));
+                req.setAttribute("ediciones", ediciones);
+            }
+        } else if (verDetalle) {
             List<DTInscripcionEstudiante> inscripciones = new ArrayList<>();
             for (DTInscripcionEstudiante i : controller.listarInscripcionesEstudiante(u.nickname())) {
-                // Las rechazadas solo las ve el propio estudiante (Listar resultados de inscripciones)
-                if (propio || i.estado() != EstadoInscripcion.RECHAZADA) {
+                if (verRechazadas || i.estado() != EstadoInscripcion.RECHAZADA) {
                     inscripciones.add(i);
                 }
             }
@@ -99,9 +104,12 @@ public class UsuariosServlet extends BaseServlet {
         req.setAttribute("perfil", u);
         req.setAttribute("esDocente", esDocente);
         req.setAttribute("propio", propio);
-        req.setAttribute("seguidores", controller.listarSeguidores(u.nickname()));
-        req.setAttribute("seguidos", controller.listarSeguidos(u.nickname()));
-        req.setAttribute("loSigo", yo != null && controller.estaSiguiendo(yo.getNickname(), u.nickname()));
+        req.setAttribute("verDetalle", verDetalle);
+        if (verDetalle) {
+            req.setAttribute("seguidores", controller.listarSeguidores(u.nickname()));
+            req.setAttribute("seguidos", controller.listarSeguidos(u.nickname()));
+            req.setAttribute("loSigo", controller.estaSiguiendo(yo.getNickname(), u.nickname()));
+        }
         vista(req, resp, "usuario/perfil.jsp");
     }
 }
