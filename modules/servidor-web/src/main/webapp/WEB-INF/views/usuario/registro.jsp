@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <c:set var="titulo" value="Registrarse"/>
+<c:set var="formularioSesion" value="${true}"/>
 <%@ include file="/WEB-INF/views/comun/inicio-pagina.jspf" %>
 
 <%-- Alta de Usuario. El error del servidor (${error}) lo muestra el marco. --%>

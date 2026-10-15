@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <c:set var="titulo" value="Iniciar sesión"/>
+<c:set var="formularioSesion" value="${true}"/>
 <%@ include file="/WEB-INF/views/comun/inicio-pagina.jspf" %>
 
 <%-- Inicio de Sesion --%>

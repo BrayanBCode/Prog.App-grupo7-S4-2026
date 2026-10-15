@@ -14,9 +14,17 @@
 
 <header class="cabezal border-bottom bg-body sticky-top">
     <div class="container-xl d-flex align-items-center justify-content-between py-2">
-        <a class="logo navbar-brand fw-bold text-primary" href="${raiz}/inicio">edExt</a>
+        <c:choose>
+            <%-- En login/registro no hay links: se vuelve con Cancelar --%>
+            <c:when test="${formularioSesion}">
+                <span class="logo navbar-brand fw-bold text-primary">edExt</span>
+            </c:when>
+            <c:otherwise>
+                <a class="logo navbar-brand fw-bold text-primary" href="${raiz}/inicio">edExt</a>
+            </c:otherwise>
+        </c:choose>
 
-        <nav class="d-flex align-items-center gap-2" aria-label="Sesión">
+        <nav class="d-flex align-items-center gap-2 ${formularioSesion ? 'd-none' : ''}" aria-label="Sesión">
             <c:if test="${puede.INICIO_SESION}">
                 <a href="${raiz}/login">Iniciar sesión</a>
             </c:if>
