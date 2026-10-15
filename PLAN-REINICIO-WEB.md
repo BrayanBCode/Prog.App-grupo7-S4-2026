@@ -60,8 +60,8 @@ se limpia al rehacer cada caso de uso.
   - Vistas: `views/curso/*`, `views/edicion/*`, `views/usuario/resultados.jsp`, `views/comun/elegir-curso.jspf`.
   - En `AccesoFilter`: las rutas de esos servlets en `RUTAS_PROTEGIDAS`.
   - En el cabezal y el perfil: los links y botones a esas páginas.
-- [ ] Verificar que compila y que Login, Registro, Consulta de Usuario e Inicio andan.
-      *(Compila. Falta la prueba manual en Tomcat.)*
+- [x] Verificar que compila y que Login, Registro, Consulta de Usuario e Inicio andan.
+      *(Probado en Tomcat 15/10 con el marco nuevo: registro, login, inicio, lista y perfil, Salir.)*
 
 ### 0.B Tests y cobertura
 JaCoCo ya está configurado en `servidor-central/pom.xml`; falta usarlo como control.
@@ -95,13 +95,17 @@ Lo que más pesa: `repositories` (32% del total, necesita base) y `controller` (
 
 ## 4. Fase 1 – Marco según la Figura 2 (½ día)
 
-- [ ] Juntar en `docs/figuras/` las capturas de las Figuras 2 a 6 de la letra, para tenerlas a mano al maquetar.
-- [ ] Ajustar el marco común al esquema de la Figura 2:
+- [x] Juntar en `docs/figuras/` las capturas de las Figuras 2 a 6 de la letra, para tenerlas a mano al maquetar.
+- [x] Ajustar el marco común al esquema de la Figura 2:
   - Cabezal fijo en todas las páginas: logo, links **Iniciar sesión** y **Registrarse**; con sesión, nombre e
     imagen reducida del usuario, link a su perfil y **Cerrar sesión** (Figura 3).
   - Lateral con los **institutos** (las categorías no corresponden al grupo).
   - Parte central donde se ejecuta cada caso de uso.
-- [ ] Cargar Bootstrap en todo el sitio, sacar el interruptor `usarBootstrap` y borrar de `estilos.css` lo que choca.
+- [x] Cargar Bootstrap en todo el sitio, sacar el interruptor `usarBootstrap` y borrar de `estilos.css` lo que choca.
+      *Hecho: el menú de casos de uso pasó del desplegable del cabezal al lateral (`comun/lateral.jspf`), como en
+      la Figura 3: Mi perfil, grupos por rol, Usuarios, Institutos y Salir. Login y Registro ahora usan el marco.
+      El cuadro de búsqueda de la figura no se dibuja (Búsqueda no es mínimo para el grupo). Cada caso de uso
+      rehecho en la Fase 4 suma su link en `lateral.jspf`.*
 
 ---
 
@@ -128,7 +132,7 @@ duplicado (`BaseServlet.imagenTemporal` y `AltaUsuarioServlet.guardarImagenTempo
 - [ ] Vista según la **Figura 6** (pestañas del perfil).
 - [ ] Visibilidad acordada:
   - Visitante: datos básicos + foto.
-  - Estudiante: + inscripciones Inscripto/Aceptada + programas + seguidores (+ Seguir, cuando se rehaga 4.6).
+  - Estudiante: + inscripciones Inscripto/Aceptada + programas + seguidores (+ Seguir con Ajax, cuando se rehaga 4.6).
   - Docente: + todas las inscripciones, también Rechazadas.
   - El propio estudiante ve sus Rechazadas; el propio docente tiene "Ver aceptados".
 
@@ -145,11 +149,11 @@ Orden por dependencias. Cada fila: rama corta → merge a `web-v2`.
 | 4.3 | Alta de Curso | Docente | — | 4.1, Fase 2 |
 | 4.4 | Alta de Edición | Docente | — | 4.3 |
 | 4.5 | Inscripción a Edición | Estudiante | — | 4.2 |
-| 4.6 | Seguir Usuario | Est./Doc. | — | Fase 3 |
+| 4.6 | Seguir Usuario **(con Ajax)** | Est./Doc. | — | Fase 3 |
 | 4.7 | Seleccionar Estudiantes | Docente | Figura 5 | 4.5 |
 | 4.8 | Listar Aceptados | Docente | — | 4.7 |
 | 4.9 | *(opcional)* Listar resultados de inscripciones | Estudiante | — | 4.7 |
-| 4.10 | *(opcional)* Dejar de Seguir | Est./Doc. | — | 4.6 |
+| 4.10 | *(opcional)* Dejar de Seguir **(con Ajax)** | Est./Doc. | — | 4.6 |
 | 4.11 | *(opcional)* Modificar Datos de Usuario | Est./Doc. | — | Fase 2 |
 
 Ciclo de cada caso de uso:
@@ -159,6 +163,25 @@ Ciclo de cada caso de uso:
 4. Prueba manual con cada rol.
 5. Revisar la cobertura (`mvn verify`); no debe bajar.
 6. Merge.
+
+### Seguimiento entre usuarios con Ajax (4.6 y 4.10)
+
+Pedido del curso: seguir / dejar de seguir se hace **con Ajax**, sin recargar la página del perfil.
+
+- **Servlet** `SeguimientoServlet` en `/usuarios/seguimiento`: recibe por **POST** `nick` y `accion` (`seguir` / `dejar`)
+  y responde **JSON**, no una página:
+  `{"ok": true, "siguiendo": true, "seguidores": 5}` o `{"ok": false, "error": "No es posible seguirse a uno mismo."}`.
+  Sin sesión → `401` con `{"ok": false, "error": "..."}` (el `AccesoFilter` hoy redirige al login; para esta ruta
+  tiene que contestar 401, porque un `fetch` no sigue la redirección como un navegador).
+- **JavaScript** `js/seguimiento.js` (sin librerías, con `fetch`): al hacer clic en el botón del perfil manda el POST,
+  y con la respuesta cambia el botón (Seguir ↔ Dejar de seguir), actualiza el contador de seguidores y la lista,
+  y muestra el error si lo hay. Mientras espera, el botón queda deshabilitado para evitar doble clic.
+- **JSP del perfil:** el botón lleva `data-nick` y el estado inicial (`data-siguiendo`); ya no es un `<form>` que recarga.
+- **Central:** `seguirUsuario` y `dejarDeSeguirUsuario` devuelven el nuevo total de seguidores (o se agrega
+  `contarSeguidores`), con sus tests (seguirse a uno mismo, seguir dos veces, dejar de seguir a quien no se sigue,
+  usuario inexistente).
+- **Prueba manual:** con las herramientas de desarrollo del navegador (pestaña Red), verificar que el clic manda
+  una sola petición y que **la página no se recarga**.
 
 Ya se sabe que hay que corregir:
 - **Edición vigente:** si hay dos vigentes del mismo curso hoy se toma la primera al azar; definir criterio y testearlo.

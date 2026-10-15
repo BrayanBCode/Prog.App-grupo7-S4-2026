@@ -10,13 +10,13 @@
     var error = document.getElementById('error-message');
 
     if (params.get('error') === 'true' && error) {
-        error.classList.remove('hidden');
+        error.classList.remove('d-none');
         document.getElementById('usuario').focus();
     }
 
     if (params.get('registrado') === 'true') {
         var ok = document.createElement('div');
-        ok.className = 'alert-success';
+        ok.className = 'alert alert-success';
         ok.setAttribute('role', 'status');
         ok.textContent = 'Te registraste correctamente. Ya podés iniciar sesión.';
         var form = document.getElementById('login-form');

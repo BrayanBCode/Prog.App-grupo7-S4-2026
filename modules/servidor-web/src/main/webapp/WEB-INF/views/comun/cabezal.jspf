@@ -2,73 +2,39 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="e" tagdir="/WEB-INF/tags" %>
 <%--
-  Cabezal comun a todas las paginas. Cada opcion se muestra segun el actor:
-  ${puede.XXX} sale de la matriz CasoDeUso (ver AccesoFilter), asi que NO se
-  decide el rol aca: solo se pregunta "puede este actor ejecutar este caso de uso?".
-
-  Estructura:
-    - flecha (menu-boton): abre/cierra el menu con los accesos a los casos de uso
-    - logo
-    - acciones (derecha): iniciar sesion, registrarse, usuario actual (link a su perfil), cerrar sesion
-    - menu-casos: panel desplegable; cada grupo y cada link aparecen solo si
-      el actor tiene permiso. Si un grupo queda sin links, no se dibuja.
-
-  Casos de uso que NO van en el menu a proposito:
-    - INICIO_SESION, ALTA_USUARIO, CIERRE_SESION: ya estan a la derecha.
-    - SEGUIR_USUARIO: es un boton dentro de la consulta de un usuario.
-    - ALTA_CATEGORIA y Programas de Formacion: no corresponden a este grupo (requerimientos en gris).
+  Cabezal fijo de todas las paginas (letra 7.1, Figuras 2 y 3):
+    - izquierda: logo (vuelve al inicio)
+    - derecha, Visitante: "Iniciar sesión" | "Registrarse"
+    - derecha, con sesion: nombre e imagen reducida del usuario, link a su perfil (Consulta de Usuario).
+      "Salir" (Cierre de Sesion) esta al pie del lateral, como en la Figura 3.
+  ${puede.XXX} sale de la matriz CasoDeUso (ver AccesoFilter): aca no se decide por rol.
+  El cuadro de busqueda de la figura es el requerimiento "Busqueda" (no minimo para el grupo).
 --%>
 <c:set var="raiz" value="${pageContext.request.contextPath}"/>
 
-<header class="cabezal">
-    <div class="cabezal-izq">
-        <button type="button" id="menu-boton" class="menu-boton"
-                aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-casos">
-            <svg class="menu-flecha" viewBox="0 0 24 24" width="20" height="20"
-                 aria-hidden="true" focusable="false">
-                <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4"
-                      stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
-        <a class="logo" href="${raiz}/inicio">edExt</a>
+<header class="cabezal border-bottom bg-body sticky-top">
+    <div class="container-xl d-flex align-items-center justify-content-between py-2">
+        <a class="logo navbar-brand fw-bold text-primary" href="${raiz}/inicio">edExt</a>
+
+        <nav class="d-flex align-items-center gap-2" aria-label="Sesión">
+            <c:if test="${puede.INICIO_SESION}">
+                <a href="${raiz}/login">Iniciar sesión</a>
+            </c:if>
+            <c:if test="${puede.INICIO_SESION and puede.ALTA_USUARIO}">
+                <span class="text-body-tertiary" aria-hidden="true">|</span>
+            </c:if>
+            <c:if test="${puede.ALTA_USUARIO}">
+                <a href="${raiz}/registro">Registrarse</a>
+            </c:if>
+
+            <c:if test="${rol.autenticado}">
+                <c:url var="urlMiPerfil" value="/usuarios"><c:param name="nick" value="${usuarioActual.nickname}"/></c:url>
+                <a class="d-inline-flex align-items-center gap-2 text-body fw-semibold text-decoration-none"
+                   href="${urlMiPerfil}" title="Mi perfil">
+                    <c:out value="${usuarioActual.nickname}"/>
+                    <e:imagen ruta="${usuarioActual.imagen}" alt="${usuarioActual.nickname}" clase="avatar avatar-mini"/>
+                </a>
+            </c:if>
+        </nav>
     </div>
-
-    <nav class="acciones" aria-label="Sesión">
-        <%-- Visitante --%>
-        <c:if test="${puede.INICIO_SESION}">
-            <a href="${raiz}/login">Iniciar sesión</a>
-        </c:if>
-        <c:if test="${puede.ALTA_USUARIO}">
-            <a href="${raiz}/registro">Registrarse</a>
-        </c:if>
-
-        <%-- Estudiante / Docente: nombre (link a su perfil = Consulta de Usuario) y cierre de sesion --%>
-        <c:if test="${puede.CIERRE_SESION}">
-            <c:url var="urlMiPerfil" value="/usuarios"><c:param name="nick" value="${usuarioActual.nickname}"/></c:url>
-            <a class="usuario-actual" href="${urlMiPerfil}" title="Mi perfil">
-                <e:imagen ruta="${usuarioActual.imagen}" alt="${usuarioActual.nickname}" clase="avatar-mini"/>
-                <c:out value="${usuarioActual.nickname}"/>
-                <span class="rol rol-${rol}"><c:out value="${rol.etiqueta}"/></span>
-            </a>
-            <form class="form-inline" method="post" action="${raiz}/logout">
-                <button type="submit" class="btn-link">Cerrar sesión</button>
-            </form>
-        </c:if>
-    </nav>
-
-    <%-- Menu desplegable. Oculto por defecto; menu.js lo abre y lo cierra. --%>
-    <nav id="menu-casos" class="menu-casos" aria-label="Menú principal" hidden>
-
-        <section class="menu-grupo">
-            <h2>Explorar</h2>
-            <ul>
-                <c:if test="${puede.CONSULTA_USUARIO}">
-                    <li><a href="${raiz}/usuarios">Usuarios</a></li>
-                </c:if>
-            </ul>
-        </section>
-        <%-- Los grupos Inscripciones (Estudiante) y Docencia (Docente) vuelven al rehacer cada caso de uso (Fase 4). --%>
-    </nav>
 </header>
-
-<script src="${raiz}/js/menu.js" defer></script>

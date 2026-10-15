@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%--
   Marco general de las paginas (letra 7.1, Figura 2): cabezal fijo, lateral con
-  institutos, y la parte central donde se realiza cada caso de uso.
+  el menu e institutos, y la parte central donde se realiza cada caso de uso.
   Uso:  <c:set var="titulo" value="..."/>
         <%@ include file="/WEB-INF/views/comun/inicio-pagina.jspf" %>
         ...contenido...
@@ -14,36 +14,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><c:out value="${titulo}"/> - edExt</title>
-    <%-- Bootstrap solo en las vistas que ya se migraron: <c:set var="usarBootstrap" value="${true}"/> antes del include.
-         Va ANTES de estilos.css para que el cabezal y el lateral propios sigan mandando. --%>
-    <c:if test="${usarBootstrap}">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
-    </c:if>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
 </head>
-<body>
+<body class="bg-body-tertiary">
 <%@ include file="/WEB-INF/views/comun/cabezal.jspf" %>
 
-<div class="pagina">
-    <aside class="lateral" aria-label="Institutos">
-        <section>
-            <h2>Institutos</h2>
-            <ul>
-                <c:forEach var="inst" items="${institutosMenu}">
-                    <%-- TODO 4.1: link a la Consulta de Curso filtrada por instituto --%>
-                    <li><c:out value="${inst}"/></li>
-                </c:forEach>
-            </ul>
-        </section>
-    </aside>
+<div class="container-xl my-4">
+    <div class="row g-4">
+        <aside class="col-md-4 col-lg-3">
+            <%@ include file="/WEB-INF/views/comun/lateral.jspf" %>
+        </aside>
 
-    <main class="contenido">
-        <c:if test="${not empty flash}">
-            <div class="alert-success" role="status"><c:out value="${flash}"/></div>
-        </c:if>
-        <c:if test="${not empty flashError}">
-            <div class="alert-danger" role="alert"><c:out value="${flashError}"/></div>
-        </c:if>
-        <c:if test="${not empty error}">
-            <div class="alert-danger" role="alert"><c:out value="${error}"/></div>
-        </c:if>
+        <main class="col-md-8 col-lg-9">
+            <div class="contenido card card-body p-4">
+                <c:if test="${not empty flash}">
+                    <div class="alert alert-success" role="status"><c:out value="${flash}"/></div>
+                </c:if>
+                <c:if test="${not empty flashError}">
+                    <div class="alert alert-danger" role="alert"><c:out value="${flashError}"/></div>
+                </c:if>
+                <c:if test="${not empty error}">
+                    <div class="alert alert-danger" role="alert"><c:out value="${error}"/></div>
+                </c:if>

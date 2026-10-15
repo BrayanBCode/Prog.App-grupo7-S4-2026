@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="e" tagdir="/WEB-INF/tags" %>
-<c:set var="usarBootstrap" value="${true}"/>
 <%@ include file="/WEB-INF/views/comun/inicio-pagina.jspf" %>
 
 <%-- Consulta de Usuario --%>

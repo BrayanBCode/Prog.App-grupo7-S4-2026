@@ -4,7 +4,7 @@ const instituto = document.getElementById('instituto');
 
 function actualizarInstituto() {
     const docente = tipo.value === 'DOCENTE';
-    grupo.classList.toggle('hidden', !docente);
+    grupo.classList.toggle('d-none', !docente);
     instituto.required = docente;
 }
 tipo.addEventListener('change', actualizarInstituto);
@@ -15,6 +15,6 @@ document.getElementById('registro-form').addEventListener('submit', (e) => {
     if (document.getElementById('password').value !== document.getElementById('confirmar').value) {
         e.preventDefault();
         msg.textContent = 'La contraseña y su confirmación no coinciden.';
-        msg.classList.remove('hidden');
+        msg.classList.remove('d-none');
     }
 });
