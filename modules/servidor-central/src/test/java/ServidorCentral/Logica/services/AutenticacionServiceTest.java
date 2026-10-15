@@ -1,18 +1,14 @@
 package ServidorCentral.Logica.services;
 
 import ServidorCentral.Logica.datatypes.DTSesion;
-import ServidorCentral.Logica.entities.cursos.Categoria;
 import ServidorCentral.Logica.entities.usuarios.Docente;
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
 import ServidorCentral.Logica.entities.usuarios.Usuario;
-import ServidorCentral.Logica.repositories.CategoriaRepository;
 import ServidorCentral.Logica.repositories.UsuarioRepository;
 import ServidorCentral.Logica.seguridad.Rol;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Pruebas unitarias SIN base de datos: los repositorios se reemplazan por
  * versiones en memoria (solo se pisan los metodos que toca cada caso de uso).
  */
-class AutenticacionYCategoriaServiceTest {
+class AutenticacionServiceTest {
 
     // ---------------- Inicio de sesion ----------------
 
@@ -77,53 +73,5 @@ class AutenticacionYCategoriaServiceTest {
         assertThrows(IllegalArgumentException.class, () -> svc.autenticar(null, "abcd"));
         assertThrows(IllegalArgumentException.class, () -> svc.autenticar("weiss", null));
         assertThrows(IllegalArgumentException.class, () -> svc.autenticar("weiss", ""));
-    }
-
-    // ---------------- Alta de categoria ----------------
-
-    private final List<String> guardadas = new ArrayList<>();
-
-    private CategoriaService servicioDeCategorias() {
-        CategoriaRepository repo = new CategoriaRepository(null) {
-            @Override
-            public Categoria buscarPorNombre(String nombre) {
-                return guardadas.contains(nombre) ? new Categoria(nombre) : null;
-            }
-
-            @Override
-            public void guardar(String nombre) {
-                guardadas.add(nombre);
-            }
-
-            @Override
-            public List<String> obtenerNombres() {
-                return new ArrayList<>(guardadas);
-            }
-        };
-        return new CategoriaService(repo);
-    }
-
-    @Test
-    void altaDeCategoria_guardaElNombreSinEspaciosSobrantes() throws Exception {
-        CategoriaService svc = servicioDeCategorias();
-        svc.registrar("  Social  ");
-        assertEquals(List.of("Social"), svc.obtenerNombres());
-    }
-
-    @Test
-    void altaDeCategoria_rechazaNombreRepetido() throws Exception {
-        CategoriaService svc = servicioDeCategorias();
-        svc.registrar("Social");
-        Exception e = assertThrows(Exception.class, () -> svc.registrar("Social"));
-        assertTrue(e.getMessage().contains("Social"));
-        assertEquals(1, guardadas.size());
-    }
-
-    @Test
-    void altaDeCategoria_rechazaNombreVacioONulo() {
-        CategoriaService svc = servicioDeCategorias();
-        assertThrows(Exception.class, () -> svc.registrar("   "));
-        assertThrows(Exception.class, () -> svc.registrar(null));
-        assertTrue(guardadas.isEmpty());
     }
 }

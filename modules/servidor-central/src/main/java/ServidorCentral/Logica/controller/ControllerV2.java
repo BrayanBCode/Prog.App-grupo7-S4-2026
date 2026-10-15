@@ -35,7 +35,6 @@ public class ControllerV2 implements IControllerV2 {
     private final EstudianteService estudianteService;
     private final CursoService cursoService;
     private final InstitutoService instituoService;
-    private final CategoriaService categoriaService;
     private final EdicionCursoService edicionCursoService;
     private final ProgramaFormacionService programaFormacionService;
     private final SeguimientoService seguimientoService;
@@ -43,7 +42,6 @@ public class ControllerV2 implements IControllerV2 {
         Conexion conexion = Conexion.getInstancia();
         // Capa de acceso a datos
         InstitutoRepository institutoRepository = new InstitutoRepository(conexion);
-        CategoriaRepository categoriaRepository = new CategoriaRepository(conexion);
         CursoRepository cursoRepository = new CursoRepository(conexion);
         DocenteRepository docenteRepository = new DocenteRepository(conexion);
         EstudianteRepository estudianteRepository = new EstudianteRepository(conexion);
@@ -55,9 +53,8 @@ public class ControllerV2 implements IControllerV2 {
         this.usuarioService = new UsuarioService(usuarioRepository, institutoRepository, docenteRepository);
         this.docenteService = new DocenteService(docenteRepository);
         this.estudianteService = new EstudianteService(estudianteRepository);
-        this.cursoService = new CursoService(cursoRepository, institutoRepository, docenteRepository, categoriaRepository);
+        this.cursoService = new CursoService(cursoRepository, institutoRepository, docenteRepository);
         this.instituoService = new InstitutoService(institutoRepository);
-        this.categoriaService = new CategoriaService(categoriaRepository);
         this.edicionCursoService = new EdicionCursoService(edicionCursoRepository, cursoRepository, docenteRepository, estudianteRepository);
         this.programaFormacionService = new ProgramaFormacionService(programaFormacionRepository, cursoRepository, estudianteRepository);
         this.seguimientoService = new SeguimientoService(usuarioRepository, seguimientoRepository);
@@ -133,20 +130,6 @@ public class ControllerV2 implements IControllerV2 {
     }
 
     // ---------------------------------------------------------------
-    // CATEGORIAS
-    // ---------------------------------------------------------------
-
-    @Override
-    public void altaCategoria(String nombre) throws Exception {
-        categoriaService.registrar(nombre);
-    }
-
-    @Override
-    public List<String> listarCategorias() {
-        return categoriaService.obtenerNombres();
-    }
-
-    // ---------------------------------------------------------------
     // INSTITUTOS
     // ---------------------------------------------------------------
 
@@ -173,12 +156,6 @@ public class ControllerV2 implements IControllerV2 {
     public void altaCurso(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas) throws Exception {
         cursoService.registrar(nombre, descripcion, duracion, cantHoras, cantCreditos,
                 url, nombreInstituto, nicknameDocente, previas);
-    }
-
-    @Override
-    public void altaCurso(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas, List<String> categorias) throws Exception {
-        cursoService.registrar(nombre, descripcion, duracion, cantHoras, cantCreditos,
-                url, nombreInstituto, nicknameDocente, previas, categorias);
     }
 
     @Override
@@ -341,7 +318,7 @@ public class ControllerV2 implements IControllerV2 {
     @Override
     public void altaCursoConImagen(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas, String imagen) throws Exception {
         cursoService.registrar(nombre, descripcion, duracion, cantHoras, cantCreditos,
-                url, nombreInstituto, nicknameDocente, previas, null, imagen);
+                url, nombreInstituto, nicknameDocente, previas, imagen);
     }
 
     @Override

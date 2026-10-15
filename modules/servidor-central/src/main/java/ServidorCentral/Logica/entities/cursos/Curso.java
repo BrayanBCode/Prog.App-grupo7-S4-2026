@@ -34,12 +34,6 @@ public class Curso implements Serializable {
     @ManyToMany(mappedBy="cursos")
     private List<ProgramaFormacion> pFormaciones = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "CURSO_CATEGORIA",
-            joinColumns = @JoinColumn(name = "CURSO_NOMBRE", referencedColumnName = "NOMBRE"),
-            inverseJoinColumns = @JoinColumn(name = "CATEGORIA_NOMBRE", referencedColumnName = "NOMBRE"))
-    private List<Categoria> categorias = new ArrayList<>();
-
     // AutoRelación
     @ManyToMany
     private List<Curso> previas = new ArrayList<>();
@@ -68,7 +62,6 @@ public class Curso implements Serializable {
 
     // Getters
     public List<Curso> getPrevias() { return previas; }
-    public List<Categoria> getCategorias() { return categorias; }
     public String getNombreC() { return nombre; }
     public Instituto getInstituto() { return instituto; }
     public Docente getDocente() { return docente; }

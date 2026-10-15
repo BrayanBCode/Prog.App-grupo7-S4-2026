@@ -38,10 +38,7 @@ public enum CasoDeUso {
     SEGUIR_USUARIO(ESTUDIANTE, DOCENTE),
     DEJAR_DE_SEGUIR_USUARIO(ESTUDIANTE, DOCENTE),
     // Buscador del cabezal (letra 7.5): disponible "en todo momento".
-    BUSCAR_CURSOS_Y_PROGRAMAS(VISITANTE, ESTUDIANTE, DOCENTE),
-
-    // ---------------- Estacion de Trabajo (letra 6.1) ----------------
-    ALTA_CATEGORIA(ADMINISTRADOR);
+    BUSCAR_CURSOS_Y_PROGRAMAS(VISITANTE, ESTUDIANTE, DOCENTE);
 
     private final Set<Rol> roles;
 

@@ -33,9 +33,6 @@ public interface IControllerV2 {
     void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen, String contraseña);
     /** Inicio de Sesion (Visitante): nickname o mail + contraseña. Tira IllegalArgumentException si no son validos. */
     DTSesion iniciarSesion(String identificador, String contraseña);
-    /** Alta de Categoria (Administrador, Estacion de Trabajo). El nombre es unico. */
-    void altaCategoria(String nombre) throws Exception;
-    List<String> listarCategorias();
     void altaInstituto(String nombre) throws Exception;
     void modificarUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac) throws Exception;
     void crearPrograma(String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta)throws Exception;
@@ -63,8 +60,6 @@ public interface IControllerV2 {
     List<String> listarProgramasPorCurso(String nombreCurso);
     DTEdicionCurso obtenerEdicionCurso(String nombreEdicion)throws Exception;
     void altaCurso(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas) throws Exception;
-    /** Alta de Curso eligiendo categorias (cada una debe existir). */
-    void altaCurso(String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos, String url, String nombreInstituto, String nicknameDocente, List<String> previas, List<String> categorias) throws Exception;
     boolean existePrograma(String nombre);
     DTProgramaFormacion obtenerDatosBasicosPrograma(String nombre);
     List<DTProgramaResumen> listarProgramasTabla();

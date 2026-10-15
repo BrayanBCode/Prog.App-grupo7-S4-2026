@@ -49,14 +49,23 @@ public class AccesoFilter implements Filter {
             entry("/usuarios/seguir", CasoDeUso.SEGUIR_USUARIO)
     );
 
+    // TODO DEBUG: quitar antes de la entrega. Con true, cualquier usuario con sesion
+    // (Estudiante o Docente) ve y puede abrir TODOS los casos de uso, para probar los menus.
+    // Las reglas de negocio del Servidor Central se siguen aplicando.
+    private static final boolean DEBUG_VER_TODO = true;
+
     /** Permisos ya calculados por rol (la matriz no cambia en ejecucion). */
     private static final Map<Rol, Map<String, Boolean>> PERMISOS_POR_ROL = new EnumMap<>(Rol.class);
+
+    private static boolean permitido(CasoDeUso cu, Rol rol) {
+        return (DEBUG_VER_TODO && rol.isAutenticado()) || cu.permitidoPara(rol);
+    }
 
     static {
         for (Rol rol : Rol.values()) {
             Map<String, Boolean> permisos = new LinkedHashMap<>();
             for (CasoDeUso cu : CasoDeUso.values()) {
-                permisos.put(cu.name(), cu.permitidoPara(rol));
+                permisos.put(cu.name(), permitido(cu, rol));
             }
             PERMISOS_POR_ROL.put(rol, Map.copyOf(permisos));
         }
@@ -90,7 +99,7 @@ public class AccesoFilter implements Filter {
         req.setAttribute("puede", PERMISOS_POR_ROL.get(rol));
 
         CasoDeUso requerido = RUTAS_PROTEGIDAS.get(ruta);
-        if (requerido != null && !requerido.permitidoPara(rol)) {
+        if (requerido != null && !permitido(requerido, rol)) {
             // Visitante donde hace falta sesion -> al login. Usuario logueado donde no le corresponde -> al inicio.
             String destino = rol.isAutenticado() ? "/inicio" : "/login";
             resp.sendRedirect(req.getContextPath() + destino);

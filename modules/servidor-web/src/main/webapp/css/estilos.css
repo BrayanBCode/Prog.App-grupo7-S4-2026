@@ -440,7 +440,7 @@ a.usuario-actual {
 
 .accesos { margin-top: 1.5rem; }
 
-/* Chips (institutos y categorias) */
+/* Chips (institutos) */
 .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.4rem 0; }
 
 .chip {
