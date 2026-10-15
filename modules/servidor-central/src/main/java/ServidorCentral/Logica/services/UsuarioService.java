@@ -1,5 +1,6 @@
 package ServidorCentral.Logica.services;
 
+import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.datatypes.DTSesion;
 import ServidorCentral.Logica.datatypes.DTUsuario;
 import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
@@ -42,6 +43,11 @@ public class UsuarioService {
      * IController.altaUsuario no declara throws.
      */
     public void registrar(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen, String contraseña) {
+        registrar(nickname, mail, nombre, apellido, fechaNac, instituto, AlmacenImagenes.leer(imagen), contraseña);
+    }
+
+    /** Igual que el anterior, con la imagen ya leida (Servidor Web). */
+    public void registrar(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, DTImagen imagen, String contraseña) {
 
         if (usuarioRepository.existeNickname(nickname) || usuarioRepository.existeMail(mail)) {
             throw new IllegalArgumentException("El Nickname o el Email ya se encuentran registrados en el sistema.");
@@ -174,7 +180,7 @@ public class UsuarioService {
      *
      * @return la ruta relativa a persistir, o null si no se eligio imagen.
      */
-    private String guardarImagenUsuario(String nickname, String rutaImagenOrigen) {
-        return AlmacenImagenes.guardar(rutaImagenOrigen, AlmacenImagenes.USUARIOS, nickname);
+    private String guardarImagenUsuario(String nickname, DTImagen imagen) {
+        return AlmacenImagenes.guardar(imagen, AlmacenImagenes.USUARIOS, nickname);
     }
 }

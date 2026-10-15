@@ -2,6 +2,7 @@ package ServidorWeb.servlets;
 
 import ServidorCentral.Logica.controller.Fabrica;
 import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.datatypes.DTSesion;
 import ServidorWeb.seguridad.SesionUsuario;
 import jakarta.servlet.ServletException;
@@ -14,9 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -75,37 +73,18 @@ public abstract class BaseServlet extends HttpServlet {
     }
 
     /**
-     * El Servidor Central recibe la imagen como RUTA de un archivo local: el upload se
-     * guarda en un temporal que el servlet borra despues de llamar al controller.
+     * Imagen subida en el campo {@code campo} (form con enctype multipart y servlet con
+     * {@code @MultipartConfig}). El formato y el tamano los valida el Servidor Central.
      *
-     * @return el temporal, o null si no se subio imagen.
-     * @throws IllegalArgumentException si no es JPG o PNG.
+     * @return la imagen, o null si no se subio ninguna.
      */
-    protected static Path imagenTemporal(HttpServletRequest req, String campo) throws IOException, ServletException {
+    protected static DTImagen leerImagen(HttpServletRequest req, String campo) throws IOException, ServletException {
         Part parte = req.getPart(campo);
         if (parte == null || parte.getSize() == 0) {
             return null;
         }
-        String original = parte.getSubmittedFileName();
-        String ext = (original != null && original.contains("."))
-                ? original.substring(original.lastIndexOf('.')).toLowerCase() : "";
-        if (!ext.equals(".jpg") && !ext.equals(".jpeg") && !ext.equals(".png")) {
-            throw new IllegalArgumentException("Formato de imagen no soportado. Use JPG o PNG.");
-        }
-        Path tmp = Files.createTempFile("edext-", ext);
         try (InputStream in = parte.getInputStream()) {
-            Files.copy(in, tmp, StandardCopyOption.REPLACE_EXISTING);
-        }
-        return tmp;
-    }
-
-    protected static void borrar(Path temporal) {
-        if (temporal != null) {
-            try {
-                Files.deleteIfExists(temporal);
-            } catch (IOException ignorada) {
-                // un temporal que quedo no rompe nada
-            }
+            return DTImagen.deArchivo(in.readAllBytes(), parte.getSubmittedFileName());
         }
     }
 }

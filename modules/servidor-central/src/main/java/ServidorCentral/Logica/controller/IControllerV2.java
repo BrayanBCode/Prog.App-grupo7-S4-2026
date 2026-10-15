@@ -6,6 +6,7 @@ import ServidorCentral.Logica.datatypes.DTDocenteDetalle;
 import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
+import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
 import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
 import ServidorCentral.Logica.datatypes.DTProgramaInscripto;
@@ -30,7 +31,10 @@ import java.util.Map;
  * lo arma la capa de presentacion.
  */
 public interface IControllerV2 {
+    /** Alta de Usuario desde Swing: imagen = ruta de un archivo local (o null). */
     void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen, String contraseña);
+    /** Alta de Usuario desde el Servidor Web: imagen subida (o null). Tira IllegalArgumentException con el mensaje para el usuario. */
+    void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, DTImagen imagen, String contraseña);
     /** Inicio de Sesion (Visitante): nickname o mail + contraseña. Tira IllegalArgumentException si no son validos. */
     DTSesion iniciarSesion(String identificador, String contraseña);
     void altaInstituto(String nombre) throws Exception;

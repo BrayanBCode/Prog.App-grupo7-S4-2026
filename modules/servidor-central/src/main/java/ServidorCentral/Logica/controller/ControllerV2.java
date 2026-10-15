@@ -5,6 +5,7 @@ import ServidorCentral.Logica.datatypes.DTDocenteDetalle;
 import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
+import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
 import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
 import ServidorCentral.Logica.datatypes.DTProgramaInscripto;
@@ -67,6 +68,11 @@ public class ControllerV2 implements IControllerV2 {
     @Override
     public void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen, String contraseña) {
         usuarioService.registrar(nickname, mail, nombre, apellido, fechaNac, instituto, imagen,contraseña);
+    }
+
+    @Override
+    public void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, DTImagen imagen, String contraseña) {
+        usuarioService.registrar(nickname, mail, nombre, apellido, fechaNac, instituto, imagen, contraseña);
     }
 
     @Override

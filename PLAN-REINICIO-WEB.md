@@ -114,12 +114,15 @@ Lo que más pesa: `repositories` (32% del total, necesita base) y `controller` (
 Hoy el servlet guarda la foto en un temporal, le pasa **la ruta** al central y después la borra. Ese código está
 duplicado (`BaseServlet.imagenTemporal` y `AltaUsuarioServlet.guardarImagenTemporal`).
 
-- [ ] Central: `record DTImagen(byte[] contenido, String extension)`.
-- [ ] Central: `AlmacenImagenes.guardar(DTImagen, subcarpeta, nombreBase)`: valida JPG/PNG y tamaño máximo.
+- [x] Central: `record DTImagen(byte[] contenido, String extension)`.
+- [x] Central: `AlmacenImagenes.guardar(DTImagen, subcarpeta, nombreBase)`: valida JPG/PNG y tamaño máximo.
       La versión con ruta queda solo para Swing y delega en la nueva.
-- [ ] Web: `BaseServlet.leerImagen(req, campo)` → `DTImagen` directo desde el `Part`, sin temporales.
-- [ ] Alta de Usuario hereda de `BaseServlet` y usa `leerImagen`; se borra `guardarImagenTemporal`.
-- [ ] Tests de `AlmacenImagenes` con carpeta temporal: guarda JPG/PNG, rechaza otros formatos, limpia el nombre.
+- [x] Web: `BaseServlet.leerImagen(req, campo)` → `DTImagen` directo desde el `Part`, sin temporales.
+- [x] Alta de Usuario hereda de `BaseServlet` y usa `leerImagen`; se borra `guardarImagenTemporal`.
+- [x] Tests de `AlmacenImagenes` con carpeta temporal: guarda JPG/PNG, rechaza otros formatos, limpia el nombre.
+      *Hecho 15/10: 9 tests (48 en total). Tamaño máximo 2 MB (lo controla el central; `@MultipartConfig` queda en 5 MB
+      para que llegue su mensaje). `altaUsuario` tiene una sobrecarga con `DTImagen` para el web; la de ruta sigue para
+      Swing. Probado en Tomcat: PNG se guarda y se ve en el perfil; GIF y >2 MB muestran su error; sin foto anda.*
 
 ---
 
