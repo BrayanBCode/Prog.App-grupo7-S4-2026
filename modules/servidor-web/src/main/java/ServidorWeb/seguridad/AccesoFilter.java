@@ -70,7 +70,8 @@ public class AccesoFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
         String ruta = req.getServletPath();
 
-        if (esEstatico(ruta)) {
+        // Ruta completa: en un servlet mapeado a "/x/*" (ej. ImagenesServlet) el servletPath es solo "/x"
+        if (esEstatico(req.getRequestURI().substring(req.getContextPath().length()))) {
             chain.doFilter(request, response);
             return;
         }

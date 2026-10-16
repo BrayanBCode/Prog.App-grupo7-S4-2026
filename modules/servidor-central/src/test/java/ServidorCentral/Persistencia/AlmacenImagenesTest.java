@@ -22,17 +22,66 @@ class AlmacenImagenesTest {
     @TempDir
     Path carpeta;
 
-    private Path carpetaAnterior;
+    /** Otra carpeta, para hacer de imagenes/ del repo o del WAR al sembrar. */
+    @TempDir
+    Path origen;
 
     @BeforeEach
     void apuntarACarpetaTemporal() {
-        carpetaAnterior = AlmacenImagenes.getCarpetaBase();
         AlmacenImagenes.setCarpetaBase(carpeta);
     }
 
     @AfterEach
     void restaurarCarpeta() {
-        AlmacenImagenes.setCarpetaBase(carpetaAnterior);
+        AlmacenImagenes.setCarpetaBase(null);
+    }
+
+    @Test
+    void sembrarCopiaLasQueFaltanSinPisarLasQueYaEstan() throws IOException {
+        Files.createDirectories(origen.resolve("cursos"));
+        Files.write(origen.resolve("cursos/A.jpg"), BYTES);
+        Files.write(origen.resolve("cursos/B.png"), BYTES);
+        Files.createDirectories(carpeta.resolve("cursos"));
+        Files.write(carpeta.resolve("cursos/B.png"), new byte[]{9});   // una foto que ya se cambio
+
+        assertEquals(1, AlmacenImagenes.sembrar(origen));
+
+        assertArrayEquals(BYTES, Files.readAllBytes(carpeta.resolve("cursos/A.jpg")));
+        assertArrayEquals(new byte[]{9}, Files.readAllBytes(carpeta.resolve("cursos/B.png")));
+        assertEquals(0, AlmacenImagenes.sembrar(origen), "la segunda vez no copia nada");
+    }
+
+    @Test
+    void sembrarSinOrigenOMismaCarpetaNoHaceNada() {
+        assertEquals(0, AlmacenImagenes.sembrar(null));
+        assertEquals(0, AlmacenImagenes.sembrar(origen.resolve("no-existe")));
+        assertEquals(0, AlmacenImagenes.sembrar(carpeta));
+    }
+
+    @Test
+    void resolverDevuelveElArchivoGuardado() {
+        String ruta = AlmacenImagenes.guardar(new DTImagen(BYTES, "png"), AlmacenImagenes.USUARIOS, "nick");
+
+        assertEquals(carpeta.resolve(ruta).normalize(), AlmacenImagenes.resolver(ruta));
+        assertEquals(carpeta.resolve(ruta).normalize(), AlmacenImagenes.resolver("/" + ruta), "como viene en la URL");
+    }
+
+    @Test
+    void resolverNoSaleDeLaCarpeta() throws IOException {
+        Files.write(origen.resolve("secreto.png"), BYTES);
+        String afuera = "../" + carpeta.relativize(origen.resolve("secreto.png")).toString().replace('\\', '/');
+
+        assertNull(AlmacenImagenes.resolver(afuera));
+        assertNull(AlmacenImagenes.resolver("usuarios/../../secreto.png"));
+        assertNull(AlmacenImagenes.resolver(origen.resolve("secreto.png").toString()), "ruta absoluta");
+    }
+
+    @Test
+    void resolverSinRutaOInexistenteDevuelveNull() {
+        assertNull(AlmacenImagenes.resolver(null));
+        assertNull(AlmacenImagenes.resolver(" "));
+        assertNull(AlmacenImagenes.resolver("usuarios/nadie.png"));
+        assertNull(AlmacenImagenes.resolver("usuarios"), "una carpeta no es una imagen");
     }
 
     @Test

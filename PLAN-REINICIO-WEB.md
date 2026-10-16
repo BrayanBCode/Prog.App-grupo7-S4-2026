@@ -123,6 +123,11 @@ duplicado (`BaseServlet.imagenTemporal` y `AltaUsuarioServlet.guardarImagenTempo
       *Hecho 15/10: 9 tests (48 en total). Tamaño máximo 2 MB (lo controla el central; `@MultipartConfig` queda en 5 MB
       para que llegue su mensaje). `altaUsuario` tiene una sobrecarga con `DTImagen` para el web; la de ruta sigue para
       Swing. Probado en Tomcat: PNG se guarda y se ve en el perfil; GIF y >2 MB muestran su error; sin foto anda.*
+- [x] **Carpeta fija para las imágenes** (16/10): las fotos ya no se guardan dentro del deploy (se perdían en cada build).
+      Van a `~/edext/imagenes` (o `-Dedext.imagenes` / `EDEXT_IMAGENES`), la misma para Swing y el web. Las de los
+      datos de prueba se copian ahí sin pisar nada (`AlmacenImagenes.sembrar`, desde el WAR o desde `imagenes/` del repo).
+      `ImagenesServlet` las sirve en `/imagenes/*` (misma URL; 404 si no existe o si la ruta se sale con `..`; 304 si no
+      cambió). 5 tests nuevos (53 en total). Probado: sobrevive a un redeploy y responde aunque la base esté caída.
 
 ---
 
