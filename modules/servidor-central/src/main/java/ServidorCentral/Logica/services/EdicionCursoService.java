@@ -6,6 +6,7 @@ import ServidorCentral.Logica.datatypes.DTEdicionDetalle;
 import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
+import ServidorCentral.Logica.datatypes.DTInscripcionesEdicion;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
@@ -252,13 +253,13 @@ public class EdicionCursoService {
      * Caso de uso "Seleccionar estudiantes para una edicion de curso" (paso de consulta):
      * todas las inscripciones de la edicion con su estado. Solo un docente de esa edicion.
      */
-    public List<DTInscripcionEdicion> listarInscripciones(String nicknameDocente, String nombreEdicion) throws Exception {
+    public List<DTInscripcionEdicion> listarInscripciones(String nicknameDocente, String nombreEdicion) {
         verificarDocenteDeEdicion(nicknameDocente, nombreEdicion);
         return aDTInscripciones(edicionCursoRepository.inscripcionesDeEdicion(nombreEdicion), null);
     }
 
     /** Caso de uso "Listar aceptados a una edicion de curso": solo las inscripciones en estado Aceptada. */
-    public List<DTInscripcionEdicion> listarAceptados(String nicknameDocente, String nombreEdicion) throws Exception {
+    public List<DTInscripcionEdicion> listarAceptados(String nicknameDocente, String nombreEdicion) {
         verificarDocenteDeEdicion(nicknameDocente, nombreEdicion);
         return aDTInscripciones(edicionCursoRepository.inscripcionesDeEdicion(nombreEdicion), EstadoInscripcion.ACEPTADA);
     }
@@ -268,13 +269,24 @@ public class EdicionCursoService {
      * Segun la Tabla 1 solo se puede pasar de Inscripto a Aceptada o Rechazada: no se puede volver
      * a Inscripto ni cambiar una inscripcion que ya fue resuelta. Si algo no es valido no se guarda nada.
      *
+     * D2: solo sobre la edicion vigente del curso (como dice la letra).
+     *
      * @param estados nickname del estudiante -> nuevo estado (Aceptada o Rechazada)
+     * @throws ReglaNegocioException con el mensaje para el usuario
      */
-    public void seleccionarEstudiantes(String nicknameDocente, String nombreEdicion, Map<String, EstadoInscripcion> estados) throws Exception {
-        verificarDocenteDeEdicion(nicknameDocente, nombreEdicion);
+    public void seleccionarEstudiantes(String nicknameDocente, String nombreEdicion, Map<String, EstadoInscripcion> estados) {
+        seleccionarEstudiantes(nicknameDocente, nombreEdicion, estados, LocalDate.now());
+    }
+
+    /** Igual que el anterior, con la fecha de "hoy" como parametro (para los tests). */
+    void seleccionarEstudiantes(String nicknameDocente, String nombreEdicion, Map<String, EstadoInscripcion> estados, LocalDate hoy) {
+        EdicionCurso edicion = verificarDocenteDeEdicion(nicknameDocente, nombreEdicion);
+        if (!esVigente(edicion, hoy)) {
+            throw new ReglaNegocioException("Solo se pueden seleccionar estudiantes en la edición vigente del curso.");
+        }
 
         if (estados == null || estados.isEmpty()) {
-            throw new Exception("No hay ninguna selección para guardar.");
+            throw new ReglaNegocioException("No hay ninguna selección para guardar.");
         }
 
         Map<String, InscripcionEdicion> porNickname = new LinkedHashMap<>();
@@ -286,17 +298,17 @@ public class EdicionCursoService {
         for (Map.Entry<String, EstadoInscripcion> e : estados.entrySet()) {
             InscripcionEdicion insc = porNickname.get(e.getKey());
             if (insc == null) {
-                throw new Exception("El estudiante " + e.getKey() + " no está inscripto en esta edición.");
+                throw new ReglaNegocioException("El estudiante " + e.getKey() + " no está inscripto en esta edición.");
             }
             EstadoInscripcion nuevo = e.getValue();
             if (nuevo != EstadoInscripcion.ACEPTADA && nuevo != EstadoInscripcion.RECHAZADA) {
-                throw new Exception("El estado debe ser Aceptada o Rechazada.");
+                throw new ReglaNegocioException("El estado debe ser Aceptada o Rechazada.");
             }
             if (insc.getEstado() == nuevo) {
                 continue; // ya estaba asi: no hay nada que cambiar
             }
             if (insc.getEstado() != EstadoInscripcion.INSCRIPTO) {
-                throw new Exception("La inscripción de " + e.getKey() + " ya fue resuelta (" + insc.getEstado().getEtiqueta() + ").");
+                throw new ReglaNegocioException("La inscripción de " + e.getKey() + " ya fue resuelta (" + insc.getEstado().getEtiqueta() + ").");
             }
             cambios.put(e.getKey(), nuevo);
         }
@@ -306,18 +318,42 @@ public class EdicionCursoService {
         }
     }
 
+    /**
+     * Seleccionar Estudiantes (web, Figura 5): encabezado de la edicion y todas sus inscripciones con el estado,
+     * en una sola llamada. Solo un docente que participa en la edicion.
+     *
+     * @throws ReglaNegocioException si la edicion no existe o el docente no participa
+     */
+    public DTInscripcionesEdicion consultarInscripcionesEdicion(String nicknameDocente, String nombreEdicion) {
+        return consultarInscripcionesEdicion(nicknameDocente, nombreEdicion, null, LocalDate.now());
+    }
+
+    /** Listar Aceptados (web): como el anterior, pero solo las inscripciones en estado Aceptada. */
+    public DTInscripcionesEdicion consultarAceptadosEdicion(String nicknameDocente, String nombreEdicion) {
+        return consultarInscripcionesEdicion(nicknameDocente, nombreEdicion, EstadoInscripcion.ACEPTADA, LocalDate.now());
+    }
+
+    /** Version comun, con el filtro de estado (null = todas) y "hoy" como parametro (para los tests). */
+    DTInscripcionesEdicion consultarInscripcionesEdicion(String nicknameDocente, String nombreEdicion,
+                                                         EstadoInscripcion soloEstado, LocalDate hoy) {
+        verificarDocenteDeEdicion(nicknameDocente, nombreEdicion);
+        // el docente nunca tiene inscripcion propia: no hace falta buscarla (null)
+        return new DTInscripcionesEdicion(consultarEdicion(nombreEdicion, null, hoy),
+                aDTInscripciones(edicionCursoRepository.inscripcionesDeEdicion(nombreEdicion), soloEstado));
+    }
+
     /** La edicion debe existir y el docente debe participar en ella (letra: "edicion de curso en que participa"). */
-    private void verificarDocenteDeEdicion(String nicknameDocente, String nombreEdicion) throws Exception {
-        EdicionCurso edicion = edicionCursoRepository.obtenerPorNombres(nombreEdicion);
+    private EdicionCurso verificarDocenteDeEdicion(String nicknameDocente, String nombreEdicion) {
+        EdicionCurso edicion = nombreEdicion == null ? null : edicionCursoRepository.obtenerPorNombres(nombreEdicion);
         if (edicion == null) {
-            throw new Exception("La edición de curso seleccionada no existe.");
+            throw new ReglaNegocioException("La edición de curso seleccionada no existe.");
         }
         for (Docente d : edicionCursoRepository.docentesDeEdicion(nombreEdicion)) {
             if (d.getNickname().equals(nicknameDocente)) {
-                return;
+                return edicion;
             }
         }
-        throw new Exception("El docente no participa en esta edición de curso.");
+        throw new ReglaNegocioException("El docente no participa en esta edición de curso.");
     }
 
     /** Convierte las inscripciones a DTO; si filtro no es null, deja solo las de ese estado. */

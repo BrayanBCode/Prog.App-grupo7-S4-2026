@@ -8,7 +8,7 @@ import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.datatypes.DTCursoDetalle;
 import ServidorCentral.Logica.datatypes.DTEdicionDetalle;
-import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
+import ServidorCentral.Logica.datatypes.DTInscripcionesEdicion;
 import ServidorCentral.Logica.datatypes.DTPerfil;
 import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
 import ServidorCentral.Logica.datatypes.DTProgramaInscripto;
@@ -291,17 +291,17 @@ public class ControllerV2 implements IControllerV2 {
     }
 
     @Override
-    public List<DTInscripcionEdicion> listarInscripcionesEdicion(String nicknameDocente, String nombreEdicion) throws Exception {
-        return edicionCursoService.listarInscripciones(nicknameDocente, nombreEdicion);
+    public DTInscripcionesEdicion consultarInscripcionesEdicion(String nicknameDocente, String nombreEdicion) {
+        return edicionCursoService.consultarInscripcionesEdicion(nicknameDocente, nombreEdicion);
     }
 
     @Override
-    public List<DTInscripcionEdicion> listarAceptadosEdicion(String nicknameDocente, String nombreEdicion) throws Exception {
-        return edicionCursoService.listarAceptados(nicknameDocente, nombreEdicion);
+    public DTInscripcionesEdicion consultarAceptadosEdicion(String nicknameDocente, String nombreEdicion) {
+        return edicionCursoService.consultarAceptadosEdicion(nicknameDocente, nombreEdicion);
     }
 
     @Override
-    public void seleccionarEstudiantes(String nicknameDocente, String nombreEdicion, Map<String, EstadoInscripcion> estados) throws Exception {
+    public void seleccionarEstudiantes(String nicknameDocente, String nombreEdicion, Map<String, EstadoInscripcion> estados) {
         edicionCursoService.seleccionarEstudiantes(nicknameDocente, nombreEdicion, estados);
     }
 

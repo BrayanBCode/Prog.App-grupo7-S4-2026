@@ -9,7 +9,7 @@ import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.datatypes.DTCursoDetalle;
 import ServidorCentral.Logica.datatypes.DTEdicionDetalle;
-import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
+import ServidorCentral.Logica.datatypes.DTInscripcionesEdicion;
 import ServidorCentral.Logica.datatypes.DTPerfil;
 import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
 import ServidorCentral.Logica.datatypes.DTProgramaInscripto;
@@ -87,12 +87,18 @@ public interface IControllerV2 {
     List<String> listarSeguidos(String nickname);
     /** Nicknames de los usuarios que siguen a este usuario. */
     List<String> listarSeguidores(String nickname);
-    /** Seleccionar estudiantes (Docente): inscripciones de la edicion con su estado. El docente debe participar en la edicion. */
-    List<DTInscripcionEdicion> listarInscripcionesEdicion(String nicknameDocente, String nombreEdicion) throws Exception;
-    /** Listar aceptados (Docente): solo inscripciones en estado Aceptada. El docente debe participar en la edicion. */
-    List<DTInscripcionEdicion> listarAceptadosEdicion(String nicknameDocente, String nombreEdicion) throws Exception;
-    /** Guarda la seleccion: nickname del estudiante -> ACEPTADA o RECHAZADA (solo desde INSCRIPTO). Todo o nada. */
-    void seleccionarEstudiantes(String nicknameDocente, String nombreEdicion, Map<String, EstadoInscripcion> estados) throws Exception;
+    /**
+     * Seleccionar estudiantes (Docente, Figura 5): encabezado de la edicion y todas sus inscripciones con su estado.
+     * ReglaNegocioException si la edicion no existe o el docente no participa en ella.
+     */
+    DTInscripcionesEdicion consultarInscripcionesEdicion(String nicknameDocente, String nombreEdicion);
+    /** Listar aceptados (Docente): como el anterior, solo las inscripciones en estado Aceptada. */
+    DTInscripcionesEdicion consultarAceptadosEdicion(String nicknameDocente, String nombreEdicion);
+    /**
+     * Guarda la seleccion: nickname del estudiante -> ACEPTADA o RECHAZADA (solo desde INSCRIPTO), solo en la
+     * edicion vigente (D2). Todo o nada. ReglaNegocioException con el mensaje para el usuario.
+     */
+    void seleccionarEstudiantes(String nicknameDocente, String nombreEdicion, Map<String, EstadoInscripcion> estados);
 
     // ---------------- Sprint 2: Servidor Web ----------------
     /** Consulta de Usuario: todos los usuarios con sus datos basicos, ordenados por nickname. */

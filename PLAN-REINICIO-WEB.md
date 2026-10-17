@@ -51,7 +51,7 @@ Estado: ✅ hecho · 🟡 parcial · ⬜ pendiente
 | 8 | Consulta de Edición de Curso | ✅ |
 | 9 | Inscripción a Edición de Curso (con Ajax) | ✅ |
 | 10 | **Seguir Usuario (con Ajax)** | ✅ |
-| 11 | **Seleccionar Estudiantes para una Edición** | ⬜ (4.7) |
+| 11 | **Seleccionar Estudiantes para una Edición** | ✅ |
 | 12 | **Listar Aceptados a una Edición** | ⬜ (4.8) |
 | — | Diseño del sitio | ✅ |
 | — | Imágenes | ✅ |
@@ -221,7 +221,7 @@ Estado: ✅ hecho · ⬜ pendiente
 | 4.4 | ✅ | Alta de Edición | Docente | — | 4.3 |
 | 4.5 | ✅ | Inscripción a Edición **(con Ajax)** | Estudiante | — | 4.2 |
 | 4.6 | ✅ | Seguir Usuario **(con Ajax)** | Est./Doc. | — | Fase 3 |
-| 4.7 | ⬜ | Seleccionar Estudiantes | Docente | Figura 5 | 4.5 |
+| 4.7 | ✅ | Seleccionar Estudiantes | Docente | Figura 5 | 4.5 |
 | 4.8 | ⬜ | Listar Aceptados | Docente | — | 4.7 |
 | 4.9 | ⬜ | *(opcional)* Listar resultados de inscripciones | Estudiante | — | 4.7 |
 | 4.10 | ✅ | *(opcional)* Dejar de Seguir **(con Ajax)** | Est./Doc. | — | 4.6 |

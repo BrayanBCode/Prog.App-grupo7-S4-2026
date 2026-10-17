@@ -1,7 +1,11 @@
 package ServidorCentral.Logica.services;
 
 import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
+import ServidorCentral.Logica.datatypes.DTInscripcionesEdicion;
+import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
+import ServidorCentral.Logica.entities.cursos.Instituto;
+import ServidorCentral.Logica.excepciones.ReglaNegocioException;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 import ServidorCentral.Logica.entities.cursos.InscripcionEdicion;
 import ServidorCentral.Logica.entities.usuarios.Docente;
@@ -50,7 +54,8 @@ class EdicionSeleccionServiceTest {
             @Override
             public EdicionCurso obtenerPorNombres(String nombreEdicion) {
                 return edicionExiste && EDICION.equals(nombreEdicion)
-                        ? new EdicionCurso(EDICION, null, LocalDate.now(), LocalDate.now().plusDays(30), 10, LocalDate.now())
+                        ? new EdicionCurso(EDICION, new Curso("Robotica", "d", 4, 60f, 8, LocalDate.of(2024, 1, 1), "u", new Instituto("INCO")),
+                                LocalDate.now(), LocalDate.now().plusDays(30), 10, LocalDate.now())
                         : null;
             }
 
@@ -179,5 +184,50 @@ class EdicionSeleccionServiceTest {
                 mapa("weiss", EstadoInscripcion.RECHAZADA, "chechi", EstadoInscripcion.ACEPTADA));
 
         assertEquals(mapa("weiss", EstadoInscripcion.RECHAZADA), guardado);
+    }
+
+    // ---------------- Web: pantalla en una llamada (Figura 5) y D2 ----------------
+
+    @Test
+    void consultaParaSeleccionar_traeEncabezadoEInscripciones() {
+        DTInscripcionesEdicion d = servicio().consultarInscripcionesEdicion("benkenobi", EDICION);
+
+        assertEquals(EDICION, d.edicion().edicion().nombre());
+        assertEquals("Robotica", d.edicion().edicion().nombreCurso());
+        assertEquals("INCO", d.edicion().instituto());
+        assertTrue(d.edicion().vigente());
+        assertEquals(List.of("weiss", "chechi", "roro"), d.inscripciones().stream().map(DTInscripcionEdicion::nickname).toList());
+    }
+
+    @Test
+    void consultaDeAceptados_soloLasAceptadasConEncabezado() {
+        DTInscripcionesEdicion d = servicio().consultarAceptadosEdicion("benkenobi", EDICION);
+
+        assertEquals(EDICION, d.edicion().edicion().nombre());
+        assertEquals(List.of("chechi"), d.inscripciones().stream().map(DTInscripcionEdicion::nickname).toList());
+    }
+
+    @Test
+    void consultaDeDocenteQueNoParticipa_fallaConSuMensaje() {
+        assertEquals("El docente no participa en esta edición de curso.", assertThrows(ReglaNegocioException.class,
+                () -> servicio().consultarInscripcionesEdicion("waston", EDICION)).getMessage());
+        assertEquals("El docente no participa en esta edición de curso.", assertThrows(ReglaNegocioException.class,
+                () -> servicio().consultarAceptadosEdicion("waston", EDICION)).getMessage());
+    }
+
+    @Test
+    void consultaDeEdicionInexistente_falla() {
+        edicionExiste = false;
+        assertEquals("La edición de curso seleccionada no existe.", assertThrows(ReglaNegocioException.class,
+                () -> servicio().consultarInscripcionesEdicion("benkenobi", EDICION)).getMessage());
+    }
+
+    @Test
+    void d2_soloSeSeleccionaEnLaEdicionVigente() {
+        ReglaNegocioException e = assertThrows(ReglaNegocioException.class, () -> servicio().seleccionarEstudiantes(
+                "benkenobi", EDICION, mapa("weiss", EstadoInscripcion.ACEPTADA), LocalDate.now().plusDays(60)));
+
+        assertEquals("Solo se pueden seleccionar estudiantes en la edición vigente del curso.", e.getMessage());
+        assertNull(guardado);
     }
 }

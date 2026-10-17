@@ -200,7 +200,7 @@ responde JSON (ver el diseño completo en el plan, "Seguimiento entre usuarios c
 
 ---
 
-## 4.7 Seleccionar Estudiantes para una Edición — Docente — Figura 5
+## 4.7 Seleccionar Estudiantes para una Edición — Docente — Figura 5 — ✅ hecho (17/10), con selector Pendiente / Aceptar / Rechazar por fila
 
 **Letra:** instituto → cursos → elige uno → datos básicos de la **edición vigente** → todas las inscripciones con
 su estado → el docente marca **Aceptada** o **Rechazada** en cada una → el sistema registra la selección.

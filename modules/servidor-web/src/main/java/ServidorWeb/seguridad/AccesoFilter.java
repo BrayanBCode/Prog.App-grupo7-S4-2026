@@ -45,7 +45,8 @@ public class AccesoFilter implements Filter {
             entry("/curso/alta", CasoDeUso.ALTA_CURSO),
             entry("/edicion/alta", CasoDeUso.ALTA_EDICION_CURSO),
             entry("/edicion/inscripcion", CasoDeUso.INSCRIPCION_EDICION_CURSO),
-            entry("/usuarios/seguimiento", CasoDeUso.SEGUIR_USUARIO)
+            entry("/usuarios/seguimiento", CasoDeUso.SEGUIR_USUARIO),
+            entry("/edicion/seleccionar", CasoDeUso.SELECCIONAR_ESTUDIANTES_EDICION)
     );
 
     /**

@@ -34,13 +34,23 @@
         </c:if>
         <c:url var="uCurso" value="/cursos"><c:param name="nombre" value="${ed.nombreCurso()}"/></c:url>
         <a href="${uCurso}">Ver información del Curso</a>
+
+        <%-- Docente que participa en la edicion: Seleccionar estudiantes (4.7, solo la vigente) --%>
+        <c:set var="participo" value="${false}"/>
+        <c:forEach var="d" items="${detalleEdicion.docentes()}">
+            <c:if test="${d.nickname() == usuarioActual.nickname}"><c:set var="participo" value="${true}"/></c:if>
+        </c:forEach>
+        <c:if test="${participo and puede.SELECCIONAR_ESTUDIANTES_EDICION and detalleEdicion.vigente()}">
+            <c:url var="uSel" value="/edicion/seleccionar"><c:param name="edicion" value="${ed.nombre()}"/></c:url>
+            <div class="mt-2"><a class="btn btn-outline-primary btn-sm" href="${uSel}">Seleccionar estudiantes</a></div>
+        </c:if>
     </div>
 </div>
 
 <dl class="row mb-4" style="max-width: 480px;">
     <dt class="col-sm-6">Fecha inicio</dt><dd class="col-sm-6"><e:fecha valor="${ed.fechaInicio()}"/></dd>
     <dt class="col-sm-6">Fecha fin</dt><dd class="col-sm-6"><e:fecha valor="${ed.fechaFin()}"/></dd>
-    <dt class="col-sm-6">Cupo</dt><dd class="col-sm-6">${ed.cupo() == 0 ? 'Sin límite' : ed.cupo()}</dd>
+    <dt class="col-sm-6">Cupo</dt><dd class="col-sm-6">${ed.cupo() <= 0 ? 'Sin límite' : ed.cupo()}</dd>
     <dt class="col-sm-6">Fecha publicación</dt><dd class="col-sm-6"><e:fecha valor="${ed.fechaPublicacion()}"/></dd>
 </dl>
 
