@@ -1,14 +1,20 @@
 package ServidorCentral.Logica.services;
 
 import ServidorCentral.Logica.datatypes.DTCurso;
+import ServidorCentral.Logica.datatypes.DTCursoDetalle;
 import ServidorCentral.Logica.datatypes.DTCursoResumen;
 import ServidorCentral.Logica.datatypes.DTDocenteResumen;
+import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.entities.cursos.Curso;
+import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.cursos.Instituto;
 import ServidorCentral.Logica.entities.usuarios.Docente;
+import ServidorCentral.Logica.excepciones.ReglaNegocioException;
 import ServidorCentral.Logica.repositories.CursoRepository;
 import ServidorCentral.Logica.repositories.DocenteRepository;
+import ServidorCentral.Logica.repositories.EdicionCursoRepository;
 import ServidorCentral.Logica.repositories.InstitutoRepository;
+import ServidorCentral.Logica.repositories.ProgramaFormacionRepository;
 import ServidorCentral.Persistencia.AlmacenImagenes;
 
 import java.util.ArrayList;
@@ -25,11 +31,52 @@ public class CursoService {
     private final CursoRepository cursoRepository;
     private final InstitutoRepository institutoRepository;
     private final DocenteRepository docenteRepository;
+    private final EdicionCursoRepository edicionCursoRepository;
+    private final ProgramaFormacionRepository programaRepository;
 
+    /** Sin ediciones ni programas: alcanza para el alta y la consulta basica (Swing, tests viejos). */
     public CursoService(CursoRepository cursoRepository, InstitutoRepository institutoRepository, DocenteRepository docenteRepository) {
+        this(cursoRepository, institutoRepository, docenteRepository, null, null);
+    }
+
+    public CursoService(CursoRepository cursoRepository, InstitutoRepository institutoRepository, DocenteRepository docenteRepository,
+                        EdicionCursoRepository edicionCursoRepository, ProgramaFormacionRepository programaRepository) {
         this.cursoRepository = cursoRepository;
         this.institutoRepository = institutoRepository;
         this.docenteRepository = docenteRepository;
+        this.edicionCursoRepository = edicionCursoRepository;
+        this.programaRepository = programaRepository;
+    }
+
+    /**
+     * Consulta de Curso (web), paso 1: los cursos del instituto, con descripcion e imagen.
+     *
+     * @throws ReglaNegocioException si el instituto no existe
+     */
+    public List<DTCursoResumen> listarCursosInstituto(String nombreInstituto) {
+        if (nombreInstituto == null || institutoRepository.buscarPorNombre(nombreInstituto) == null) {
+            throw new ReglaNegocioException("El instituto seleccionado no existe.");
+        }
+        return aTabla(cursoRepository.cursosPorInstituto(nombreInstituto));
+    }
+
+    /**
+     * Consulta de Curso (web), paso 2 (Figura 3): todos los datos del curso, sus ediciones y
+     * programas, en una sola llamada.
+     *
+     * @throws ReglaNegocioException si el curso no existe
+     */
+    public DTCursoDetalle consultarCurso(String nombreCurso) {
+        Curso c = nombreCurso == null ? null : cursoRepository.buscarPorNombre(nombreCurso);
+        if (c == null) {
+            throw new ReglaNegocioException("No existe el curso \"" + (nombreCurso == null ? "" : nombreCurso) + "\".");
+        }
+        List<DTEdicionCurso> ediciones = new ArrayList<>();
+        for (EdicionCurso ed : edicionCursoRepository.edicionesDeCurso(c.getNombreC())) {
+            ediciones.add(new DTEdicionCurso(ed.getNombre(), ed.getCurso().getNombreC(), ed.getFechaInicio(),
+                    ed.getFechaFin(), ed.getCupo(), ed.getFechaPublicacion(), ed.getImagen()));
+        }
+        return new DTCursoDetalle(aDT(c), ediciones, programaRepository.obtenerPorCurso(c.getNombreC()));
     }
 
     /**
@@ -82,7 +129,10 @@ public class CursoService {
         if (c == null) {
             throw new Exception("No se encontró el curso llamado: '" + nombreCurso + "'");
         }
+        return aDT(c);
+    }
 
+    private static DTCurso aDT(Curso c) {
         // Los textos "(Sin previas)" / "(Sin docente asignado)" los pone la presentacion.
         List<String> previas = new ArrayList<>();
         for (Curso previa : c.getPrevias()) {
@@ -127,7 +177,7 @@ public class CursoService {
     private List<DTCursoResumen> aTabla(List<Curso> lista) {
         List<DTCursoResumen> resultado = new ArrayList<>();
         for (Curso c : lista) {
-            resultado.add(new DTCursoResumen(c.getNombreC(), c.getDescripcion()));
+            resultado.add(new DTCursoResumen(c.getNombreC(), c.getDescripcion(), c.getImagen()));
         }
         return resultado;
     }

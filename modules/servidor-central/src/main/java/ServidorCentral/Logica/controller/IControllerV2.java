@@ -7,6 +7,7 @@ import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTImagen;
+import ServidorCentral.Logica.datatypes.DTCursoDetalle;
 import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
 import ServidorCentral.Logica.datatypes.DTPerfil;
 import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
@@ -95,6 +96,10 @@ public interface IControllerV2 {
      * (null = Visitante). Tira ReglaNegocioException si el usuario no existe.
      */
     DTPerfil obtenerPerfil(String nickConsultado, String nickQueMira);
+    /** Consulta de Curso: cursos del instituto con descripcion e imagen. ReglaNegocioException si el instituto no existe. */
+    List<DTCursoResumen> listarCursosInstituto(String nombreInstituto);
+    /** Consulta de Curso (Figura 3): curso + ediciones + programas. ReglaNegocioException si el curso no existe. */
+    DTCursoDetalle consultarCurso(String nombreCurso);
     /** Consulta de Usuario por nickname (el sitio web navega por nickname). null si no existe. */
     DTUsuario obtenerUsuario(String nickname);
     /** Inscripciones a ediciones del estudiante, con su estado (Inscripto / Aceptada / Rechazada). */

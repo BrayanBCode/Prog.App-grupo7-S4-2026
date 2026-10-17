@@ -22,7 +22,7 @@ sección 6.2 (casos de uso) y 7.1 (diseño); figuras en `docs/figuras/`.
 
 ---
 
-## 4.1 Consulta de Curso — Visitante, Estudiante, Docente — Figura 3
+## 4.1 Consulta de Curso — Visitante, Estudiante, Docente — Figura 3 — ✅ hecho (17/10)
 
 **Letra:** el usuario indica el instituto y el sistema lista sus cursos. Elige uno y ve todos los datos del
 curso, con sus **ediciones** y **programas de formación** asociados y su imagen. Desde ahí puede abrir una

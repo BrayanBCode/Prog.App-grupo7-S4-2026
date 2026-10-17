@@ -36,6 +36,20 @@ public class EdicionCursoRepository {
         }
     }
 
+    /** Ediciones de un curso, de la mas reciente a la mas vieja (una sola consulta). */
+    public List<EdicionCurso> edicionesDeCurso(String nombreCurso) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT e FROM EdicionCurso e JOIN FETCH e.curso WHERE e.curso.nombre = :nombreCurso "
+                                    + "ORDER BY e.fechaInicio DESC, e.nombre", EdicionCurso.class)
+                    .setParameter("nombreCurso", nombreCurso)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
     public EdicionCurso obtenerPorNombres(String nombreEdicion) {
         EntityManager em = conexion.getEntityManager();
         try {

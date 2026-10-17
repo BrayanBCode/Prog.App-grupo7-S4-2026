@@ -24,9 +24,12 @@
         </c:if>
 
         <div class="list-group-item lateral-titulo">Institutos</div>
+        <%-- Consulta de Curso: cada instituto lleva a sus cursos. Se marca el que se esta viendo. --%>
         <c:forEach var="inst" items="${institutosMenu}">
-            <%-- TODO 4.1: link a la Consulta de Curso filtrada por instituto --%>
-            <div class="list-group-item"><c:out value="${inst}"/></div>
+            <c:url var="uInstituto" value="/cursos"><c:param name="instituto" value="${inst}"/></c:url>
+            <c:set var="instActual" value="${inst == instituto or inst == detalle.curso().instituto()}"/>
+            <a class="list-group-item list-group-item-action ${instActual ? 'active' : ''}" href="${uInstituto}"
+               ${instActual ? 'aria-current="page"' : ''}><c:out value="${inst}"/></a>
         </c:forEach>
 
         <c:if test="${puede.CIERRE_SESION}">

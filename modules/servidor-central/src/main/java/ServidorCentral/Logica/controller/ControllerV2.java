@@ -6,6 +6,7 @@ import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTImagen;
+import ServidorCentral.Logica.datatypes.DTCursoDetalle;
 import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
 import ServidorCentral.Logica.datatypes.DTPerfil;
 import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
@@ -56,7 +57,7 @@ public class ControllerV2 implements IControllerV2 {
         this.usuarioService = new UsuarioService(usuarioRepository, institutoRepository, docenteRepository);
         this.docenteService = new DocenteService(docenteRepository);
         this.estudianteService = new EstudianteService(estudianteRepository);
-        this.cursoService = new CursoService(cursoRepository, institutoRepository, docenteRepository);
+        this.cursoService = new CursoService(cursoRepository, institutoRepository, docenteRepository, edicionCursoRepository, programaFormacionRepository);
         this.instituoService = new InstitutoService(institutoRepository);
         this.edicionCursoService = new EdicionCursoService(edicionCursoRepository, cursoRepository, docenteRepository, estudianteRepository);
         this.programaFormacionService = new ProgramaFormacionService(programaFormacionRepository, cursoRepository, estudianteRepository);
@@ -72,6 +73,16 @@ public class ControllerV2 implements IControllerV2 {
     @Override
     public DTPerfil obtenerPerfil(String nickConsultado, String nickQueMira) {
         return perfilService.obtenerPerfil(nickConsultado, nickQueMira);
+    }
+
+    @Override
+    public List<DTCursoResumen> listarCursosInstituto(String nombreInstituto) {
+        return cursoService.listarCursosInstituto(nombreInstituto);
+    }
+
+    @Override
+    public DTCursoDetalle consultarCurso(String nombreCurso) {
+        return cursoService.consultarCurso(nombreCurso);
     }
 
     // ---------------------------------------------------------------
