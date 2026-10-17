@@ -158,21 +158,28 @@ duplicado (`BaseServlet.imagenTemporal` y `AltaUsuarioServlet.guardarImagenTempo
 > `ReglaNegocioException` creada (unchecked, extiende `IllegalArgumentException` para no romper los `catch` de
 > Swing) y `BaseServlet.mensajeDeError(e)`; ya la usan Alta de Usuario, Inicio de Sesión y `AlmacenImagenes`.
 
-Orden por dependencias. Cada fila: rama corta → merge a `web-v2`.
+Orden por dependencias. Cada fila: rama corta → merge a `web-v2`. Arriba, los casos de uso del web que ya están
+hechos (se quedaron del web anterior o se hicieron en las fases 0 a 3), para ver de un vistazo qué falta.
 
-| # | Caso de uso | Rol | Figura | Depende de |
-|---|---|---|---|---|
-| 4.1 | Consulta de Curso | Todos | Figura 3 | Fase 1 |
-| 4.2 | Consulta de Edición | Todos | Figura 4 | 4.1 |
-| 4.3 | Alta de Curso | Docente | — | 4.1, Fase 2 |
-| 4.4 | Alta de Edición | Docente | — | 4.3 |
-| 4.5 | Inscripción a Edición | Estudiante | — | 4.2 |
-| 4.6 | Seguir Usuario **(con Ajax)** | Est./Doc. | — | Fase 3 |
-| 4.7 | Seleccionar Estudiantes | Docente | Figura 5 | 4.5 |
-| 4.8 | Listar Aceptados | Docente | — | 4.7 |
-| 4.9 | *(opcional)* Listar resultados de inscripciones | Estudiante | — | 4.7 |
-| 4.10 | *(opcional)* Dejar de Seguir **(con Ajax)** | Est./Doc. | — | 4.6 |
-| 4.11 | *(opcional)* Modificar Datos de Usuario | Est./Doc. | — | Fase 2 |
+Estado: ✅ hecho · ⬜ pendiente
+
+| # | Estado | Caso de uso | Rol | Figura | Depende de |
+|---|---|---|---|---|---|
+| — | ✅ | Inicio de Sesión | Visitante | — | — |
+| — | ✅ | Cierre de Sesión | Est./Doc. | Figura 3 | — |
+| — | ✅ | Alta de Usuario (registro) | Visitante | — | Fase 2 |
+| F3 | ✅ | Consulta de Usuario | Todos | Figura 6 | Fase 3 |
+| 4.1 | ⬜ | Consulta de Curso | Todos | Figura 3 | Fase 1 |
+| 4.2 | ⬜ | Consulta de Edición | Todos | Figura 4 | 4.1 |
+| 4.3 | ⬜ | Alta de Curso | Docente | — | 4.1, Fase 2 |
+| 4.4 | ⬜ | Alta de Edición | Docente | — | 4.3 |
+| 4.5 | ⬜ | Inscripción a Edición | Estudiante | — | 4.2 |
+| 4.6 | ⬜ | Seguir Usuario **(con Ajax)** | Est./Doc. | — | Fase 3 |
+| 4.7 | ⬜ | Seleccionar Estudiantes | Docente | Figura 5 | 4.5 |
+| 4.8 | ⬜ | Listar Aceptados | Docente | — | 4.7 |
+| 4.9 | ⬜ | *(opcional)* Listar resultados de inscripciones | Estudiante | — | 4.7 |
+| 4.10 | ⬜ | *(opcional)* Dejar de Seguir **(con Ajax)** | Est./Doc. | — | 4.6 |
+| 4.11 | ⬜ | *(opcional)* Modificar Datos de Usuario | Est./Doc. | — | Fase 2 |
 
 Ciclo de cada caso de uso:
 1. Leer el caso de uso y su figura en la letra; anotar reglas y mensajes de error.
