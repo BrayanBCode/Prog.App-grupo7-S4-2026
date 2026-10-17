@@ -64,7 +64,7 @@ Estado: ✅ hecho · 🟡 parcial · ⬜ pendiente
 | 14 | Dejar de Seguir Usuario (con Ajax) | ✅ |
 | 15 | Modificar Datos de Usuario | ⬜ (4.11) |
 | 16 | Pestañas en el perfil | ✅ (Fase 3, Figura 6) |
-| 17 | Tests unitarios + JaCoCo ≥ 80% | 🟡 ~47% |
+| 17 | Tests unitarios + JaCoCo ≥ 80% | 🟡 57% (129 tests) |
 | 18 | Búsqueda de cursos | ⬜ |
 
 ### No corresponden al grupo (en gris)
@@ -72,7 +72,78 @@ Estado: ✅ hecho · 🟡 parcial · ⬜ pendiente
 Alta de Categoría, Crear Programa de Formación, Consulta de Programa de Formación, Agregar Curso a Programa,
 Inscripción a Programa de Formación y Ranking.
 
-**Falta:** 3 mínimos (Seguir, Seleccionar, Aceptados), el Ajax del registro, 4 opcionales y la cobertura.
+---
+
+## Pendiente (al 17/10, para el resto del equipo)
+
+**Todos los mínimos están hechos.** Lo que sigue es lo que falta, aunque sea opcional, en orden de prioridad.
+Todo está en la rama `web-v2`. Antes de empezar: en NetBeans, *Clean and Build* de `servidor-central` y después
+del web (si no, el web no ve las clases nuevas del central).
+
+| # | Qué falta | Tipo | Prioridad |
+|---|---|---|---|
+| P1 | Subir la cobertura de 57% a 80% | Opcional (pero la letra lo pide en 7.4) | Alta |
+| P2 | `ControllerTest`: borrar o rehacer | Limpieza | Alta (va junto con P1) |
+| P3 | 4.9 Listar resultados de inscripciones | Opcional | Media |
+| P4 | 4.11 Modificar Datos de Usuario | Opcional | Media |
+| P5 | Búsqueda de cursos (requerimiento 7.5) | Opcional | Baja |
+
+### P1 – Cobertura 57% → 80%
+
+- **Cómo se mide:** `mvn -pl modules/servidor-central verify` → el WARNING dice el % (regla en modo aviso, sobre
+  `Logica` sin `repositories` ni `programaFormacion`); el detalle en `modules/servidor-central/target/site/jacoco/index.html`.
+- **Hoy:** 540 de 949 líneas (57%). **Faltan unas 220 líneas cubiertas.**
+- **Dónde está lo que falta (líneas sin cubrir):** `controller` 105 (0%, nada testeado), `EdicionCursoService` 54,
+  `ProgramaFormacionService` 45, `UsuarioService` 43, `EstudianteService` 23, entidades (`EdicionCurso` 19,
+  `InscripcionEdicion` 15, `UsuarioID` 14), `DocenteService` 13.
+- **Cómo:** igual que los tests que ya hay en `src/test/.../services/` (sin base: se sobreescriben los métodos del
+  repositorio en una clase anónima). Lo que más falta son los métodos que usa **Swing** (alta/consulta desde la
+  Estación de Trabajo, `modificar`, listados de tablas) y las entidades (`equals`, `hashCode`, getters).
+- **El controller (105 líneas):** `ControllerV2` arma sus servicios en el constructor y se conecta a la base, así
+  que no se puede testear sin base. Opción simple: agregarle un constructor que reciba los servicios y testear que
+  cada método delega al servicio correcto.
+
+### P2 – `ControllerTest`
+
+`src/test/.../controller/ControllerTest.java` está **entero comentado** (`/* ... */`): no corre y no suma. Usaba la
+base real. Decidir: borrarlo (los tests nuevos de `services/` ya cubren esas reglas sin base) o reescribirlo sin base
+como parte de P1. Es el único ítem sin marcar de la Fase 0.
+
+### P3 – 4.9 Listar resultados de inscripciones (Estudiante)
+
+- **Letra:** el estudiante ve todas sus inscripciones a ediciones y el estado de cada una.
+- **Ya hay:** central `listarInscripcionesEstudiante(nick)` → `List<DTInscripcionEstudiante>` (edición, curso, fecha,
+  estado); permiso `LISTAR_RESULTADOS_INSCRIPCIONES` en la matriz; el perfil propio del estudiante ya muestra sus
+  inscripciones con estado (pestaña Cursos), incluidas las Rechazadas.
+- **Falta:** pantalla `/inscripciones/resultados` (servlet fino + JSP con tabla edición / curso / fecha / estado con
+  `e:estado` y links), la ruta en `RUTAS_PROTEGIDAS` del `AccesoFilter`, y en el lateral un grupo
+  **INSCRIPCIONES → Ver resultados** para el estudiante (como en la Figura 3). Tests: estudiante sin inscripciones,
+  con varias en distintos estados, quien no es estudiante.
+
+### P4 – 4.11 Modificar Datos de Usuario (Estudiante, Docente)
+
+- **Letra:** el usuario edita sus datos básicos, **menos nickname y correo**, y el sistema los actualiza.
+  En la Figura 6 son los lápices de la pestaña General.
+- **Ya hay:** central `modificarUsuario(nickname, mail, nombre, apellido, fechaNac)` (lo usa Swing, tira `Exception`);
+  permiso `MODIFICAR_DATOS_USUARIO` en la matriz.
+- **Falta:** versión web en el central con `ReglaNegocioException` (y foto como `DTImagen`, si se decide que la foto
+  también se edita), botón **Editar** en el perfil propio, formulario con nombre / apellido / fecha de nacimiento
+  (y foto), Post/Redirect/Get al perfil con flash, ruta protegida y tests.
+- **A decidir:** si se puede cambiar la foto y la contraseña (la letra dice "todos los datos básicos").
+
+### P5 – Búsqueda de cursos (requerimiento especial 7.5)
+
+- **Letra:** un cuadro de búsqueda **siempre visible en el cabezal** (Figura 2); lista los cursos y programas cuyo
+  nombre o descripción contienen el texto (todos si está vacío). Para el grupo, **solo cursos** (programas en gris).
+- **Falta todo:** consulta en el central (`buscarCursos(texto)` → `List<DTCursoResumen>`, con tests), el cuadro en
+  `cabezal.jspf` y una página de resultados que reuse las tarjetas de `curso/lista.jsp`.
+
+### Cómo trabajar (lo que se usó en todo lo hecho)
+
+Ciclo de la Fase 4: central primero (DataType completo, `ReglaNegocioException`, tests sin base) → servlet fino que
+hereda de `BaseServlet` y usa `mensajeDeError(e)` → JSP según la figura → ruta en `RUTAS_PROTEGIDAS` → prueba manual
+con cada rol → rama corta y merge a `web-v2`. Para Ajax: `Json.escribir` / `Json.error` y la ruta en `RUTAS_AJAX`.
+Datos de prueba: usuarios con contraseña `1234` (o `123`); si se crean datos, prefijo `zztest_` y borrarlos al final.
 
 ---
 

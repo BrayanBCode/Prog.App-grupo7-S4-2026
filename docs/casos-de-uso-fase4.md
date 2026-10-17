@@ -4,6 +4,10 @@ Paso 1 del ciclo de la Fase 4 (ver `PLAN-REINICIO-WEB.md`, sección 7): qué pid
 mensajes de error tiene, qué ofrece hoy el Servidor Central y qué falta. Fuente: *ProgApp2026-Tarea2.pdf*,
 sección 6.2 (casos de uso) y 7.1 (diseño); figuras en `docs/figuras/`.
 
+> **Estado al 17/10:** las fichas 4.1 a 4.8 están todas hechas (✅ en cada título). Lo que falta (4.9 Listar
+> resultados, 4.11 Modificar datos, Búsqueda, cobertura de tests) está detallado en `PLAN-REINICIO-WEB.md`,
+> sección **"Pendiente"**.
+
 ## Reglas comunes a todas las fichas
 
 - **Sin categorías:** donde la letra dice "el usuario indica el instituto **o categoría**", el grupo solo
