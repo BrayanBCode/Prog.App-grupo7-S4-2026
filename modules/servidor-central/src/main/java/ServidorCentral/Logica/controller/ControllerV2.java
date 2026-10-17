@@ -266,8 +266,13 @@ public class ControllerV2 implements IControllerV2 {
     }
 
     @Override
-    public void seguirUsuario(String nicknameSeguidor, String nicknameSeguido) throws Exception {
-        seguimientoService.seguir(nicknameSeguidor, nicknameSeguido);
+    public int seguirUsuario(String nicknameSeguidor, String nicknameSeguido) {
+        return seguimientoService.seguir(nicknameSeguidor, nicknameSeguido);
+    }
+
+    @Override
+    public int dejarDeSeguirUsuario(String nicknameSeguidor, String nicknameSeguido) {
+        return seguimientoService.dejarDeSeguir(nicknameSeguidor, nicknameSeguido);
     }
 
     @Override

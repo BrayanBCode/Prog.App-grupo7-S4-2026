@@ -178,7 +178,7 @@ edición no vigente (todavía no empezó / ya terminó); curso sin vigente → n
 
 ---
 
-## 4.6 Seguir a un Usuario (con Ajax) — Estudiante, Docente — sin figura
+## 4.6 Seguir a un Usuario (con Ajax) — Estudiante, Docente — sin figura — ✅ hecho (17/10), junto con 4.10 Dejar de seguir
 
 **Letra:** el usuario indica a quién quiere seguir y el sistema lo registra.
 

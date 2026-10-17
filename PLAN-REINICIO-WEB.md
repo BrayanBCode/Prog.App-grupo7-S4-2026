@@ -30,6 +30,52 @@ se limpia al rehacer cada caso de uso.
 
 ---
 
+## Alcance: casos de uso a implementar
+
+Todos los casos de uso de la Tarea 2 menos los que están en gris para el grupo. El detalle de cada uno pendiente
+está en la Fase 4.
+
+Estado: ✅ hecho · 🟡 parcial · ⬜ pendiente
+
+### Mínimos (obligatorios)
+
+| # | Caso de uso | Estado |
+|---|---|---|
+| 1 | Inicio de Sesión | ✅ |
+| 2 | Cierre de Sesión | ✅ |
+| 3 | Alta de Usuario (web, y en Swing con contraseña y confirmación) | ✅ (falta el aviso Ajax de nickname/correo en uso) |
+| 4 | Consulta de Usuario | ✅ |
+| 5 | Alta de Curso | ✅ |
+| 6 | Consulta de Curso | ✅ |
+| 7 | Alta de Edición de Curso | ✅ |
+| 8 | Consulta de Edición de Curso | ✅ |
+| 9 | Inscripción a Edición de Curso (con Ajax) | ✅ |
+| 10 | **Seguir Usuario (con Ajax)** | ✅ |
+| 11 | **Seleccionar Estudiantes para una Edición** | ⬜ (4.7) |
+| 12 | **Listar Aceptados a una Edición** | ⬜ (4.8) |
+| — | Diseño del sitio | ✅ |
+| — | Imágenes | ✅ |
+
+### Opcionales (no mínimos)
+
+| # | Caso de uso / requerimiento | Estado |
+|---|---|---|
+| 13 | Listar resultados de inscripciones | ⬜ (4.9) |
+| 14 | Dejar de Seguir Usuario (con Ajax) | ✅ |
+| 15 | Modificar Datos de Usuario | ⬜ (4.11) |
+| 16 | Pestañas en el perfil | ✅ (Fase 3, Figura 6) |
+| 17 | Tests unitarios + JaCoCo ≥ 80% | 🟡 ~47% |
+| 18 | Búsqueda de cursos | ⬜ |
+
+### No corresponden al grupo (en gris)
+
+Alta de Categoría, Crear Programa de Formación, Consulta de Programa de Formación, Agregar Curso a Programa,
+Inscripción a Programa de Formación y Ranking.
+
+**Falta:** 3 mínimos (Seguir, Seleccionar, Aceptados), el Ajax del registro, 4 opcionales y la cobertura.
+
+---
+
 ## 2. Reglas para todo lo nuevo ("terminado" significa…)
 
 1. **Diseño según la letra.** La pantalla sigue la figura correspondiente (Figuras 2 a 6 de la Tarea 2): misma
@@ -174,11 +220,11 @@ Estado: ✅ hecho · ⬜ pendiente
 | 4.3 | ✅ | Alta de Curso | Docente | — | 4.1, Fase 2 |
 | 4.4 | ✅ | Alta de Edición | Docente | — | 4.3 |
 | 4.5 | ✅ | Inscripción a Edición **(con Ajax)** | Estudiante | — | 4.2 |
-| 4.6 | ⬜ | Seguir Usuario **(con Ajax)** | Est./Doc. | — | Fase 3 |
+| 4.6 | ✅ | Seguir Usuario **(con Ajax)** | Est./Doc. | — | Fase 3 |
 | 4.7 | ⬜ | Seleccionar Estudiantes | Docente | Figura 5 | 4.5 |
 | 4.8 | ⬜ | Listar Aceptados | Docente | — | 4.7 |
 | 4.9 | ⬜ | *(opcional)* Listar resultados de inscripciones | Estudiante | — | 4.7 |
-| 4.10 | ⬜ | *(opcional)* Dejar de Seguir **(con Ajax)** | Est./Doc. | — | 4.6 |
+| 4.10 | ✅ | *(opcional)* Dejar de Seguir **(con Ajax)** | Est./Doc. | — | 4.6 |
 | 4.11 | ⬜ | *(opcional)* Modificar Datos de Usuario | Est./Doc. | — | Fase 2 |
 
 Ciclo de cada caso de uso:
@@ -195,7 +241,7 @@ El docente pide usar Ajax para no recargar páginas enteras. Decidido el 17/10 d
 
 | Dónde | Qué hace sin recargar | Estado |
 |---|---|---|
-| 4.6 / 4.10 Seguir y dejar de seguir | El botón del perfil cambia y se actualiza el contador de seguidores | ⬜ |
+| 4.6 / 4.10 Seguir y dejar de seguir | El botón del perfil cambia y se actualiza el contador de seguidores | ✅ |
 | Alta de Usuario (registro) | Al salir del campo nickname o correo, avisa si ya está en uso | ⬜ |
 | 4.5 Inscripción a edición | "Inscribirme" registra la inscripción y el botón pasa a "✓ Inscripto" | ✅ |
 

@@ -75,8 +75,13 @@ public interface IControllerV2 {
     List<DTEstudianteResumen> listarEstudiantesEdicion(String nombreEdicion);
     /** Inscripcion a Programa de Formacion (Estudiante). Falla si el programa no existe o ya esta inscripto. */
     void inscribirEstudiantePrograma(String nickname, String mail, String nombrePrograma, LocalDate fechaInscripcion) throws Exception;
-    /** Seguir a un Usuario (Estudiante/Docente), por nickname. Falla si no existe, es uno mismo o ya lo sigue. */
-    void seguirUsuario(String nicknameSeguidor, String nicknameSeguido) throws Exception;
+    /**
+     * Seguir a un Usuario (Estudiante/Docente), por nickname. Devuelve la nueva cantidad de seguidores del seguido.
+     * ReglaNegocioException si no existe, es uno mismo o ya lo sigue.
+     */
+    int seguirUsuario(String nicknameSeguidor, String nicknameSeguido);
+    /** Dejar de seguir a un Usuario. Devuelve la nueva cantidad de seguidores. ReglaNegocioException si no lo seguia. */
+    int dejarDeSeguirUsuario(String nicknameSeguidor, String nicknameSeguido);
     boolean estaSiguiendo(String nicknameSeguidor, String nicknameSeguido);
     /** Nicknames de los usuarios que sigue este usuario. */
     List<String> listarSeguidos(String nickname);

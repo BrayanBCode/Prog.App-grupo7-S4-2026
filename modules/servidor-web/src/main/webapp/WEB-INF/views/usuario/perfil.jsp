@@ -16,7 +16,15 @@
             <c:out value="${u.nickname()}"/> / <c:out value="${u.mail()}"/>
             <span class="badge ${esDocente ? 'text-bg-primary' : 'text-bg-success'} ms-1">${esDocente ? 'Docente' : 'Estudiante'}</span>
         </p>
-        <%-- TODO 4.6: boton Seguir (perfil.loSigue() ya dice si lo sigue) --%>
+        <%-- Seguir / Dejar de seguir (4.6 y 4.10, con Ajax): solo con sesion y en el perfil de otro --%>
+        <c:if test="${puede.SEGUIR_USUARIO and perfil.verDetalle() and not perfil.propio()}">
+            <button type="button" id="btn-seguir" class="btn btn-sm ${perfil.loSigue() ? 'btn-outline-secondary' : 'btn-primary'}"
+                    data-url="${raiz}/usuarios/seguimiento" data-nick="<c:out value='${u.nickname()}'/>"
+                    data-yo="<c:out value='${usuarioActual.nickname}'/>" data-siguiendo="${perfil.loSigue()}">
+                ${perfil.loSigue() ? 'Dejar de seguir' : 'Seguir'}
+            </button>
+            <div id="seguimiento-mensaje" class="small mt-1" role="status" aria-live="polite"></div>
+        </c:if>
     </div>
 </div>
 
@@ -36,7 +44,7 @@
         </c:if>
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-seguidores" type="button" role="tab">
-                Seguidores <span class="badge text-bg-secondary">${perfil.seguidores().size()}</span>
+                Seguidores <span class="badge text-bg-secondary" data-contador-seguidores>${perfil.seguidores().size()}</span>
             </button>
         </li>
     </c:if>
@@ -130,12 +138,12 @@
         <div class="tab-pane" id="tab-seguidores" role="tabpanel">
             <div class="row g-4">
                 <section class="col-md-6">
-                    <h2 class="h6 text-uppercase text-body-secondary">Seguidores (${perfil.seguidores().size()})</h2>
-                    <c:if test="${empty perfil.seguidores()}"><p class="text-body-secondary small">Nadie lo sigue todavía.</p></c:if>
-                    <div class="list-group">
+                    <h2 class="h6 text-uppercase text-body-secondary">Seguidores (<span data-contador-seguidores>${perfil.seguidores().size()}</span>)</h2>
+                    <p id="sin-seguidores" class="text-body-secondary small ${empty perfil.seguidores() ? '' : 'd-none'}">Nadie lo sigue todavía.</p>
+                    <div class="list-group" id="lista-seguidores">
                         <c:forEach var="s" items="${perfil.seguidores()}">
                             <c:url var="uS" value="/usuarios"><c:param name="nick" value="${s}"/></c:url>
-                            <a class="list-group-item list-group-item-action" href="${uS}"><c:out value="${s}"/></a>
+                            <a class="list-group-item list-group-item-action" href="${uS}" data-nick="<c:out value='${s}'/>"><c:out value="${s}"/></a>
                         </c:forEach>
                     </div>
                 </section>
@@ -154,4 +162,5 @@
     </c:if>
 </div>
 
+<script src="${raiz}/js/seguimiento.js"></script>
 <%@ include file="/WEB-INF/views/comun/fin-pagina.jspf" %>
