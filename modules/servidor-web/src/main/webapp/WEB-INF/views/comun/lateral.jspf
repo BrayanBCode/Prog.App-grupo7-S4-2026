@@ -18,6 +18,12 @@
             </a>
         </c:if>
 
+        <%-- Docente (como el grupo INSCRIPCIONES de la Figura 3 para el estudiante) --%>
+        <c:if test="${puede.ALTA_CURSO}">
+            <div class="list-group-item lateral-titulo">Docencia</div>
+            <a class="list-group-item list-group-item-action" href="${raiz}/curso/alta">Crear curso</a>
+        </c:if>
+
         <c:if test="${puede.CONSULTA_USUARIO}">
             <div class="list-group-item lateral-titulo">Usuarios</div>
             <a class="list-group-item list-group-item-action" href="${raiz}/usuarios">Ver usuarios</a>

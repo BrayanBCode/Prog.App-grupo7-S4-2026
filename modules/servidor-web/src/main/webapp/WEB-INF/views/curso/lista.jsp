@@ -10,7 +10,13 @@
         <p class="text-body-secondary mb-0">Elegí un instituto en el menú de la izquierda para ver sus cursos.</p>
     </c:when>
     <c:otherwise>
-        <h1 class="h3 mb-1">Cursos de <c:out value="${instituto}"/></h1>
+        <div class="d-flex justify-content-between align-items-start gap-3">
+            <h1 class="h3 mb-1">Cursos de <c:out value="${instituto}"/></h1>
+            <c:if test="${puede.ALTA_CURSO}">
+                <c:url var="uAlta" value="/curso/alta"><c:param name="instituto" value="${instituto}"/></c:url>
+                <a class="btn btn-outline-primary btn-sm text-nowrap" href="${uAlta}">+ Crear curso</a>
+            </c:if>
+        </div>
         <p class="text-body-secondary mb-4">Elegí un curso para ver sus datos, ediciones y programas.</p>
 
         <c:if test="${empty cursos}">

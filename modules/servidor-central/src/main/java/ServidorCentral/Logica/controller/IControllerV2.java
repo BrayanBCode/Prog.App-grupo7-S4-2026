@@ -103,6 +103,12 @@ public interface IControllerV2 {
     DTCursoDetalle consultarCurso(String nombreCurso);
     /** Consulta de Edicion (Figura 4): edicion + instituto + docentes + si es la vigente. ReglaNegocioException si no existe. */
     DTEdicionDetalle consultarEdicion(String nombreEdicion);
+    /**
+     * Alta de Curso (web): el docente del curso es el que da el alta; previas e imagen opcionales.
+     * Tira ReglaNegocioException con el mensaje para el usuario.
+     */
+    void altaCurso(String nickDocente, String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos,
+                   String url, String nombreInstituto, List<String> previas, DTImagen imagen);
     /** Consulta de Usuario por nickname (el sitio web navega por nickname). null si no existe. */
     DTUsuario obtenerUsuario(String nickname);
     /** Inscripciones a ediciones del estudiante, con su estado (Inscripto / Aceptada / Rechazada). */

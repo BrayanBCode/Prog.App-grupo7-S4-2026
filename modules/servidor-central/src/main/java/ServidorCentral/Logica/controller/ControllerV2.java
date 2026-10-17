@@ -91,6 +91,12 @@ public class ControllerV2 implements IControllerV2 {
         return edicionCursoService.consultarEdicion(nombreEdicion);
     }
 
+    @Override
+    public void altaCurso(String nickDocente, String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos,
+                          String url, String nombreInstituto, List<String> previas, DTImagen imagen) {
+        cursoService.altaCurso(nickDocente, nombre, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, previas, imagen);
+    }
+
     // ---------------------------------------------------------------
     // USUARIOS
     // ---------------------------------------------------------------

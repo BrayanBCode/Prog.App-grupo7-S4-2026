@@ -39,7 +39,8 @@ public class AccesoFilter implements Filter {
     private static final Map<String, CasoDeUso> RUTAS_PROTEGIDAS = Map.ofEntries(
             entry("/login", CasoDeUso.INICIO_SESION),
             entry("/logout", CasoDeUso.CIERRE_SESION),
-            entry("/registro", CasoDeUso.ALTA_USUARIO)
+            entry("/registro", CasoDeUso.ALTA_USUARIO),
+            entry("/curso/alta", CasoDeUso.ALTA_CURSO)
     );
 
     /** Permisos ya calculados por rol (la matriz no cambia en ejecucion). */

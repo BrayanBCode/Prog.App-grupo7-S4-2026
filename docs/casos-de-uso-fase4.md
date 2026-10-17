@@ -74,7 +74,7 @@ List<DTDocenteResumen> docentes, boolean vigente)` en una llamada.
 
 ---
 
-## 4.3 Alta de Curso — Docente — sin figura
+## 4.3 Alta de Curso — Docente — sin figura — ✅ hecho (17/10)
 
 **Letra:** el docente indica instituto y datos básicos: **nombre (único)**, descripción, duración, cantidad de
 horas, créditos, URL; **previas** (ninguna, uno o más cursos); (categorías: no aplica). El sistema da de alta

@@ -5,6 +5,7 @@ import ServidorCentral.Logica.datatypes.DTCursoDetalle;
 import ServidorCentral.Logica.datatypes.DTCursoResumen;
 import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 import ServidorCentral.Logica.datatypes.DTEdicionCurso;
+import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.cursos.Instituto;
@@ -46,6 +47,45 @@ public class CursoService {
         this.docenteRepository = docenteRepository;
         this.edicionCursoRepository = edicionCursoRepository;
         this.programaRepository = programaRepository;
+    }
+
+    /**
+     * Alta de Curso (web). El docente del curso es el que da el alta (D4); el curso queda con la fecha de hoy.
+     * La imagen se guarda recien cuando pasaron todas las validaciones.
+     *
+     * @throws ReglaNegocioException con el mensaje para el usuario si algo no es valido
+     */
+    public void altaCurso(String nickDocente, String nombre, String descripcion, int duracion, float cantHoras,
+                          int cantCreditos, String url, String nombreInstituto, List<String> previas, DTImagen imagen) {
+        String nombreLimpio = nombre == null ? "" : nombre.trim();
+        if (nombreLimpio.isEmpty()) {
+            throw new ReglaNegocioException("Indicá el nombre del curso.");
+        }
+        if (descripcion == null || descripcion.isBlank()) {
+            throw new ReglaNegocioException("Indicá la descripción del curso.");
+        }
+        if (duracion <= 0 || cantHoras <= 0 || cantCreditos <= 0) {
+            throw new ReglaNegocioException("La duración, la cantidad de horas y los créditos deben ser mayores que cero.");
+        }
+        if (cursoRepository.buscarPorNombre(nombreLimpio) != null) {
+            throw new ReglaNegocioException("Ya existe un curso registrado con el nombre: " + nombreLimpio);
+        }
+        if (nombreInstituto == null || institutoRepository.buscarPorNombre(nombreInstituto) == null) {
+            throw new ReglaNegocioException("El instituto seleccionado no existe.");
+        }
+        if (nickDocente == null || docenteRepository.buscarPorNickname(nickDocente) == null) {
+            throw new ReglaNegocioException("Solo un docente puede dar de alta un curso.");
+        }
+        List<String> previasSinRepetir = previas == null ? List.of() : previas.stream().distinct().toList();
+        for (String previa : previasSinRepetir) {
+            if (cursoRepository.buscarPorNombre(previa) == null) {
+                throw new ReglaNegocioException("La previa seleccionada no existe: " + previa);
+            }
+        }
+
+        String rutaImagen = AlmacenImagenes.guardar(imagen, AlmacenImagenes.CURSOS, nombreLimpio);
+        cursoRepository.guardar(nombreLimpio, descripcion.trim(), duracion, cantHoras, cantCreditos,
+                url == null || url.isBlank() ? null : url.trim(), nombreInstituto, nickDocente, previasSinRepetir, rutaImagen);
     }
 
     /**
