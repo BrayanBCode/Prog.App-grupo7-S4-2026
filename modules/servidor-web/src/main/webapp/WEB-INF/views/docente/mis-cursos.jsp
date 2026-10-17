@@ -53,7 +53,8 @@
                             <c:url var="uSel" value="/edicion/seleccionar"><c:param name="edicion" value="${ed.nombre()}"/></c:url>
                             <a class="btn btn-outline-primary btn-sm" href="${uSel}">Seleccionar estudiantes</a>
                         </c:if>
-                        <%-- TODO 4.8: "Ver aceptados" --%>
+                        <c:url var="uAcep" value="/edicion/aceptados"><c:param name="edicion" value="${ed.nombre()}"/></c:url>
+                        <a class="btn btn-outline-secondary btn-sm" href="${uAcep}">Ver aceptados</a>
                     </td>
                 </tr>
             </c:forEach>

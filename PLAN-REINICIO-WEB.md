@@ -52,7 +52,7 @@ Estado: ✅ hecho · 🟡 parcial · ⬜ pendiente
 | 9 | Inscripción a Edición de Curso (con Ajax) | ✅ |
 | 10 | **Seguir Usuario (con Ajax)** | ✅ |
 | 11 | **Seleccionar Estudiantes para una Edición** | ✅ |
-| 12 | **Listar Aceptados a una Edición** | ⬜ (4.8) |
+| 12 | **Listar Aceptados a una Edición** | ✅ |
 | — | Diseño del sitio | ✅ |
 | — | Imágenes | ✅ |
 
@@ -222,7 +222,7 @@ Estado: ✅ hecho · ⬜ pendiente
 | 4.5 | ✅ | Inscripción a Edición **(con Ajax)** | Estudiante | — | 4.2 |
 | 4.6 | ✅ | Seguir Usuario **(con Ajax)** | Est./Doc. | — | Fase 3 |
 | 4.7 | ✅ | Seleccionar Estudiantes | Docente | Figura 5 | 4.5 |
-| 4.8 | ⬜ | Listar Aceptados | Docente | — | 4.7 |
+| 4.8 | ✅ | Listar Aceptados | Docente | — | 4.7 |
 | 4.9 | ⬜ | *(opcional)* Listar resultados de inscripciones | Estudiante | — | 4.7 |
 | 4.10 | ✅ | *(opcional)* Dejar de Seguir **(con Ajax)** | Est./Doc. | — | 4.6 |
 | 4.11 | ⬜ | *(opcional)* Modificar Datos de Usuario | Est./Doc. | — | Fase 2 |
@@ -240,7 +240,7 @@ Ciclo de cada caso de uso:
 Pedido del usuario: llegar a los cursos y ediciones propios sin pasar por el perfil. No es un caso de uso de la letra,
 es navegación. Lateral **Docencia → Mis cursos y ediciones** (`/docente/cursos`, solo docentes): los cursos que dicta
 (con "+ Crear edición") y las ediciones en las que participa, de la más reciente a la más vieja, con "Vigente" y
-"Seleccionar estudiantes" en la vigente (y "Ver aceptados" cuando se haga 4.8). Central: `misCursosDocente` en una
+"Seleccionar estudiantes" en la vigente y "Ver aceptados" en todas. Central: `misCursosDocente` en una
 llamada, con tests.
 
 ### Ajax (pedido del docente, por rendimiento)

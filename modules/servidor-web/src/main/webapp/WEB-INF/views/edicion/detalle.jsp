@@ -35,14 +35,22 @@
         <c:url var="uCurso" value="/cursos"><c:param name="nombre" value="${ed.nombreCurso()}"/></c:url>
         <a href="${uCurso}">Ver información del Curso</a>
 
-        <%-- Docente que participa en la edicion: Seleccionar estudiantes (4.7, solo la vigente) --%>
+        <%-- Docente que participa en la edicion: Seleccionar estudiantes (4.7, solo la vigente) y Ver aceptados (4.8) --%>
         <c:set var="participo" value="${false}"/>
         <c:forEach var="d" items="${detalleEdicion.docentes()}">
             <c:if test="${d.nickname() == usuarioActual.nickname}"><c:set var="participo" value="${true}"/></c:if>
         </c:forEach>
-        <c:if test="${participo and puede.SELECCIONAR_ESTUDIANTES_EDICION and detalleEdicion.vigente()}">
-            <c:url var="uSel" value="/edicion/seleccionar"><c:param name="edicion" value="${ed.nombre()}"/></c:url>
-            <div class="mt-2"><a class="btn btn-outline-primary btn-sm" href="${uSel}">Seleccionar estudiantes</a></div>
+        <c:if test="${participo}">
+            <div class="mt-2 d-flex gap-2">
+                <c:if test="${puede.SELECCIONAR_ESTUDIANTES_EDICION and detalleEdicion.vigente()}">
+                    <c:url var="uSel" value="/edicion/seleccionar"><c:param name="edicion" value="${ed.nombre()}"/></c:url>
+                    <a class="btn btn-outline-primary btn-sm" href="${uSel}">Seleccionar estudiantes</a>
+                </c:if>
+                <c:if test="${puede.LISTAR_ACEPTADOS_EDICION}">
+                    <c:url var="uAcep" value="/edicion/aceptados"><c:param name="edicion" value="${ed.nombre()}"/></c:url>
+                    <a class="btn btn-outline-secondary btn-sm" href="${uAcep}">Ver aceptados</a>
+                </c:if>
+            </div>
         </c:if>
     </div>
 </div>

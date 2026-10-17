@@ -230,7 +230,7 @@ igual que la inscripción).
 
 ---
 
-## 4.8 Listar Aceptados a una Edición — Docente — sin figura
+## 4.8 Listar Aceptados a una Edición — Docente — sin figura — ✅ hecho (17/10)
 
 **Letra:** instituto → cursos → elige uno → datos básicos de **las ediciones** del curso → elige una → lista de
 inscripciones en estado **Aceptada**. (A diferencia de 4.7, no se limita a la vigente.)

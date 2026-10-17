@@ -74,10 +74,9 @@
                 <c:when test="${esDocente}">
                     <c:if test="${empty perfil.ediciones()}"><p class="text-body-secondary">No participa en ninguna edición.</p></c:if>
                     <c:if test="${not empty perfil.ediciones()}">
-                        <%-- TODO 4.8: "Ver aceptados" si perfil.verAceptados() --%>
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
-                                <thead class="table-light"><tr><th>Edición</th><th>Curso</th><th>Inicio</th><th>Fin</th></tr></thead>
+                                <thead class="table-light"><tr><th>Edición</th><th>Curso</th><th>Inicio</th><th>Fin</th><c:if test="${perfil.verAceptados()}"><th></th></c:if></tr></thead>
                                 <tbody>
                                 <c:forEach var="ed" items="${perfil.ediciones()}">
                                     <c:url var="uCur" value="/cursos"><c:param name="nombre" value="${ed.nombreCurso()}"/></c:url>
@@ -87,6 +86,11 @@
                                         <td><a href="${uCur}"><c:out value="${ed.nombreCurso()}"/></a></td>
                                         <td><e:fecha valor="${ed.fechaInicio()}"/></td>
                                         <td><e:fecha valor="${ed.fechaFin()}"/></td>
+                                        <%-- Listar aceptados (4.8): el docente en su propio perfil --%>
+                                        <c:if test="${perfil.verAceptados()}">
+                                            <c:url var="uAcep" value="/edicion/aceptados"><c:param name="edicion" value="${ed.nombre()}"/></c:url>
+                                            <td class="text-end"><a class="btn btn-outline-secondary btn-sm" href="${uAcep}">Ver aceptados</a></td>
+                                        </c:if>
                                     </tr>
                                 </c:forEach>
                                 </tbody>

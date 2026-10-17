@@ -7,27 +7,7 @@
      Figura 4 y la tabla de inscripciones. Cada inscripcion en Inscripto tiene un selector
      Pendiente / Aceptar / Rechazar; las ya resueltas muestran su estado. Solo en la edicion vigente (D2). --%>
 <c:set var="det" value="${seleccion.edicion()}"/>
-<c:set var="ed" value="${det.edicion()}"/>
-<c:url var="uCurso" value="/cursos"><c:param name="nombre" value="${ed.nombreCurso()}"/></c:url>
-<c:url var="uEdicion" value="/ediciones"><c:param name="nombre" value="${ed.nombre()}"/></c:url>
-
-<div class="d-flex flex-column flex-sm-row gap-3 mb-3">
-    <e:imagen ruta="${ed.imagen()}" alt="${ed.nombre()}" clase="img-curso rounded"/>
-    <div>
-        <h1 class="h3 mb-1"><a class="text-body text-decoration-none" href="${uEdicion}"><c:out value="${ed.nombre()}"/></a></h1>
-        <p class="text-body-secondary mb-2"><c:out value="${det.instituto()}"/>
-            <c:if test="${det.vigente()}"><span class="badge text-bg-success ms-1">Vigente</span></c:if>
-        </p>
-        <a href="${uCurso}">Ver información del Curso</a>
-    </div>
-</div>
-
-<dl class="row mb-3" style="max-width: 480px;">
-    <dt class="col-sm-6">Fecha inicio</dt><dd class="col-sm-6"><e:fecha valor="${ed.fechaInicio()}"/></dd>
-    <dt class="col-sm-6">Fecha fin</dt><dd class="col-sm-6"><e:fecha valor="${ed.fechaFin()}"/></dd>
-    <dt class="col-sm-6">Cupo</dt><dd class="col-sm-6">${ed.cupo() <= 0 ? 'Sin límite' : ed.cupo()}</dd>
-    <dt class="col-sm-6">Fecha publicación</dt><dd class="col-sm-6"><e:fecha valor="${ed.fechaPublicacion()}"/></dd>
-</dl>
+<%@ include file="/WEB-INF/views/edicion/encabezado.jspf" %>
 
 <h2 class="h6 fw-bold">Inscripciones</h2>
 <c:if test="${not det.vigente()}">
