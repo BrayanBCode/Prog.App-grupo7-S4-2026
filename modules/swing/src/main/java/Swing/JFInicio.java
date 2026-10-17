@@ -44,12 +44,19 @@ public class JFInicio extends javax.swing.JFrame {
         IControllerV2 c = f.getControllerV2();
         this.control = c;
 
-        // Alta de Categoria no corresponde al grupo (requerimiento en gris).
-        // TODO: borrar el item MIRegistroCategoria desde el diseñador de NetBeans.
-        MIRegistroCategoria.setVisible(false);
+        // Alta de Categoria no corresponde al grupo (requerimiento en gris):
+        // MIRegistroCategoria queda oculto desde el diseñador (visible = false).
 
-
-        
+        // Abre maximizada; la pantalla abierta acompaña el tamaño de la ventana.
+        setExtendedState(MAXIMIZED_BOTH);
+        jDesktopPane1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                if (selectedFrame != null) {
+                    selectedFrame.setBounds(0, 0, jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
+                }
+            }
+        });
     }
 
     /**
@@ -67,37 +74,39 @@ public class JFInicio extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         MIRegistoCli = new javax.swing.JMenuItem();
-        MIRegistroEdi = new javax.swing.JMenuItem();
-        MIRegistroCur = new javax.swing.JMenuItem();
-        MIinscribcionEdi = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        MIConUsuario = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
         MIRegistroInsti = new javax.swing.JMenuItem();
         MIRegistroCategoria = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        MIConUsuario = new javax.swing.JMenuItem();
-        MIConEdi = new javax.swing.JMenuItem();
-        MIConCurso = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        MIRegistroCur = new javax.swing.JMenuItem();
+        MIConCurso = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        MIRegistroEdi = new javax.swing.JMenuItem();
+        MIConEdi = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        MIinscribcionEdi = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1366, 768));
-        setMinimumSize(new java.awt.Dimension(1366, 768));
-        setPreferredSize(new java.awt.Dimension(1366, 768));
-        setResizable(false);
+        setTitle("edExt - Administración");
+        setMinimumSize(new java.awt.Dimension(800, 600));
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 1024, Short.MAX_VALUE)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
+            .addGap(0, 640, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -112,6 +121,7 @@ public class JFInicio extends javax.swing.JFrame {
         );
 
         jMenu1.setText("Inicio");
+        jMenu1.setToolTipText("Cerrar la pantalla actual");
         jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu1MouseClicked(evt);
@@ -119,73 +129,89 @@ public class JFInicio extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Registros");
+        jMenu2.setMnemonic('U');
+        jMenu2.setText("Usuarios");
 
-        MIRegistoCli.setText("Registro Usuario");
+        MIRegistoCli.setText("Registrar usuario");
         MIRegistoCli.addActionListener(this::MIRegistoCliActionPerformed);
         jMenu2.add(MIRegistoCli);
 
-        MIRegistroEdi.setText("Registro EdicionCurso");
-        MIRegistroEdi.addActionListener(this::MIRegistroEdiActionPerformed);
-        jMenu2.add(MIRegistroEdi);
+        MIConUsuario.setText("Consultar usuario");
+        MIConUsuario.addActionListener(this::MIConUsuarioActionPerformed);
+        jMenu2.add(MIConUsuario);
 
-        MIRegistroCur.setText("Registro de Curso");
-        MIRegistroCur.addActionListener(this::MIRegistroCurActionPerformed);
-        jMenu2.add(MIRegistroCur);
-
-        MIinscribcionEdi.setText("Inscribir a EdicionCurso");
-        MIinscribcionEdi.addActionListener(this::MIinscribcionEdiActionPerformed);
-        jMenu2.add(MIinscribcionEdi);
-
-        jMenuItem1.setText("Registro Programa");
-        jMenuItem1.addActionListener(this::jMenuItem1ActionPerformed);
-        jMenu2.add(jMenuItem1);
-
-        jMenuItem5.setText("Agregar curso a Programa");
-        jMenuItem5.addActionListener(this::jMenuItem5ActionPerformed);
-        jMenu2.add(jMenuItem5);
-
-        MIRegistroInsti.setText("Registro Instituto");
-        MIRegistroInsti.addActionListener(this::MIRegistroInstiActionPerformed);
-        jMenu2.add(MIRegistroInsti);
-
-        MIRegistroCategoria.setText("Registro Categoría");
-        MIRegistroCategoria.addActionListener(this::MIRegistroCategoriaActionPerformed);
-        jMenu2.add(MIRegistroCategoria);
+        jMenuItem3.setText("Modificar usuario");
+        jMenuItem3.addActionListener(this::jMenuItem3ActionPerformed);
+        jMenu2.add(jMenuItem3);
 
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Consulta");
+        jMenu3.setMnemonic('N');
+        jMenu3.setText("Institutos");
 
-        MIConUsuario.setText("Consulta Usuario");
-        MIConUsuario.addActionListener(this::MIConUsuarioActionPerformed);
-        jMenu3.add(MIConUsuario);
+        MIRegistroInsti.setText("Registrar instituto");
+        MIRegistroInsti.addActionListener(this::MIRegistroInstiActionPerformed);
+        jMenu3.add(MIRegistroInsti);
 
-        MIConEdi.setText("Consulta Edicion Curso");
-        MIConEdi.addActionListener(this::MIConEdiActionPerformed);
-        jMenu3.add(MIConEdi);
-
-        MIConCurso.setText("Consulta Curso");
-        MIConCurso.addActionListener(this::MIConCursoActionPerformed);
-        jMenu3.add(MIConCurso);
-
-        jMenuItem2.setText("Consulta Programa");
-        jMenuItem2.addActionListener(this::jMenuItem2ActionPerformed);
-        jMenu3.add(jMenuItem2);
+        MIRegistroCategoria.setText("Registro Categoría");
+        MIRegistroCategoria.setVisible(false);
+        MIRegistroCategoria.addActionListener(this::MIRegistroCategoriaActionPerformed);
+        jMenu3.add(MIRegistroCategoria);
 
         jMenuBar1.add(jMenu3);
 
-        jMenu4.setText("Modificaciones");
+        jMenu4.setMnemonic('C');
+        jMenu4.setText("Cursos");
 
-        jMenuItem3.setText("Modificar Usuario");
-        jMenuItem3.addActionListener(this::jMenuItem3ActionPerformed);
-        jMenu4.add(jMenuItem3);
+        MIRegistroCur.setText("Registrar curso");
+        MIRegistroCur.addActionListener(this::MIRegistroCurActionPerformed);
+        jMenu4.add(MIRegistroCur);
 
-        jMenuItem4.setText("Modificar Programa");
-        jMenuItem4.addActionListener(this::jMenuItem4ActionPerformed);
-        jMenu4.add(jMenuItem4);
+        MIConCurso.setText("Consultar curso");
+        MIConCurso.addActionListener(this::MIConCursoActionPerformed);
+        jMenu4.add(MIConCurso);
 
         jMenuBar1.add(jMenu4);
+
+        jMenu5.setMnemonic('E');
+        jMenu5.setText("Ediciones");
+
+        MIRegistroEdi.setText("Registrar edición");
+        MIRegistroEdi.addActionListener(this::MIRegistroEdiActionPerformed);
+        jMenu5.add(MIRegistroEdi);
+
+        MIConEdi.setText("Consultar edición");
+        MIConEdi.addActionListener(this::MIConEdiActionPerformed);
+        jMenu5.add(MIConEdi);
+        jMenu5.add(jSeparator1);
+
+        MIinscribcionEdi.setText("Inscribir estudiante a edición");
+        MIinscribcionEdi.addActionListener(this::MIinscribcionEdiActionPerformed);
+        jMenu5.add(MIinscribcionEdi);
+
+        jMenuBar1.add(jMenu5);
+
+        jMenu6.setMnemonic('P');
+        jMenu6.setText("Programas");
+
+        jMenuItem1.setText("Registrar programa");
+        jMenuItem1.addActionListener(this::jMenuItem1ActionPerformed);
+        jMenu6.add(jMenuItem1);
+
+        jMenuItem2.setText("Consultar programa");
+        jMenuItem2.addActionListener(this::jMenuItem2ActionPerformed);
+        jMenu6.add(jMenuItem2);
+
+        jMenuItem4.setText("Modificar programa");
+        jMenuItem4.addActionListener(this::jMenuItem4ActionPerformed);
+        jMenu6.add(jMenuItem4);
+        jMenu6.add(jSeparator2);
+
+        jMenuItem5.setText("Agregar curso a programa");
+        jMenuItem5.addActionListener(this::jMenuItem5ActionPerformed);
+        jMenu6.add(jMenuItem5);
+
+        jMenuBar1.add(jMenu6);
 
         setJMenuBar(jMenuBar1);
 
@@ -197,7 +223,7 @@ public class JFInicio extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -285,7 +311,8 @@ public class JFInicio extends javax.swing.JFrame {
             selectedFrame = I;
         }
                 
-        this.adjustInternalFrame(I);      
+        Pantalla.acomodar(I);
+        this.adjustInternalFrame(I);
         jDesktopPane1.add(I);
         I.setVisible(true);
         
@@ -311,6 +338,8 @@ public class JFInicio extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
@@ -318,5 +347,7 @@ public class JFInicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     // End of variables declaration//GEN-END:variables
 }
