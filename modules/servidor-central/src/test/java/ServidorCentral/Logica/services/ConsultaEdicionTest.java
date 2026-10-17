@@ -51,7 +51,7 @@ class ConsultaEdicionTest {
 
     @Test
     void edicionConTodosSusDatosYDocentes() {
-        DTEdicionDetalle d = servicio().consultarEdicion("Robotica 2026", LocalDate.of(2026, 5, 1));
+        DTEdicionDetalle d = servicio().consultarEdicion("Robotica 2026", null, LocalDate.of(2026, 5, 1));
 
         assertEquals("Robotica 2026", d.edicion().nombre());
         assertEquals("Robotica", d.edicion().nombreCurso());
@@ -69,31 +69,31 @@ class ConsultaEdicionTest {
     void vigenteEntreInicioYFin_incluidosLosBordes() {
         EdicionCursoService s = servicio();
 
-        assertTrue(s.consultarEdicion("Robotica 2026", LocalDate.of(2026, 5, 1)).vigente());
-        assertTrue(s.consultarEdicion("Robotica 2026", INICIO).vigente(), "el primer dia ya es vigente");
-        assertTrue(s.consultarEdicion("Robotica 2026", FIN).vigente(), "el ultimo dia todavia es vigente");
+        assertTrue(s.consultarEdicion("Robotica 2026", null, LocalDate.of(2026, 5, 1)).vigente());
+        assertTrue(s.consultarEdicion("Robotica 2026", null, INICIO).vigente(), "el primer dia ya es vigente");
+        assertTrue(s.consultarEdicion("Robotica 2026", null, FIN).vigente(), "el ultimo dia todavia es vigente");
     }
 
     @Test
     void noVigenteAntesDeEmpezarNiDespuesDeTerminar() {
         EdicionCursoService s = servicio();
 
-        assertFalse(s.consultarEdicion("Robotica 2026", INICIO.minusDays(1)).vigente());
-        assertFalse(s.consultarEdicion("Robotica 2026", FIN.plusDays(1)).vigente());
+        assertFalse(s.consultarEdicion("Robotica 2026", null, INICIO.minusDays(1)).vigente());
+        assertFalse(s.consultarEdicion("Robotica 2026", null, FIN.plusDays(1)).vigente());
     }
 
     @Test
     void edicionInexistente_falla() {
         ReglaNegocioException e = assertThrows(ReglaNegocioException.class,
-                () -> servicio().consultarEdicion("Cocina 2026"));
+                () -> servicio().consultarEdicion("Cocina 2026", null));
         assertEquals("No existe la edición \"Cocina 2026\".", e.getMessage());
-        assertThrows(ReglaNegocioException.class, () -> servicio().consultarEdicion(null));
+        assertThrows(ReglaNegocioException.class, () -> servicio().consultarEdicion(null, null));
     }
 
     @Test
     void sinFechaDeHoy_usaLaFechaActual() {
         // la version sin fecha calcula "vigente" con la fecha de hoy
-        DTEdicionDetalle d = servicio().consultarEdicion("Robotica 2026");
+        DTEdicionDetalle d = servicio().consultarEdicion("Robotica 2026", null);
         assertEquals(!LocalDate.now().isBefore(INICIO) && !LocalDate.now().isAfter(FIN), d.vigente());
     }
 }

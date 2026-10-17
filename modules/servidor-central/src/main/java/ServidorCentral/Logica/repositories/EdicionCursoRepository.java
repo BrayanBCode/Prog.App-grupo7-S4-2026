@@ -187,6 +187,22 @@ public class EdicionCursoRepository {
         }
     }
 
+    /** Estado de la inscripcion del estudiante a la edicion, o null si no esta inscripto. */
+    public EstadoInscripcion estadoInscripcion(String nickname, String nombreEdicion) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            List<EstadoInscripcion> estados = em.createQuery(
+                            "SELECT i.estado FROM InscripcionEdicion i WHERE i.estudiante.nickname = :nick "
+                                    + "AND i.edicionCurso.nombre = :edicion", EstadoInscripcion.class)
+                    .setParameter("nick", nickname)
+                    .setParameter("edicion", nombreEdicion)
+                    .getResultList();
+            return estados.isEmpty() ? null : estados.get(0);
+        } finally {
+            em.close();
+        }
+    }
+
     public boolean existeInscripcion(String nickname, String nombreEdicion) {
         EntityManager em = conexion.getEntityManager();
         try {

@@ -21,6 +21,20 @@ public class EstudianteRepository {
      * La clave de Estudiante es compuesta (nickname + Mail), por eso se
      * busca con una consulta y no con em.find().
      */
+    /** El nickname es unico entre todos los usuarios: alcanza para encontrar al estudiante. null si no hay. */
+    public Estudiante buscarPorNickname(String nickname) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            List<Estudiante> lista = em.createQuery(
+                            "SELECT e FROM Estudiante e WHERE e.nickname = :nick", Estudiante.class)
+                    .setParameter("nick", nickname)
+                    .getResultList();
+            return lista.isEmpty() ? null : lista.get(0);
+        } finally {
+            em.close();
+        }
+    }
+
     public Estudiante buscarPorNicknameYMail(String nickname, String mail) {
         EntityManager em = conexion.getEntityManager();
         try {

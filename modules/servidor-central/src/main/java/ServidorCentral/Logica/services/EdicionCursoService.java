@@ -105,26 +105,68 @@ public class EdicionCursoService {
     }
 
     /**
-     * Consulta de Edicion de Curso (web, Figura 4): datos de la edicion, instituto, docentes y si es la vigente.
+     * Consulta de Edicion de Curso (web, Figura 4): datos de la edicion, instituto, docentes, si es la vigente
+     * y el estado de la inscripcion de quien mira (null si no es estudiante o no esta inscripto).
      *
+     * @param nickQueMira usuario con sesion, o null si es un Visitante
      * @throws ReglaNegocioException si la edicion no existe
      */
-    public DTEdicionDetalle consultarEdicion(String nombreEdicion) {
-        return consultarEdicion(nombreEdicion, LocalDate.now());
+    public DTEdicionDetalle consultarEdicion(String nombreEdicion, String nickQueMira) {
+        return consultarEdicion(nombreEdicion, nickQueMira, LocalDate.now());
     }
 
     /** Igual que el anterior, con la fecha de "hoy" como parametro (para los tests). */
-    DTEdicionDetalle consultarEdicion(String nombreEdicion, LocalDate hoy) {
+    DTEdicionDetalle consultarEdicion(String nombreEdicion, String nickQueMira, LocalDate hoy) {
+        EdicionCurso ed = buscarEdicion(nombreEdicion);
+        DTEdicionCurso datos = new DTEdicionCurso(ed.getNombre(), ed.getCurso().getNombreC(), ed.getFechaInicio(),
+                ed.getFechaFin(), ed.getCupo(), ed.getFechaPublicacion(), ed.getImagen());
+        String instituto = ed.getCurso().getInstituto() == null ? null : ed.getCurso().getInstituto().getNombre();
+        EstadoInscripcion miInscripcion = nickQueMira == null ? null
+                : edicionCursoRepository.estadoInscripcion(nickQueMira, ed.getNombre());
+        return new DTEdicionDetalle(datos, instituto, listarDocentes(ed.getNombre()), esVigente(ed, hoy), miInscripcion);
+    }
+
+    /**
+     * Inscripcion a Edicion de Curso (web): el estudiante se inscribe a la edicion vigente de un curso, con la
+     * fecha de hoy y en estado Inscripto.
+     *
+     * @throws ReglaNegocioException con el mensaje para el usuario si no se puede inscribir
+     */
+    public void inscribirse(String nickEstudiante, String nombreEdicion) {
+        inscribirse(nickEstudiante, nombreEdicion, LocalDate.now());
+    }
+
+    /** Igual que el anterior, con la fecha de "hoy" como parametro (para los tests). */
+    void inscribirse(String nickEstudiante, String nombreEdicion, LocalDate hoy) {
+        Estudiante estudiante = nickEstudiante == null ? null : estudianteRepository.buscarPorNickname(nickEstudiante);
+        if (estudiante == null) {
+            throw new ReglaNegocioException("Solo un estudiante puede inscribirse a una edición.");
+        }
+        EdicionCurso ed = buscarEdicion(nombreEdicion);
+        if (!esVigente(ed, hoy)) {
+            throw new ReglaNegocioException("Solo podés inscribirte a la edición vigente del curso.");
+        }
+        if (edicionCursoRepository.existeInscripcion(nickEstudiante, ed.getNombre())) {
+            throw new ReglaNegocioException("Ya estás inscripto en esta edición del curso.");
+        }
+        if (ed.getCupo() > 0 && edicionCursoRepository.contarInscriptos(ed.getNombre()) >= ed.getCupo()) {
+            throw new ReglaNegocioException("No hay cupos disponibles para esta edición.");
+        }
+        edicionCursoRepository.inscribir(nickEstudiante, estudiante.getMail(), ed.getNombre(), hoy);
+    }
+
+    private EdicionCurso buscarEdicion(String nombreEdicion) {
         EdicionCurso ed = nombreEdicion == null ? null : edicionCursoRepository.obtenerPorNombres(nombreEdicion);
         if (ed == null) {
             throw new ReglaNegocioException("No existe la edición \"" + (nombreEdicion == null ? "" : nombreEdicion) + "\".");
         }
-        DTEdicionCurso datos = new DTEdicionCurso(ed.getNombre(), ed.getCurso().getNombreC(), ed.getFechaInicio(),
-                ed.getFechaFin(), ed.getCupo(), ed.getFechaPublicacion(), ed.getImagen());
-        String instituto = ed.getCurso().getInstituto() == null ? null : ed.getCurso().getInstituto().getNombre();
-        boolean vigente = ed.getFechaInicio() != null && ed.getFechaFin() != null
+        return ed;
+    }
+
+    /** Vigente: hoy esta entre la fecha de inicio y la de fin (incluidas). Por D1 hay como mucho una por curso. */
+    private static boolean esVigente(EdicionCurso ed, LocalDate hoy) {
+        return ed.getFechaInicio() != null && ed.getFechaFin() != null
                 && !hoy.isBefore(ed.getFechaInicio()) && !hoy.isAfter(ed.getFechaFin());
-        return new DTEdicionDetalle(datos, instituto, listarDocentes(ed.getNombre()), vigente);
     }
 
     public DTEdicionCurso obtenerPorNombre(String nombreEdicion) throws Exception {

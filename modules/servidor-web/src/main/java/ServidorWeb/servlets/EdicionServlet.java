@@ -20,7 +20,7 @@ public class EdicionServlet extends BaseServlet {
             throws ServletException, IOException {
         String nombre = param(req, "nombre");
         try {
-            req.setAttribute("detalleEdicion", controller.consultarEdicion(nombre));
+            req.setAttribute("detalleEdicion", controller.consultarEdicion(nombre, usuario(req) == null ? null : usuario(req).getNickname()));
             req.setAttribute("titulo", nombre);
             vista(req, resp, "edicion/detalle.jsp");
         } catch (RuntimeException e) {

@@ -5,6 +5,7 @@ import ServidorCentral.Logica.controller.IControllerV2;
 import ServidorCentral.Logica.datatypes.DTSesion;
 import ServidorCentral.Logica.seguridad.CasoDeUso;
 import ServidorCentral.Logica.seguridad.Rol;
+import ServidorWeb.config.Json;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static java.util.Map.entry;
 
@@ -41,8 +43,15 @@ public class AccesoFilter implements Filter {
             entry("/logout", CasoDeUso.CIERRE_SESION),
             entry("/registro", CasoDeUso.ALTA_USUARIO),
             entry("/curso/alta", CasoDeUso.ALTA_CURSO),
-            entry("/edicion/alta", CasoDeUso.ALTA_EDICION_CURSO)
+            entry("/edicion/alta", CasoDeUso.ALTA_EDICION_CURSO),
+            entry("/edicion/inscripcion", CasoDeUso.INSCRIPCION_EDICION_CURSO)
     );
+
+    /**
+     * Rutas que se llaman con Ajax (fetch): si no hay permiso se contesta JSON con 401 (sin sesion) o
+     * 403 (rol sin permiso), porque un fetch no sigue la redireccion al login como el navegador.
+     */
+    private static final Set<String> RUTAS_AJAX = Set.of("/edicion/inscripcion");
 
     /** Permisos ya calculados por rol (la matriz no cambia en ejecucion). */
     private static final Map<Rol, Map<String, Boolean>> PERMISOS_POR_ROL = new EnumMap<>(Rol.class);
@@ -87,6 +96,14 @@ public class AccesoFilter implements Filter {
 
         CasoDeUso requerido = RUTAS_PROTEGIDAS.get(ruta);
         if (requerido != null && !requerido.permitidoPara(rol)) {
+            if (RUTAS_AJAX.contains(ruta)) {
+                if (rol.isAutenticado()) {
+                    Json.error(resp, HttpServletResponse.SC_FORBIDDEN, "Tu rol no puede realizar esta acción.");
+                } else {
+                    Json.error(resp, HttpServletResponse.SC_UNAUTHORIZED, "Iniciá sesión para continuar.");
+                }
+                return;
+            }
             // Visitante donde hace falta sesion -> al login. Usuario logueado donde no le corresponde -> al inicio.
             String destino = rol.isAutenticado() ? "/inicio" : "/login";
             resp.sendRedirect(req.getContextPath() + destino);

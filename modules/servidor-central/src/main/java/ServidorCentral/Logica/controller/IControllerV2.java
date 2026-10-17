@@ -101,8 +101,10 @@ public interface IControllerV2 {
     List<DTCursoResumen> listarCursosInstituto(String nombreInstituto);
     /** Consulta de Curso (Figura 3): curso + ediciones + programas. ReglaNegocioException si el curso no existe. */
     DTCursoDetalle consultarCurso(String nombreCurso);
-    /** Consulta de Edicion (Figura 4): edicion + instituto + docentes + si es la vigente. ReglaNegocioException si no existe. */
-    DTEdicionDetalle consultarEdicion(String nombreEdicion);
+    /** Consulta de Edicion (Figura 4): edicion + instituto + docentes + vigente + estado de la inscripcion de quien mira (null = Visitante). ReglaNegocioException si no existe. */
+    DTEdicionDetalle consultarEdicion(String nombreEdicion, String nickQueMira);
+    /** Inscripcion a Edicion (web): el estudiante se inscribe a la edicion vigente, hoy, en estado Inscripto. ReglaNegocioException si no puede. */
+    void inscribirse(String nickEstudiante, String nombreEdicion);
     /**
      * Alta de Curso (web): el docente del curso es el que da el alta; previas e imagen opcionales.
      * Tira ReglaNegocioException con el mensaje para el usuario.

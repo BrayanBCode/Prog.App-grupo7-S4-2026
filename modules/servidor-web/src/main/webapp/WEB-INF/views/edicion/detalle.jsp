@@ -14,7 +14,24 @@
         <p class="text-body-secondary mb-2"><c:out value="${detalleEdicion.instituto()}"/>
             <c:if test="${detalleEdicion.vigente()}"><span class="badge text-bg-success ms-1">Vigente</span></c:if>
         </p>
-        <%-- TODO 4.5: link "Inscribirme" (Ajax) si puede.INSCRIPCION_EDICION_CURSO y la edicion es la vigente --%>
+        <%-- Inscripcion a Edicion (4.5, con Ajax): solo sobre la edicion vigente --%>
+        <c:if test="${detalleEdicion.vigente()}">
+            <div class="mb-2" id="zona-inscripcion">
+                <c:choose>
+                    <c:when test="${puede.INSCRIPCION_EDICION_CURSO and not empty detalleEdicion.miInscripcion()}">
+                        <span class="small">Tu inscripción:</span> <e:estado valor="${detalleEdicion.miInscripcion()}"/>
+                    </c:when>
+                    <c:when test="${puede.INSCRIPCION_EDICION_CURSO}">
+                        <button type="button" id="btn-inscribirme" class="btn btn-primary btn-sm"
+                                data-edicion="<c:out value='${ed.nombre()}'/>" data-url="${raiz}/edicion/inscripcion">Inscribirme</button>
+                        <div id="inscripcion-mensaje" class="small mt-1" role="status" aria-live="polite"></div>
+                    </c:when>
+                    <c:when test="${not rol.autenticado}">
+                        <a href="${raiz}/login">Inscribirme</a> <span class="small text-body-secondary">(iniciá sesión como estudiante)</span>
+                    </c:when>
+                </c:choose>
+            </div>
+        </c:if>
         <c:url var="uCurso" value="/cursos"><c:param name="nombre" value="${ed.nombreCurso()}"/></c:url>
         <a href="${uCurso}">Ver información del Curso</a>
     </div>
@@ -36,4 +53,5 @@
     </c:forEach>
 </ul>
 
+<script src="${raiz}/js/inscripcion.js"></script>
 <%@ include file="/WEB-INF/views/comun/fin-pagina.jspf" %>

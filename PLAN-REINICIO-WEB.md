@@ -173,7 +173,7 @@ Estado: ✅ hecho · ⬜ pendiente
 | 4.2 | ✅ | Consulta de Edición | Todos | Figura 4 | 4.1 |
 | 4.3 | ✅ | Alta de Curso | Docente | — | 4.1, Fase 2 |
 | 4.4 | ✅ | Alta de Edición | Docente | — | 4.3 |
-| 4.5 | ⬜ | Inscripción a Edición **(con Ajax)** | Estudiante | — | 4.2 |
+| 4.5 | ✅ | Inscripción a Edición **(con Ajax)** | Estudiante | — | 4.2 |
 | 4.6 | ⬜ | Seguir Usuario **(con Ajax)** | Est./Doc. | — | Fase 3 |
 | 4.7 | ⬜ | Seleccionar Estudiantes | Docente | Figura 5 | 4.5 |
 | 4.8 | ⬜ | Listar Aceptados | Docente | — | 4.7 |
@@ -197,7 +197,7 @@ El docente pide usar Ajax para no recargar páginas enteras. Decidido el 17/10 d
 |---|---|---|
 | 4.6 / 4.10 Seguir y dejar de seguir | El botón del perfil cambia y se actualiza el contador de seguidores | ⬜ |
 | Alta de Usuario (registro) | Al salir del campo nickname o correo, avisa si ya está en uso | ⬜ |
-| 4.5 Inscripción a edición | "Inscribirme" registra la inscripción y el botón pasa a "✓ Inscripto" | ⬜ |
+| 4.5 Inscripción a edición | "Inscribirme" registra la inscripción y el botón pasa a "✓ Inscripto" | ✅ |
 
 Patrón común a los tres: servlet que responde **JSON** (`{"ok": true, ...}` o `{"ok": false, "error": "..."}` con el
 mensaje de la `ReglaNegocioException`), JavaScript propio con `fetch` (sin librerías), botón deshabilitado mientras

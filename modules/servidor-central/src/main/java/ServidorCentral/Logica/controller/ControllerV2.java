@@ -87,8 +87,13 @@ public class ControllerV2 implements IControllerV2 {
     }
 
     @Override
-    public DTEdicionDetalle consultarEdicion(String nombreEdicion) {
-        return edicionCursoService.consultarEdicion(nombreEdicion);
+    public DTEdicionDetalle consultarEdicion(String nombreEdicion, String nickQueMira) {
+        return edicionCursoService.consultarEdicion(nombreEdicion, nickQueMira);
+    }
+
+    @Override
+    public void inscribirse(String nickEstudiante, String nombreEdicion) {
+        edicionCursoService.inscribirse(nickEstudiante, nombreEdicion);
     }
 
     @Override

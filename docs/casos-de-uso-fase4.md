@@ -141,7 +141,7 @@ no se duplica**; lista de docentes vacía en el web → queda solo el que da el 
 
 ---
 
-## 4.5 Inscripción a Edición de Curso (con Ajax) — Estudiante — sin figura
+## 4.5 Inscripción a Edición de Curso (con Ajax) — Estudiante — sin figura — ✅ hecho (17/10)
 
 **Letra:** instituto → cursos → elige uno → el sistema muestra los datos básicos de la **edición vigente** del
 curso, si existe → registra la inscripción en la **fecha actual**, en estado **Inscripto**. Si ya está
