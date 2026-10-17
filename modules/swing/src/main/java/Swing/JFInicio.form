@@ -75,7 +75,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="MIRegistroCategoria">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Registro Categoría"/>
+                <Property name="text" type="java.lang.String" value="Registro Categor&#xed;a"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MIRegistroCategoriaActionPerformed"/>

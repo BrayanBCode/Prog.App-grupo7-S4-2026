@@ -86,7 +86,7 @@ public class JIModificarUsuario extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18));
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("MODIFICAR DATOS DE USUARIO");
+        jLabel1.setText("Modificar datos de usuario");
 
         jTable1.setForeground(new java.awt.Color(0, 0, 0));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -106,7 +106,7 @@ public class JIModificarUsuario extends javax.swing.JInternalFrame {
         FNickname.setBackground(new java.awt.Color(220, 220, 220));
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Correo Electronico:");
+        jLabel3.setText("Correo electrónico:");
         Fmail.setEditable(false);
         Fmail.setBackground(new java.awt.Color(220, 220, 220));
 
@@ -119,7 +119,7 @@ public class JIModificarUsuario extends javax.swing.JInternalFrame {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Fecha de nacimiento (D/M/A):");
 
-        jButton1.setText("Guardar Cambios");
+        jButton1.setText("Guardar cambios");
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton2.setText("Cancelar");
