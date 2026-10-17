@@ -35,6 +35,7 @@ public class JIAltaInstituto extends javax.swing.JInternalFrame {
 
         setBackground(new java.awt.Color(62, 67, 76));
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1366, 768));
 
         jLblTitulo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLblTitulo.setForeground(new java.awt.Color(255, 255, 255));
@@ -53,8 +54,6 @@ public class JIAltaInstituto extends javax.swing.JInternalFrame {
         jBtnAceptar.setText("Aceptar");
         jBtnAceptar.setName("btnAceptar"); // NOI18N
         jBtnAceptar.addActionListener(this::jBtnAceptarActionPerformed);
-
-        setPreferredSize(new java.awt.Dimension(1366, 768));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
