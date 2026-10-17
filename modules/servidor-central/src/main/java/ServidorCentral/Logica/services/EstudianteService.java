@@ -6,6 +6,7 @@ import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
 import ServidorCentral.Logica.datatypes.DTProgramaInscripto;
 import ServidorCentral.Logica.entities.cursos.InscripcionEdicion;
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
+import ServidorCentral.Logica.excepciones.ReglaNegocioException;
 import ServidorCentral.Logica.repositories.EstudianteRepository;
 
 import java.time.LocalDate;
@@ -56,6 +57,19 @@ public class EstudianteService {
                     i.getEdicionCurso().getCurso().getNombreC(), i.getFechaInscripcion(), i.getEstado()));
         }
         return resultado;
+    }
+
+    /**
+     * Caso de uso "Listar resultados de inscripciones" (4.9, Estudiante): todas sus inscripciones a ediciones con
+     * su estado, de la mas nueva a la mas vieja (incluidas las Rechazadas: las ve el propio estudiante).
+     *
+     * @throws ReglaNegocioException si el nickname no es de un estudiante
+     */
+    public List<DTInscripcionEstudiante> resultadosInscripciones(String nickEstudiante) {
+        if (nickEstudiante == null || estudianteRepository.buscarPorNickname(nickEstudiante) == null) {
+            throw new ReglaNegocioException("Solo un estudiante puede ver los resultados de sus inscripciones.");
+        }
+        return listarInscripciones(nickEstudiante);
     }
 
     /** Programas de formacion en los que se inscribio el estudiante. */

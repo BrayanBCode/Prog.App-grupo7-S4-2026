@@ -139,6 +139,18 @@ public interface IControllerV2 {
     DTUsuario obtenerUsuario(String nickname);
     /** Inscripciones a ediciones del estudiante, con su estado (Inscripto / Aceptada / Rechazada). */
     List<DTInscripcionEstudiante> listarInscripcionesEstudiante(String nickname);
+    /**
+     * Listar resultados de inscripciones (4.9, Estudiante): sus inscripciones a ediciones con su estado, de la
+     * mas nueva a la mas vieja. ReglaNegocioException si no es un estudiante.
+     */
+    List<DTInscripcionEstudiante> resultadosInscripciones(String nickEstudiante);
+    /**
+     * Modificar Datos de Usuario (4.11, web): nombre, apellido y fecha de nacimiento (nickname y correo no se
+     * cambian). ReglaNegocioException con el mensaje para el usuario.
+     */
+    void modificarDatosUsuario(String nickname, String nombre, String apellido, LocalDate fechaNac);
+    /** Busqueda (7.5): cursos cuyo nombre o descripcion contienen el texto; vacio = todos. */
+    List<DTCursoResumen> buscarCursos(String texto);
     /** Programas de formacion a los que se inscribio el estudiante. */
     List<DTProgramaInscripto> listarProgramasEstudiante(String nickname);
     /** Alta de Curso (Servidor Web) con imagen opcional (ruta de un archivo local JPG/PNG, o null). */

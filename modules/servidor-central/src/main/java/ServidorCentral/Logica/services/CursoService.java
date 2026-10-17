@@ -153,6 +153,14 @@ public class CursoService {
         cursoRepository.guardar(nombre, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, nicknameDocente, previas, rutaImagen);
     }
 
+    /**
+     * Busqueda de cursos (requerimiento 7.5, cuadro del cabezal): cursos cuyo nombre o descripcion contienen el
+     * texto, sin distinguir mayusculas. Texto vacio (o null) = todos. Ordenados por nombre.
+     */
+    public List<DTCursoResumen> buscarCursos(String texto) {
+        return aTabla(cursoRepository.buscar(texto == null ? "" : texto.trim()));
+    }
+
     public List<DTCursoResumen> obtenerCursosTabla(String nombreInstituto) {
         return aTabla(cursoRepository.cursosPorInstituto(nombreInstituto));
     }

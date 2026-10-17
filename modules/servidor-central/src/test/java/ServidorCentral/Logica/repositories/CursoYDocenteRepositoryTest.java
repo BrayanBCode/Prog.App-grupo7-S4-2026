@@ -51,6 +51,29 @@ class CursoYDocenteRepositoryTest {
     }
 
     @Test
+    void cursos_busquedaPorNombreODescripcion_sinDistinguirMayusculas() {
+        assertEquals(List.of("MicroBit"), nombres(e.cursos.buscar("micro")), "por nombre");
+        assertEquals(List.of("MicroBit"), nombres(e.cursos.buscar("placas")), "por descripcion");
+        assertEquals(List.of("Komikan", "MicroBit"), nombres(e.cursos.buscar("I")), "en los dos, por nombre");
+        assertEquals(List.of("Komikan", "MicroBit"), nombres(e.cursos.buscar("")), "vacio = todos");
+        assertTrue(e.cursos.buscar("robótica").isEmpty());
+    }
+
+    @Test
+    void cursos_busqueda_losComodinesDelLikeSeBuscanComoTexto() {
+        assertTrue(e.cursos.buscar("%").isEmpty());
+        assertTrue(e.cursos.buscar("_").isEmpty());
+        assertTrue(e.cursos.buscar("!").isEmpty());
+        e.cursos.guardar("100% práctico", "Con_guion", 1, 1f, 1, "u", "Medicina", "house", List.of());
+        assertEquals(List.of("100% práctico"), nombres(e.cursos.buscar("0%")));
+        assertEquals(List.of("100% práctico"), nombres(e.cursos.buscar("n_g")));
+    }
+
+    private static List<String> nombres(List<Curso> cursos) {
+        return cursos.stream().map(Curso::getNombreC).toList();
+    }
+
+    @Test
     void cursos_listados() {
         assertEquals(List.of("Komikan", "MicroBit"), e.cursos.nombres());
         assertEquals(List.of("Komikan", "MicroBit"), e.cursos.nombresPorInstituto("Medicina"));

@@ -50,6 +50,8 @@ class ControllerV2Test {
                 public DTSesion autenticar(String id, String c) { anotar("autenticar " + id + " " + c); return null; }
                 @Override
                 public DTUsuario obtenerPorNickname(String n) { anotar("obtenerPorNickname " + n); return null; }
+                @Override
+                public void modificarDatos(String n, String no, String a, LocalDate f) { anotar("modificarDatos " + n + " " + no + " " + a + " " + f); }
             },
             new DocenteService(null) {
                 @Override
@@ -70,6 +72,8 @@ class ControllerV2Test {
                 public List<DTInscripcionEstudiante> listarInscripciones(String n) { anotar("listarInscripciones " + n); return List.of(); }
                 @Override
                 public List<DTProgramaInscripto> listarProgramas(String n) { anotar("listarProgramas " + n); return List.of(); }
+                @Override
+                public List<DTInscripcionEstudiante> resultadosInscripciones(String n) { anotar("resultadosInscripciones " + n); return List.of(); }
             },
             new CursoService(null, null, null) {
                 @Override
@@ -92,6 +96,8 @@ class ControllerV2Test {
                 public List<String> listarNombresPorInstituto(String i) { anotar("listarNombresPorInstituto " + i); return NOMBRES; }
                 @Override
                 public DTCurso obtenerCurso(String c) { anotar("obtenerCurso " + c); return null; }
+                @Override
+                public List<DTCursoResumen> buscarCursos(String t) { anotar("buscarCursos " + t); return List.of(); }
             },
             new InstitutoService(null) {
                 @Override
@@ -189,6 +195,16 @@ class ControllerV2Test {
                 "nicknameDisponible weiss", "mailDisponible w@x", "registrar(ruta) roro foto.jpg",
                 "registrar(imagen) house Medicina", "modificar roro Rodri", "listarUsuariosTabla",
                 "obtenerDataUsuario roro r@x", "esDocente house", "autenticar roro 1234", "obtenerPorNickname roro"), llamadas);
+    }
+
+    @Test
+    void opcionalesWeb_resultadosModificarYBuscar_vanASusServicios() {
+        controller.resultadosInscripciones("roro");
+        controller.modificarDatosUsuario("roro", "Rodri", "Cotelo", F1);
+        controller.buscarCursos("micro");
+
+        assertEquals(List.of("resultadosInscripciones roro", "modificarDatos roro Rodri Cotelo 2026-03-01",
+                "buscarCursos micro"), llamadas);
     }
 
     @Test

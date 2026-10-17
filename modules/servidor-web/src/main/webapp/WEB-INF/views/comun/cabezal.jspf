@@ -8,7 +8,7 @@
     - derecha, con sesion: nombre e imagen reducida del usuario, link a su perfil (Consulta de Usuario).
       "Salir" (Cierre de Sesion) esta al pie del lateral, como en la Figura 3.
   ${puede.XXX} sale de la matriz CasoDeUso (ver AccesoFilter): aca no se decide por rol.
-  El cuadro de busqueda de la figura es el requerimiento "Busqueda" (no minimo para el grupo).
+    - centro: cuadro de busqueda de cursos (requerimiento 7.5), en todas las paginas menos login/registro.
 --%>
 <c:set var="raiz" value="${pageContext.request.contextPath}"/>
 
@@ -23,6 +23,15 @@
                 <a class="logo navbar-brand fw-bold text-primary" href="${raiz}/inicio">edExt</a>
             </c:otherwise>
         </c:choose>
+
+        <%-- Busqueda (7.5, Figura 2): sin texto lista todos los cursos --%>
+        <c:if test="${puede.BUSCAR_CURSOS_Y_PROGRAMAS and not formularioSesion}">
+            <form class="buscador d-flex flex-grow-1 mx-4 gap-2" role="search" action="${raiz}/buscar" method="GET">
+                <input class="form-control form-control-sm" type="search" name="q" placeholder="Cursos"
+                       aria-label="Buscar cursos" value="<c:out value='${busqueda}'/>">
+                <button class="btn btn-outline-secondary btn-sm" type="submit">Buscar</button>
+            </form>
+        </c:if>
 
         <nav class="d-flex align-items-center gap-2 ${formularioSesion ? 'd-none' : ''}" aria-label="Sesión">
             <c:if test="${puede.INICIO_SESION}">

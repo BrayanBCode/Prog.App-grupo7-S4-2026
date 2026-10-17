@@ -49,6 +49,9 @@ public class AccesoFilter implements Filter {
             entry("/usuarios/seguimiento", CasoDeUso.SEGUIR_USUARIO),
             entry("/edicion/seleccionar", CasoDeUso.SELECCIONAR_ESTUDIANTES_EDICION),
             entry("/edicion/aceptados", CasoDeUso.LISTAR_ACEPTADOS_EDICION),
+            entry("/inscripciones/resultados", CasoDeUso.LISTAR_RESULTADOS_INSCRIPCIONES),
+            entry("/usuarios/modificar", CasoDeUso.MODIFICAR_DATOS_USUARIO),
+            entry("/buscar", CasoDeUso.BUSCAR_CURSOS_Y_PROGRAMAS),
             // acceso rapido del docente (no es un caso de uso de la letra): se protege con un permiso solo de docentes
             entry("/docente/cursos", CasoDeUso.ALTA_CURSO)
     );

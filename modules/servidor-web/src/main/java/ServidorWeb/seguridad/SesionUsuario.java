@@ -39,6 +39,14 @@ public final class SesionUsuario {
         nueva.setAttribute(ATRIBUTO, usuario);
     }
 
+    /** Reemplaza los datos de la sesion actual (ej. despues de Modificar Datos de Usuario), sin iniciar otra. */
+    public static void actualizar(HttpServletRequest req, DTSesion usuario) {
+        HttpSession s = req.getSession(false);
+        if (s != null) {
+            s.setAttribute(ATRIBUTO, usuario);
+        }
+    }
+
     /** Cierre de sesion: el usuario pasa a ser Visitante. */
     public static void cerrar(HttpServletRequest req) {
         HttpSession s = req.getSession(false);

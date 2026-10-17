@@ -409,6 +409,21 @@ public class ControllerV2 implements IControllerV2 {
     }
 
     @Override
+    public List<DTInscripcionEstudiante> resultadosInscripciones(String nickEstudiante) {
+        return estudianteService.resultadosInscripciones(nickEstudiante);
+    }
+
+    @Override
+    public void modificarDatosUsuario(String nickname, String nombre, String apellido, LocalDate fechaNac) {
+        usuarioService.modificarDatos(nickname, nombre, apellido, fechaNac);
+    }
+
+    @Override
+    public List<DTCursoResumen> buscarCursos(String texto) {
+        return cursoService.buscarCursos(texto);
+    }
+
+    @Override
     public List<DTProgramaInscripto> listarProgramasEstudiante(String nickname) {
         return estudianteService.listarProgramas(nickname);
     }

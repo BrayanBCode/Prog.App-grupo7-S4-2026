@@ -52,14 +52,17 @@
 
 <div class="tab-content">
 
-    <%-- General: datos basicos --%>
+    <%-- General: datos basicos. En el perfil propio, los lapices de la Figura 6 llevan a Modificar Datos de
+         Usuario (4.11): solo nombre, apellido y fecha de nacimiento (nickname y correo no se cambian). --%>
+    <c:set var="editable" value="${perfil.propio() and puede.MODIFICAR_DATOS_USUARIO}"/>
+    <c:set var="lapiz"><a class="ms-2 text-decoration-none" href="${raiz}/usuarios/modificar" title="Modificar mis datos" aria-label="Modificar mis datos">✎</a></c:set>
     <div class="tab-pane show active" id="tab-general" role="tabpanel">
         <dl class="row mb-0">
             <dt class="col-sm-4 col-lg-3">Nickname</dt><dd class="col-sm-8 col-lg-9"><c:out value="${u.nickname()}"/></dd>
-            <dt class="col-sm-4 col-lg-3">Nombre</dt><dd class="col-sm-8 col-lg-9"><c:out value="${u.nombre()}"/></dd>
-            <dt class="col-sm-4 col-lg-3">Apellido</dt><dd class="col-sm-8 col-lg-9"><c:out value="${u.apellido()}"/></dd>
+            <dt class="col-sm-4 col-lg-3">Nombre</dt><dd class="col-sm-8 col-lg-9"><c:out value="${u.nombre()}"/><c:if test="${editable}">${lapiz}</c:if></dd>
+            <dt class="col-sm-4 col-lg-3">Apellido</dt><dd class="col-sm-8 col-lg-9"><c:out value="${u.apellido()}"/><c:if test="${editable}">${lapiz}</c:if></dd>
             <dt class="col-sm-4 col-lg-3">Correo electrónico</dt><dd class="col-sm-8 col-lg-9"><c:out value="${u.mail()}"/></dd>
-            <dt class="col-sm-4 col-lg-3">Fecha de nacimiento</dt><dd class="col-sm-8 col-lg-9"><e:fecha valor="${u.fechaNac()}"/></dd>
+            <dt class="col-sm-4 col-lg-3">Fecha de nacimiento</dt><dd class="col-sm-8 col-lg-9"><e:fecha valor="${u.fechaNac()}"/><c:if test="${editable}">${lapiz}</c:if></dd>
             <c:if test="${esDocente}">
                 <dt class="col-sm-4 col-lg-3">Instituto</dt>
                 <dd class="col-sm-8 col-lg-9"><c:forEach var="i" items="${perfil.institutos()}" varStatus="st"><c:out value="${i}"/><c:if test="${not st.last}">, </c:if></c:forEach></dd>

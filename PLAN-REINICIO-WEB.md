@@ -60,12 +60,12 @@ Estado: ✅ hecho · 🟡 parcial · ⬜ pendiente
 
 | # | Caso de uso / requerimiento | Estado |
 |---|---|---|
-| 13 | Listar resultados de inscripciones | ⬜ (4.9) |
+| 13 | Listar resultados de inscripciones | ✅ (4.9) |
 | 14 | Dejar de Seguir Usuario (con Ajax) | ✅ |
-| 15 | Modificar Datos de Usuario | ⬜ (4.11) |
+| 15 | Modificar Datos de Usuario | ✅ (4.11, nombre, apellido y fecha) |
 | 16 | Pestañas en el perfil | ✅ (Fase 3, Figura 6) |
-| 17 | Tests unitarios + JaCoCo ≥ 80% | ✅ 96% de todo `Logica` (220 tests) |
-| 18 | Búsqueda de cursos | ⬜ |
+| 17 | Tests unitarios + JaCoCo ≥ 80% | ✅ 96% de todo `Logica` (233 tests) |
+| 18 | Búsqueda de cursos | ✅ (cuadro en el cabezal) |
 
 ### No corresponden al grupo (en gris)
 
@@ -84,9 +84,12 @@ del web (si no, el web no ve las clases nuevas del central).
 |---|---|---|---|
 | P1 | Subir la cobertura de 57% a 80% | ✅ Hecho (96% de todo `Logica`) | — |
 | P2 | `ControllerTest`: borrar o rehacer | ✅ Hecho (borrado) | — |
-| P3 | 4.9 Listar resultados de inscripciones | Opcional | Media |
-| P4 | 4.11 Modificar Datos de Usuario | Opcional | Media |
-| P5 | Búsqueda de cursos (requerimiento 7.5) | Opcional | Baja |
+| P3 | 4.9 Listar resultados de inscripciones | ✅ Hecho y probado | — |
+| P4 | 4.11 Modificar Datos de Usuario | ✅ Hecho y probado | — |
+| P5 | Búsqueda de cursos (requerimiento 7.5) | ✅ Hecho y probado | — |
+
+**17/10, P3–P5:** hechos y probados a mano en Tomcat con Visitante, Estudiante y Docente (detalle abajo). Central
+con tests: 233 en total, todos pasan; `Logica` sigue en **96%**.
 
 ### P1 – Cobertura 57% → 80% ✅ (17/10: 96% de todo `Logica`)
 
@@ -127,34 +130,64 @@ del web (si no, el web no ve las clases nuevas del central).
 Estaba **entero comentado** y usaba la base real. Se borró: lo reemplaza `ControllerV2Test` (sin base) más los tests
 de `services/`.
 
-### P3 – 4.9 Listar resultados de inscripciones (Estudiante)
+### P3 – 4.9 Listar resultados de inscripciones (Estudiante) ✅ (17/10)
 
 - **Letra:** el estudiante ve todas sus inscripciones a ediciones y el estado de cada una.
-- **Ya hay:** central `listarInscripcionesEstudiante(nick)` → `List<DTInscripcionEstudiante>` (edición, curso, fecha,
-  estado); permiso `LISTAR_RESULTADOS_INSCRIPCIONES` en la matriz; el perfil propio del estudiante ya muestra sus
-  inscripciones con estado (pestaña Cursos), incluidas las Rechazadas.
-- **Falta:** pantalla `/inscripciones/resultados` (servlet fino + JSP con tabla edición / curso / fecha / estado con
-  `e:estado` y links), la ruta en `RUTAS_PROTEGIDAS` del `AccesoFilter`, y en el lateral un grupo
-  **INSCRIPCIONES → Ver resultados** para el estudiante (como en la Figura 3). Tests: estudiante sin inscripciones,
-  con varias en distintos estados, quien no es estudiante.
+- **Central:** `resultadosInscripciones(nick)` → `List<DTInscripcionEstudiante>` (edición, curso, fecha, estado), de la
+  más nueva a la más vieja, incluidas las Rechazadas. `ReglaNegocioException` si el nickname no es de un estudiante.
+  Tests: `ResultadosInscripcionesTest` (varias inscripciones en los tres estados, sin inscripciones, quien no es
+  estudiante) y `ControllerV2Test`.
+- **Web:** `ResultadosInscripcionesServlet` en `/inscripciones/resultados` (`LISTAR_RESULTADOS_INSCRIPCIONES` en
+  `RUTAS_PROTEGIDAS`) + `inscripcion/resultados.jsp` (tabla edición / curso / fecha / estado con `e:estado` y links).
+  En el lateral, el grupo **INSCRIPCIONES → Ver resultados** de la Figura 3 (solo estudiantes). "Inscribirme" no va en
+  el lateral: la inscripción se hace desde la edición (4.5).
 
-### P4 – 4.11 Modificar Datos de Usuario (Estudiante, Docente)
+### P4 – 4.11 Modificar Datos de Usuario (Estudiante, Docente) ✅ (17/10)
 
 - **Letra:** el usuario edita sus datos básicos, **menos nickname y correo**, y el sistema los actualiza.
   En la Figura 6 son los lápices de la pestaña General.
-- **Ya hay:** central `modificarUsuario(nickname, mail, nombre, apellido, fechaNac)` (lo usa Swing, tira `Exception`);
-  permiso `MODIFICAR_DATOS_USUARIO` en la matriz.
-- **Falta:** versión web en el central con `ReglaNegocioException` (y foto como `DTImagen`, si se decide que la foto
-  también se edita), botón **Editar** en el perfil propio, formulario con nombre / apellido / fecha de nacimiento
-  (y foto), Post/Redirect/Get al perfil con flash, ruta protegida y tests.
-- **A decidir:** si se puede cambiar la foto y la contraseña (la letra dice "todos los datos básicos").
+- **Decidido:** se editan **nombre, apellido y fecha de nacimiento**, que son los campos con lápiz en la Figura 6.
+  La foto y la contraseña quedan fuera.
+- **Central:** `modificarDatosUsuario(nick, nombre, apellido, fechaNac)` con `ReglaNegocioException`: usuario que no
+  existe, nombre o apellido vacíos, fecha vacía o que no es anterior a hoy. El correo lo toma del usuario guardado
+  (no viene del formulario). El `modificarUsuario` de Swing queda igual. Tests: `ModificarDatosUsuarioTest` y
+  `ControllerV2Test`.
+- **Web:** lápiz ✎ junto a Nombre, Apellido y Fecha de nacimiento en la pestaña General **del perfil propio** →
+  `ModificarUsuarioServlet` en `/usuarios/modificar` (`MODIFICAR_DATOS_USUARIO`). El nickname sale de la sesión, así
+  que solo se pueden modificar los datos propios. Formulario con nickname y correo deshabilitados; Post/Redirect/Get
+  al perfil con flash "Se actualizaron tus datos.". Si hay error, vuelve al formulario con lo ingresado. También se
+  actualiza el nombre guardado en la sesión (`SesionUsuario.actualizar`), que es el que saluda en el inicio.
 
-### P5 – Búsqueda de cursos (requerimiento especial 7.5)
+### P5 – Búsqueda de cursos (requerimiento especial 7.5) ✅ (17/10)
 
 - **Letra:** un cuadro de búsqueda **siempre visible en el cabezal** (Figura 2); lista los cursos y programas cuyo
   nombre o descripción contienen el texto (todos si está vacío). Para el grupo, **solo cursos** (programas en gris).
-- **Falta todo:** consulta en el central (`buscarCursos(texto)` → `List<DTCursoResumen>`, con tests), el cuadro en
-  `cabezal.jspf` y una página de resultados que reuse las tarjetas de `curso/lista.jsp`.
+- **Central:** `buscarCursos(texto)` → `List<DTCursoResumen>`, ordenados por nombre. La consulta
+  (`CursoRepository.buscar`) compara en minúsculas el nombre y la descripción con `LIKE`; con texto vacío devuelve
+  todos. Tests: `BusquedaCursosTest` (servicio), `CursoYDocenteRepositoryTest` (consulta real contra H2) y
+  `ControllerV2Test`.
+- **Web:** cuadro **Buscar** en `cabezal.jspf`, en todas las páginas menos login y registro (que no tienen links en el
+  cabezal), para todos los roles (`BUSCAR_CURSOS_Y_PROGRAMAS`). Va a `/buscar?q=...` (`BusquedaServlet`) y
+  `curso/busqueda.jsp` muestra las mismas tarjetas que la lista de cursos de un instituto. Cada tarjeta lleva a la
+  Consulta de Curso.
+
+### Prueba manual de P3–P5 ✅ (17/10, Tomcat 10.1 + MySQL en Docker)
+
+- **Visitante:** la búsqueda anda (por nombre: "micro"; solo por descripción: "escuelas rurales", "ceibal"; con
+  mayúsculas y tildes: "ROBÓTICA"; vacía → los 10 cursos; "zzzz" → aviso de sin resultados). `/inscripciones/resultados`
+  y `/usuarios/modificar` → login.
+- **Estudiante (roro):** Ver resultados muestra sus 11 inscripciones (Inscripto / Aceptada / Rechazada), de la más nueva
+  a la más vieja, igual que en la base. Un estudiante nuevo (`zztest_est`, ya borrado) ve el aviso de que no tiene
+  inscripciones. En su perfil, 3 lápices (nombre, apellido, fecha). Errores: nombre vacío, fecha futura y fecha vacía
+  muestran su mensaje y el formulario conserva lo ingresado. Un cambio válido → flash "Se actualizaron tus datos." y el
+  saludo del inicio con el nombre nuevo. Los datos se dejaron como estaban.
+- **Docente (house):** sin grupo INSCRIPCIONES en el lateral; `/inscripciones/resultados` → inicio. Lápices en su
+  perfil y modificación correcta (revertida). En el perfil de otro usuario no hay lápices. La búsqueda anda igual.
+- **Bug encontrado y corregido:** buscar `%` (o `_`) devolvía todos los cursos, porque eran comodines del `LIKE`.
+  Ahora se escapan (`ESCAPE '!'`) y se buscan como texto. Test nuevo en `CursoYDocenteRepositoryTest` (233 tests).
+- **Ojo al probar:** (1) si la base de Docker se creó antes del Sprint 2, faltan estados, contraseñas e imágenes:
+  correr `db/init/03-datos-sprint2.sql` (se puede volver a correr). (2) Hacer *Clean and Build*: un WAR armado sin
+  `clean` traía el `EdicionesServlet` viejo y Tomcat no levantaba (dos servlets en `/ediciones`).
 
 ### Cómo trabajar (lo que se usó en todo lo hecho)
 
@@ -241,7 +274,7 @@ Lo que más pesa: `repositories` (32% del total, necesita base) y `controller` (
 - [x] Cargar Bootstrap en todo el sitio, sacar el interruptor `usarBootstrap` y borrar de `estilos.css` lo que choca.
       *Hecho: el menú de casos de uso pasó del desplegable del cabezal al lateral (`comun/lateral.jspf`), como en
       la Figura 3: Mi perfil, grupos por rol, Usuarios, Institutos y Salir. Login y Registro ahora usan el marco.
-      El cuadro de búsqueda de la figura no se dibuja (Búsqueda no es mínimo para el grupo). Cada caso de uso
+      El cuadro de búsqueda de la figura se agregó el 17/10 (P5). Cada caso de uso
       rehecho en la Fase 4 suma su link en `lateral.jspf`.*
 
 ---
@@ -314,9 +347,9 @@ Estado: ✅ hecho · ⬜ pendiente
 | 4.6 | ✅ | Seguir Usuario **(con Ajax)** | Est./Doc. | — | Fase 3 |
 | 4.7 | ✅ | Seleccionar Estudiantes | Docente | Figura 5 | 4.5 |
 | 4.8 | ✅ | Listar Aceptados | Docente | — | 4.7 |
-| 4.9 | ⬜ | *(opcional)* Listar resultados de inscripciones | Estudiante | — | 4.7 |
+| 4.9 | ✅ | *(opcional)* Listar resultados de inscripciones | Estudiante | — | 4.7 |
 | 4.10 | ✅ | *(opcional)* Dejar de Seguir **(con Ajax)** | Est./Doc. | — | 4.6 |
-| 4.11 | ⬜ | *(opcional)* Modificar Datos de Usuario | Est./Doc. | — | Fase 2 |
+| 4.11 | ✅ | *(opcional)* Modificar Datos de Usuario | Est./Doc. | — | Fase 2 |
 
 Ciclo de cada caso de uso:
 1. Leer el caso de uso y su figura en la letra; anotar reglas y mensajes de error.

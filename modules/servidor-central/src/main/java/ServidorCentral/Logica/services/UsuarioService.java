@@ -124,6 +124,32 @@ public class UsuarioService {
     }
 
     /**
+     * Caso de uso "Modificar Datos de Usuario" (4.11, web): el usuario edita sus datos basicos, menos nickname y
+     * correo (son la clave). Como en la Figura 6: nombre, apellido y fecha de nacimiento.
+     *
+     * @throws ReglaNegocioException con el mensaje para el usuario si algun dato no es valido
+     */
+    public void modificarDatos(String nickname, String nombre, String apellido, LocalDate fechaNac) {
+        Usuario u = (nickname == null || nickname.isBlank()) ? null : usuarioRepository.buscarPorNicknameOMail(nickname.trim());
+        if (u == null || !u.getNickname().equals(nickname.trim())) {
+            throw new ReglaNegocioException("El usuario no existe.");
+        }
+        if (nombre == null || nombre.isBlank()) {
+            throw new ReglaNegocioException("El nombre es obligatorio.");
+        }
+        if (apellido == null || apellido.isBlank()) {
+            throw new ReglaNegocioException("El apellido es obligatorio.");
+        }
+        if (fechaNac == null) {
+            throw new ReglaNegocioException("La fecha de nacimiento es obligatoria.");
+        }
+        if (!fechaNac.isBefore(LocalDate.now())) {
+            throw new ReglaNegocioException("La fecha de nacimiento tiene que ser anterior a hoy.");
+        }
+        usuarioRepository.actualizarDatosBasicos(u.getNickname(), u.getMail(), nombre.trim(), apellido.trim(), fechaNac);
+    }
+
+    /**
      * @return los datos del usuario, o null si no existe.
      */
     public DTUsuario obtenerDataUsuario(String nickname, String mail) {

@@ -5,6 +5,7 @@
 
 /* ---- Cabezal ---- */
 .cabezal .logo { font-size: 1.5rem; }
+.cabezal .buscador { max-width: 420px; }
 
 /* ---- Lateral (Figuras 2 a 4): titulos de grupo en mayusculas y gris ---- */
 .lateral .lateral-titulo {

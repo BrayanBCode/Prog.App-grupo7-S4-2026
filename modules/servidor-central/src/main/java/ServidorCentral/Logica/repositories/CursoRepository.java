@@ -33,6 +33,24 @@ public class CursoRepository {
     }
 
     /**
+     * Cursos cuyo nombre o descripcion contienen el texto (sin distinguir mayusculas); "" = todos. Por nombre.
+     * % y _ se buscan como caracteres comunes, no como comodines del LIKE.
+     */
+    public List<Curso> buscar(String texto) {
+        String literal = texto.toLowerCase().replace("!", "!!").replace("%", "!%").replace("_", "!_");
+        EntityManager em = conexion.getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT c FROM Curso c WHERE LOWER(c.nombre) LIKE :t ESCAPE '!' "
+                                    + "OR LOWER(c.descripcion) LIKE :t ESCAPE '!' ORDER BY c.nombre", Curso.class)
+                    .setParameter("t", "%" + literal + "%")
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
      * @return el Curso si existe, o null si no hay ninguno con ese nombre.
      * Se usa para las validaciones rápidas del Service (ej. "¿ya existe?").
      */
