@@ -143,7 +143,9 @@ duplicado (`BaseServlet.imagenTemporal` y `AltaUsuarioServlet.guardarImagenTempo
   - Estudiante: + inscripciones Inscripto/Aceptada + programas + seguidores (+ Seguir con Ajax, cuando se rehaga 4.6).
   - Docente: + todas las inscripciones, también Rechazadas.
   - El propio estudiante ve sus Rechazadas; el propio docente tiene "Ver aceptados".
-*Hecho 16/10: `PerfilService` (central) decide qué ve cada uno; 11 tests (64 en total, cobertura 40% → 47%).      El Visitante ve solo la pestaña General. Pestañas como la Figura 6: General / Cursos / Programas (+ Seguidores).      **Falta la prueba manual con cada rol** (MySQL estaba apagado).*
+      *Hecho 16/10: `PerfilService` (central) decide qué ve cada uno; 11 tests (64 en total, cobertura 40% → 47%).
+      El Visitante ve solo la pestaña General. Pestañas como la Figura 6: General / Cursos / Programas (+ Seguidores).
+      **Falta la prueba manual con cada rol** (MySQL estaba apagado).*
 
 ---
 
