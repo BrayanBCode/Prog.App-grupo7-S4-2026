@@ -52,7 +52,7 @@ instituto sin cursos (lista vacía).
 
 ---
 
-## 4.2 Consulta de Edición de Curso — Visitante, Estudiante, Docente — Figura 4
+## 4.2 Consulta de Edición de Curso — Visitante, Estudiante, Docente — Figura 4 — ✅ hecho (17/10)
 
 **Letra:** instituto → cursos → elige curso → lista de ediciones → elige una → todos los datos de la edición,
 **docentes asignados** e imagen.

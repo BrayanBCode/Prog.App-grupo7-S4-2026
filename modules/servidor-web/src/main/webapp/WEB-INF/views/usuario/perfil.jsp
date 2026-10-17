@@ -66,7 +66,7 @@
                 <c:when test="${esDocente}">
                     <c:if test="${empty perfil.ediciones()}"><p class="text-body-secondary">No participa en ninguna edición.</p></c:if>
                     <c:if test="${not empty perfil.ediciones()}">
-                        <%-- TODO 4.2: link a la edicion. TODO 4.8: "Ver aceptados" si perfil.verAceptados() --%>
+                        <%-- TODO 4.8: "Ver aceptados" si perfil.verAceptados() --%>
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
                                 <thead class="table-light"><tr><th>Edición</th><th>Curso</th><th>Inicio</th><th>Fin</th></tr></thead>
@@ -74,7 +74,8 @@
                                 <c:forEach var="ed" items="${perfil.ediciones()}">
                                     <c:url var="uCur" value="/cursos"><c:param name="nombre" value="${ed.nombreCurso()}"/></c:url>
                                     <tr>
-                                        <td><c:out value="${ed.nombre()}"/></td>
+                                        <c:url var="uEd" value="/ediciones"><c:param name="nombre" value="${ed.nombre()}"/></c:url>
+                                        <td><a href="${uEd}"><c:out value="${ed.nombre()}"/></a></td>
                                         <td><a href="${uCur}"><c:out value="${ed.nombreCurso()}"/></a></td>
                                         <td><e:fecha valor="${ed.fechaInicio()}"/></td>
                                         <td><e:fecha valor="${ed.fechaFin()}"/></td>
@@ -95,7 +96,8 @@
                                 <c:forEach var="i" items="${perfil.inscripciones()}">
                                     <c:url var="uCur" value="/cursos"><c:param name="nombre" value="${i.curso()}"/></c:url>
                                     <tr>
-                                        <td><c:out value="${i.edicion()}"/></td>
+                                        <c:url var="uEd" value="/ediciones"><c:param name="nombre" value="${i.edicion()}"/></c:url>
+                                        <td><a href="${uEd}"><c:out value="${i.edicion()}"/></a></td>
                                         <td><a href="${uCur}"><c:out value="${i.curso()}"/></a></td>
                                         <td><e:fecha valor="${i.fechaInscripcion()}"/></td>
                                         <td><e:estado valor="${i.estado()}"/></td>

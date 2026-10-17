@@ -27,7 +27,7 @@
         <%-- Consulta de Curso: cada instituto lleva a sus cursos. Se marca el que se esta viendo. --%>
         <c:forEach var="inst" items="${institutosMenu}">
             <c:url var="uInstituto" value="/cursos"><c:param name="instituto" value="${inst}"/></c:url>
-            <c:set var="instActual" value="${inst == instituto or inst == detalle.curso().instituto()}"/>
+            <c:set var="instActual" value="${inst == instituto or inst == detalle.curso().instituto() or inst == detalleEdicion.instituto()}"/>
             <a class="list-group-item list-group-item-action ${instActual ? 'active' : ''}" href="${uInstituto}"
                ${instActual ? 'aria-current="page"' : ''}><c:out value="${inst}"/></a>
         </c:forEach>

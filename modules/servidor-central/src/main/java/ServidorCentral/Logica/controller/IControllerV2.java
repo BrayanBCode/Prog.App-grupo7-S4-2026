@@ -8,6 +8,7 @@ import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.datatypes.DTCursoDetalle;
+import ServidorCentral.Logica.datatypes.DTEdicionDetalle;
 import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
 import ServidorCentral.Logica.datatypes.DTPerfil;
 import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
@@ -100,6 +101,8 @@ public interface IControllerV2 {
     List<DTCursoResumen> listarCursosInstituto(String nombreInstituto);
     /** Consulta de Curso (Figura 3): curso + ediciones + programas. ReglaNegocioException si el curso no existe. */
     DTCursoDetalle consultarCurso(String nombreCurso);
+    /** Consulta de Edicion (Figura 4): edicion + instituto + docentes + si es la vigente. ReglaNegocioException si no existe. */
+    DTEdicionDetalle consultarEdicion(String nombreEdicion);
     /** Consulta de Usuario por nickname (el sitio web navega por nickname). null si no existe. */
     DTUsuario obtenerUsuario(String nickname);
     /** Inscripciones a ediciones del estudiante, con su estado (Inscripto / Aceptada / Rechazada). */

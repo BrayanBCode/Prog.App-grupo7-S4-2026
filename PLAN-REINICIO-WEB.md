@@ -170,7 +170,7 @@ Estado: ✅ hecho · ⬜ pendiente
 | — | ✅ | Alta de Usuario (registro) — falta el aviso Ajax de nick/correo en uso | Visitante | — | Fase 2 |
 | F3 | ✅ | Consulta de Usuario | Todos | Figura 6 | Fase 3 |
 | 4.1 | ✅ | Consulta de Curso | Todos | Figura 3 | Fase 1 |
-| 4.2 | ⬜ | Consulta de Edición | Todos | Figura 4 | 4.1 |
+| 4.2 | ✅ | Consulta de Edición | Todos | Figura 4 | 4.1 |
 | 4.3 | ⬜ | Alta de Curso | Docente | — | 4.1, Fase 2 |
 | 4.4 | ⬜ | Alta de Edición | Docente | — | 4.3 |
 | 4.5 | ⬜ | Inscripción a Edición **(con Ajax)** | Estudiante | — | 4.2 |

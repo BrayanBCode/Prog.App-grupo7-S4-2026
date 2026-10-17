@@ -51,8 +51,8 @@
                 <li class="d-flex align-items-center gap-2 mb-2">
                     <e:imagen ruta="${ed.imagen()}" alt="${ed.nombre()}" clase="img-mini rounded"/>
                     <div class="small">
-                        <%-- TODO 4.2: link a la Consulta de Edicion --%>
-                        <div class="fw-semibold"><c:out value="${ed.nombre()}"/></div>
+                        <c:url var="uEd" value="/ediciones"><c:param name="nombre" value="${ed.nombre()}"/></c:url>
+                        <a class="fw-semibold d-block" href="${uEd}"><c:out value="${ed.nombre()}"/></a>
                         <div class="text-body-secondary"><e:fecha valor="${ed.fechaInicio()}"/> – <e:fecha valor="${ed.fechaFin()}"/></div>
                     </div>
                 </li>

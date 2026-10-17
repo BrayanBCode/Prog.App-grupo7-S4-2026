@@ -2,6 +2,7 @@ package ServidorCentral.Logica.services;
 
 import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 import ServidorCentral.Logica.datatypes.DTEdicionCurso;
+import ServidorCentral.Logica.datatypes.DTEdicionDetalle;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
 import ServidorCentral.Logica.entities.cursos.Curso;
@@ -10,6 +11,7 @@ import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 import ServidorCentral.Logica.entities.cursos.InscripcionEdicion;
 import ServidorCentral.Logica.entities.usuarios.Docente;
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
+import ServidorCentral.Logica.excepciones.ReglaNegocioException;
 import ServidorCentral.Logica.repositories.CursoRepository;
 import ServidorCentral.Logica.repositories.DocenteRepository;
 import ServidorCentral.Logica.repositories.EdicionCursoRepository;
@@ -37,6 +39,29 @@ public class EdicionCursoService {
 
     public List<String> obtenerNombres(String nombreCurso) {
         return edicionCursoRepository.obtenerNombres(nombreCurso);
+    }
+
+    /**
+     * Consulta de Edicion de Curso (web, Figura 4): datos de la edicion, instituto, docentes y si es la vigente.
+     *
+     * @throws ReglaNegocioException si la edicion no existe
+     */
+    public DTEdicionDetalle consultarEdicion(String nombreEdicion) {
+        return consultarEdicion(nombreEdicion, LocalDate.now());
+    }
+
+    /** Igual que el anterior, con la fecha de "hoy" como parametro (para los tests). */
+    DTEdicionDetalle consultarEdicion(String nombreEdicion, LocalDate hoy) {
+        EdicionCurso ed = nombreEdicion == null ? null : edicionCursoRepository.obtenerPorNombres(nombreEdicion);
+        if (ed == null) {
+            throw new ReglaNegocioException("No existe la edición \"" + (nombreEdicion == null ? "" : nombreEdicion) + "\".");
+        }
+        DTEdicionCurso datos = new DTEdicionCurso(ed.getNombre(), ed.getCurso().getNombreC(), ed.getFechaInicio(),
+                ed.getFechaFin(), ed.getCupo(), ed.getFechaPublicacion(), ed.getImagen());
+        String instituto = ed.getCurso().getInstituto() == null ? null : ed.getCurso().getInstituto().getNombre();
+        boolean vigente = ed.getFechaInicio() != null && ed.getFechaFin() != null
+                && !hoy.isBefore(ed.getFechaInicio()) && !hoy.isAfter(ed.getFechaFin());
+        return new DTEdicionDetalle(datos, instituto, listarDocentes(ed.getNombre()), vigente);
     }
 
     public DTEdicionCurso obtenerPorNombre(String nombreEdicion) throws Exception {
