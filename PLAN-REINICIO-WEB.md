@@ -64,7 +64,7 @@ Estado: ✅ hecho · 🟡 parcial · ⬜ pendiente
 | 14 | Dejar de Seguir Usuario (con Ajax) | ✅ |
 | 15 | Modificar Datos de Usuario | ⬜ (4.11) |
 | 16 | Pestañas en el perfil | ✅ (Fase 3, Figura 6) |
-| 17 | Tests unitarios + JaCoCo ≥ 80% | 🟡 57% (129 tests) |
+| 17 | Tests unitarios + JaCoCo ≥ 80% | ✅ 96% de todo `Logica` (220 tests) |
 | 18 | Búsqueda de cursos | ⬜ |
 
 ### No corresponden al grupo (en gris)
@@ -82,32 +82,50 @@ del web (si no, el web no ve las clases nuevas del central).
 
 | # | Qué falta | Tipo | Prioridad |
 |---|---|---|---|
-| P1 | Subir la cobertura de 57% a 80% | Opcional (pero la letra lo pide en 7.4) | Alta |
-| P2 | `ControllerTest`: borrar o rehacer | Limpieza | Alta (va junto con P1) |
+| P1 | Subir la cobertura de 57% a 80% | ✅ Hecho (96% de todo `Logica`) | — |
+| P2 | `ControllerTest`: borrar o rehacer | ✅ Hecho (borrado) | — |
 | P3 | 4.9 Listar resultados de inscripciones | Opcional | Media |
 | P4 | 4.11 Modificar Datos de Usuario | Opcional | Media |
 | P5 | Búsqueda de cursos (requerimiento 7.5) | Opcional | Baja |
 
-### P1 – Cobertura 57% → 80%
+### P1 – Cobertura 57% → 80% ✅ (17/10: 96% de todo `Logica`)
 
-- **Cómo se mide:** `mvn -pl modules/servidor-central verify` → el WARNING dice el % (regla en modo aviso, sobre
-  `Logica` sin `repositories` ni `programaFormacion`); el detalle en `modules/servidor-central/target/site/jacoco/index.html`.
-- **Hoy:** 540 de 949 líneas (57%). **Faltan unas 220 líneas cubiertas.**
-- **Dónde está lo que falta (líneas sin cubrir):** `controller` 105 (0%, nada testeado), `EdicionCursoService` 54,
-  `ProgramaFormacionService` 45, `UsuarioService` 43, `EstudianteService` 23, entidades (`EdicionCurso` 19,
-  `InscripcionEdicion` 15, `UsuarioID` 14), `DocenteService` 13.
-- **Cómo:** igual que los tests que ya hay en `src/test/.../services/` (sin base: se sobreescriben los métodos del
-  repositorio en una clase anónima). Lo que más falta son los métodos que usa **Swing** (alta/consulta desde la
-  Estación de Trabajo, `modificar`, listados de tablas) y las entidades (`equals`, `hashCode`, getters).
-- **El controller (105 líneas):** `ControllerV2` arma sus servicios en el constructor y se conecta a la base, así
-  que no se puede testear sin base. Opción simple: agregarle un constructor que reciba los servicios y testear que
-  cada método delega al servicio correcto.
+- **Cómo se mide:** `mvn -pl modules/servidor-central verify` → *All coverage checks have been met*. La regla cubre
+  **todo el paquete `Logica`, sin exclusiones** (antes dejaba afuera `repositories` y `programaFormacion`). El
+  detalle está en `modules/servidor-central/target/site/jacoco/index.html` (el total de abajo del reporte incluye
+  también `Persistencia`, que no es parte de `Logica`).
+- **Antes:** 57% de `Logica` (876 de 1537 líneas, 129 tests). **Ahora:** **96%** (1481 de 1537, 220 tests, todos pasan).
 
-### P2 – `ControllerTest`
+| Paquete | Cobertura |
+|---|---|
+| services | 98% |
+| repositories | 94% |
+| controller | 88% |
+| datatypes | 96% |
+| entities (cursos, usuarios, programaFormacion) | 100% |
+| seguridad, excepciones | 100% |
 
-`src/test/.../controller/ControllerTest.java` está **entero comentado** (`/* ... */`): no corre y no suma. Usaba la
-base real. Decidir: borrarlo (los tests nuevos de `services/` ya cubren esas reglas sin base) o reescribirlo sin base
-como parte de P1. Es el único ítem sin marcar de la Fase 0.
+- **Qué se agregó:**
+  - **Controller:** `ControllerV2` tiene un constructor (de paquete) que recibe los servicios ya armados
+    (`ControllerV2.Servicios`); el constructor público sigue igual para Swing y el web. `ControllerV2Test` prueba con
+    servicios "espía" que cada método llama al servicio correcto con los mismos datos y devuelve lo que este responde.
+  - **Services** (sin base, sobreescribiendo los métodos del repositorio en una clase anónima): `UsuarioServiceTest`,
+    `EstudianteServiceTest`, `DocenteServiceTest`, `InstitutoServiceTest`, `ProgramaFormacionServiceTest` y
+    `EdicionCursoServiceTest` (lo que usa Swing: altas, modificar, inscripciones, consultas y listados).
+  - **Repositories** (con JPA de verdad, contra una base **H2 en memoria**): cada test crea una base vacía con las
+    tablas de `persistence.xml`, la carga con `Escenario` (a través de los mismos repositories) y la descarta al
+    terminar. **No toca MySQL ni deja datos.** H2 es dependencia solo de test (no va en el `.war` ni en el `.jar`).
+    Para eso `Conexion` tiene `conPropiedades(...)` y `cerrar()`; la app sigue usando `getInstancia()` igual que antes.
+    Tests: `UsuarioRepositoryTest`, `CursoYDocenteRepositoryTest`, `EdicionCursoRepositoryTest`,
+    `EstudianteProgramaYSeguimientoRepositoryTest`.
+  - **Entidades:** `EntidadesTest` (igualdad por clave, setters, relación Programa – Curso).
+- **Lo que queda sin cubrir** son los `catch` de rollback de los repositories y el armado con MySQL de
+  `ControllerV2.Servicios.conBase`.
+
+### P2 – `ControllerTest` ✅ (17/10: borrado)
+
+Estaba **entero comentado** y usaba la base real. Se borró: lo reemplaza `ControllerV2Test` (sin base) más los tests
+de `services/`.
 
 ### P3 – 4.9 Listar resultados de inscripciones (Estudiante)
 
@@ -183,12 +201,14 @@ Datos de prueba: usuarios con contraseña `1234` (o `123`); si se crean datos, p
 ### 0.B Tests y cobertura
 JaCoCo ya está configurado en `servidor-central/pom.xml`; falta usarlo como control.
 - [x] Medir la cobertura actual: `mvn -pl modules/servidor-central verify` → `target/site/jacoco/index.html`.
-- [ ] Revisar `ControllerTest` (44 tests que usan la base real): no aparecieron en la última corrida de `mvn test`.
+- [x] Revisar `ControllerTest` (44 tests que usan la base real): no aparecieron en la última corrida de `mvn test`.
       Hacer que corran o pasarlos a tests sin base, como los de `services/`.
-      *Causa: el archivo entero está comentado (`/* ... */`), por eso no corre.*
+      *Causa: el archivo entero estaba comentado. 17/10: borrado, lo reemplaza `ControllerV2Test` sin base.*
 - [x] Agregar a JaCoCo la regla `check`: **mínimo 80% de sentencias en el paquete `Logica`**.
       *Decidido: modo aviso (`haltOnFailure=false`), sin `repositories` (necesita base) ni `programaFormacion`
       (no es del grupo). `mvn verify` muestra un WARNING con el % actual: **40% de líneas** al 15/10.*
+      *17/10: la regla pasó a cubrir todo `Logica` sin exclusiones (los repositories se prueban con H2 en
+      memoria): **96%**. Sigue en modo aviso.*
 - [x] Anotar en este plan la cobertura de partida y en qué clases falta más.
 
 **Cobertura de partida (15/10, 39 tests, instrucciones): `Logica` ≈ 26% (1394/5337).**

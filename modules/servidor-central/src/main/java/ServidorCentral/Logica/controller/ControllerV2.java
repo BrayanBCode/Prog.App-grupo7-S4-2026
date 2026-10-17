@@ -45,26 +45,50 @@ public class ControllerV2 implements IControllerV2 {
     private final SeguimientoService seguimientoService;
     private final PerfilService perfilService;
     public ControllerV2() {
-        Conexion conexion = Conexion.getInstancia();
-        // Capa de acceso a datos
-        InstitutoRepository institutoRepository = new InstitutoRepository(conexion);
-        CursoRepository cursoRepository = new CursoRepository(conexion);
-        DocenteRepository docenteRepository = new DocenteRepository(conexion);
-        EstudianteRepository estudianteRepository = new EstudianteRepository(conexion);
-        UsuarioRepository usuarioRepository = new UsuarioRepository(conexion);
-        EdicionCursoRepository edicionCursoRepository = new EdicionCursoRepository(conexion);
-        ProgramaFormacionRepository programaFormacionRepository = new ProgramaFormacionRepository(conexion);
-        SeguimientoRepository seguimientoRepository = new SeguimientoRepository(conexion);
-        // Capa de reglas de negocio
-        this.usuarioService = new UsuarioService(usuarioRepository, institutoRepository, docenteRepository);
-        this.docenteService = new DocenteService(docenteRepository);
-        this.estudianteService = new EstudianteService(estudianteRepository);
-        this.cursoService = new CursoService(cursoRepository, institutoRepository, docenteRepository, edicionCursoRepository, programaFormacionRepository);
-        this.instituoService = new InstitutoService(institutoRepository);
-        this.edicionCursoService = new EdicionCursoService(edicionCursoRepository, cursoRepository, docenteRepository, estudianteRepository);
-        this.programaFormacionService = new ProgramaFormacionService(programaFormacionRepository, cursoRepository, estudianteRepository);
-        this.seguimientoService = new SeguimientoService(usuarioRepository, seguimientoRepository);
-        this.perfilService = new PerfilService(usuarioRepository, docenteRepository, estudianteRepository, seguimientoRepository);
+        this(Servicios.conBase(Conexion.getInstancia()));
+    }
+
+    /** Recibe los servicios ya armados: lo usan los tests para probar el controller sin base. */
+    ControllerV2(Servicios s) {
+        this.usuarioService = s.usuario();
+        this.docenteService = s.docente();
+        this.estudianteService = s.estudiante();
+        this.cursoService = s.curso();
+        this.instituoService = s.instituto();
+        this.edicionCursoService = s.edicionCurso();
+        this.programaFormacionService = s.programaFormacion();
+        this.seguimientoService = s.seguimiento();
+        this.perfilService = s.perfil();
+    }
+
+    /** Los servicios que usa el controller. */
+    record Servicios(UsuarioService usuario, DocenteService docente, EstudianteService estudiante, CursoService curso,
+                     InstitutoService instituto, EdicionCursoService edicionCurso,
+                     ProgramaFormacionService programaFormacion, SeguimientoService seguimiento, PerfilService perfil) {
+
+        /** Los servicios reales, conectados a la base. */
+        static Servicios conBase(Conexion conexion) {
+            // Capa de acceso a datos
+            InstitutoRepository institutoRepository = new InstitutoRepository(conexion);
+            CursoRepository cursoRepository = new CursoRepository(conexion);
+            DocenteRepository docenteRepository = new DocenteRepository(conexion);
+            EstudianteRepository estudianteRepository = new EstudianteRepository(conexion);
+            UsuarioRepository usuarioRepository = new UsuarioRepository(conexion);
+            EdicionCursoRepository edicionCursoRepository = new EdicionCursoRepository(conexion);
+            ProgramaFormacionRepository programaFormacionRepository = new ProgramaFormacionRepository(conexion);
+            SeguimientoRepository seguimientoRepository = new SeguimientoRepository(conexion);
+            // Capa de reglas de negocio
+            return new Servicios(
+                    new UsuarioService(usuarioRepository, institutoRepository, docenteRepository),
+                    new DocenteService(docenteRepository),
+                    new EstudianteService(estudianteRepository),
+                    new CursoService(cursoRepository, institutoRepository, docenteRepository, edicionCursoRepository, programaFormacionRepository),
+                    new InstitutoService(institutoRepository),
+                    new EdicionCursoService(edicionCursoRepository, cursoRepository, docenteRepository, estudianteRepository),
+                    new ProgramaFormacionService(programaFormacionRepository, cursoRepository, estudianteRepository),
+                    new SeguimientoService(usuarioRepository, seguimientoRepository),
+                    new PerfilService(usuarioRepository, docenteRepository, estudianteRepository, seguimientoRepository));
+        }
     }
 
     @Override
