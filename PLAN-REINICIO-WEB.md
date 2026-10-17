@@ -145,7 +145,9 @@ duplicado (`BaseServlet.imagenTemporal` y `AltaUsuarioServlet.guardarImagenTempo
   - El propio estudiante ve sus Rechazadas; el propio docente tiene "Ver aceptados".
       *Hecho 16/10: `PerfilService` (central) decide qué ve cada uno; 11 tests (64 en total, cobertura 40% → 47%).
       El Visitante ve solo la pestaña General. Pestañas como la Figura 6: General / Cursos / Programas (+ Seguidores).
-      **Falta la prueba manual con cada rol** (MySQL estaba apagado).*
+      Probado contra la base real: Visitante (web: solo pestaña General, 404 si no existe), estudiante mirando a
+      otro (sin Rechazadas), el propio y un docente (con Rechazadas), docente propio (ediciones + "Ver aceptados").
+      Falta ver las pestañas en el navegador con sesión iniciada (los usuarios de prueba no tienen contraseña).*
 
 ---
 
