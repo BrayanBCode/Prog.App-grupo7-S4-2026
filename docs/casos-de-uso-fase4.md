@@ -107,7 +107,7 @@ previa inexistente; con y sin imagen.
 cancela.
 
 **Pantalla:** `GET/POST /edicion/alta?curso=X` (se llega desde la consulta del curso, 4.1). Docentes: lista con
-checkboxes de los docentes del instituto; el logueado marcado por defecto.
+checkboxes de los docentes del instituto; **el logueado aparece marcado y deshabilitado** (siempre participa, D3).
 
 **Reglas / errores (hoy):**
 - "Ya existe una edición de curso registrada con el nombre: X"
@@ -121,17 +121,23 @@ checkboxes de los docentes del instituto; el logueado marcado por defecto.
   `inicioDeLaOtra <= fin` (compartir un día ya cuenta). Ediciones de cursos distintos sí pueden coincidir.
   Así cada curso tiene como mucho **una** edición vigente, que es lo que supone la letra en 4.5 y 4.7.
   Va en el servicio del central, así que vale también para el alta desde Swing.
+- **Nuevo (D3):** el docente que da el alta **siempre** queda entre los docentes de la edición: el central lo
+  agrega aunque no venga en la lista (sin duplicarlo si ya viene). Así nunca crea una edición que después no
+  puede gestionar (4.7 y 4.8 exigen que el docente participe). Por esto, "al menos un docente" siempre se cumple
+  en el web. En Swing el alta la hace el Administrador, que no es docente: ahí no aplica y se mantiene el
+  "Debe seleccionar al menos un docente".
 
 **Central hoy:** `altaEdicionCurso(..., String imagen)` con ruta; `listarDocentesPorInstituto`.
 
-**Falta:** versión con `DTImagen` + `ReglaNegocioException`; el control de superposición (D1), con una consulta
-al repositorio (`existeSuperpuesta(curso, inicio, fin)`). Decidir si el docente que da el alta **debe** estar
-entre los docentes de la edición (la letra no lo dice; propuesta: no obligar).
+**Falta:** versión para el web `altaEdicion(nickDocenteQueDaElAlta, nombre, curso, inicio, fin, cupo, docentes,
+DTImagen)` con `ReglaNegocioException`, que agrega al docente que da el alta (D3); el control de superposición
+(D1), con una consulta al repositorio (`existeSuperpuesta(curso, inicio, fin)`).
 
-**Tests:** alta feliz; nombre repetido; curso inexistente; fin < inicio; sin docentes; docente inexistente;
-cupo vacío = 0; **superpuesta con otra del mismo curso → error** (incluido el caso de compartir solo un día);
-**contigua** (empieza el día después de que termina la otra) → se da de alta; **misma fecha pero otro curso** →
-se da de alta.
+**Tests:** alta feliz; nombre repetido; curso inexistente; fin < inicio; sin docentes (Swing); docente
+inexistente; cupo vacío = 0; **superpuesta con otra del mismo curso → error** (incluido el caso de compartir solo
+un día); **contigua** (empieza el día después de que termina la otra) → se da de alta; **misma fecha pero otro
+curso** → se da de alta; **el docente que da el alta queda incluido aunque no lo marque**; **si ya venía marcado
+no se duplica**; lista de docentes vacía en el web → queda solo el que da el alta.
 
 ---
 
@@ -243,5 +249,5 @@ estudiante (link al perfil), nombre, fecha de inscripción.
 |---|---|---|
 | D1 | Si hay dos ediciones vigentes del mismo curso, ¿cuál es "la vigente"? | **Decidido (16/10):** no se permite que pase. El Alta de Edición rechaza fechas superpuestas con otra edición del mismo curso (ver 4.4). Se descartó elegir "la más reciente" porque dejaría sin poder inscribirse a una edición válida. |
 | D2 | ¿Seleccionar estudiantes solo sobre la edición vigente? | Sí, como dice la letra. |
-| D3 | ¿El docente que da de alta una edición debe estar entre sus docentes? | No obligar; marcarlo por defecto. |
+| D3 | ¿El docente que da de alta una edición debe estar entre sus docentes? | **Decidido (17/10): sí, obligatorio.** El central lo agrega siempre; en la pantalla aparece marcado y no se puede desmarcar (ver 4.4). Se descartó "marcado por defecto" porque si lo desmarca no puede seleccionar estudiantes ni ver aceptados de su propia edición. |
 | D4 | ¿El alta de curso deja elegir el docente? | No: es el docente logueado. |
