@@ -42,6 +42,7 @@ public class AccesoFilter implements Filter {
             entry("/login", CasoDeUso.INICIO_SESION),
             entry("/logout", CasoDeUso.CIERRE_SESION),
             entry("/registro", CasoDeUso.ALTA_USUARIO),
+            entry("/registro/disponible", CasoDeUso.ALTA_USUARIO),
             entry("/curso/alta", CasoDeUso.ALTA_CURSO),
             entry("/edicion/alta", CasoDeUso.ALTA_EDICION_CURSO),
             entry("/edicion/inscripcion", CasoDeUso.INSCRIPCION_EDICION_CURSO),
@@ -56,7 +57,7 @@ public class AccesoFilter implements Filter {
      * Rutas que se llaman con Ajax (fetch): si no hay permiso se contesta JSON con 401 (sin sesion) o
      * 403 (rol sin permiso), porque un fetch no sigue la redireccion al login como el navegador.
      */
-    private static final Set<String> RUTAS_AJAX = Set.of("/edicion/inscripcion", "/usuarios/seguimiento");
+    private static final Set<String> RUTAS_AJAX = Set.of("/edicion/inscripcion", "/usuarios/seguimiento", "/registro/disponible");
 
     /** Permisos ya calculados por rol (la matriz no cambia en ejecucion). */
     private static final Map<Rol, Map<String, Boolean>> PERMISOS_POR_ROL = new EnumMap<>(Rol.class);

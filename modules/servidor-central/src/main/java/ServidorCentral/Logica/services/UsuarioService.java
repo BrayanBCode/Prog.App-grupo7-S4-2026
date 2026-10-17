@@ -145,6 +145,19 @@ public class UsuarioService {
         return aTabla(usuarioRepository.listarTodos());
     }
 
+    /**
+     * Alta de Usuario (web, aviso Ajax mientras se completa el formulario): true si nadie usa ese nickname.
+     * Es solo una ayuda: el alta vuelve a controlarlo al registrar.
+     */
+    public boolean nicknameDisponible(String nickname) {
+        return nickname != null && !nickname.isBlank() && !usuarioRepository.existeNickname(nickname.trim());
+    }
+
+    /** Igual que nicknameDisponible, para el correo electronico. */
+    public boolean mailDisponible(String mail) {
+        return mail != null && !mail.isBlank() && !usuarioRepository.existeMail(mail.trim());
+    }
+
     public boolean esDocente(String nickname) {
         return docenteRepository.existe(nickname);
     }

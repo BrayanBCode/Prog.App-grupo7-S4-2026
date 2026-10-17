@@ -43,7 +43,7 @@ Estado: ✅ hecho · 🟡 parcial · ⬜ pendiente
 |---|---|---|
 | 1 | Inicio de Sesión | ✅ |
 | 2 | Cierre de Sesión | ✅ |
-| 3 | Alta de Usuario (web, y en Swing con contraseña y confirmación) | ✅ (falta el aviso Ajax de nickname/correo en uso) |
+| 3 | Alta de Usuario (web, y en Swing con contraseña y confirmación) | ✅ (con aviso Ajax de nickname/correo en uso) |
 | 4 | Consulta de Usuario | ✅ |
 | 5 | Alta de Curso | ✅ |
 | 6 | Consulta de Curso | ✅ |
@@ -213,7 +213,7 @@ Estado: ✅ hecho · ⬜ pendiente
 |---|---|---|---|---|---|
 | — | ✅ | Inicio de Sesión | Visitante | — | — |
 | — | ✅ | Cierre de Sesión | Est./Doc. | Figura 3 | — |
-| — | ✅ | Alta de Usuario (registro) — falta el aviso Ajax de nick/correo en uso | Visitante | — | Fase 2 |
+| — | ✅ | Alta de Usuario (registro, con aviso Ajax de nick/correo en uso) | Visitante | — | Fase 2 |
 | F3 | ✅ | Consulta de Usuario | Todos | Figura 6 | Fase 3 |
 | 4.1 | ✅ | Consulta de Curso | Todos | Figura 3 | Fase 1 |
 | 4.2 | ✅ | Consulta de Edición | Todos | Figura 4 | 4.1 |
@@ -250,7 +250,7 @@ El docente pide usar Ajax para no recargar páginas enteras. Decidido el 17/10 d
 | Dónde | Qué hace sin recargar | Estado |
 |---|---|---|
 | 4.6 / 4.10 Seguir y dejar de seguir | El botón del perfil cambia y se actualiza el contador de seguidores | ✅ |
-| Alta de Usuario (registro) | Al salir del campo nickname o correo, avisa si ya está en uso | ⬜ |
+| Alta de Usuario (registro) | Al salir del campo nickname o correo, avisa si ya está en uso | ✅ |
 | 4.5 Inscripción a edición | "Inscribirme" registra la inscripción y el botón pasa a "✓ Inscripto" | ✅ |
 
 Patrón común a los tres: servlet que responde **JSON** (`{"ok": true, ...}` o `{"ok": false, "error": "..."}` con el

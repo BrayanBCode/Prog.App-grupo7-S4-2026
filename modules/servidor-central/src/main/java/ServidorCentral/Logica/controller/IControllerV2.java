@@ -39,6 +39,10 @@ public interface IControllerV2 {
     void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen, String contraseña);
     /** Alta de Usuario desde el Servidor Web: imagen subida (o null). Tira IllegalArgumentException con el mensaje para el usuario. */
     void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, DTImagen imagen, String contraseña);
+    /** Alta de Usuario (aviso Ajax): true si el nickname no esta en uso. */
+    boolean nicknameDisponible(String nickname);
+    /** Alta de Usuario (aviso Ajax): true si el correo no esta en uso. */
+    boolean mailDisponible(String mail);
     /** Inicio de Sesion (Visitante): nickname o mail + contraseña. Tira IllegalArgumentException si no son validos. */
     DTSesion iniciarSesion(String identificador, String contraseña);
     void altaInstituto(String nombre) throws Exception;

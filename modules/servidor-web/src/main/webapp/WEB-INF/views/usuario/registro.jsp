@@ -9,7 +9,8 @@
 <div class="mx-auto w-100" style="max-width: 560px;">
     <h1 class="h3 mb-4">Registrarse</h1>
 
-    <form id="registro-form" action="${raiz}/registro" method="POST" enctype="multipart/form-data" novalidate>
+    <form id="registro-form" action="${raiz}/registro" method="POST" enctype="multipart/form-data" novalidate
+          data-disponible="${raiz}/registro/disponible">
         <div class="mb-3">
             <label for="nickname" class="form-label">Nickname *</label>
             <input type="text" id="nickname" name="nickname" class="form-control" required

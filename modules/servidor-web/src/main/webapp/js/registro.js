@@ -39,6 +39,48 @@
         imagen.setCustomValidity(ok ? '' : 'imagen invalida');
     }
 
+    /*
+     * Aviso Ajax (pedido del docente): al salir del campo se pregunta al servidor si el nickname o el correo ya
+     * estan en uso, sin enviar el formulario. Si lo estan, el campo queda en rojo con el mensaje del servidor
+     * y no se puede enviar hasta corregirlo. El alta lo vuelve a controlar en el servidor igual.
+     */
+    function avisarSiEstaEnUso(campo, parametro) {
+        var aviso = campo.parentElement.querySelector('.invalid-feedback');
+        var textoOriginal = aviso.textContent;
+
+        function limpiar() {
+            campo.setCustomValidity('');
+            campo.classList.remove('is-invalid');
+            aviso.textContent = textoOriginal;
+        }
+
+        campo.addEventListener('input', limpiar);
+        campo.addEventListener('blur', function () {
+            limpiar();
+            if (!campo.value.trim() || !campo.checkValidity()) {
+                return; // vacio o con formato invalido: ya lo marca la validacion de Bootstrap al enviar
+            }
+            var valor = campo.value.trim();
+            fetch(form.dataset.disponible + '?' + new URLSearchParams([[parametro, valor]]), {credentials: 'same-origin'})
+                .then(function (respuesta) {
+                    return respuesta.json();
+                })
+                .then(function (datos) {
+                    if (datos.ok && !datos.disponible && campo.value.trim() === valor) {
+                        campo.setCustomValidity('en uso');
+                        aviso.textContent = datos.mensaje;
+                        campo.classList.add('is-invalid');
+                    }
+                })
+                .catch(function () {
+                    // sin conexion: no se avisa; el alta lo controla igual al enviar
+                });
+        });
+    }
+
+    avisarSiEstaEnUso(document.getElementById('nickname'), 'nickname');
+    avisarSiEstaEnUso(document.getElementById('mail'), 'mail');
+
     tipo.addEventListener('change', actualizarInstituto);
     password.addEventListener('input', validarConfirmacion);
     confirmar.addEventListener('input', validarConfirmacion);

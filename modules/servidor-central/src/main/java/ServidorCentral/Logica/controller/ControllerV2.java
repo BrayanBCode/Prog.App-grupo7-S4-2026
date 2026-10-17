@@ -68,6 +68,16 @@ public class ControllerV2 implements IControllerV2 {
     }
 
     @Override
+    public boolean nicknameDisponible(String nickname) {
+        return usuarioService.nicknameDisponible(nickname);
+    }
+
+    @Override
+    public boolean mailDisponible(String mail) {
+        return usuarioService.mailDisponible(mail);
+    }
+
+    @Override
     public List<DTUsuario> listarUsuarios() {
         return perfilService.listarUsuarios();
     }
