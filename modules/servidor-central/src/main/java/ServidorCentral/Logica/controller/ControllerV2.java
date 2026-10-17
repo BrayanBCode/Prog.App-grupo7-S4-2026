@@ -97,6 +97,12 @@ public class ControllerV2 implements IControllerV2 {
         cursoService.altaCurso(nickDocente, nombre, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, previas, imagen);
     }
 
+    @Override
+    public void altaEdicion(String nickDocente, String nombreEdicion, String nombreCurso, LocalDate fechaInicio, LocalDate fechaFin,
+                            Integer cupo, List<String> nicknamesDocentes, DTImagen imagen) {
+        edicionCursoService.altaEdicion(nickDocente, nombreEdicion, nombreCurso, fechaInicio, fechaFin, cupo, nicknamesDocentes, imagen);
+    }
+
     // ---------------------------------------------------------------
     // USUARIOS
     // ---------------------------------------------------------------

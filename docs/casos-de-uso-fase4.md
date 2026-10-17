@@ -100,7 +100,7 @@ previa inexistente; con y sin imagen.
 
 ---
 
-## 4.4 Alta de Edición de Curso — Docente — sin figura
+## 4.4 Alta de Edición de Curso — Docente — sin figura — ✅ hecho (17/10)
 
 **Letra:** instituto → cursos → elige uno → datos: **nombre de la edición (único)**, fecha inicio y fin,
 **cupo (opcional)**, **docentes** que participan. Se da de alta en la fecha actual. Nombre repetido → corrige o

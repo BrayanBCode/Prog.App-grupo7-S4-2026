@@ -44,7 +44,13 @@
     </div>
 
     <div class="col-lg-5">
-        <h2 class="h6 fw-bold">Ediciones del curso</h2>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h2 class="h6 fw-bold mb-0">Ediciones del curso</h2>
+            <c:if test="${puede.ALTA_EDICION_CURSO}">
+                <c:url var="uAltaEd" value="/edicion/alta"><c:param name="curso" value="${cur.nombre()}"/></c:url>
+                <a class="btn btn-outline-primary btn-sm" href="${uAltaEd}">+ Crear edición</a>
+            </c:if>
+        </div>
         <c:if test="${empty detalle.ediciones()}"><p class="small text-body-secondary">Todavía no tiene ediciones.</p></c:if>
         <ul class="list-unstyled mb-4">
             <c:forEach var="ed" items="${detalle.ediciones()}">

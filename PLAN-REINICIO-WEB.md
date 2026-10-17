@@ -172,7 +172,7 @@ Estado: ✅ hecho · ⬜ pendiente
 | 4.1 | ✅ | Consulta de Curso | Todos | Figura 3 | Fase 1 |
 | 4.2 | ✅ | Consulta de Edición | Todos | Figura 4 | 4.1 |
 | 4.3 | ✅ | Alta de Curso | Docente | — | 4.1, Fase 2 |
-| 4.4 | ⬜ | Alta de Edición | Docente | — | 4.3 |
+| 4.4 | ✅ | Alta de Edición | Docente | — | 4.3 |
 | 4.5 | ⬜ | Inscripción a Edición **(con Ajax)** | Estudiante | — | 4.2 |
 | 4.6 | ⬜ | Seguir Usuario **(con Ajax)** | Est./Doc. | — | Fase 3 |
 | 4.7 | ⬜ | Seleccionar Estudiantes | Docente | Figura 5 | 4.5 |

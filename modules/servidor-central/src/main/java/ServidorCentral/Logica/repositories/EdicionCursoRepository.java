@@ -36,6 +36,27 @@ public class EdicionCursoRepository {
         }
     }
 
+    /**
+     * Regla D1: nombre de una edicion del mismo curso cuyas fechas se superponen con [inicio, fin]
+     * (compartir un dia ya cuenta), o null si no hay ninguna.
+     */
+    public String edicionSuperpuesta(String nombreCurso, LocalDate inicio, LocalDate fin) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            List<String> nombres = em.createQuery(
+                            "SELECT e.nombre FROM EdicionCurso e WHERE e.curso.nombre = :curso "
+                                    + "AND e.fechaInicio <= :fin AND e.fechaFin >= :inicio ORDER BY e.fechaInicio", String.class)
+                    .setParameter("curso", nombreCurso)
+                    .setParameter("inicio", inicio)
+                    .setParameter("fin", fin)
+                    .setMaxResults(1)
+                    .getResultList();
+            return nombres.isEmpty() ? null : nombres.get(0);
+        } finally {
+            em.close();
+        }
+    }
+
     /** Ediciones de un curso, de la mas reciente a la mas vieja (una sola consulta). */
     public List<EdicionCurso> edicionesDeCurso(String nombreCurso) {
         EntityManager em = conexion.getEntityManager();

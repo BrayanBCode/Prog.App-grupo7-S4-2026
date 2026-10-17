@@ -40,7 +40,8 @@ public class AccesoFilter implements Filter {
             entry("/login", CasoDeUso.INICIO_SESION),
             entry("/logout", CasoDeUso.CIERRE_SESION),
             entry("/registro", CasoDeUso.ALTA_USUARIO),
-            entry("/curso/alta", CasoDeUso.ALTA_CURSO)
+            entry("/curso/alta", CasoDeUso.ALTA_CURSO),
+            entry("/edicion/alta", CasoDeUso.ALTA_EDICION_CURSO)
     );
 
     /** Permisos ya calculados por rol (la matriz no cambia en ejecucion). */

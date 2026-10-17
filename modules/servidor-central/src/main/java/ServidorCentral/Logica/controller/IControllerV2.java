@@ -109,6 +109,12 @@ public interface IControllerV2 {
      */
     void altaCurso(String nickDocente, String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos,
                    String url, String nombreInstituto, List<String> previas, DTImagen imagen);
+    /**
+     * Alta de Edicion (web): sin superposicion con otra edicion del curso (D1); el docente que da el alta
+     * siempre participa (D3). cupo null = sin limite. Tira ReglaNegocioException con el mensaje para el usuario.
+     */
+    void altaEdicion(String nickDocente, String nombreEdicion, String nombreCurso, LocalDate fechaInicio, LocalDate fechaFin,
+                     Integer cupo, List<String> nicknamesDocentes, DTImagen imagen);
     /** Consulta de Usuario por nickname (el sitio web navega por nickname). null si no existe. */
     DTUsuario obtenerUsuario(String nickname);
     /** Inscripciones a ediciones del estudiante, con su estado (Inscripto / Aceptada / Rechazada). */

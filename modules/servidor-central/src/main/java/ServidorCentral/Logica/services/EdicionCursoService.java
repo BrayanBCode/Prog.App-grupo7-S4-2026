@@ -3,6 +3,7 @@ package ServidorCentral.Logica.services;
 import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTEdicionDetalle;
+import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
 import ServidorCentral.Logica.entities.cursos.Curso;
@@ -39,6 +40,68 @@ public class EdicionCursoService {
 
     public List<String> obtenerNombres(String nombreCurso) {
         return edicionCursoRepository.obtenerNombres(nombreCurso);
+    }
+
+    /**
+     * Alta de Edicion de Curso (web). Ademas de las reglas de siempre:
+     * <ul>
+     *   <li>D1: las fechas no pueden superponerse con otra edicion del mismo curso (asi hay como mucho una vigente).</li>
+     *   <li>D3: el docente que da el alta siempre queda entre los docentes de la edicion.</li>
+     * </ul>
+     * cupo null o 0 = sin limite. La imagen se guarda recien cuando pasaron todas las validaciones.
+     *
+     * @throws ReglaNegocioException con el mensaje para el usuario si algo no es valido
+     */
+    public void altaEdicion(String nickDocente, String nombreEdicion, String nombreCurso, LocalDate fechaInicio,
+                            LocalDate fechaFin, Integer cupo, List<String> nicknamesDocentes, DTImagen imagen) {
+        String nombre = nombreEdicion == null ? "" : nombreEdicion.trim();
+        if (nombre.isEmpty()) {
+            throw new ReglaNegocioException("Indicá el nombre de la edición.");
+        }
+        if (fechaInicio == null || fechaFin == null) {
+            throw new ReglaNegocioException("Indicá la fecha de inicio y la de fin.");
+        }
+        if (cupo != null && cupo < 0) {
+            throw new ReglaNegocioException("El cupo no puede ser negativo.");
+        }
+        if (edicionCursoRepository.obtenerPorNombres(nombre) != null) {
+            throw new ReglaNegocioException("Ya existe una edición de curso registrada con el nombre: " + nombre);
+        }
+        if (nombreCurso == null || cursoRepository.buscarPorNombre(nombreCurso) == null) {
+            throw new ReglaNegocioException("El curso seleccionado no existe.");
+        }
+        if (fechaFin.isBefore(fechaInicio)) {
+            throw new ReglaNegocioException("La fecha de fin no puede ser anterior a la fecha de inicio.");
+        }
+        validarSinSuperposicion(nombreCurso, fechaInicio, fechaFin);
+        if (nickDocente == null || docenteRepository.buscarPorNickname(nickDocente) == null) {
+            throw new ReglaNegocioException("Solo un docente puede dar de alta una edición.");
+        }
+
+        // D3: el que da el alta siempre participa (primero en la lista, sin repetidos)
+        List<String> docentes = new ArrayList<>();
+        docentes.add(nickDocente);
+        if (nicknamesDocentes != null) {
+            for (String nick : nicknamesDocentes) {
+                if (nick != null && !nick.isBlank() && !docentes.contains(nick)) {
+                    if (docenteRepository.buscarPorNickname(nick) == null) {
+                        throw new ReglaNegocioException("El docente seleccionado no existe: " + nick);
+                    }
+                    docentes.add(nick);
+                }
+            }
+        }
+
+        String rutaImagen = AlmacenImagenes.guardar(imagen, AlmacenImagenes.EDICIONES, nombre);
+        edicionCursoRepository.guardar(nombre, nombreCurso, fechaInicio, fechaFin, cupo == null ? 0 : cupo, docentes, rutaImagen);
+    }
+
+    /** Regla D1 (vale para el web y para Swing). */
+    private void validarSinSuperposicion(String nombreCurso, LocalDate inicio, LocalDate fin) {
+        String otra = edicionCursoRepository.edicionSuperpuesta(nombreCurso, inicio, fin);
+        if (otra != null) {
+            throw new ReglaNegocioException("Ya existe una edición de este curso en ese período: " + otra);
+        }
     }
 
     /**
@@ -108,6 +171,8 @@ public class EdicionCursoService {
         if (fechaFin.isBefore(fechaInicio)) {
             throw new Exception("La fecha de fin no puede ser anterior a la fecha de inicio.");
         }
+
+        validarSinSuperposicion(nombreCurso, fechaInicio, fechaFin);
 
         if (nicknamesDocentes == null || nicknamesDocentes.isEmpty()) {
             throw new Exception("Debe seleccionar al menos un docente para la edición.");
