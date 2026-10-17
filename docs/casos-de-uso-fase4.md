@@ -116,14 +116,22 @@ checkboxes de los docentes del instituto; el logueado marcado por defecto.
 - "Debe seleccionar al menos un docente para la edición."
 - "El docente seleccionado no existe: X"
 - Cupo vacío → 0 = sin límite.
+- **Nuevo (D1):** las fechas no pueden superponerse con otra edición **del mismo curso** →
+  "Ya existe una edición de este curso en ese período: X". Superponen si `inicio <= finDeLaOtra` y
+  `inicioDeLaOtra <= fin` (compartir un día ya cuenta). Ediciones de cursos distintos sí pueden coincidir.
+  Así cada curso tiene como mucho **una** edición vigente, que es lo que supone la letra en 4.5 y 4.7.
+  Va en el servicio del central, así que vale también para el alta desde Swing.
 
 **Central hoy:** `altaEdicionCurso(..., String imagen)` con ruta; `listarDocentesPorInstituto`.
 
-**Falta:** versión con `DTImagen` + `ReglaNegocioException`. Decidir si el docente que da el alta **debe** estar
+**Falta:** versión con `DTImagen` + `ReglaNegocioException`; el control de superposición (D1), con una consulta
+al repositorio (`existeSuperpuesta(curso, inicio, fin)`). Decidir si el docente que da el alta **debe** estar
 entre los docentes de la edición (la letra no lo dice; propuesta: no obligar).
 
 **Tests:** alta feliz; nombre repetido; curso inexistente; fin < inicio; sin docentes; docente inexistente;
-cupo vacío = 0.
+cupo vacío = 0; **superpuesta con otra del mismo curso → error** (incluido el caso de compartir solo un día);
+**contigua** (empieza el día después de que termina la otra) → se da de alta; **misma fecha pero otro curso** →
+se da de alta.
 
 ---
 
@@ -143,16 +151,18 @@ inscripto, corrige o cancela.
 - Nuevo: inscribirse a una edición **que no es la vigente** → error (el web solo ofrece la vigente, pero el
   central lo tiene que controlar porque el POST se puede armar a mano).
 
-**Central hoy:** `obtenerEdicionVigente(curso)` → `String` (**primera al azar si hay dos vigentes**);
+**Central hoy:** `obtenerEdicionVigente(curso)` → `String` (toma la primera si hubiera dos vigentes);
 `inscribirEstudianteEdicion(nick, mail, edicion, fecha)` pide el mail además del nick.
 
+**Edición vigente:** la que cumple `fechaInicio <= hoy <= fechaFin`. Por la regla D1 (4.4) no puede haber dos
+vigentes del mismo curso, así que no hace falta criterio de desempate. (Revisado el 16/10: en los datos de
+prueba no hay ediciones superpuestas del mismo curso.)
+
 **Falta:**
-- **Criterio de edición vigente** (pendiente del plan). Propuesta: vigente = `fechaInicio <= hoy <= fechaFin`;
-  si hay varias, la de **fechaInicio más reciente** (desempate por nombre). Con tests.
 - `inscribirse(nickEstudiante, nombreEdicion)` (fecha = hoy, por nickname, valida que sea la vigente).
 
 **Tests:** inscripción feliz (estado Inscripto, fecha hoy); doble inscripción; sin cupo; cupo 0 sin límite;
-edición no vigente; dos vigentes → elige la más reciente; curso sin vigente → null.
+edición no vigente (todavía no empezó / ya terminó); curso sin vigente → null.
 
 ---
 
@@ -231,7 +241,7 @@ estudiante (link al perfil), nombre, fecha de inscripción.
 
 | # | Pregunta | Propuesta |
 |---|---|---|
-| D1 | Si hay dos ediciones vigentes del mismo curso, ¿cuál es "la vigente"? | La de `fechaInicio` más reciente; desempate por nombre. |
+| D1 | Si hay dos ediciones vigentes del mismo curso, ¿cuál es "la vigente"? | **Decidido (16/10):** no se permite que pase. El Alta de Edición rechaza fechas superpuestas con otra edición del mismo curso (ver 4.4). Se descartó elegir "la más reciente" porque dejaría sin poder inscribirse a una edición válida. |
 | D2 | ¿Seleccionar estudiantes solo sobre la edición vigente? | Sí, como dice la letra. |
 | D3 | ¿El docente que da de alta una edición debe estar entre sus docentes? | No obligar; marcarlo por defecto. |
 | D4 | ¿El alta de curso deja elegir el docente? | No: es el docente logueado. |

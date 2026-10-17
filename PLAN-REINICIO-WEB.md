@@ -209,7 +209,8 @@ Pedido del curso: seguir / dejar de seguir se hace **con Ajax**, sin recargar la
   una sola petición y que **la página no se recarga**.
 
 Ya se sabe que hay que corregir:
-- **Edición vigente:** si hay dos vigentes del mismo curso hoy se toma la primera al azar; definir criterio y testearlo.
+- **Edición vigente:** si hay dos vigentes del mismo curso hoy se toma la primera al azar. *Decidido (D1): el Alta de
+  Edición no permite fechas superpuestas con otra edición del mismo curso, así hay como mucho una vigente (4.4).*
 
 ---
 
