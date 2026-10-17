@@ -235,6 +235,14 @@ Ciclo de cada caso de uso:
 5. Revisar la cobertura (`mvn verify`); no debe bajar.
 6. Merge.
 
+### Acceso rápido del docente: "Mis cursos y ediciones" ✅ (17/10)
+
+Pedido del usuario: llegar a los cursos y ediciones propios sin pasar por el perfil. No es un caso de uso de la letra,
+es navegación. Lateral **Docencia → Mis cursos y ediciones** (`/docente/cursos`, solo docentes): los cursos que dicta
+(con "+ Crear edición") y las ediciones en las que participa, de la más reciente a la más vieja, con "Vigente" y
+"Seleccionar estudiantes" en la vigente (y "Ver aceptados" cuando se haga 4.8). Central: `misCursosDocente` en una
+llamada, con tests.
+
 ### Ajax (pedido del docente, por rendimiento)
 
 El docente pide usar Ajax para no recargar páginas enteras. Decidido el 17/10 dónde va:

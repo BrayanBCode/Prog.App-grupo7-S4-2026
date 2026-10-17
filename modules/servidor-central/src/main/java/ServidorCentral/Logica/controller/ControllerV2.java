@@ -7,6 +7,7 @@ import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.datatypes.DTCursoDetalle;
+import ServidorCentral.Logica.datatypes.DTMisCursos;
 import ServidorCentral.Logica.datatypes.DTEdicionDetalle;
 import ServidorCentral.Logica.datatypes.DTInscripcionesEdicion;
 import ServidorCentral.Logica.datatypes.DTPerfil;
@@ -84,6 +85,11 @@ public class ControllerV2 implements IControllerV2 {
     @Override
     public DTCursoDetalle consultarCurso(String nombreCurso) {
         return cursoService.consultarCurso(nombreCurso);
+    }
+
+    @Override
+    public DTMisCursos misCursosDocente(String nickDocente) {
+        return docenteService.misCursos(nickDocente);
     }
 
     @Override

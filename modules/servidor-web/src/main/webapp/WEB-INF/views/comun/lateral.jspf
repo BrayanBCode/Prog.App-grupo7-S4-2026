@@ -22,6 +22,7 @@
         <c:if test="${puede.ALTA_CURSO}">
             <div class="list-group-item lateral-titulo">Docencia</div>
             <a class="list-group-item list-group-item-action" href="${raiz}/curso/alta">Crear curso</a>
+            <a class="list-group-item list-group-item-action" href="${raiz}/docente/cursos">Mis cursos y ediciones</a>
         </c:if>
 
         <c:if test="${puede.CONSULTA_USUARIO}">

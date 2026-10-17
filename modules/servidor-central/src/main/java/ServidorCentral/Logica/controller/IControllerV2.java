@@ -8,6 +8,7 @@ import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.datatypes.DTCursoDetalle;
+import ServidorCentral.Logica.datatypes.DTMisCursos;
 import ServidorCentral.Logica.datatypes.DTEdicionDetalle;
 import ServidorCentral.Logica.datatypes.DTInscripcionesEdicion;
 import ServidorCentral.Logica.datatypes.DTPerfil;
@@ -112,6 +113,8 @@ public interface IControllerV2 {
     List<DTCursoResumen> listarCursosInstituto(String nombreInstituto);
     /** Consulta de Curso (Figura 3): curso + ediciones + programas. ReglaNegocioException si el curso no existe. */
     DTCursoDetalle consultarCurso(String nombreCurso);
+    /** "Mis cursos y ediciones" del docente (acceso rapido web). ReglaNegocioException si no es docente. */
+    DTMisCursos misCursosDocente(String nickDocente);
     /** Consulta de Edicion (Figura 4): edicion + instituto + docentes + vigente + estado de la inscripcion de quien mira (null = Visitante). ReglaNegocioException si no existe. */
     DTEdicionDetalle consultarEdicion(String nombreEdicion, String nickQueMira);
     /** Inscripcion a Edicion (web): el estudiante se inscribe a la edicion vigente, hoy, en estado Inscripto. ReglaNegocioException si no puede. */

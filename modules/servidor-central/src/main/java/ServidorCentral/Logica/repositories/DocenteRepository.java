@@ -1,5 +1,6 @@
 package ServidorCentral.Logica.repositories;
 
+import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.usuarios.Docente;
 import ServidorCentral.Persistencia.Conexion;
@@ -87,6 +88,19 @@ public class DocenteRepository {
         try {
             return em.createQuery(
                             "SELECT i.nombre FROM Docente d JOIN d.institutos i where d.nickname = :nick", String.class)
+                    .setParameter("nick", nickname)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    /** Cursos que dicta el docente (es el docente del curso), ordenados por nombre. */
+    public List<Curso> cursosDe(String nickname) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT c FROM Curso c WHERE c.docente.nickname = :nick ORDER BY c.nombre", Curso.class)
                     .setParameter("nick", nickname)
                     .getResultList();
         } finally {
