@@ -141,14 +141,19 @@ no se duplica**; lista de docentes vacía en el web → queda solo el que da el 
 
 ---
 
-## 4.5 Inscripción a Edición de Curso — Estudiante — sin figura
+## 4.5 Inscripción a Edición de Curso (con Ajax) — Estudiante — sin figura
 
 **Letra:** instituto → cursos → elige uno → el sistema muestra los datos básicos de la **edición vigente** del
 curso, si existe → registra la inscripción en la **fecha actual**, en estado **Inscripto**. Si ya está
 inscripto, corrige o cancela.
 
-**Pantalla:** botón **Inscribirme** en la consulta de la edición vigente (Figura 4) → `POST /edicion/inscripcion`
-→ PRG a la edición con flash. Si el curso no tiene edición vigente, la consulta del curso lo dice y no hay botón.
+**Pantalla (con Ajax, pedido del docente):** botón **Inscribirme** en la consulta de la edición vigente
+(Figura 4). Al hacer clic, `js/inscripcion.js` manda un `fetch` POST a `/edicion/inscripcion` con `edicion` y
+**no se recarga la página**: el servlet responde JSON (`{"ok": true, "estado": "Inscripto"}` o
+`{"ok": false, "error": "..."}`) y el botón pasa a "✓ Inscripto" (deshabilitado) o se muestra el error debajo.
+Sin sesión o sin rol Estudiante → 401/403 JSON. Si la página ya se abre con el estudiante inscripto, el botón
+viene en "✓ Inscripto". Si el curso no tiene edición vigente, la consulta del curso lo dice y no hay botón.
+Mismo patrón que el seguimiento (ver el plan, "Ajax").
 
 **Reglas / errores (hoy):**
 - "El estudiante ya está inscripto en esta edición del curso."
@@ -169,6 +174,7 @@ prueba no hay ediciones superpuestas del mismo curso.)
 
 **Tests:** inscripción feliz (estado Inscripto, fecha hoy); doble inscripción; sin cupo; cupo 0 sin límite;
 edición no vigente (todavía no empezó / ya terminó); curso sin vigente → null.
+**Prueba manual:** pestaña Red del navegador: un clic = una petición, la página no se recarga.
 
 ---
 

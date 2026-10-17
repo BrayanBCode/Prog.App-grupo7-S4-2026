@@ -167,13 +167,13 @@ Estado: ✅ hecho · ⬜ pendiente
 |---|---|---|---|---|---|
 | — | ✅ | Inicio de Sesión | Visitante | — | — |
 | — | ✅ | Cierre de Sesión | Est./Doc. | Figura 3 | — |
-| — | ✅ | Alta de Usuario (registro) | Visitante | — | Fase 2 |
+| — | ✅ | Alta de Usuario (registro) — falta el aviso Ajax de nick/correo en uso | Visitante | — | Fase 2 |
 | F3 | ✅ | Consulta de Usuario | Todos | Figura 6 | Fase 3 |
 | 4.1 | ✅ | Consulta de Curso | Todos | Figura 3 | Fase 1 |
 | 4.2 | ⬜ | Consulta de Edición | Todos | Figura 4 | 4.1 |
 | 4.3 | ⬜ | Alta de Curso | Docente | — | 4.1, Fase 2 |
 | 4.4 | ⬜ | Alta de Edición | Docente | — | 4.3 |
-| 4.5 | ⬜ | Inscripción a Edición | Estudiante | — | 4.2 |
+| 4.5 | ⬜ | Inscripción a Edición **(con Ajax)** | Estudiante | — | 4.2 |
 | 4.6 | ⬜ | Seguir Usuario **(con Ajax)** | Est./Doc. | — | Fase 3 |
 | 4.7 | ⬜ | Seleccionar Estudiantes | Docente | Figura 5 | 4.5 |
 | 4.8 | ⬜ | Listar Aceptados | Docente | — | 4.7 |
@@ -189,9 +189,29 @@ Ciclo de cada caso de uso:
 5. Revisar la cobertura (`mvn verify`); no debe bajar.
 6. Merge.
 
-### Seguimiento entre usuarios con Ajax (4.6 y 4.10)
+### Ajax (pedido del docente, por rendimiento)
 
-Pedido del curso: seguir / dejar de seguir se hace **con Ajax**, sin recargar la página del perfil.
+El docente pide usar Ajax para no recargar páginas enteras. Decidido el 17/10 dónde va:
+
+| Dónde | Qué hace sin recargar | Estado |
+|---|---|---|
+| 4.6 / 4.10 Seguir y dejar de seguir | El botón del perfil cambia y se actualiza el contador de seguidores | ⬜ |
+| Alta de Usuario (registro) | Al salir del campo nickname o correo, avisa si ya está en uso | ⬜ |
+| 4.5 Inscripción a edición | "Inscribirme" registra la inscripción y el botón pasa a "✓ Inscripto" | ⬜ |
+
+Patrón común a los tres: servlet que responde **JSON** (`{"ok": true, ...}` o `{"ok": false, "error": "..."}` con el
+mensaje de la `ReglaNegocioException`), JavaScript propio con `fetch` (sin librerías), botón deshabilitado mientras
+espera, y en las rutas Ajax el `AccesoFilter` contesta **401/403 JSON** en vez de redirigir. Se prueba con la
+pestaña Red del navegador: una petición por acción y la página no se recarga.
+
+**Registro, nickname/correo en uso:** `GET /registro/disponible?nickname=X` (o `?mail=X`) → `{"disponible": false,
+"mensaje": "El nickname ya está en uso."}`. Lo llama `registro.js` al salir del campo (`blur`) y marca el campo en
+rojo con ese mensaje, igual que la validación de Bootstrap. Es solo una ayuda: el alta sigue validando en el
+central al enviar. Central: `nicknameDisponible` / `mailDisponible` con tests.
+
+#### Seguimiento entre usuarios (4.6 y 4.10)
+
+Seguir / dejar de seguir se hace **con Ajax**, sin recargar la página del perfil.
 
 - **Servlet** `SeguimientoServlet` en `/usuarios/seguimiento`: recibe por **POST** `nick` y `accion` (`seguir` / `dejar`)
   y responde **JSON**, no una página:
