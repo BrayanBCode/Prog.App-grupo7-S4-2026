@@ -1,6 +1,7 @@
 package ServidorCentral.Persistencia;
 
 import ServidorCentral.Logica.datatypes.DTImagen;
+import ServidorCentral.Logica.excepciones.ReglaNegocioException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -123,17 +124,17 @@ class AlmacenImagenesTest {
 
     @Test
     void rechazaFormatosQueNoSonJpgNiPng() {
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+        ReglaNegocioException e = assertThrows(ReglaNegocioException.class,
                 () -> AlmacenImagenes.guardar(DTImagen.deArchivo(BYTES, "animacion.gif"), AlmacenImagenes.USUARIOS, "x"));
         assertEquals("Formato de imagen no soportado. Use JPG o PNG.", e.getMessage());
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ReglaNegocioException.class,
                 () -> AlmacenImagenes.guardar(DTImagen.deArchivo(BYTES, "sin-extension"), AlmacenImagenes.USUARIOS, "x"));
     }
 
     @Test
     void rechazaImagenesDeMasDe2Mb() {
         byte[] grande = new byte[AlmacenImagenes.TAMANO_MAXIMO + 1];
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+        ReglaNegocioException e = assertThrows(ReglaNegocioException.class,
                 () -> AlmacenImagenes.guardar(new DTImagen(grande, "png"), AlmacenImagenes.USUARIOS, "x"));
         assertEquals("La imagen no puede superar los 2 MB.", e.getMessage());
     }

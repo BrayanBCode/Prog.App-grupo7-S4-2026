@@ -1,6 +1,7 @@
 package ServidorCentral.Persistencia;
 
 import ServidorCentral.Logica.datatypes.DTImagen;
+import ServidorCentral.Logica.excepciones.ReglaNegocioException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -130,10 +131,10 @@ public final class AlmacenImagenes {
             return null;
         }
         if (!EXTENSIONES.contains(imagen.extension())) {
-            throw new IllegalArgumentException("Formato de imagen no soportado. Use JPG o PNG.");
+            throw new ReglaNegocioException("Formato de imagen no soportado. Use JPG o PNG.");
         }
         if (imagen.contenido().length > TAMANO_MAXIMO) {
-            throw new IllegalArgumentException("La imagen no puede superar los 2 MB.");
+            throw new ReglaNegocioException("La imagen no puede superar los 2 MB.");
         }
 
         String relativa = subcarpeta + "/" + nombreArchivo(nombreBase) + "." + imagen.extension();

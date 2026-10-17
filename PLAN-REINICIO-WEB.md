@@ -133,20 +133,26 @@ duplicado (`BaseServlet.imagenTemporal` y `AltaUsuarioServlet.guardarImagenTempo
 
 ## 6. Fase 3 – Consulta de Usuario (½ día)
 
-- [ ] Central: `listarUsuarios()` → `List<DTUsuario>` en una consulta.
-- [ ] Central: `obtenerPerfil(nickConsultado, nickQueMira)` → `DTPerfil` con todo lo que muestra la página;
+- [x] Central: `listarUsuarios()` → `List<DTUsuario>` en una consulta.
+- [x] Central: `obtenerPerfil(nickConsultado, nickQueMira)` → `DTPerfil` con todo lo que muestra la página;
       la regla de qué ve cada rol queda en el central, con sus tests.
-- [ ] Web: `UsuariosServlet` con una llamada para la lista y una para el perfil.
-- [ ] Vista según la **Figura 6** (pestañas del perfil).
-- [ ] Visibilidad acordada:
+- [x] Web: `UsuariosServlet` con una llamada para la lista y una para el perfil.
+- [x] Vista según la **Figura 6** (pestañas del perfil).
+- [x] Visibilidad acordada:
   - Visitante: datos básicos + foto.
   - Estudiante: + inscripciones Inscripto/Aceptada + programas + seguidores (+ Seguir con Ajax, cuando se rehaga 4.6).
   - Docente: + todas las inscripciones, también Rechazadas.
   - El propio estudiante ve sus Rechazadas; el propio docente tiene "Ver aceptados".
+*Hecho 16/10: `PerfilService` (central) decide qué ve cada uno; 11 tests (64 en total, cobertura 40% → 47%).      El Visitante ve solo la pestaña General. Pestañas como la Figura 6: General / Cursos / Programas (+ Seguidores).      **Falta la prueba manual con cada rol** (MySQL estaba apagado).*
 
 ---
 
 ## 7. Fase 4 – Casos de uso de a uno
+
+> **Preparativos (16/10):** fichas de 4.1–4.8 en [`docs/casos-de-uso-fase4.md`](docs/casos-de-uso-fase4.md) (letra,
+> reglas y mensajes de error, qué hay hoy en el central, qué falta, tests y **decisiones pendientes D1–D4**).
+> `ReglaNegocioException` creada (unchecked, extiende `IllegalArgumentException` para no romper los `catch` de
+> Swing) y `BaseServlet.mensajeDeError(e)`; ya la usan Alta de Usuario, Inicio de Sesión y `AlmacenImagenes`.
 
 Orden por dependencias. Cada fila: rama corta → merge a `web-v2`.
 

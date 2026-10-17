@@ -71,11 +71,8 @@ public class AltaUsuarioServlet extends BaseServlet {
                 // Éxito: redirect (patrón Post/Redirect/Get) para que F5 no reenvíe el alta
                 redirigir(req, resp, "/login?registrado=true");
                 return;
-            } catch (IllegalArgumentException e) {
-                error = e.getMessage();   // nick/mail repetido, instituto inexistente, imagen invalida
             } catch (RuntimeException e) {
-                getServletContext().log("Error en alta de usuario", e);
-                error = "No se pudo completar el alta. Intentá nuevamente.";
+                error = mensajeDeError(e);   // nick/mail repetido, instituto inexistente, imagen invalida
             }
         }
 

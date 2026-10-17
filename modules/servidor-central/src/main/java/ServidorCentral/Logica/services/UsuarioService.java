@@ -1,6 +1,7 @@
 package ServidorCentral.Logica.services;
 
 import ServidorCentral.Logica.datatypes.DTImagen;
+import ServidorCentral.Logica.excepciones.ReglaNegocioException;
 import ServidorCentral.Logica.datatypes.DTSesion;
 import ServidorCentral.Logica.datatypes.DTUsuario;
 import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
@@ -50,7 +51,7 @@ public class UsuarioService {
     public void registrar(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, DTImagen imagen, String contraseña) {
 
         if (usuarioRepository.existeNickname(nickname) || usuarioRepository.existeMail(mail)) {
-            throw new IllegalArgumentException("El Nickname o el Email ya se encuentran registrados en el sistema.");
+            throw new ReglaNegocioException("El Nickname o el Email ya se encuentran registrados en el sistema.");
         }
 
         boolean esDocente = instituto != null && !instituto.trim().isEmpty();
@@ -60,7 +61,7 @@ public class UsuarioService {
         if (esDocente) {
             Instituto institutoEntity = institutoRepository.buscarPorNombre(instituto.trim());
             if (institutoEntity == null) {
-                throw new IllegalArgumentException("El instituto seleccionado no existe: " + instituto);
+                throw new ReglaNegocioException("El instituto seleccionado no existe: " + instituto);
             }
         }
 
@@ -92,7 +93,7 @@ public class UsuarioService {
     public DTSesion autenticar(String identificador, String contraseña) {
         if (identificador == null || identificador.trim().isEmpty()
                 || contraseña == null || contraseña.isEmpty()) {
-            throw new IllegalArgumentException(MSG_CREDENCIALES_INVALIDAS);
+            throw new ReglaNegocioException(MSG_CREDENCIALES_INVALIDAS);
         }
 
         Usuario u = usuarioRepository.buscarPorNicknameOMail(identificador.trim());
@@ -103,7 +104,7 @@ public class UsuarioService {
                 guardada.getBytes(java.nio.charset.StandardCharsets.UTF_8),
                 contraseña.getBytes(java.nio.charset.StandardCharsets.UTF_8));
         if (!ok) {
-            throw new IllegalArgumentException(MSG_CREDENCIALES_INVALIDAS);
+            throw new ReglaNegocioException(MSG_CREDENCIALES_INVALIDAS);
         }
 
         Rol rol = (u instanceof Docente) ? Rol.DOCENTE : Rol.ESTUDIANTE;

@@ -4,6 +4,7 @@ import ServidorCentral.Logica.controller.Fabrica;
 import ServidorCentral.Logica.controller.IControllerV2;
 import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.datatypes.DTSesion;
+import ServidorCentral.Logica.excepciones.ReglaNegocioException;
 import ServidorWeb.seguridad.SesionUsuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -62,6 +63,18 @@ public abstract class BaseServlet extends HttpServlet {
     /** Igual que flash, pero se muestra como error. */
     protected static void flashError(HttpServletRequest req, String mensaje) {
         req.getSession(true).setAttribute("flashError", mensaje);
+    }
+
+    /**
+     * Mensaje para mostrarle al usuario cuando falla una llamada al controller: el de la regla de
+     * negocio tal cual, o uno generico (y se loguea) si es un error inesperado.
+     */
+    protected String mensajeDeError(Exception e) {
+        if (e instanceof ReglaNegocioException) {
+            return e.getMessage();
+        }
+        getServletContext().log("Error inesperado en " + getClass().getSimpleName(), e);
+        return "No se pudo completar la operación. Intentá nuevamente.";
     }
 
     protected static void redirigir(HttpServletRequest req, HttpServletResponse resp, String ruta) throws IOException {

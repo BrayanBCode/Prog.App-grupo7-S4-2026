@@ -8,6 +8,7 @@ import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
+import ServidorCentral.Logica.datatypes.DTPerfil;
 import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
 import ServidorCentral.Logica.datatypes.DTProgramaInscripto;
 import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
@@ -87,6 +88,13 @@ public interface IControllerV2 {
     void seleccionarEstudiantes(String nicknameDocente, String nombreEdicion, Map<String, EstadoInscripcion> estados) throws Exception;
 
     // ---------------- Sprint 2: Servidor Web ----------------
+    /** Consulta de Usuario: todos los usuarios con sus datos basicos, ordenados por nickname. */
+    List<DTUsuario> listarUsuarios();
+    /**
+     * Consulta de Usuario: el perfil de {@code nickConsultado} con lo que puede ver {@code nickQueMira}
+     * (null = Visitante). Tira ReglaNegocioException si el usuario no existe.
+     */
+    DTPerfil obtenerPerfil(String nickConsultado, String nickQueMira);
     /** Consulta de Usuario por nickname (el sitio web navega por nickname). null si no existe. */
     DTUsuario obtenerUsuario(String nickname);
     /** Inscripciones a ediciones del estudiante, con su estado (Inscripto / Aceptada / Rechazada). */

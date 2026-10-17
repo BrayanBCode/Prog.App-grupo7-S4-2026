@@ -3,6 +3,7 @@ package ServidorWeb.servlets;
 import ServidorCentral.Logica.controller.Fabrica;
 import ServidorCentral.Logica.controller.IControllerV2;
 import ServidorCentral.Logica.datatypes.DTSesion;
+import ServidorCentral.Logica.excepciones.ReglaNegocioException;
 import ServidorWeb.seguridad.SesionUsuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -44,7 +45,7 @@ public class LoginServlet extends HttpServlet {
             DTSesion sesion = controller.iniciarSesion(usuario, password);
             SesionUsuario.iniciar(req, sesion);
             resp.sendRedirect(req.getContextPath() + "/inicio");
-        } catch (IllegalArgumentException datosInvalidos) {
+        } catch (ReglaNegocioException datosInvalidos) {
             // Advertencia al visitante para que reingrese o cancele (login.js muestra el mensaje)
             resp.sendRedirect(req.getContextPath() + "/login?error=true");
         }

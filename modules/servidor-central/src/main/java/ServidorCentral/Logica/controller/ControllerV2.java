@@ -7,6 +7,7 @@ import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
 import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
+import ServidorCentral.Logica.datatypes.DTPerfil;
 import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
 import ServidorCentral.Logica.datatypes.DTProgramaInscripto;
 import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
@@ -39,6 +40,7 @@ public class ControllerV2 implements IControllerV2 {
     private final EdicionCursoService edicionCursoService;
     private final ProgramaFormacionService programaFormacionService;
     private final SeguimientoService seguimientoService;
+    private final PerfilService perfilService;
     public ControllerV2() {
         Conexion conexion = Conexion.getInstancia();
         // Capa de acceso a datos
@@ -59,6 +61,17 @@ public class ControllerV2 implements IControllerV2 {
         this.edicionCursoService = new EdicionCursoService(edicionCursoRepository, cursoRepository, docenteRepository, estudianteRepository);
         this.programaFormacionService = new ProgramaFormacionService(programaFormacionRepository, cursoRepository, estudianteRepository);
         this.seguimientoService = new SeguimientoService(usuarioRepository, seguimientoRepository);
+        this.perfilService = new PerfilService(usuarioRepository, docenteRepository, estudianteRepository, seguimientoRepository);
+    }
+
+    @Override
+    public List<DTUsuario> listarUsuarios() {
+        return perfilService.listarUsuarios();
+    }
+
+    @Override
+    public DTPerfil obtenerPerfil(String nickConsultado, String nickQueMira) {
+        return perfilService.obtenerPerfil(nickConsultado, nickQueMira);
     }
 
     // ---------------------------------------------------------------
