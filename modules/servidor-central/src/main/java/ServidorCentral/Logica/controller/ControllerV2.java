@@ -19,6 +19,7 @@ import ServidorCentral.Logica.datatypes.DTProgramaResumen;
 import ServidorCentral.Logica.datatypes.DTSesion;
 import ServidorCentral.Logica.datatypes.DTUsuario;
 import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
+import ServidorCentral.Logica.datatypes.OrdenBusqueda;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 import ServidorCentral.Logica.repositories.*;
 import ServidorCentral.Logica.services.*;
@@ -419,8 +420,8 @@ public class ControllerV2 implements IControllerV2 {
     }
 
     @Override
-    public List<DTCursoResumen> buscarCursos(String texto) {
-        return cursoService.buscarCursos(texto);
+    public List<DTCursoResumen> buscarCursos(String texto, OrdenBusqueda orden) {
+        return cursoService.buscarCursos(texto, orden);
     }
 
     @Override

@@ -19,9 +19,23 @@
             <p class="text-body-secondary">No hay cursos que coincidan con la búsqueda.</p>
         </c:when>
         <c:otherwise>
-            <p class="text-body-secondary mb-4">
-                ${cursos.size()} ${cursos.size() == 1 ? 'curso' : 'cursos'}<c:if test="${not empty busqueda}"> con el texto en el nombre o la descripción</c:if>.
-            </p>
+            <%-- Barra de resultados con "Ordenar por" (letra 7.5): al elegir una opcion se vuelve a buscar con ese orden --%>
+            <form class="d-flex justify-content-between align-items-center border rounded px-3 py-2 my-3"
+                  action="${raiz}/buscar" method="GET">
+                <input type="hidden" name="q" value="<c:out value='${busqueda}'/>">
+                <span>${cursos.size()} ${cursos.size() == 1 ? 'resultado' : 'resultados'}</span>
+                <span class="d-flex align-items-center gap-2">
+                    <label for="orden" class="text-nowrap">Ordenar por:</label>
+                    <select id="orden" name="orden" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="" ${empty orden ? 'selected' : ''}>(seleccione una opción)</option>
+                        <option value="ALFABETICO_ASC" ${orden == 'ALFABETICO_ASC' ? 'selected' : ''}>Alfabéticamente (A-Z a-z)</option>
+                        <option value="ALFABETICO_DESC" ${orden == 'ALFABETICO_DESC' ? 'selected' : ''}>Alfabéticamente (Z-A z-a)</option>
+                        <option value="ANIO_ASC" ${orden == 'ANIO_ASC' ? 'selected' : ''}>Año (ascendente)</option>
+                        <option value="ANIO_DESC" ${orden == 'ANIO_DESC' ? 'selected' : ''}>Año (descendente)</option>
+                    </select>
+                    <noscript><button type="submit" class="btn btn-sm btn-outline-secondary">Ordenar</button></noscript>
+                </span>
+            </form>
         </c:otherwise>
     </c:choose>
 </c:if>

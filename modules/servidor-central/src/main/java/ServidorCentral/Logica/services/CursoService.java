@@ -6,6 +6,7 @@ import ServidorCentral.Logica.datatypes.DTCursoResumen;
 import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTImagen;
+import ServidorCentral.Logica.datatypes.OrdenBusqueda;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.cursos.Instituto;
@@ -18,8 +19,11 @@ import ServidorCentral.Logica.repositories.InstitutoRepository;
 import ServidorCentral.Logica.repositories.ProgramaFormacionRepository;
 import ServidorCentral.Persistencia.AlmacenImagenes;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Acá viven las reglas de negocio de Curso: qué es válido y qué no.
@@ -155,10 +159,27 @@ public class CursoService {
 
     /**
      * Busqueda de cursos (requerimiento 7.5, cuadro del cabezal): cursos cuyo nombre o descripcion contienen el
-     * texto, sin distinguir mayusculas. Texto vacio (o null) = todos. Ordenados por nombre.
+     * texto, sin distinguir mayusculas. Texto vacio (o null) = todos. orden null = alfabetico.
      */
-    public List<DTCursoResumen> buscarCursos(String texto) {
-        return aTabla(cursoRepository.buscar(texto == null ? "" : texto.trim()));
+    public List<DTCursoResumen> buscarCursos(String texto, OrdenBusqueda orden) {
+        List<Curso> cursos = new ArrayList<>(cursoRepository.buscar(texto == null ? "" : texto.trim()));
+        Collator alfabetico = Collator.getInstance(Locale.forLanguageTag("es"));
+        alfabetico.setStrength(Collator.PRIMARY); // ignora mayusculas y tildes
+        Comparator<Curso> porNombre = Comparator.comparing(Curso::getNombreC, alfabetico);
+        Comparator<Integer> anios = Comparator.naturalOrder();
+        cursos.sort(switch (orden == null ? OrdenBusqueda.ALFABETICO_ASC : orden) {
+            case ALFABETICO_ASC -> porNombre;
+            case ALFABETICO_DESC -> porNombre.reversed();
+            case ANIO_ASC -> porAnio(anios).thenComparing(porNombre);
+            case ANIO_DESC -> porAnio(anios.reversed()).thenComparing(porNombre);
+        });
+        return aTabla(cursos);
+    }
+
+    /** Por año de registro en el sentido dado; los cursos sin fecha, al final. */
+    private static Comparator<Curso> porAnio(Comparator<Integer> sentido) {
+        return Comparator.comparing((Curso c) -> c.getFechaRegistro() == null ? null : c.getFechaRegistro().getYear(),
+                Comparator.nullsLast(sentido));
     }
 
     public List<DTCursoResumen> obtenerCursosTabla(String nombreInstituto) {

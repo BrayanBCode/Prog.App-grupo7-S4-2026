@@ -64,7 +64,7 @@ Estado: ✅ hecho · 🟡 parcial · ⬜ pendiente
 | 14 | Dejar de Seguir Usuario (con Ajax) | ✅ |
 | 15 | Modificar Datos de Usuario | ✅ (4.11, nombre, apellido y fecha) |
 | 16 | Pestañas en el perfil | ✅ (Fase 3, Figura 6) |
-| 17 | Tests unitarios + JaCoCo ≥ 80% | ✅ 96% de todo `Logica` (233 tests) |
+| 17 | Tests unitarios + JaCoCo ≥ 80% | ✅ 96% de todo `Logica` (237 tests) |
 | 18 | Búsqueda de cursos | ✅ (cuadro en el cabezal) |
 
 ### No corresponden al grupo (en gris)
@@ -170,6 +170,17 @@ de `services/`.
   cabezal), para todos los roles (`BUSCAR_CURSOS_Y_PROGRAMAS`). Va a `/buscar?q=...` (`BusquedaServlet`) y
   `curso/busqueda.jsp` muestra las mismas tarjetas que la lista de cursos de un instituto. Cada tarjeta lleva a la
   Consulta de Curso.
+- **Ordenar por (17/10, figura de la página de resultados):** arriba de las tarjetas, una barra con "N resultados" y
+  el desplegable **Ordenar por:** "(seleccione una opción)" / "Alfabéticamente (A-Z a-z)" / "Alfabéticamente (Z-A z-a)"
+  / "Año (ascendente)" / "Año (descendente)". La figura de la letra trae solo A-Z y año descendente; los dos sentidos
+  inversos se agregaron a pedido del grupo. Al elegir, se vuelve a buscar con `&orden=` `ALFABETICO_ASC`,
+  `ALFABETICO_DESC`, `ANIO_ASC` o `ANIO_DESC` (sin JavaScript aparece un botón Ordenar).
+  Central: `buscarCursos(texto, OrdenBusqueda)`; sin orden (o con uno que no existe) = alfabético A-Z.
+  - Alfabético: por nombre, sin distinguir mayúsculas ni tildes (`Collator` en español).
+  - Año: **año de registro del curso** (es la única fecha que tiene un curso); dentro del mismo año siempre A-Z; los
+    cursos sin fecha van al final en los dos sentidos.
+  - Tests: `BusquedaCursosTest` (los cuatro órdenes, mayúsculas, tildes, mismo año, sin fecha) y `ControllerV2Test`
+    (237 tests). Probado en Tomcat: los cuatro órdenes coinciden con la base.
 
 ### Prueba manual de P3–P5 ✅ (17/10, Tomcat 10.1 + MySQL en Docker)
 
@@ -184,7 +195,7 @@ de `services/`.
 - **Docente (house):** sin grupo INSCRIPCIONES en el lateral; `/inscripciones/resultados` → inicio. Lápices en su
   perfil y modificación correcta (revertida). En el perfil de otro usuario no hay lápices. La búsqueda anda igual.
 - **Bug encontrado y corregido:** buscar `%` (o `_`) devolvía todos los cursos, porque eran comodines del `LIKE`.
-  Ahora se escapan (`ESCAPE '!'`) y se buscan como texto. Test nuevo en `CursoYDocenteRepositoryTest` (233 tests).
+  Ahora se escapan (`ESCAPE '!'`) y se buscan como texto. Test nuevo en `CursoYDocenteRepositoryTest` (237 tests).
 - **Ojo al probar:** (1) si la base de Docker se creó antes del Sprint 2, faltan estados, contraseñas e imágenes:
   correr `db/init/03-datos-sprint2.sql` (se puede volver a correr). (2) Hacer *Clean and Build*: un WAR armado sin
   `clean` traía el `EdicionesServlet` viejo y Tomcat no levantaba (dos servlets en `/ediciones`).

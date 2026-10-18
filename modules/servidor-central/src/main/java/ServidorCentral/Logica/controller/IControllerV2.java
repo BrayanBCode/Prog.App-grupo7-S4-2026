@@ -20,6 +20,7 @@ import ServidorCentral.Logica.datatypes.DTProgramaResumen;
 import ServidorCentral.Logica.datatypes.DTSesion;
 import ServidorCentral.Logica.datatypes.DTUsuario;
 import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
+import ServidorCentral.Logica.datatypes.OrdenBusqueda;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 
 import java.time.LocalDate;
@@ -149,8 +150,8 @@ public interface IControllerV2 {
      * cambian). ReglaNegocioException con el mensaje para el usuario.
      */
     void modificarDatosUsuario(String nickname, String nombre, String apellido, LocalDate fechaNac);
-    /** Busqueda (7.5): cursos cuyo nombre o descripcion contienen el texto; vacio = todos. */
-    List<DTCursoResumen> buscarCursos(String texto);
+    /** Busqueda (7.5): cursos cuyo nombre o descripcion contienen el texto (vacio = todos), en el orden elegido (null = alfabetico). */
+    List<DTCursoResumen> buscarCursos(String texto, OrdenBusqueda orden);
     /** Programas de formacion a los que se inscribio el estudiante. */
     List<DTProgramaInscripto> listarProgramasEstudiante(String nickname);
     /** Alta de Curso (Servidor Web) con imagen opcional (ruta de un archivo local JPG/PNG, o null). */

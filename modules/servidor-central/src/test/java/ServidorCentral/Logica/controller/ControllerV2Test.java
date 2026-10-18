@@ -1,5 +1,6 @@
 package ServidorCentral.Logica.controller;
 
+import ServidorCentral.Logica.datatypes.OrdenBusqueda;
 import ServidorCentral.Logica.datatypes.*;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 import ServidorCentral.Logica.services.*;
@@ -97,7 +98,7 @@ class ControllerV2Test {
                 @Override
                 public DTCurso obtenerCurso(String c) { anotar("obtenerCurso " + c); return null; }
                 @Override
-                public List<DTCursoResumen> buscarCursos(String t) { anotar("buscarCursos " + t); return List.of(); }
+                public List<DTCursoResumen> buscarCursos(String t, OrdenBusqueda o) { anotar("buscarCursos " + t + " " + o); return List.of(); }
             },
             new InstitutoService(null) {
                 @Override
@@ -201,10 +202,10 @@ class ControllerV2Test {
     void opcionalesWeb_resultadosModificarYBuscar_vanASusServicios() {
         controller.resultadosInscripciones("roro");
         controller.modificarDatosUsuario("roro", "Rodri", "Cotelo", F1);
-        controller.buscarCursos("micro");
+        controller.buscarCursos("micro", OrdenBusqueda.ANIO_DESC);
 
         assertEquals(List.of("resultadosInscripciones roro", "modificarDatos roro Rodri Cotelo 2026-03-01",
-                "buscarCursos micro"), llamadas);
+                "buscarCursos micro ANIO_DESC"), llamadas);
     }
 
     @Test
