@@ -45,6 +45,25 @@ public class SeguimientoRepository {
         }
     }
 
+    public void eliminar(String seguidor, String seguido) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createQuery("DELETE FROM Seguimiento s WHERE s.seguidor = :a AND s.seguido = :b")
+                    .setParameter("a", seguidor)
+                    .setParameter("b", seguido)
+                    .executeUpdate();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException(e);
+        } finally {
+            em.close();
+        }
+    }
+
     /** Nicknames de los usuarios que {@code nickname} sigue. */
     public List<String> seguidosDe(String nickname) {
         EntityManager em = conexion.getEntityManager();

@@ -2,80 +2,77 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/WEB-INF/views/comun/inicio-pagina.jspf" %>
 
-<h1>Alta de edición de curso</h1>
+<%-- Alta de Edicion de Curso (Docente). El curso ya viene elegido desde su pagina. El error del central
+     (${error}) lo muestra el marco; los de cada campo, la validacion de Bootstrap (alta-edicion.js).
+     El docente con sesion siempre participa (D3): su casilla viene marcada y no se puede desmarcar. --%>
+<c:url var="uCurso" value="/cursos"><c:param name="nombre" value="${cursoAlta.nombre()}"/></c:url>
 
-<%-- Paso 1: el docente indica el instituto y el sistema lista sus cursos --%>
-<form class="formulario fila-campos" method="get" action="${raiz}/edicion/alta">
-    <div class="form-group">
-        <label for="instituto">Instituto que brinda el curso</label>
-        <select id="instituto" name="instituto" onchange="this.form.submit()">
-            <option value="">-- Seleccioná --</option>
-            <c:forEach var="inst" items="${institutosMenu}">
-                <option value="<c:out value='${inst}'/>" ${inst == param.instituto ? 'selected' : ''}><c:out value="${inst}"/></option>
+<div style="max-width: 640px;">
+    <h1 class="h3 mb-1">Crear edición</h1>
+    <p class="text-body-secondary mb-4">
+        Curso <a href="${uCurso}"><c:out value="${cursoAlta.nombre()}"/></a> · <c:out value="${cursoAlta.instituto()}"/>
+    </p>
+
+    <form id="alta-edicion-form" action="${raiz}/edicion/alta" method="POST" enctype="multipart/form-data" novalidate>
+        <input type="hidden" name="curso" value="<c:out value='${cursoAlta.nombre()}'/>">
+
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre de la edición *</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" required maxlength="200"
+                   value="<c:out value='${param.nombre}'/>">
+            <div class="invalid-feedback">Ingresá el nombre de la edición.</div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-sm-4">
+                <label for="fechaInicio" class="form-label">Fecha de inicio *</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" class="form-control" required
+                       value="<c:out value='${param.fechaInicio}'/>">
+                <div class="invalid-feedback">Elegí la fecha de inicio.</div>
+            </div>
+            <div class="col-sm-4">
+                <label for="fechaFin" class="form-label">Fecha de fin *</label>
+                <input type="date" id="fechaFin" name="fechaFin" class="form-control" required
+                       value="<c:out value='${param.fechaFin}'/>">
+                <div class="invalid-feedback">Elegí una fecha de fin igual o posterior al inicio.</div>
+            </div>
+            <div class="col-sm-4">
+                <label for="cupo" class="form-label">Cupo</label>
+                <input type="number" id="cupo" name="cupo" class="form-control" min="1" step="1" placeholder="Sin límite"
+                       value="<c:out value='${param.cupo}'/>">
+                <div class="invalid-feedback">Un número mayor que cero, o vacío.</div>
+            </div>
+        </div>
+
+        <fieldset class="mb-3">
+            <legend class="form-label fs-6 mb-1">Docentes que participan</legend>
+            <p class="form-text mt-0 mb-2">Vos siempre participás en la edición que creás. Podés sumar otros docentes del instituto.</p>
+            <c:forEach var="d" items="${docentesInstituto}">
+                <c:set var="yo" value="${d.nickname() == usuarioActual.nickname}"/>
+                <c:set var="elegido" value="${yo}"/>
+                <c:forEach var="n" items="${docentesElegidos}"><c:if test="${n == d.nickname()}"><c:set var="elegido" value="${true}"/></c:if></c:forEach>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="docentes" id="doc-${d.nickname()}"
+                           value="<c:out value='${d.nickname()}'/>" ${elegido ? 'checked' : ''} ${yo ? 'disabled' : ''}>
+                    <label class="form-check-label" for="doc-${d.nickname()}">
+                        <c:out value="${d.nombre()} ${d.apellido()}"/> (<c:out value="${d.nickname()}"/>)
+                        <c:if test="${yo}"><span class="text-body-secondary small">— vos</span></c:if>
+                    </label>
+                </div>
             </c:forEach>
-        </select>
-    </div>
-    <noscript><button type="submit" class="btn btn-secondary">Ver cursos</button></noscript>
-</form>
+        </fieldset>
 
-<c:if test="${not empty param.instituto}">
-    <c:choose>
-        <c:when test="${empty cursosInstituto}">
-            <p class="tenue">El instituto no tiene cursos.</p>
-        </c:when>
-        <c:otherwise>
-            <%-- Paso 2: datos de la edicion --%>
-            <form class="formulario" method="post" action="${raiz}/edicion/alta" enctype="multipart/form-data">
-                <input type="hidden" name="instituto" value="<c:out value='${param.instituto}'/>">
-                <div class="form-group">
-                    <label for="curso">Curso *</label>
-                    <select id="curso" name="curso" required>
-                        <c:forEach var="cur" items="${cursosInstituto}">
-                            <option value="<c:out value='${cur}'/>" ${cur == param.curso ? 'selected' : ''}><c:out value="${cur}"/></option>
-                        </c:forEach>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="nombre">Nombre de la edición *</label>
-                    <input type="text" id="nombre" name="nombre" required value="<c:out value='${param.nombre}'/>">
-                </div>
-                <div class="fila-campos">
-                    <div class="form-group">
-                        <label for="fechaInicio">Fecha de inicio *</label>
-                        <input type="date" id="fechaInicio" name="fechaInicio" required value="<c:out value='${param.fechaInicio}'/>">
-                    </div>
-                    <div class="form-group">
-                        <label for="fechaFin">Fecha de fin *</label>
-                        <input type="date" id="fechaFin" name="fechaFin" required value="<c:out value='${param.fechaFin}'/>">
-                    </div>
-                    <div class="form-group">
-                        <label for="cupo">Cupo (opcional)</label>
-                        <input type="number" id="cupo" name="cupo" min="1" value="<c:out value='${param.cupo}'/>">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="docentes">Docentes que participan * (Ctrl+click para elegir varios)</label>
-                    <select id="docentes" name="docentes" multiple size="6" required>
-                        <c:forEach var="d" items="${docentes}">
-                            <c:set var="elegido" value="false"/>
-                            <c:forEach var="x" items="${docentesElegidos}"><c:if test="${x == d.nickname()}"><c:set var="elegido" value="true"/></c:if></c:forEach>
-                            <option value="<c:out value='${d.nickname()}'/>" ${elegido ? 'selected' : ''}>
-                                <c:out value="${d.nombre()} ${d.apellido()} (${d.nickname()})"/>
-                            </option>
-                        </c:forEach>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="imagen">Imagen (opcional, JPG o PNG)</label>
-                    <input type="file" id="imagen" name="imagen" accept=".jpg,.jpeg,.png">
-                </div>
-                <div class="button-group">
-                    <button type="submit" class="btn btn-primary">Dar de alta</button>
-                    <a href="${raiz}/inicio" class="btn btn-secondary">Cancelar</a>
-                </div>
-            </form>
-        </c:otherwise>
-    </c:choose>
-</c:if>
+        <div class="mb-4">
+            <label for="imagen" class="form-label">Imagen (opcional, JPG o PNG, hasta 2 MB)</label>
+            <input type="file" id="imagen" name="imagen" class="form-control" accept=".jpg,.jpeg,.png">
+            <div class="invalid-feedback">La imagen debe ser JPG o PNG y pesar hasta 2 MB.</div>
+        </div>
 
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Crear edición</button>
+            <a href="${uCurso}" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<script src="${raiz}/js/alta-edicion.js"></script>
 <%@ include file="/WEB-INF/views/comun/fin-pagina.jspf" %>

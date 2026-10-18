@@ -1,5 +1,7 @@
 package ServidorCentral.Logica.services;
 
+import ServidorCentral.Logica.datatypes.DTImagen;
+import ServidorCentral.Logica.excepciones.ReglaNegocioException;
 import ServidorCentral.Logica.datatypes.DTSesion;
 import ServidorCentral.Logica.datatypes.DTUsuario;
 import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
@@ -42,9 +44,14 @@ public class UsuarioService {
      * IController.altaUsuario no declara throws.
      */
     public void registrar(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen, String contraseña) {
+        registrar(nickname, mail, nombre, apellido, fechaNac, instituto, AlmacenImagenes.leer(imagen), contraseña);
+    }
+
+    /** Igual que el anterior, con la imagen ya leida (Servidor Web). */
+    public void registrar(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, DTImagen imagen, String contraseña) {
 
         if (usuarioRepository.existeNickname(nickname) || usuarioRepository.existeMail(mail)) {
-            throw new IllegalArgumentException("El Nickname o el Email ya se encuentran registrados en el sistema.");
+            throw new ReglaNegocioException("El Nickname o el Email ya se encuentran registrados en el sistema.");
         }
 
         boolean esDocente = instituto != null && !instituto.trim().isEmpty();
@@ -54,7 +61,7 @@ public class UsuarioService {
         if (esDocente) {
             Instituto institutoEntity = institutoRepository.buscarPorNombre(instituto.trim());
             if (institutoEntity == null) {
-                throw new IllegalArgumentException("El instituto seleccionado no existe: " + instituto);
+                throw new ReglaNegocioException("El instituto seleccionado no existe: " + instituto);
             }
         }
 
@@ -86,7 +93,7 @@ public class UsuarioService {
     public DTSesion autenticar(String identificador, String contraseña) {
         if (identificador == null || identificador.trim().isEmpty()
                 || contraseña == null || contraseña.isEmpty()) {
-            throw new IllegalArgumentException(MSG_CREDENCIALES_INVALIDAS);
+            throw new ReglaNegocioException(MSG_CREDENCIALES_INVALIDAS);
         }
 
         Usuario u = usuarioRepository.buscarPorNicknameOMail(identificador.trim());
@@ -97,7 +104,7 @@ public class UsuarioService {
                 guardada.getBytes(java.nio.charset.StandardCharsets.UTF_8),
                 contraseña.getBytes(java.nio.charset.StandardCharsets.UTF_8));
         if (!ok) {
-            throw new IllegalArgumentException(MSG_CREDENCIALES_INVALIDAS);
+            throw new ReglaNegocioException(MSG_CREDENCIALES_INVALIDAS);
         }
 
         Rol rol = (u instanceof Docente) ? Rol.DOCENTE : Rol.ESTUDIANTE;
@@ -114,6 +121,32 @@ public class UsuarioService {
             throw new Exception("El usuario no existe (puede haber sido eliminado por otro administrador).");
         }
         usuarioRepository.actualizarDatosBasicos(nickname, mail, nombre, apellido, fechaNac);
+    }
+
+    /**
+     * Caso de uso "Modificar Datos de Usuario" (4.11, web): el usuario edita sus datos basicos, menos nickname y
+     * correo (son la clave). Como en la Figura 6: nombre, apellido y fecha de nacimiento.
+     *
+     * @throws ReglaNegocioException con el mensaje para el usuario si algun dato no es valido
+     */
+    public void modificarDatos(String nickname, String nombre, String apellido, LocalDate fechaNac) {
+        Usuario u = (nickname == null || nickname.isBlank()) ? null : usuarioRepository.buscarPorNicknameOMail(nickname.trim());
+        if (u == null || !u.getNickname().equals(nickname.trim())) {
+            throw new ReglaNegocioException("El usuario no existe.");
+        }
+        if (nombre == null || nombre.isBlank()) {
+            throw new ReglaNegocioException("El nombre es obligatorio.");
+        }
+        if (apellido == null || apellido.isBlank()) {
+            throw new ReglaNegocioException("El apellido es obligatorio.");
+        }
+        if (fechaNac == null) {
+            throw new ReglaNegocioException("La fecha de nacimiento es obligatoria.");
+        }
+        if (!fechaNac.isBefore(LocalDate.now())) {
+            throw new ReglaNegocioException("La fecha de nacimiento tiene que ser anterior a hoy.");
+        }
+        usuarioRepository.actualizarDatosBasicos(u.getNickname(), u.getMail(), nombre.trim(), apellido.trim(), fechaNac);
     }
 
     /**
@@ -136,6 +169,19 @@ public class UsuarioService {
 
     public List<DTUsuarioResumen> listarUsuariosTabla() {
         return aTabla(usuarioRepository.listarTodos());
+    }
+
+    /**
+     * Alta de Usuario (web, aviso Ajax mientras se completa el formulario): true si nadie usa ese nickname.
+     * Es solo una ayuda: el alta vuelve a controlarlo al registrar.
+     */
+    public boolean nicknameDisponible(String nickname) {
+        return nickname != null && !nickname.isBlank() && !usuarioRepository.existeNickname(nickname.trim());
+    }
+
+    /** Igual que nicknameDisponible, para el correo electronico. */
+    public boolean mailDisponible(String mail) {
+        return mail != null && !mail.isBlank() && !usuarioRepository.existeMail(mail.trim());
     }
 
     public boolean esDocente(String nickname) {
@@ -174,7 +220,7 @@ public class UsuarioService {
      *
      * @return la ruta relativa a persistir, o null si no se eligio imagen.
      */
-    private String guardarImagenUsuario(String nickname, String rutaImagenOrigen) {
-        return AlmacenImagenes.guardar(rutaImagenOrigen, AlmacenImagenes.USUARIOS, nickname);
+    private String guardarImagenUsuario(String nickname, DTImagen imagen) {
+        return AlmacenImagenes.guardar(imagen, AlmacenImagenes.USUARIOS, nickname);
     }
 }

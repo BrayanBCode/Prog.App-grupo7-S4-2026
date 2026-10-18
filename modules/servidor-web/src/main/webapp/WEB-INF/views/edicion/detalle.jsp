@@ -3,43 +3,73 @@
 <%@ taglib prefix="e" tagdir="/WEB-INF/tags" %>
 <%@ include file="/WEB-INF/views/comun/inicio-pagina.jspf" %>
 
-<%-- Consulta de Edicion de Curso (Figura 4) --%>
-<div class="ficha">
-    <e:imagen ruta="${edicion.imagen()}" alt="${edicion.nombre()}" clase="ficha-img"/>
+<%-- Consulta de Edicion de Curso (Figura 4): imagen, nombre e instituto con los links "Inscribirme" y
+     "Ver informacion del Curso"; debajo fechas, cupo, publicacion y los docentes asignados. --%>
+<c:set var="ed" value="${detalleEdicion.edicion()}"/>
+
+<div class="d-flex flex-column flex-sm-row gap-3 mb-4">
+    <e:imagen ruta="${ed.imagen()}" alt="${ed.nombre()}" clase="img-curso rounded"/>
     <div>
-        <h1><c:out value="${edicion.nombre()}"/></h1>
-        <p class="tenue"><c:out value="${curso.instituto()}"/></p>
-        <c:url var="uCurso" value="/cursos"><c:param name="nombre" value="${curso.nombre()}"/></c:url>
-        <p><a href="${uCurso}">Ver información del curso</a></p>
-        <c:if test="${puede.INSCRIPCION_EDICION_CURSO and esVigente}">
-            <c:url var="uInsc" value="/edicion/inscripcion"><c:param name="curso" value="${curso.nombre()}"/></c:url>
-            <p><a class="btn btn-primary btn-auto" href="${uInsc}">Inscribirme</a></p>
+        <h1 class="h3 mb-1"><c:out value="${ed.nombre()}"/></h1>
+        <p class="text-body-secondary mb-2"><c:out value="${detalleEdicion.instituto()}"/>
+            <c:if test="${detalleEdicion.vigente()}"><span class="badge text-bg-success ms-1">Vigente</span></c:if>
+        </p>
+        <%-- Inscripcion a Edicion (4.5, con Ajax): solo sobre la edicion vigente --%>
+        <c:if test="${detalleEdicion.vigente()}">
+            <div class="mb-2" id="zona-inscripcion">
+                <c:choose>
+                    <c:when test="${puede.INSCRIPCION_EDICION_CURSO and not empty detalleEdicion.miInscripcion()}">
+                        <span class="small">Tu inscripción:</span> <e:estado valor="${detalleEdicion.miInscripcion()}"/>
+                    </c:when>
+                    <c:when test="${puede.INSCRIPCION_EDICION_CURSO}">
+                        <button type="button" id="btn-inscribirme" class="btn btn-primary btn-sm"
+                                data-edicion="<c:out value='${ed.nombre()}'/>" data-url="${raiz}/edicion/inscripcion">Inscribirme</button>
+                        <div id="inscripcion-mensaje" class="small mt-1" role="status" aria-live="polite"></div>
+                    </c:when>
+                    <c:when test="${not rol.autenticado}">
+                        <a href="${raiz}/login">Inscribirme</a> <span class="small text-body-secondary">(iniciá sesión como estudiante)</span>
+                    </c:when>
+                </c:choose>
+            </div>
+        </c:if>
+        <c:url var="uCurso" value="/cursos"><c:param name="nombre" value="${ed.nombreCurso()}"/></c:url>
+        <a href="${uCurso}">Ver información del Curso</a>
+
+        <%-- Docente que participa en la edicion: Seleccionar estudiantes (4.7, solo la vigente) y Ver aceptados (4.8) --%>
+        <c:set var="participo" value="${false}"/>
+        <c:forEach var="d" items="${detalleEdicion.docentes()}">
+            <c:if test="${d.nickname() == usuarioActual.nickname}"><c:set var="participo" value="${true}"/></c:if>
+        </c:forEach>
+        <c:if test="${participo}">
+            <div class="mt-2 d-flex gap-2">
+                <c:if test="${puede.SELECCIONAR_ESTUDIANTES_EDICION and detalleEdicion.vigente()}">
+                    <c:url var="uSel" value="/edicion/seleccionar"><c:param name="edicion" value="${ed.nombre()}"/></c:url>
+                    <a class="btn btn-outline-primary btn-sm" href="${uSel}">Seleccionar estudiantes</a>
+                </c:if>
+                <c:if test="${puede.LISTAR_ACEPTADOS_EDICION}">
+                    <c:url var="uAcep" value="/edicion/aceptados"><c:param name="edicion" value="${ed.nombre()}"/></c:url>
+                    <a class="btn btn-outline-secondary btn-sm" href="${uAcep}">Ver aceptados</a>
+                </c:if>
+            </div>
         </c:if>
     </div>
 </div>
 
-<dl class="datos">
-    <dt>Fecha de inicio</dt><dd><e:fecha valor="${edicion.fechaInicio()}"/></dd>
-    <dt>Fecha de fin</dt><dd><e:fecha valor="${edicion.fechaFin()}"/></dd>
-    <dt>Cupo</dt><dd><c:out value="${edicion.cupo() > 0 ? edicion.cupo() : 'Sin límite'}"/></dd>
-    <dt>Fecha de publicación</dt><dd><e:fecha valor="${edicion.fechaPublicacion()}"/></dd>
+<dl class="row mb-4" style="max-width: 480px;">
+    <dt class="col-sm-6">Fecha inicio</dt><dd class="col-sm-6"><e:fecha valor="${ed.fechaInicio()}"/></dd>
+    <dt class="col-sm-6">Fecha fin</dt><dd class="col-sm-6"><e:fecha valor="${ed.fechaFin()}"/></dd>
+    <dt class="col-sm-6">Cupo</dt><dd class="col-sm-6">${ed.cupo() <= 0 ? 'Sin límite' : ed.cupo()}</dd>
+    <dt class="col-sm-6">Fecha publicación</dt><dd class="col-sm-6"><e:fecha valor="${ed.fechaPublicacion()}"/></dd>
 </dl>
 
-<h2>Docentes</h2>
-<ul class="lista">
-    <c:forEach var="d" items="${docentes}">
-        <c:url var="u" value="/usuarios"><c:param name="nick" value="${d.nickname()}"/></c:url>
-        <li><c:out value="${d.nombre()} ${d.apellido()}"/> - <a href="${u}"><c:out value="${d.nickname()}"/></a></li>
+<h2 class="h6 fw-bold">Docentes</h2>
+<c:if test="${empty detalleEdicion.docentes()}"><p class="text-body-secondary">No tiene docentes asignados.</p></c:if>
+<ul class="list-unstyled mb-0">
+    <c:forEach var="d" items="${detalleEdicion.docentes()}">
+        <c:url var="uDoc" value="/usuarios"><c:param name="nick" value="${d.nickname()}"/></c:url>
+        <li class="mb-1">› <c:out value="${d.nombre()} ${d.apellido()}"/> - <a href="${uDoc}"><c:out value="${d.nickname()}"/></a></li>
     </c:forEach>
 </ul>
 
-<c:if test="${participa}">
-    <h2>Opciones del docente</h2>
-    <p>
-        <c:url var="uSel" value="/edicion/seleccionar"><c:param name="edicion" value="${edicion.nombre()}"/></c:url>
-        <c:url var="uAcep" value="/edicion/aceptados"><c:param name="edicion" value="${edicion.nombre()}"/></c:url>
-        <a href="${uSel}">Seleccionar estudiantes</a> &middot; <a href="${uAcep}">Ver aceptados</a>
-    </p>
-</c:if>
-
+<script src="${raiz}/js/inscripcion.js"></script>
 <%@ include file="/WEB-INF/views/comun/fin-pagina.jspf" %>

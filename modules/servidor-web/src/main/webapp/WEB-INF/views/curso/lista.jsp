@@ -3,34 +3,39 @@
 <%@ taglib prefix="e" tagdir="/WEB-INF/tags" %>
 <%@ include file="/WEB-INF/views/comun/inicio-pagina.jspf" %>
 
-<h1><c:out value="${titulo}"/></h1>
-
+<%-- Consulta de Curso, paso 1: el usuario eligio un instituto en el lateral y ve sus cursos. --%>
 <c:choose>
-    <c:when test="${elegir}">
-        <%-- Primer paso de Consulta de Curso: el usuario indica el instituto --%>
-        <p>Elegí un instituto para ver sus cursos.</p>
-        <h2>Institutos</h2>
-        <div class="chips">
-            <c:forEach var="inst" items="${institutosMenu}">
-                <c:url var="u" value="/cursos"><c:param name="instituto" value="${inst}"/></c:url>
-                <a class="chip" href="${u}"><c:out value="${inst}"/></a>
-            </c:forEach>
-        </div>
+    <c:when test="${empty instituto}">
+        <h1 class="h3 mb-1">Cursos</h1>
+        <p class="text-body-secondary mb-0">Elegí un instituto en el menú de la izquierda para ver sus cursos.</p>
     </c:when>
     <c:otherwise>
-        <h2>Cursos</h2>
-        <c:if test="${empty cursos}"><p class="tenue">No hay cursos asociados.</p></c:if>
-        <div class="tarjetas">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+            <h1 class="h3 mb-1">Cursos de <c:out value="${instituto}"/></h1>
+            <c:if test="${puede.ALTA_CURSO}">
+                <c:url var="uAlta" value="/curso/alta"><c:param name="instituto" value="${instituto}"/></c:url>
+                <a class="btn btn-outline-primary btn-sm text-nowrap" href="${uAlta}">+ Crear curso</a>
+            </c:if>
+        </div>
+        <p class="text-body-secondary mb-4">Elegí un curso para ver sus datos, ediciones y programas.</p>
+
+        <c:if test="${empty cursos}">
+            <p class="text-body-secondary">Este instituto todavía no tiene cursos.</p>
+        </c:if>
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3">
             <c:forEach var="cur" items="${cursos}">
-                <c:url var="u" value="/cursos"><c:param name="nombre" value="${cur.nombre()}"/></c:url>
-                <a class="tarjeta" href="${u}">
-                    <e:imagen ruta="${cur.imagen()}" alt="${cur.nombre()}" clase="tarjeta-img"/>
-                    <span class="tarjeta-cuerpo">
-                        <strong><c:out value="${cur.nombre()}"/></strong>
-                        <span class="tenue"><c:out value="${cur.instituto()}"/></span>
-                        <span class="recorte"><c:out value="${cur.descripcion()}"/></span>
-                    </span>
-                </a>
+                <c:url var="url" value="/cursos"><c:param name="nombre" value="${cur.nombre()}"/></c:url>
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <e:imagen ruta="${cur.imagen()}" alt="${cur.nombre()}" clase="card-img-top img-tarjeta"/>
+                        <div class="card-body">
+                            <%-- stretched-link hace clickeable toda la tarjeta --%>
+                            <a class="stretched-link fw-semibold text-decoration-none" href="${url}"><c:out value="${cur.nombre()}"/></a>
+                            <p class="small text-body-secondary mb-0 mt-1 recorte"><c:out value="${cur.descripcion()}"/></p>
+                        </div>
+                    </div>
+                </div>
             </c:forEach>
         </div>
     </c:otherwise>

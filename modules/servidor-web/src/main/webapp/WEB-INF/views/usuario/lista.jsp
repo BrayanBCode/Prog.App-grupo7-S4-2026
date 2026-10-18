@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="e" tagdir="/WEB-INF/tags" %>
 <c:set var="titulo" value="Usuarios"/>
-<c:set var="usarBootstrap" value="${true}"/>
 <%@ include file="/WEB-INF/views/comun/inicio-pagina.jspf" %>
 
 <h1 class="h3 mb-1">Usuarios</h1>

@@ -75,6 +75,14 @@
             <version>5.11.0</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Pruebas de los repositories: base H2 en memoria (se crea y se descarta en cada test, no toca MySQL) -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.2.224</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -101,6 +109,34 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                    </execution>
+                    <!-- Meta de la letra: 80% de sentencias en TODO el paquete Logica (repositories
+                         incluido: sus tests usan una base H2 en memoria). Por ahora solo avisa
+                         (haltOnFailure=false). -->
+                    <execution>
+                        <id>check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <haltOnFailure>false</haltOnFailure>
+                            <includes>
+                                <include>ServidorCentral/Logica/**</include>
+                            </includes>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.80</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

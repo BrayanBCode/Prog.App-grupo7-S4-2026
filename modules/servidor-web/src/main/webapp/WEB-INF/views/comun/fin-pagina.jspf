@@ -1,8 +1,8 @@
 <%@ page pageEncoding="UTF-8" %>
-    </main>
+            </div>
+        </main>
+    </div>
 </div>
-<c:if test="${usarBootstrap}">
-    <script src="${pageContext.request.contextPath}/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
-</c:if>
+<script src="${pageContext.request.contextPath}/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

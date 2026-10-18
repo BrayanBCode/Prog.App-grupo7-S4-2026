@@ -1,5 +1,7 @@
 package ServidorCentral.Logica.repositories;
 
+import ServidorCentral.Logica.entities.cursos.Curso;
+import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.usuarios.Docente;
 import ServidorCentral.Persistencia.Conexion;
 
@@ -93,6 +95,19 @@ public class DocenteRepository {
         }
     }
 
+    /** Cursos que dicta el docente (es el docente del curso), ordenados por nombre. */
+    public List<Curso> cursosDe(String nickname) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT c FROM Curso c WHERE c.docente.nickname = :nick ORDER BY c.nombre", Curso.class)
+                    .setParameter("nick", nickname)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
     public List<String> nombresCursos(String nickname) {
         EntityManager em = conexion.getEntityManager();
         try {
@@ -110,6 +125,20 @@ public class DocenteRepository {
         try {
             return em.createQuery(
                             "SELECT DISTINCT e.nombre FROM EdicionCurso e JOIN e.docentes d WHERE d.nickname = :nick", String.class)
+                    .setParameter("nick", nickname)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    /** Ediciones en las que participa el docente, con su curso (una sola consulta). */
+    public List<EdicionCurso> edicionesDe(String nickname) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT DISTINCT e FROM EdicionCurso e JOIN e.docentes d JOIN FETCH e.curso WHERE d.nickname = :nick",
+                            EdicionCurso.class)
                     .setParameter("nick", nickname)
                     .getResultList();
         } finally {

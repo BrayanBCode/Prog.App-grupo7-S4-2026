@@ -1,5 +1,6 @@
 package ServidorCentral.Logica.services;
 
+import ServidorCentral.Logica.excepciones.ReglaNegocioException;
 import ServidorCentral.Logica.repositories.SeguimientoRepository;
 import ServidorCentral.Logica.repositories.UsuarioRepository;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,11 @@ class SeguimientoServiceTest {
             @Override
             public void guardar(String seguidor, String seguido) {
                 guardados.add(seguidor + ">" + seguido);
+            }
+
+            @Override
+            public void eliminar(String seguidor, String seguido) {
+                guardados.remove(seguidor + ">" + seguido);
             }
 
             @Override
@@ -113,5 +119,62 @@ class SeguimientoServiceTest {
         assertEquals(List.of("chechi", "benkenobi"), s.listarSeguidos("weiss"));
         assertEquals(List.of("weiss", "chechi"), s.listarSeguidores("benkenobi"));
         assertTrue(s.listarSeguidores("weiss").isEmpty());
+    }
+
+    // ---- Total devuelto y mensajes (web, con Ajax) ----
+
+    @Test
+    void seguir_devuelveLaNuevaCantidadDeSeguidores() {
+        SeguimientoService s = servicio();
+        assertEquals(1, s.seguir("weiss", "benkenobi"));
+        assertEquals(2, s.seguir("chechi", "benkenobi"));
+    }
+
+    @Test
+    void erroresDeSeguirConSuMensaje() {
+        SeguimientoService s = servicio();
+        assertEquals("No es posible seguirse a uno mismo.",
+                assertThrows(ReglaNegocioException.class, () -> s.seguir("weiss", "weiss")).getMessage());
+        assertEquals("El usuario fantasma no existe.",
+                assertThrows(ReglaNegocioException.class, () -> s.seguir("weiss", "fantasma")).getMessage());
+        s.seguir("weiss", "chechi");
+        assertEquals("Ya está siguiendo a chechi.",
+                assertThrows(ReglaNegocioException.class, () -> s.seguir("weiss", "chechi")).getMessage());
+    }
+
+    // ---- Dejar de seguir ----
+
+    @Test
+    void dejarDeSeguir_eliminaElSeguimientoYDevuelveElTotal() {
+        SeguimientoService s = servicio();
+        s.seguir("weiss", "benkenobi");
+        s.seguir("chechi", "benkenobi");
+
+        assertEquals(1, s.dejarDeSeguir("weiss", "benkenobi"));
+        assertFalse(s.estaSiguiendo("weiss", "benkenobi"));
+        assertEquals(List.of("chechi"), s.listarSeguidores("benkenobi"));
+    }
+
+    @Test
+    void dejarDeSeguirAQuienNoSigue_falla() {
+        ReglaNegocioException e = assertThrows(ReglaNegocioException.class,
+                () -> servicio().dejarDeSeguir("weiss", "chechi"));
+        assertEquals("No está siguiendo a chechi.", e.getMessage());
+    }
+
+    @Test
+    void dejarDeSeguirConDatosVacios_falla() {
+        assertThrows(ReglaNegocioException.class, () -> servicio().dejarDeSeguir(null, "weiss"));
+        assertThrows(ReglaNegocioException.class, () -> servicio().dejarDeSeguir("weiss", " "));
+    }
+
+    @Test
+    void sePuedeVolverASeguirDespuesDeDejar() {
+        SeguimientoService s = servicio();
+        s.seguir("weiss", "chechi");
+        s.dejarDeSeguir("weiss", "chechi");
+
+        assertEquals(1, s.seguir("weiss", "chechi"));
+        assertTrue(s.estaSiguiendo("weiss", "chechi"));
     }
 }

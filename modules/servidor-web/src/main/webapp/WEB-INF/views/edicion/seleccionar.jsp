@@ -3,66 +3,57 @@
 <%@ taglib prefix="e" tagdir="/WEB-INF/tags" %>
 <%@ include file="/WEB-INF/views/comun/inicio-pagina.jspf" %>
 
-<h1>Seleccionar estudiantes</h1>
+<%-- Seleccionar estudiantes para una edicion de curso (Figura 5): encabezado de la edicion como en la
+     Figura 4 y la tabla de inscripciones. Cada inscripcion en Inscripto tiene un selector
+     Pendiente / Aceptar / Rechazar; las ya resueltas muestran su estado. Solo en la edicion vigente (D2). --%>
+<c:set var="det" value="${seleccion.edicion()}"/>
+<%@ include file="/WEB-INF/views/edicion/encabezado.jspf" %>
 
-<c:choose>
-    <c:when test="${sinVigente}">
-        <p>El curso <strong><c:out value="${curso}"/></strong> no tiene una edición vigente.</p>
-        <p><a href="${raiz}/edicion/seleccionar">Elegir otro curso</a></p>
-    </c:when>
-    <c:when test="${not empty edicion}">
-        <div class="ficha">
-            <e:imagen ruta="${edicion.imagen()}" alt="${edicion.nombre()}" clase="ficha-img"/>
-            <div>
-                <h2><c:out value="${edicion.nombre()}"/></h2>
-                <c:url var="uCur" value="/cursos"><c:param name="nombre" value="${edicion.nombreCurso()}"/></c:url>
-                <p><a href="${uCur}">Ver información del curso</a></p>
-                <dl class="datos">
-                    <dt>Inicio</dt><dd><e:fecha valor="${edicion.fechaInicio()}"/></dd>
-                    <dt>Fin</dt><dd><e:fecha valor="${edicion.fechaFin()}"/></dd>
-                    <dt>Cupo</dt><dd><c:out value="${edicion.cupo() > 0 ? edicion.cupo() : 'Sin límite'}"/></dd>
-                    <dt>Publicación</dt><dd><e:fecha valor="${edicion.fechaPublicacion()}"/></dd>
-                </dl>
-            </div>
+<h2 class="h6 fw-bold">Inscripciones</h2>
+<c:if test="${not det.vigente()}">
+    <div class="alert alert-info small">Esta edición no es la vigente del curso: solo se pueden seleccionar estudiantes en la edición vigente.</div>
+</c:if>
+<c:if test="${empty seleccion.inscripciones()}">
+    <p class="text-body-secondary">Todavía no hay inscripciones a esta edición.</p>
+</c:if>
+
+<c:if test="${not empty seleccion.inscripciones()}">
+    <form method="POST" action="${raiz}/edicion/seleccionar">
+        <input type="hidden" name="edicion" value="<c:out value='${ed.nombre()}'/>">
+        <div class="table-responsive" style="max-width: 760px;">
+            <table class="table table-sm align-middle">
+                <thead class="table-light">
+                <tr><th>Nombre</th><th>Fecha inscripción</th><th>Inscripción</th><th>Estado</th></tr>
+                </thead>
+                <tbody>
+                <c:forEach var="i" items="${seleccion.inscripciones()}">
+                    <c:url var="uEst" value="/usuarios"><c:param name="nick" value="${i.nickname()}"/></c:url>
+                    <tr>
+                        <td><a href="${uEst}"><c:out value="${i.nombre()} ${i.apellido()}"/></a></td>
+                        <td><e:fecha valor="${i.fechaInscripcion()}"/></td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${i.estado() == 'INSCRIPTO' and det.vigente()}">
+                                    <select name="seleccion" class="form-select form-select-sm" style="width: auto;"
+                                            aria-label="Selección para ${i.nickname()}">
+                                        <option value="">Pendiente</option>
+                                        <option value="<c:out value='${i.nickname()}'/>:ACEPTADA">Aceptar</option>
+                                        <option value="<c:out value='${i.nickname()}'/>:RECHAZADA">Rechazar</option>
+                                    </select>
+                                </c:when>
+                                <c:otherwise><span class="text-body-secondary small">—</span></c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td><e:estado valor="${i.estado()}"/></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
         </div>
-
-        <c:if test="${inscripciones != null}">
-            <h2>Inscripciones</h2>
-            <c:if test="${empty inscripciones}"><p class="tenue">La edición no tiene inscripciones.</p></c:if>
-            <c:if test="${not empty inscripciones}">
-                <form method="post" action="${raiz}/edicion/seleccionar">
-                    <input type="hidden" name="edicion" value="<c:out value='${edicion.nombre()}'/>">
-                    <table class="tabla">
-                        <thead><tr><th>Estudiante</th><th>Fecha de inscripción</th><th>Estado</th><th>Selección</th></tr></thead>
-                        <tbody>
-                        <c:forEach var="i" items="${inscripciones}">
-                            <c:url var="uEst" value="/usuarios"><c:param name="nick" value="${i.nickname()}"/></c:url>
-                            <tr>
-                                <td><a href="${uEst}"><c:out value="${i.nombre()} ${i.apellido()}"/></a></td>
-                                <td><e:fecha valor="${i.fechaInscripcion()}"/></td>
-                                <td><e:estado valor="${i.estado()}"/></td>
-                                <td>
-                                    <%-- Solo se puede pasar de Inscripto a Aceptada o Rechazada (Tabla 1) --%>
-                                    <c:if test="${i.estado() == 'INSCRIPTO'}">
-                                        <label class="radio"><input type="radio" name="estado_${i.nickname()}" value="ACEPTADA"> Aceptar</label>
-                                        <label class="radio"><input type="radio" name="estado_${i.nickname()}" value="RECHAZADA"> Rechazar</label>
-                                    </c:if>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                    <div class="button-group">
-                        <button type="submit" class="btn btn-primary">Guardar selección</button>
-                        <a class="btn btn-secondary" href="${raiz}/edicion/seleccionar">Cancelar</a>
-                    </div>
-                </form>
-            </c:if>
+        <c:if test="${det.vigente()}">
+            <button type="submit" class="btn btn-primary">Guardar selección</button>
         </c:if>
-    </c:when>
-    <c:otherwise>
-        <%@ include file="/WEB-INF/views/comun/elegir-curso.jspf" %>
-    </c:otherwise>
-</c:choose>
+    </form>
+</c:if>
 
 <%@ include file="/WEB-INF/views/comun/fin-pagina.jspf" %>

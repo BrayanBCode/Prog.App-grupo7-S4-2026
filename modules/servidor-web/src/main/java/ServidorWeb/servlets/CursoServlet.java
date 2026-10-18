@@ -1,24 +1,19 @@
 package ServidorWeb.servlets;
 
-import ServidorCentral.Logica.datatypes.DTCurso;
-import ServidorCentral.Logica.datatypes.DTCursoResumen;
-import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Caso de uso "Consulta de Curso" (Visitante, Estudiante, Docente).
+ * Caso de uso "Consulta de Curso" (Visitante, Estudiante, Docente). Se entra por los institutos del lateral.
  * <ul>
- *   <li>/cursos                      -> elegir instituto</li>
- *   <li>/cursos?instituto=X          -> cursos del instituto</li>
- *   <li>/cursos?nombre=X             -> datos del curso, con sus ediciones y programas</li>
+ *   <li>/cursos?instituto=X -> cursos del instituto</li>
+ *   <li>/cursos?nombre=Y    -> datos del curso con sus ediciones y programas (Figura 3)</li>
  * </ul>
+ * Sin parametros (o con un instituto o curso que no existe) muestra el mensaje y la lista de institutos.
  */
 @WebServlet("/cursos")
 public class CursoServlet extends BaseServlet {
@@ -28,71 +23,26 @@ public class CursoServlet extends BaseServlet {
             throws ServletException, IOException {
         String nombre = param(req, "nombre");
         String instituto = param(req, "instituto");
-
-        if (!nombre.isEmpty()) {
-            mostrarCurso(req, resp, nombre);
-            return;
-        }
-
-        if (!instituto.isEmpty()) {
-            List<String> nombres = new ArrayList<>();
-            for (DTCursoResumen c : controller.listarCursosTabla(instituto)) {
-                nombres.add(c.nombre());
-            }
-            req.setAttribute("titulo", "Cursos de " + instituto);
-            req.setAttribute("cursos", datosCursos(nombres));
-        } else {
-            req.setAttribute("titulo", "Cursos");
-            req.setAttribute("elegir", true);
-        }
-        vista(req, resp, "curso/lista.jsp");
-    }
-
-    private void mostrarCurso(HttpServletRequest req, HttpServletResponse resp, String nombre)
-            throws ServletException, IOException {
-        DTCurso curso;
         try {
-            curso = controller.obtenerDataCurso(nombre);
-        } catch (Exception e) {
-            curso = null;
-        }
-        if (curso == null) {
+            if (!nombre.isEmpty()) {
+                req.setAttribute("detalle", controller.consultarCurso(nombre));
+                req.setAttribute("titulo", nombre);
+                vista(req, resp, "curso/detalle.jsp");
+            } else if (!instituto.isEmpty()) {
+                req.setAttribute("cursos", controller.listarCursosInstituto(instituto));
+                req.setAttribute("instituto", instituto);
+                req.setAttribute("titulo", "Cursos de " + instituto);
+                vista(req, resp, "curso/lista.jsp");
+            } else {
+                req.setAttribute("titulo", "Cursos");
+                vista(req, resp, "curso/lista.jsp");
+            }
+        } catch (RuntimeException e) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            req.setAttribute("titulo", "Curso no encontrado");
-            req.setAttribute("error", "No existe un curso llamado \"" + nombre + "\".");
-            req.setAttribute("elegir", true);
+            req.setAttribute("error", mensajeDeError(e));
+            req.setAttribute("titulo", "Cursos");
+            req.removeAttribute("instituto");
             vista(req, resp, "curso/lista.jsp");
-            return;
         }
-
-        List<DTEdicionCurso> ediciones = new ArrayList<>();
-        for (String ed : controller.listarEdicionesCurso(nombre)) {
-            try {
-                ediciones.add(controller.obtenerEdicionCurso(ed));
-            } catch (Exception ignorada) {
-                // si la edicion desaparecio entre las dos consultas, no se muestra
-            }
-        }
-        ediciones.sort((a, b) -> b.fechaInicio().compareTo(a.fechaInicio()));
-
-        req.setAttribute("titulo", curso.nombre());
-        req.setAttribute("curso", curso);
-        req.setAttribute("ediciones", ediciones);
-        req.setAttribute("programas", controller.listarProgramasPorCurso(nombre));
-        req.setAttribute("edicionVigente", controller.obtenerEdicionVigente(nombre));
-        vista(req, resp, "curso/detalle.jsp");
     }
-
-    private List<DTCurso> datosCursos(List<String> nombres) {
-        List<DTCurso> resultado = new ArrayList<>();
-        for (String n : nombres) {
-            try {
-                resultado.add(controller.obtenerDataCurso(n));
-            } catch (Exception ignorada) {
-                // curso borrado entre consultas
-            }
-        }
-        return resultado;
-    }
-
 }

@@ -27,83 +27,71 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace min="-2" pref="444" max="-2" attributes="0"/>
-                  <Component id="jScrollPaneEdiciones" min="-2" pref="186" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPanePrograms" min="-2" pref="201" max="-2" attributes="0"/>
+        <Group type="102" attributes="0">
+          <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="2" attributes="0">
+            <Component id="jLabelTitulo" alignment="2" attributes="0"/>
+            <Group type="102" alignment="2" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
+                <Component id="jLabelInstituto" alignment="1" attributes="0"/>
+                <Component id="jLabelCursos" alignment="1" attributes="0"/>
+                <Component id="jLabelDetalle" alignment="1" attributes="0"/>
               </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="273" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="jLabelCursos" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabelDetalle" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                <Component id="comboInstituto" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                <Component id="jScrollPaneCursos" alignment="0" min="-2" pref="400" max="-2" attributes="0"/>
+                <Component id="jScrollPane1" alignment="0" min="-2" pref="400" max="-2" attributes="0"/>
+                <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                    <Component id="jLabelEdiciones" alignment="0" attributes="0"/>
+                    <Component id="jScrollPaneEdiciones" alignment="0" min="-2" pref="196" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jScrollPaneCursos" pref="0" max="32767" attributes="0"/>
-                      <Component id="jScrollPane1" pref="389" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                    <Component id="jLabelProgramas" alignment="0" attributes="0"/>
+                    <Component id="jScrollPanePrograms" alignment="0" min="-2" pref="196" max="-2" attributes="0"/>
                   </Group>
+                </Group>
               </Group>
+            </Group>
           </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="384" max="-2" attributes="0"/>
-              <Component id="jLabelInstituto" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="comboInstituto" min="-2" pref="132" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="464" max="-2" attributes="0"/>
-              <Component id="jLabelEdiciones" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
-              <Component id="jLabelProgramas" min="-2" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="528" max="-2" attributes="0"/>
-              <Component id="jLabelTitulo" min="-2" max="-2" attributes="0"/>
-          </Group>
+          <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+        </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabelTitulo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="comboInstituto" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabelInstituto" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jScrollPaneCursos" min="-2" pref="117" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="jLabelCursos" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabelDetalle" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Component id="jScrollPane1" min="-2" pref="113" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jLabelProgramas" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabelEdiciones" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jScrollPanePrograms" min="-2" pref="117" max="-2" attributes="0"/>
-                          <Component id="jScrollPaneEdiciones" min="-2" pref="117" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-              </Group>
-              <EmptySpace pref="205" max="32767" attributes="0"/>
+        <Group type="102" alignment="0" attributes="0">
+          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+          <Component id="jLabelTitulo" min="-2" max="-2" attributes="0"/>
+          <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="3" attributes="0">
+            <Component id="jLabelInstituto" alignment="3" attributes="0"/>
+            <Component id="comboInstituto" alignment="3" min="-2" max="-2" attributes="0"/>
           </Group>
+          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="0" attributes="0">
+            <Component id="jLabelCursos" alignment="0" attributes="0"/>
+            <Component id="jScrollPaneCursos" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
+          </Group>
+          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="0" attributes="0">
+            <Component id="jLabelDetalle" alignment="0" attributes="0"/>
+            <Component id="jScrollPane1" alignment="0" min="-2" pref="113" max="-2" attributes="0"/>
+          </Group>
+          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="3" attributes="0">
+            <Component id="jLabelEdiciones" alignment="3" attributes="0"/>
+            <Component id="jLabelProgramas" alignment="3" attributes="0"/>
+          </Group>
+          <EmptySpace type="related" max="-2" attributes="0"/>
+          <Group type="103" groupAlignment="0" attributes="0">
+            <Component id="jScrollPaneEdiciones" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
+            <Component id="jScrollPanePrograms" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
+          </Group>
+          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+        </Group>
       </Group>
     </DimensionLayout>
   </Layout>

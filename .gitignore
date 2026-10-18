@@ -9,3 +9,10 @@ target/
 dependency-reduced-pom.xml
 *.jar
 .env
+/graphify-out/
+
+# Copias comprimidas (backups de carpetas, .idea, etc.)
+*.zip
+
+# Configuracion local de Claude Code (no es del proyecto)
+.claude/

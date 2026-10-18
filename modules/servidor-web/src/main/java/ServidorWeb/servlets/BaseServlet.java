@@ -2,7 +2,9 @@ package ServidorWeb.servlets;
 
 import ServidorCentral.Logica.controller.Fabrica;
 import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorCentral.Logica.datatypes.DTImagen;
 import ServidorCentral.Logica.datatypes.DTSesion;
+import ServidorCentral.Logica.excepciones.ReglaNegocioException;
 import ServidorWeb.seguridad.SesionUsuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -14,9 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -35,19 +34,6 @@ public abstract class BaseServlet extends HttpServlet {
     protected void vista(HttpServletRequest req, HttpServletResponse resp, String jsp)
             throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/views/" + jsp).forward(req, resp);
-    }
-
-    /**
-     * Prepara el caso "elegir instituto y luego un curso" (ver comun/elegir-curso.jspf).
-     * Si ya vino ?instituto=, carga los cursos del instituto.
-     */
-    protected void elegirCurso(HttpServletRequest req, String accion) {
-        req.setAttribute("accion", accion);
-        String instituto = param(req, "instituto");
-        if (!instituto.isEmpty()) {
-            req.setAttribute("filtro", instituto);
-            req.setAttribute("cursos", controller.listarCursosPorInstituto(instituto));
-        }
     }
 
     /** Parametro sin espacios a los costados; "" si no vino. */
@@ -79,6 +65,18 @@ public abstract class BaseServlet extends HttpServlet {
         req.getSession(true).setAttribute("flashError", mensaje);
     }
 
+    /**
+     * Mensaje para mostrarle al usuario cuando falla una llamada al controller: el de la regla de
+     * negocio tal cual, o uno generico (y se loguea) si es un error inesperado.
+     */
+    protected String mensajeDeError(Exception e) {
+        if (e instanceof ReglaNegocioException) {
+            return e.getMessage();
+        }
+        getServletContext().log("Error inesperado en " + getClass().getSimpleName(), e);
+        return "No se pudo completar la operación. Intentá nuevamente.";
+    }
+
     protected static void redirigir(HttpServletRequest req, HttpServletResponse resp, String ruta) throws IOException {
         resp.sendRedirect(req.getContextPath() + ruta);
     }
@@ -88,37 +86,18 @@ public abstract class BaseServlet extends HttpServlet {
     }
 
     /**
-     * El Servidor Central recibe la imagen como RUTA de un archivo local: el upload se
-     * guarda en un temporal que el servlet borra despues de llamar al controller.
+     * Imagen subida en el campo {@code campo} (form con enctype multipart y servlet con
+     * {@code @MultipartConfig}). El formato y el tamano los valida el Servidor Central.
      *
-     * @return el temporal, o null si no se subio imagen.
-     * @throws IllegalArgumentException si no es JPG o PNG.
+     * @return la imagen, o null si no se subio ninguna.
      */
-    protected static Path imagenTemporal(HttpServletRequest req, String campo) throws IOException, ServletException {
+    protected static DTImagen leerImagen(HttpServletRequest req, String campo) throws IOException, ServletException {
         Part parte = req.getPart(campo);
         if (parte == null || parte.getSize() == 0) {
             return null;
         }
-        String original = parte.getSubmittedFileName();
-        String ext = (original != null && original.contains("."))
-                ? original.substring(original.lastIndexOf('.')).toLowerCase() : "";
-        if (!ext.equals(".jpg") && !ext.equals(".jpeg") && !ext.equals(".png")) {
-            throw new IllegalArgumentException("Formato de imagen no soportado. Use JPG o PNG.");
-        }
-        Path tmp = Files.createTempFile("edext-", ext);
         try (InputStream in = parte.getInputStream()) {
-            Files.copy(in, tmp, StandardCopyOption.REPLACE_EXISTING);
-        }
-        return tmp;
-    }
-
-    protected static void borrar(Path temporal) {
-        if (temporal != null) {
-            try {
-                Files.deleteIfExists(temporal);
-            } catch (IOException ignorada) {
-                // un temporal que quedo no rompe nada
-            }
+            return DTImagen.deArchivo(in.readAllBytes(), parte.getSubmittedFileName());
         }
     }
 }

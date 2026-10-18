@@ -1,58 +1,35 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio de Sesión</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
-</head>
-<body class="centrado">
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<c:set var="titulo" value="Iniciar sesión"/>
+<c:set var="formularioSesion" value="${true}"/>
+<%@ include file="/WEB-INF/views/comun/inicio-pagina.jspf" %>
 
-    <div class="login-card">
-        <h2>Iniciar Sesión</h2>
+<%-- Inicio de Sesion --%>
+<div class="mx-auto w-100" style="max-width: 420px;">
+    <h1 class="h3 mb-4">Iniciar sesión</h1>
 
-        <!-- Mensaje de advertencia para credenciales inválidas (login.js lo muestra con ?error=true) -->
-        <div id="error-message" class="alert-danger hidden" role="alert">
-            Nickname/Email o contraseña incorrectos. Por favor, reingrese sus datos.
-        </div>
-
-        <form id="login-form" action="${pageContext.request.contextPath}/login" method="POST">
-
-            <!-- Identificador: Nickname o Email -->
-            <div class="form-group">
-                <label for="usuario">Nickname o Correo Electrónico</label>
-                <input
-                    type="text"
-                    id="usuario"
-                    name="usuario"
-                    placeholder="Ej. jperez o usuario@correo.com"
-                    required
-                    autocomplete="username"
-                >
-            </div>
-
-            <!-- Contraseña -->
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Ingrese su contraseña"
-                    required
-                    autocomplete="current-password"
-                >
-            </div>
-
-            <!-- Botones de Acción -->
-            <div class="button-group">
-                <button type="submit" class="btn btn-primary">Ingresar</button>
-                <a href="${pageContext.request.contextPath}/inicio" class="btn btn-secondary">Cancelar</a>
-            </div>
-        </form>
+    <!-- Credenciales invalidas: login.js lo muestra con ?error=true -->
+    <div id="error-message" class="alert alert-danger d-none" role="alert">
+        Nickname/Email o contraseña incorrectos. Por favor, reingrese sus datos.
     </div>
 
-    <script src="${pageContext.request.contextPath}/js/login.js"></script>
-</body>
-</html>
+    <form id="login-form" action="${raiz}/login" method="POST">
+        <div class="mb-3">
+            <label for="usuario" class="form-label">Nickname o correo electrónico</label>
+            <input type="text" id="usuario" name="usuario" class="form-control"
+                   placeholder="Ej. jperez o usuario@correo.com" required autocomplete="username">
+        </div>
+        <div class="mb-4">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" id="password" name="password" class="form-control"
+                   placeholder="Ingrese su contraseña" required autocomplete="current-password">
+        </div>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary flex-fill">Ingresar</button>
+            <a href="${raiz}/inicio" class="btn btn-outline-secondary flex-fill">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<script src="${raiz}/js/login.js"></script>
+<%@ include file="/WEB-INF/views/comun/fin-pagina.jspf" %>

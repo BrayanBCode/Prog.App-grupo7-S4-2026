@@ -5,7 +5,12 @@ import ServidorCentral.Logica.datatypes.DTDocenteDetalle;
 import ServidorCentral.Logica.datatypes.DTDocenteResumen;
 import ServidorCentral.Logica.datatypes.DTEdicionCurso;
 import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
-import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
+import ServidorCentral.Logica.datatypes.DTImagen;
+import ServidorCentral.Logica.datatypes.DTCursoDetalle;
+import ServidorCentral.Logica.datatypes.DTMisCursos;
+import ServidorCentral.Logica.datatypes.DTEdicionDetalle;
+import ServidorCentral.Logica.datatypes.DTInscripcionesEdicion;
+import ServidorCentral.Logica.datatypes.DTPerfil;
 import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
 import ServidorCentral.Logica.datatypes.DTProgramaInscripto;
 import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
@@ -14,6 +19,7 @@ import ServidorCentral.Logica.datatypes.DTProgramaResumen;
 import ServidorCentral.Logica.datatypes.DTSesion;
 import ServidorCentral.Logica.datatypes.DTUsuario;
 import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
+import ServidorCentral.Logica.datatypes.OrdenBusqueda;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 import ServidorCentral.Logica.repositories.*;
 import ServidorCentral.Logica.services.*;
@@ -38,26 +44,109 @@ public class ControllerV2 implements IControllerV2 {
     private final EdicionCursoService edicionCursoService;
     private final ProgramaFormacionService programaFormacionService;
     private final SeguimientoService seguimientoService;
+    private final PerfilService perfilService;
     public ControllerV2() {
-        Conexion conexion = Conexion.getInstancia();
-        // Capa de acceso a datos
-        InstitutoRepository institutoRepository = new InstitutoRepository(conexion);
-        CursoRepository cursoRepository = new CursoRepository(conexion);
-        DocenteRepository docenteRepository = new DocenteRepository(conexion);
-        EstudianteRepository estudianteRepository = new EstudianteRepository(conexion);
-        UsuarioRepository usuarioRepository = new UsuarioRepository(conexion);
-        EdicionCursoRepository edicionCursoRepository = new EdicionCursoRepository(conexion);
-        ProgramaFormacionRepository programaFormacionRepository = new ProgramaFormacionRepository(conexion);
-        SeguimientoRepository seguimientoRepository = new SeguimientoRepository(conexion);
-        // Capa de reglas de negocio
-        this.usuarioService = new UsuarioService(usuarioRepository, institutoRepository, docenteRepository);
-        this.docenteService = new DocenteService(docenteRepository);
-        this.estudianteService = new EstudianteService(estudianteRepository);
-        this.cursoService = new CursoService(cursoRepository, institutoRepository, docenteRepository);
-        this.instituoService = new InstitutoService(institutoRepository);
-        this.edicionCursoService = new EdicionCursoService(edicionCursoRepository, cursoRepository, docenteRepository, estudianteRepository);
-        this.programaFormacionService = new ProgramaFormacionService(programaFormacionRepository, cursoRepository, estudianteRepository);
-        this.seguimientoService = new SeguimientoService(usuarioRepository, seguimientoRepository);
+        this(Servicios.conBase(Conexion.getInstancia()));
+    }
+
+    /** Recibe los servicios ya armados: lo usan los tests para probar el controller sin base. */
+    ControllerV2(Servicios s) {
+        this.usuarioService = s.usuario();
+        this.docenteService = s.docente();
+        this.estudianteService = s.estudiante();
+        this.cursoService = s.curso();
+        this.instituoService = s.instituto();
+        this.edicionCursoService = s.edicionCurso();
+        this.programaFormacionService = s.programaFormacion();
+        this.seguimientoService = s.seguimiento();
+        this.perfilService = s.perfil();
+    }
+
+    /** Los servicios que usa el controller. */
+    record Servicios(UsuarioService usuario, DocenteService docente, EstudianteService estudiante, CursoService curso,
+                     InstitutoService instituto, EdicionCursoService edicionCurso,
+                     ProgramaFormacionService programaFormacion, SeguimientoService seguimiento, PerfilService perfil) {
+
+        /** Los servicios reales, conectados a la base. */
+        static Servicios conBase(Conexion conexion) {
+            // Capa de acceso a datos
+            InstitutoRepository institutoRepository = new InstitutoRepository(conexion);
+            CursoRepository cursoRepository = new CursoRepository(conexion);
+            DocenteRepository docenteRepository = new DocenteRepository(conexion);
+            EstudianteRepository estudianteRepository = new EstudianteRepository(conexion);
+            UsuarioRepository usuarioRepository = new UsuarioRepository(conexion);
+            EdicionCursoRepository edicionCursoRepository = new EdicionCursoRepository(conexion);
+            ProgramaFormacionRepository programaFormacionRepository = new ProgramaFormacionRepository(conexion);
+            SeguimientoRepository seguimientoRepository = new SeguimientoRepository(conexion);
+            // Capa de reglas de negocio
+            return new Servicios(
+                    new UsuarioService(usuarioRepository, institutoRepository, docenteRepository),
+                    new DocenteService(docenteRepository),
+                    new EstudianteService(estudianteRepository),
+                    new CursoService(cursoRepository, institutoRepository, docenteRepository, edicionCursoRepository, programaFormacionRepository),
+                    new InstitutoService(institutoRepository),
+                    new EdicionCursoService(edicionCursoRepository, cursoRepository, docenteRepository, estudianteRepository),
+                    new ProgramaFormacionService(programaFormacionRepository, cursoRepository, estudianteRepository),
+                    new SeguimientoService(usuarioRepository, seguimientoRepository),
+                    new PerfilService(usuarioRepository, docenteRepository, estudianteRepository, seguimientoRepository));
+        }
+    }
+
+    @Override
+    public boolean nicknameDisponible(String nickname) {
+        return usuarioService.nicknameDisponible(nickname);
+    }
+
+    @Override
+    public boolean mailDisponible(String mail) {
+        return usuarioService.mailDisponible(mail);
+    }
+
+    @Override
+    public List<DTUsuario> listarUsuarios() {
+        return perfilService.listarUsuarios();
+    }
+
+    @Override
+    public DTPerfil obtenerPerfil(String nickConsultado, String nickQueMira) {
+        return perfilService.obtenerPerfil(nickConsultado, nickQueMira);
+    }
+
+    @Override
+    public List<DTCursoResumen> listarCursosInstituto(String nombreInstituto) {
+        return cursoService.listarCursosInstituto(nombreInstituto);
+    }
+
+    @Override
+    public DTCursoDetalle consultarCurso(String nombreCurso) {
+        return cursoService.consultarCurso(nombreCurso);
+    }
+
+    @Override
+    public DTMisCursos misCursosDocente(String nickDocente) {
+        return docenteService.misCursos(nickDocente);
+    }
+
+    @Override
+    public DTEdicionDetalle consultarEdicion(String nombreEdicion, String nickQueMira) {
+        return edicionCursoService.consultarEdicion(nombreEdicion, nickQueMira);
+    }
+
+    @Override
+    public void inscribirse(String nickEstudiante, String nombreEdicion) {
+        edicionCursoService.inscribirse(nickEstudiante, nombreEdicion);
+    }
+
+    @Override
+    public void altaCurso(String nickDocente, String nombre, String descripcion, int duracion, float cantHoras, int cantCreditos,
+                          String url, String nombreInstituto, List<String> previas, DTImagen imagen) {
+        cursoService.altaCurso(nickDocente, nombre, descripcion, duracion, cantHoras, cantCreditos, url, nombreInstituto, previas, imagen);
+    }
+
+    @Override
+    public void altaEdicion(String nickDocente, String nombreEdicion, String nombreCurso, LocalDate fechaInicio, LocalDate fechaFin,
+                            Integer cupo, List<String> nicknamesDocentes, DTImagen imagen) {
+        edicionCursoService.altaEdicion(nickDocente, nombreEdicion, nombreCurso, fechaInicio, fechaFin, cupo, nicknamesDocentes, imagen);
     }
 
     // ---------------------------------------------------------------
@@ -67,6 +156,11 @@ public class ControllerV2 implements IControllerV2 {
     @Override
     public void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, String imagen, String contraseña) {
         usuarioService.registrar(nickname, mail, nombre, apellido, fechaNac, instituto, imagen,contraseña);
+    }
+
+    @Override
+    public void altaUsuario(String nickname, String mail, String nombre, String apellido, LocalDate fechaNac, String instituto, DTImagen imagen, String contraseña) {
+        usuarioService.registrar(nickname, mail, nombre, apellido, fechaNac, instituto, imagen, contraseña);
     }
 
     @Override
@@ -213,8 +307,13 @@ public class ControllerV2 implements IControllerV2 {
     }
 
     @Override
-    public void seguirUsuario(String nicknameSeguidor, String nicknameSeguido) throws Exception {
-        seguimientoService.seguir(nicknameSeguidor, nicknameSeguido);
+    public int seguirUsuario(String nicknameSeguidor, String nicknameSeguido) {
+        return seguimientoService.seguir(nicknameSeguidor, nicknameSeguido);
+    }
+
+    @Override
+    public int dejarDeSeguirUsuario(String nicknameSeguidor, String nicknameSeguido) {
+        return seguimientoService.dejarDeSeguir(nicknameSeguidor, nicknameSeguido);
     }
 
     @Override
@@ -233,17 +332,17 @@ public class ControllerV2 implements IControllerV2 {
     }
 
     @Override
-    public List<DTInscripcionEdicion> listarInscripcionesEdicion(String nicknameDocente, String nombreEdicion) throws Exception {
-        return edicionCursoService.listarInscripciones(nicknameDocente, nombreEdicion);
+    public DTInscripcionesEdicion consultarInscripcionesEdicion(String nicknameDocente, String nombreEdicion) {
+        return edicionCursoService.consultarInscripcionesEdicion(nicknameDocente, nombreEdicion);
     }
 
     @Override
-    public List<DTInscripcionEdicion> listarAceptadosEdicion(String nicknameDocente, String nombreEdicion) throws Exception {
-        return edicionCursoService.listarAceptados(nicknameDocente, nombreEdicion);
+    public DTInscripcionesEdicion consultarAceptadosEdicion(String nicknameDocente, String nombreEdicion) {
+        return edicionCursoService.consultarAceptadosEdicion(nicknameDocente, nombreEdicion);
     }
 
     @Override
-    public void seleccionarEstudiantes(String nicknameDocente, String nombreEdicion, Map<String, EstadoInscripcion> estados) throws Exception {
+    public void seleccionarEstudiantes(String nicknameDocente, String nombreEdicion, Map<String, EstadoInscripcion> estados) {
         edicionCursoService.seleccionarEstudiantes(nicknameDocente, nombreEdicion, estados);
     }
 
@@ -308,6 +407,21 @@ public class ControllerV2 implements IControllerV2 {
     @Override
     public List<DTInscripcionEstudiante> listarInscripcionesEstudiante(String nickname) {
         return estudianteService.listarInscripciones(nickname);
+    }
+
+    @Override
+    public List<DTInscripcionEstudiante> resultadosInscripciones(String nickEstudiante) {
+        return estudianteService.resultadosInscripciones(nickEstudiante);
+    }
+
+    @Override
+    public void modificarDatosUsuario(String nickname, String nombre, String apellido, LocalDate fechaNac) {
+        usuarioService.modificarDatos(nickname, nombre, apellido, fechaNac);
+    }
+
+    @Override
+    public List<DTCursoResumen> buscarCursos(String texto, OrdenBusqueda orden) {
+        return cursoService.buscarCursos(texto, orden);
     }
 
     @Override
