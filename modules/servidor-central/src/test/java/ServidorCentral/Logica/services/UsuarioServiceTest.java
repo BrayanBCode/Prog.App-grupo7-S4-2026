@@ -1,13 +1,13 @@
 package ServidorCentral.Logica.services;
 
-import ServidorCentral.Logica.datatypes.DTImagen;
-import ServidorCentral.Logica.datatypes.DTUsuario;
-import ServidorCentral.Logica.datatypes.DTUsuarioResumen;
+import ServidorCentral.DataTypes.DTImagen;
+import ServidorCentral.DataTypes.DTUsuario;
+import ServidorCentral.DataTypes.DTUsuarioResumen;
 import ServidorCentral.Logica.entities.cursos.Instituto;
 import ServidorCentral.Logica.entities.usuarios.Docente;
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
 import ServidorCentral.Logica.entities.usuarios.Usuario;
-import ServidorCentral.Logica.excepciones.ReglaNegocioException;
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import ServidorCentral.Logica.repositories.DocenteRepository;
 import ServidorCentral.Logica.repositories.InstitutoRepository;
 import ServidorCentral.Logica.repositories.UsuarioRepository;

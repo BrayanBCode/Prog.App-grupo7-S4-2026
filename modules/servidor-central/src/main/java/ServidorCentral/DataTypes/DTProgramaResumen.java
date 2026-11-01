@@ -1,4 +1,4 @@
-package ServidorCentral.Logica.datatypes;
+package ServidorCentral.DataTypes;
 
 /**
  * Fila de la tabla de programas de formacion.

@@ -1,6 +1,6 @@
 package ServidorCentral.Logica.services;
 
-import ServidorCentral.Logica.datatypes.DTCurso;
+import ServidorCentral.DataTypes.DTCurso;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;

@@ -1,7 +1,7 @@
 package ServidorCentral.Logica.services;
 
-import ServidorCentral.Logica.datatypes.DTProgramaFormacion;
-import ServidorCentral.Logica.datatypes.DTProgramaResumen;
+import ServidorCentral.DataTypes.DTProgramaFormacion;
+import ServidorCentral.DataTypes.DTProgramaResumen;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.programaFormacion.ProgramaFormacion;
 import ServidorCentral.Logica.repositories.CursoRepository;

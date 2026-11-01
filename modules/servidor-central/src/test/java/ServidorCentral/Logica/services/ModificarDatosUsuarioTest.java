@@ -3,7 +3,7 @@ package ServidorCentral.Logica.services;
 import ServidorCentral.Logica.entities.usuarios.Docente;
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
 import ServidorCentral.Logica.entities.usuarios.Usuario;
-import ServidorCentral.Logica.excepciones.ReglaNegocioException;
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import ServidorCentral.Logica.repositories.UsuarioRepository;
 import org.junit.jupiter.api.Test;
 

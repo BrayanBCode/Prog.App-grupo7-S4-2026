@@ -1,4 +1,4 @@
-package ServidorCentral.Logica.datatypes;
+package ServidorCentral.DataTypes;
 
 /**
  * Datos basicos de un estudiante para listas y tablas.

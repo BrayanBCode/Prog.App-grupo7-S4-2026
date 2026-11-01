@@ -1,12 +1,12 @@
 package ServidorCentral.Logica.services;
 
-import ServidorCentral.Logica.datatypes.DTDocenteResumen;
-import ServidorCentral.Logica.datatypes.DTEdicionDetalle;
+import ServidorCentral.DataTypes.DTDocenteResumen;
+import ServidorCentral.DataTypes.DTEdicionDetalle;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.cursos.Instituto;
 import ServidorCentral.Logica.entities.usuarios.Docente;
-import ServidorCentral.Logica.excepciones.ReglaNegocioException;
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import ServidorCentral.Logica.repositories.EdicionCursoRepository;
 import org.junit.jupiter.api.Test;
 

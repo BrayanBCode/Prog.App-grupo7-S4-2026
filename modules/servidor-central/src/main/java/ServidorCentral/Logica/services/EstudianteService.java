@@ -1,12 +1,12 @@
 package ServidorCentral.Logica.services;
 
-import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
-import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
-import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
-import ServidorCentral.Logica.datatypes.DTProgramaInscripto;
+import ServidorCentral.DataTypes.DTEstudianteResumen;
+import ServidorCentral.DataTypes.DTInscripcionesEstudiante;
+import ServidorCentral.DataTypes.DTInscripcionEstudiante;
+import ServidorCentral.DataTypes.DTProgramaInscripto;
 import ServidorCentral.Logica.entities.cursos.InscripcionEdicion;
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
-import ServidorCentral.Logica.excepciones.ReglaNegocioException;
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import ServidorCentral.Logica.repositories.EstudianteRepository;
 
 import java.time.LocalDate;

@@ -1,7 +1,7 @@
 package ServidorCentral.Persistencia;
 
-import ServidorCentral.Logica.datatypes.DTImagen;
-import ServidorCentral.Logica.excepciones.ReglaNegocioException;
+import ServidorCentral.DataTypes.DTImagen;
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

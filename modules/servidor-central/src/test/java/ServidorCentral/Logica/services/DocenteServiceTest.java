@@ -1,7 +1,7 @@
 package ServidorCentral.Logica.services;
 
-import ServidorCentral.Logica.datatypes.DTDocenteDetalle;
-import ServidorCentral.Logica.datatypes.DTDocenteResumen;
+import ServidorCentral.DataTypes.DTDocenteDetalle;
+import ServidorCentral.DataTypes.DTDocenteResumen;
 import ServidorCentral.Logica.entities.usuarios.Docente;
 import ServidorCentral.Logica.repositories.DocenteRepository;
 import org.junit.jupiter.api.Test;

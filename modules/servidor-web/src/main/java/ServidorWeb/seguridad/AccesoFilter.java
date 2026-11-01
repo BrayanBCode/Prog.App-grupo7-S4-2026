@@ -2,7 +2,7 @@ package ServidorWeb.seguridad;
 
 import ServidorCentral.Logica.controller.Fabrica;
 import ServidorCentral.Logica.controller.IControllerV2;
-import ServidorCentral.Logica.datatypes.DTSesion;
+import ServidorCentral.DataTypes.DTSesion;
 import ServidorCentral.Logica.seguridad.CasoDeUso;
 import ServidorCentral.Logica.seguridad.Rol;
 import ServidorWeb.config.Json;

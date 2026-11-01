@@ -1,4 +1,4 @@
-package ServidorCentral.Logica.datatypes;
+package ServidorCentral.DataTypes;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IControllerV2;
-import ServidorCentral.Logica.datatypes.DTDocenteResumen;
+import ServidorCentral.DataTypes.DTDocenteResumen;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package ServidorCentral.Logica.datatypes;
+package ServidorCentral.DataTypes;
 
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 

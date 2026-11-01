@@ -1,8 +1,8 @@
 package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IControllerV2;
-import ServidorCentral.Logica.datatypes.DTProgramaFormacion;
-import ServidorCentral.Logica.datatypes.DTProgramaResumen;
+import ServidorCentral.DataTypes.DTProgramaFormacion;
+import ServidorCentral.DataTypes.DTProgramaResumen;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,12 +1,12 @@
 package ServidorCentral.Logica.services;
 
-import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
+import ServidorCentral.DataTypes.DTInscripcionEstudiante;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 import ServidorCentral.Logica.entities.cursos.InscripcionEdicion;
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
-import ServidorCentral.Logica.excepciones.ReglaNegocioException;
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import ServidorCentral.Logica.repositories.EstudianteRepository;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,6 @@
 package ServidorWeb.servlets;
 
-import ServidorCentral.Logica.datatypes.DTImagen;
+import ServidorCentral.DataTypes.DTImagen;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;

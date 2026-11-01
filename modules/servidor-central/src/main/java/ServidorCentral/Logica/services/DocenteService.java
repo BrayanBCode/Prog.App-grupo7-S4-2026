@@ -1,14 +1,14 @@
 package ServidorCentral.Logica.services;
 
-import ServidorCentral.Logica.datatypes.DTCursoResumen;
-import ServidorCentral.Logica.datatypes.DTDocenteDetalle;
-import ServidorCentral.Logica.datatypes.DTDocenteResumen;
-import ServidorCentral.Logica.datatypes.DTEdicionCurso;
-import ServidorCentral.Logica.datatypes.DTMisCursos;
+import ServidorCentral.DataTypes.DTCursoResumen;
+import ServidorCentral.DataTypes.DTDocenteDetalle;
+import ServidorCentral.DataTypes.DTDocenteResumen;
+import ServidorCentral.DataTypes.DTEdicionCurso;
+import ServidorCentral.DataTypes.DTMisCursos;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.usuarios.Docente;
-import ServidorCentral.Logica.excepciones.ReglaNegocioException;
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import ServidorCentral.Logica.repositories.DocenteRepository;
 
 import java.time.LocalDate;
@@ -88,4 +88,4 @@ public class DocenteService {
         }
         return resultado;
     }
-}
+}

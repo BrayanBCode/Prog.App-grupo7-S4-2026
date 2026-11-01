@@ -1,6 +1,6 @@
 package Swing.EdicionCurso;
 
-import ServidorCentral.Logica.datatypes.DTDocenteResumen;
+import ServidorCentral.DataTypes.DTDocenteResumen;
 
 import javax.swing.*;
 import java.awt.*;

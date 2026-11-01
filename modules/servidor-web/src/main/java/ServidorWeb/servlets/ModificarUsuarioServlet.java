@@ -1,7 +1,7 @@
 package ServidorWeb.servlets;
 
-import ServidorCentral.Logica.datatypes.DTSesion;
-import ServidorCentral.Logica.datatypes.DTUsuario;
+import ServidorCentral.DataTypes.DTSesion;
+import ServidorCentral.DataTypes.DTUsuario;
 import ServidorWeb.seguridad.SesionUsuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

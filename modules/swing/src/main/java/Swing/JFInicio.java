@@ -6,7 +6,7 @@ package Swing;
 
 import ServidorCentral.Logica.controller.Fabrica;
 import ServidorCentral.Logica.controller.IControllerV2;
-import ServidorCentral.Logica.datatypes.ControllerVersion;
+import ServidorCentral.DataTypes.ControllerVersion;
 import Swing.EdicionCurso.JIConsultaEdicionCurso;
 import Swing.EdicionCurso.JIRegistroEdicionCurso;
 import Swing.EdicionCurso.JIinscripcionEdicionCurso;

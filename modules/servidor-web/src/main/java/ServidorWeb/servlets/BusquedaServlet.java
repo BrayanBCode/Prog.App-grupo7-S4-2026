@@ -1,6 +1,6 @@
 package ServidorWeb.servlets;
 
-import ServidorCentral.Logica.datatypes.OrdenBusqueda;
+import ServidorCentral.DataTypes.OrdenBusqueda;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;

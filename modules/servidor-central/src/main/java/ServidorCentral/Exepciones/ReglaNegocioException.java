@@ -1,4 +1,4 @@
-package ServidorCentral.Logica.excepciones;
+package ServidorCentral.Exepciones;
 
 /**
  * Una regla de negocio no se cumple (nickname repetido, edicion sin cupo, etc.). El mensaje es

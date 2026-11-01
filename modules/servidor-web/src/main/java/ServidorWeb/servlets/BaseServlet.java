@@ -2,9 +2,9 @@ package ServidorWeb.servlets;
 
 import ServidorCentral.Logica.controller.Fabrica;
 import ServidorCentral.Logica.controller.IControllerV2;
-import ServidorCentral.Logica.datatypes.DTImagen;
-import ServidorCentral.Logica.datatypes.DTSesion;
-import ServidorCentral.Logica.excepciones.ReglaNegocioException;
+import ServidorCentral.DataTypes.DTImagen;
+import ServidorCentral.DataTypes.DTSesion;
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import ServidorWeb.seguridad.SesionUsuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;

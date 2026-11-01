@@ -1,4 +1,4 @@
-package ServidorCentral.Logica.datatypes;
+package ServidorCentral.DataTypes;
 
 /**
  * Datos minimos de un usuario para mostrar en tablas/listas.

@@ -1,11 +1,11 @@
 package ServidorCentral.Logica.services;
 
-import ServidorCentral.Logica.datatypes.DTInscripcionEdicion;
-import ServidorCentral.Logica.datatypes.DTInscripcionesEdicion;
+import ServidorCentral.DataTypes.DTInscripcionEdicion;
+import ServidorCentral.DataTypes.DTInscripcionesEdicion;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.cursos.Instituto;
-import ServidorCentral.Logica.excepciones.ReglaNegocioException;
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 import ServidorCentral.Logica.entities.cursos.InscripcionEdicion;
 import ServidorCentral.Logica.entities.usuarios.Docente;

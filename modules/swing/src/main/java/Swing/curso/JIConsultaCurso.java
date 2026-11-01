@@ -5,8 +5,8 @@
 package Swing.curso;
 
 import ServidorCentral.Logica.controller.IControllerV2;
-import ServidorCentral.Logica.datatypes.DTCurso;
-import ServidorCentral.Logica.datatypes.DTCursoResumen;
+import ServidorCentral.DataTypes.DTCurso;
+import ServidorCentral.DataTypes.DTCursoResumen;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

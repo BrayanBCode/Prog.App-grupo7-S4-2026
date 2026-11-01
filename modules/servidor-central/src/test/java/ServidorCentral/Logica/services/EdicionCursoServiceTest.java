@@ -1,8 +1,8 @@
 package ServidorCentral.Logica.services;
 
-import ServidorCentral.Logica.datatypes.DTDocenteResumen;
-import ServidorCentral.Logica.datatypes.DTEdicionCurso;
-import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
+import ServidorCentral.DataTypes.DTDocenteResumen;
+import ServidorCentral.DataTypes.DTEdicionCurso;
+import ServidorCentral.DataTypes.DTEstudianteResumen;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.usuarios.Docente;

@@ -8,7 +8,7 @@ package ServidorCentral.Logica.controller;
  * @author maida
  */
 
-import ServidorCentral.Logica.datatypes.ControllerVersion;
+import ServidorCentral.DataTypes.ControllerVersion;
 
 public class Fabrica {
     private static Fabrica INSTANCE;

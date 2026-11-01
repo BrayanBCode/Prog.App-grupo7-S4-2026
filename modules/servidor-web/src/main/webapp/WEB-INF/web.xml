@@ -15,4 +15,10 @@
         <!-- La sesion viaja solo en la cookie: sin ";jsessionid=" en los links -->
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
+
+    <!-- Error 500 (ej. base de datos caida): pagina clara en vez de la cruda de Tomcat; no usa la base -->
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/views/error/sin-servicio.jsp</location>
+    </error-page>
 </web-app>

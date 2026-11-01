@@ -1,13 +1,13 @@
 package ServidorCentral.Logica.services;
 
-import ServidorCentral.Logica.datatypes.DTCursoDetalle;
-import ServidorCentral.Logica.datatypes.DTCursoResumen;
-import ServidorCentral.Logica.datatypes.DTEdicionCurso;
+import ServidorCentral.DataTypes.DTCursoDetalle;
+import ServidorCentral.DataTypes.DTCursoResumen;
+import ServidorCentral.DataTypes.DTEdicionCurso;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.cursos.Instituto;
 import ServidorCentral.Logica.entities.usuarios.Docente;
-import ServidorCentral.Logica.excepciones.ReglaNegocioException;
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import ServidorCentral.Logica.repositories.CursoRepository;
 import ServidorCentral.Logica.repositories.EdicionCursoRepository;
 import ServidorCentral.Logica.repositories.InstitutoRepository;

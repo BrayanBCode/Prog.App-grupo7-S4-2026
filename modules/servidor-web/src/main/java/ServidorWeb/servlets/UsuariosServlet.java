@@ -1,8 +1,8 @@
 package ServidorWeb.servlets;
 
-import ServidorCentral.Logica.datatypes.DTPerfil;
-import ServidorCentral.Logica.datatypes.DTSesion;
-import ServidorCentral.Logica.excepciones.ReglaNegocioException;
+import ServidorCentral.DataTypes.DTPerfil;
+import ServidorCentral.DataTypes.DTSesion;
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,6 +1,6 @@
 package ServidorCentral.Logica.services;
 
-import ServidorCentral.Logica.datatypes.DTSesion;
+import ServidorCentral.DataTypes.DTSesion;
 import ServidorCentral.Logica.entities.usuarios.Docente;
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
 import ServidorCentral.Logica.entities.usuarios.Usuario;

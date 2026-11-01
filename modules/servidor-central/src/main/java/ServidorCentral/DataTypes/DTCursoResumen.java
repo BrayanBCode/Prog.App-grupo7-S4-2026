@@ -1,4 +1,4 @@
-package ServidorCentral.Logica.datatypes;
+package ServidorCentral.DataTypes;
 
 /**
  * Fila de la tabla de cursos (Swing) y tarjeta de la lista de cursos de un instituto (web).

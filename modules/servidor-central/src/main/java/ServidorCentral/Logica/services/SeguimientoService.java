@@ -1,6 +1,6 @@
 package ServidorCentral.Logica.services;
 
-import ServidorCentral.Logica.excepciones.ReglaNegocioException;
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import ServidorCentral.Logica.repositories.SeguimientoRepository;
 import ServidorCentral.Logica.repositories.UsuarioRepository;
 

@@ -1,4 +1,4 @@
-package ServidorCentral.Logica.datatypes;
+package ServidorCentral.DataTypes;
 
 /**
  * Orden de los resultados de la Busqueda (requerimiento 7.5, "Ordenar por"). Sin orden elegido se usa ALFABETICO_ASC.

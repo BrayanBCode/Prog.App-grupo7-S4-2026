@@ -1,7 +1,7 @@
 package ServidorCentral.Persistencia;
 
-import ServidorCentral.Logica.datatypes.DTImagen;
-import ServidorCentral.Logica.excepciones.ReglaNegocioException;
+import ServidorCentral.DataTypes.DTImagen;
+import ServidorCentral.Exepciones.ReglaNegocioException;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,6 +1,6 @@
 package ServidorWeb.seguridad;
 
-import ServidorCentral.Logica.datatypes.DTSesion;
+import ServidorCentral.DataTypes.DTSesion;
 import ServidorCentral.Logica.seguridad.Rol;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

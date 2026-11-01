@@ -1,9 +1,9 @@
 package ServidorCentral.Logica.services;
 
-import ServidorCentral.Logica.datatypes.DTEstudianteResumen;
-import ServidorCentral.Logica.datatypes.DTInscripcionEstudiante;
-import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
-import ServidorCentral.Logica.datatypes.DTProgramaInscripto;
+import ServidorCentral.DataTypes.DTEstudianteResumen;
+import ServidorCentral.DataTypes.DTInscripcionEstudiante;
+import ServidorCentral.DataTypes.DTInscripcionesEstudiante;
+import ServidorCentral.DataTypes.DTProgramaInscripto;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;

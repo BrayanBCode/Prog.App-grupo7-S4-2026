@@ -5,8 +5,8 @@
 package Swing.usuario;
 
 import ServidorCentral.Logica.controller.IControllerV2;
-import ServidorCentral.Logica.datatypes.DTInscripcionesEstudiante;
-import ServidorCentral.Logica.datatypes.DTUsuario;
+import ServidorCentral.DataTypes.DTInscripcionesEstudiante;
+import ServidorCentral.DataTypes.DTUsuario;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
