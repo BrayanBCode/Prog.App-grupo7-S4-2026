@@ -42,6 +42,13 @@
             <version>5.3.3</version>
         </dependency>
 
+        <!-- Cliente JAX-WS para consumir los Web Services del Servidor Central -->
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+            <version>4.0.3</version>
+        </dependency>
+
         <dependency>
             <groupId>uy.edu.utec.maldonado</groupId>
             <artifactId>servidor-central</artifactId>
@@ -51,7 +58,40 @@
 
     <build>
         <finalName>servidor-web</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <!-- El WSDL viaja dentro del WAR: el cliente no lo pide al central al arrancar -->
+            <resource>
+                <directory>src/main/wsdl</directory>
+                <targetPath>wsdl</targetPath>
+            </resource>
+        </resources>
         <plugins>
+            <!-- Genera el cliente SOAP desde src/main/wsdl (copia del ?wsdl y ?xsd=1 que publica el central).
+                 Si cambia el contrato, volver a bajar los dos archivos con el central levantado. -->
+            <plugin>
+                <groupId>com.sun.xml.ws</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>4.0.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlDirectory>${project.basedir}/src/main/wsdl</wsdlDirectory>
+                            <wsdlFiles>
+                                <wsdlFile>ServicioCentral.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <packageName>ServidorWeb.ws.central</packageName>
+                            <wsdlLocation>/wsdl/ServicioCentral.wsdl</wsdlLocation>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Las imagenes viven en /imagenes (raiz del repo) y se copian a /imagenes de la webapp:
                  en la BD se guarda la ruta relativa a esa carpeta (ej. cursos/Flor_del_Ceibo.jpg). -->
             <plugin>

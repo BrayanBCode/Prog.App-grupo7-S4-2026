@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by XML-WS Runtime (https://github.com/eclipse-ee4j/metro-jax-ws). Runtime's version is XML-WS Runtime 4.0.3 git-revision#a57c222. --><xs:schema xmlns:tns="http://WebServices.ServidorCentral/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://WebServices.ServidorCentral/">
+
+<xs:element name="listarNombresInstitutos" type="tns:listarNombresInstitutos"/>
+
+<xs:element name="listarNombresInstitutosResponse" type="tns:listarNombresInstitutosResponse"/>
+
+<xs:complexType name="listarNombresInstitutos">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="listarNombresInstitutosResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

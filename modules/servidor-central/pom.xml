@@ -68,6 +68,13 @@
             <version>${mysql.connector.version}</version>
         </dependency>
 
+        <!-- JAX-WS (Jakarta XML Web Services 4): Endpoint.publish sobre el servidor HTTP de la JDK -->
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+            <version>4.0.3</version>
+        </dependency>
+
         <!-- Pruebas: este artefacto ya incluye api, params y engine -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

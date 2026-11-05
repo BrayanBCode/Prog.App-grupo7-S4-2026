@@ -6,6 +6,12 @@
 
     <display-name>edExt - Servidor Web</display-name>
 
+    <!-- Direccion de los Web Services del Servidor Central (pasa a ~/.edEXT con la configuracion externa, 7.7) -->
+    <context-param>
+        <param-name>edext.ws.url</param-name>
+        <param-value>http://localhost:9128/edext/central</param-value>
+    </context-param>
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
