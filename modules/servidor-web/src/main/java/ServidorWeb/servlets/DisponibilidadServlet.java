@@ -25,10 +25,10 @@ public class DisponibilidadServlet extends BaseServlet {
         boolean disponible;
         String mensaje;
         if (!nickname.isEmpty()) {
-            disponible = controller.nicknameDisponible(nickname);
+            disponible = central.nicknameDisponible(nickname);
             mensaje = disponible ? "" : "El nickname ya está en uso.";
         } else if (!mail.isEmpty()) {
-            disponible = controller.mailDisponible(mail);
+            disponible = central.mailDisponible(mail);
             mensaje = disponible ? "" : "El correo electrónico ya está en uso.";
         } else {
             Json.error(resp, HttpServletResponse.SC_BAD_REQUEST, "Ingrese el nickname o el correo a consultar.");

@@ -1,6 +1,6 @@
 package ServidorWeb.servlets;
 
-import ServidorCentral.DataTypes.OrdenBusqueda;
+import ServidorWeb.ws.central.OrdenBusqueda;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ public class BusquedaServlet extends BaseServlet {
         String texto = param(req, "q");
         OrdenBusqueda orden = orden(param(req, "orden"));
         try {
-            req.setAttribute("cursos", controller.buscarCursos(texto, orden));
+            req.setAttribute("cursos", central.buscarCursos(texto, orden));
         } catch (RuntimeException e) {
             req.setAttribute("error", mensajeDeError(e));
         }

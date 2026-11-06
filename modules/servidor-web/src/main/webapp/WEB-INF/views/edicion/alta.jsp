@@ -5,16 +5,16 @@
 <%-- Alta de Edicion de Curso (Docente). El curso ya viene elegido desde su pagina. El error del central
      (${error}) lo muestra el marco; los de cada campo, la validacion de Bootstrap (alta-edicion.js).
      El docente con sesion siempre participa (D3): su casilla viene marcada y no se puede desmarcar. --%>
-<c:url var="uCurso" value="/cursos"><c:param name="nombre" value="${cursoAlta.nombre()}"/></c:url>
+<c:url var="uCurso" value="/cursos"><c:param name="nombre" value="${cursoAlta.nombre}"/></c:url>
 
 <div style="max-width: 640px;">
     <h1 class="h3 mb-1">Crear edición</h1>
     <p class="text-body-secondary mb-4">
-        Curso <a href="${uCurso}"><c:out value="${cursoAlta.nombre()}"/></a> · <c:out value="${cursoAlta.instituto()}"/>
+        Curso <a href="${uCurso}"><c:out value="${cursoAlta.nombre}"/></a> · <c:out value="${cursoAlta.instituto}"/>
     </p>
 
     <form id="alta-edicion-form" action="${raiz}/edicion/alta" method="POST" enctype="multipart/form-data" novalidate>
-        <input type="hidden" name="curso" value="<c:out value='${cursoAlta.nombre()}'/>">
+        <input type="hidden" name="curso" value="<c:out value='${cursoAlta.nombre}'/>">
 
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre de la edición *</label>
@@ -47,14 +47,14 @@
             <legend class="form-label fs-6 mb-1">Docentes que participan</legend>
             <p class="form-text mt-0 mb-2">Vos siempre participás en la edición que creás. Podés sumar otros docentes del instituto.</p>
             <c:forEach var="d" items="${docentesInstituto}">
-                <c:set var="yo" value="${d.nickname() == usuarioActual.nickname}"/>
+                <c:set var="yo" value="${d.nickname == usuarioActual.nickname}"/>
                 <c:set var="elegido" value="${yo}"/>
-                <c:forEach var="n" items="${docentesElegidos}"><c:if test="${n == d.nickname()}"><c:set var="elegido" value="${true}"/></c:if></c:forEach>
+                <c:forEach var="n" items="${docentesElegidos}"><c:if test="${n == d.nickname}"><c:set var="elegido" value="${true}"/></c:if></c:forEach>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="docentes" id="doc-${d.nickname()}"
-                           value="<c:out value='${d.nickname()}'/>" ${elegido ? 'checked' : ''} ${yo ? 'disabled' : ''}>
-                    <label class="form-check-label" for="doc-${d.nickname()}">
-                        <c:out value="${d.nombre()} ${d.apellido()}"/> (<c:out value="${d.nickname()}"/>)
+                    <input class="form-check-input" type="checkbox" name="docentes" id="doc-${d.nickname}"
+                           value="<c:out value='${d.nickname}'/>" ${elegido ? 'checked' : ''} ${yo ? 'disabled' : ''}>
+                    <label class="form-check-label" for="doc-${d.nickname}">
+                        <c:out value="${d.nombre} ${d.apellido}"/> (<c:out value="${d.nickname}"/>)
                         <c:if test="${yo}"><span class="text-body-secondary small">— vos</span></c:if>
                     </label>
                 </div>

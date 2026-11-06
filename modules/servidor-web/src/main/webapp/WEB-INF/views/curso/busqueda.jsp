@@ -42,13 +42,13 @@
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3">
     <c:forEach var="cur" items="${cursos}">
-        <c:url var="url" value="/cursos"><c:param name="nombre" value="${cur.nombre()}"/></c:url>
+        <c:url var="url" value="/cursos"><c:param name="nombre" value="${cur.nombre}"/></c:url>
         <div class="col">
             <div class="card h-100 shadow-sm">
-                <e:imagen ruta="${cur.imagen()}" alt="${cur.nombre()}" clase="card-img-top img-tarjeta"/>
+                <e:imagen ruta="${cur.imagen}" alt="${cur.nombre}" clase="card-img-top img-tarjeta"/>
                 <div class="card-body">
-                    <a class="stretched-link fw-semibold text-decoration-none" href="${url}"><c:out value="${cur.nombre()}"/></a>
-                    <p class="small text-body-secondary mb-0 mt-1 recorte"><c:out value="${cur.descripcion()}"/></p>
+                    <a class="stretched-link fw-semibold text-decoration-none" href="${url}"><c:out value="${cur.nombre}"/></a>
+                    <p class="small text-body-secondary mb-0 mt-1 recorte"><c:out value="${cur.descripcion}"/></p>
                 </div>
             </div>
         </div>

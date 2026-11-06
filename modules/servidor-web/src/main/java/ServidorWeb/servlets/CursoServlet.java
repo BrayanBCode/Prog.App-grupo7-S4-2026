@@ -25,11 +25,11 @@ public class CursoServlet extends BaseServlet {
         String instituto = param(req, "instituto");
         try {
             if (!nombre.isEmpty()) {
-                req.setAttribute("detalle", controller.consultarCurso(nombre));
+                req.setAttribute("detalle", central.consultarCurso(nombre));
                 req.setAttribute("titulo", nombre);
                 vista(req, resp, "curso/detalle.jsp");
             } else if (!instituto.isEmpty()) {
-                req.setAttribute("cursos", controller.listarCursosInstituto(instituto));
+                req.setAttribute("cursos", central.listarCursosInstituto(instituto));
                 req.setAttribute("instituto", instituto);
                 req.setAttribute("titulo", "Cursos de " + instituto);
                 vista(req, resp, "curso/lista.jsp");

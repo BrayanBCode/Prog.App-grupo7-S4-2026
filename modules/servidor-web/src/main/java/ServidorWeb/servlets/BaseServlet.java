@@ -1,10 +1,9 @@
 package ServidorWeb.servlets;
 
-import ServidorCentral.Logica.controller.Fabrica;
-import ServidorCentral.Logica.controller.IControllerV2;
-import ServidorCentral.DataTypes.DTImagen;
+import ServidorWeb.ws.Central;
+import ServidorWeb.ws.central.DTImagen;
 import ServidorCentral.DataTypes.DTSesion;
-import ServidorCentral.Exepciones.ReglaNegocioException;
+import ServidorWeb.ws.ErrorNegocio;
 import ServidorWeb.seguridad.SesionUsuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -24,11 +23,11 @@ import java.time.format.DateTimeParseException;
  */
 public abstract class BaseServlet extends HttpServlet {
 
-    protected IControllerV2 controller;
+    protected Central central;
 
     @Override
     public void init() {
-        this.controller = Fabrica.getInstance().getControllerV2();
+        this.central = Central.de(getServletContext());
     }
 
     protected void vista(HttpServletRequest req, HttpServletResponse resp, String jsp)
@@ -66,11 +65,11 @@ public abstract class BaseServlet extends HttpServlet {
     }
 
     /**
-     * Mensaje para mostrarle al usuario cuando falla una llamada al controller: el de la regla de
+     * Mensaje para mostrarle al usuario cuando falla una llamada al central: el de la regla de
      * negocio tal cual, o uno generico (y se loguea) si es un error inesperado.
      */
     protected String mensajeDeError(Exception e) {
-        if (e instanceof ReglaNegocioException) {
+        if (e instanceof ErrorNegocio) {
             return e.getMessage();
         }
         getServletContext().log("Error inesperado en " + getClass().getSimpleName(), e);
@@ -96,8 +95,14 @@ public abstract class BaseServlet extends HttpServlet {
         if (parte == null || parte.getSize() == 0) {
             return null;
         }
+        DTImagen imagen = new DTImagen();
         try (InputStream in = parte.getInputStream()) {
-            return DTImagen.deArchivo(in.readAllBytes(), parte.getSubmittedFileName());
+            imagen.setContenido(in.readAllBytes());
         }
+        // Solo la extension: el central la normaliza y valida el formato
+        String archivo = parte.getSubmittedFileName() == null ? "" : parte.getSubmittedFileName();
+        int punto = archivo.lastIndexOf('.');
+        imagen.setExtension(punto < 0 ? "" : archivo.substring(punto + 1));
+        return imagen;
     }
 }

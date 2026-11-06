@@ -1,7 +1,6 @@
 package ServidorWeb.seguridad;
 
-import ServidorCentral.Logica.controller.Fabrica;
-import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorWeb.ws.Central;
 import ServidorCentral.DataTypes.DTSesion;
 import ServidorCentral.Logica.seguridad.CasoDeUso;
 import ServidorCentral.Logica.seguridad.Rol;
@@ -15,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -75,11 +75,25 @@ public class AccesoFilter implements Filter {
         }
     }
 
-    private IControllerV2 controller;
+    private Central central;
+
+    /** El menu lateral se arma en cada pagina: los institutos se piden al central cada tanto, no siempre. */
+    private static final long VIGENCIA_INSTITUTOS_MS = 60_000;
+    private volatile List<String> institutos;
+    private volatile long institutosPedidos;
+
+    private List<String> institutosMenu() {
+        long ahora = System.currentTimeMillis();
+        if (institutos == null || ahora - institutosPedidos > VIGENCIA_INSTITUTOS_MS) {
+            institutos = List.copyOf(central.listarNombresInstitutos());
+            institutosPedidos = ahora;
+        }
+        return institutos;
+    }
 
     @Override
     public void init(FilterConfig config) {
-        this.controller = Fabrica.getInstance().getControllerV2();
+        this.central = Central.de(config.getServletContext());
     }
 
     @Override
@@ -119,7 +133,7 @@ public class AccesoFilter implements Filter {
             return;
         }
 
-        req.setAttribute("institutosMenu", controller.listarNombresInstitutos());
+        req.setAttribute("institutosMenu", institutosMenu());
 
         HttpSession sesion = req.getSession(false);
         if (sesion != null) {

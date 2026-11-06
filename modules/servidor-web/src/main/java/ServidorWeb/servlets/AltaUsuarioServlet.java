@@ -1,6 +1,6 @@
 package ServidorWeb.servlets;
 
-import ServidorCentral.DataTypes.DTImagen;
+import ServidorWeb.ws.central.DTImagen;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -66,7 +66,7 @@ public class AltaUsuarioServlet extends BaseServlet {
         if (error == null) {
             try {
                 DTImagen imagen = leerImagen(req, "imagen");
-                controller.altaUsuario(nickname, mail, nombre, apellido, fechaNac, instituto, imagen, password);
+                central.altaUsuario(nickname, mail, nombre, apellido, fechaNac, instituto, imagen, password);
 
                 // Éxito: redirect (patrón Post/Redirect/Get) para que F5 no reenvíe el alta
                 redirigir(req, resp, "/login?registrado=true");
@@ -90,7 +90,7 @@ public class AltaUsuarioServlet extends BaseServlet {
 
     private void mostrarFormulario(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.setAttribute("institutos", controller.listarNombresInstitutos());
+        req.setAttribute("institutos", central.listarNombresInstitutos());
         vista(req, resp, "usuario/registro.jsp");
     }
 }

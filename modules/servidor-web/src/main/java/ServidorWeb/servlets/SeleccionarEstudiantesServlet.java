@@ -1,13 +1,16 @@
 package ServidorWeb.servlets;
 
-import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
+import ServidorWeb.ws.central.DTSeleccion;
+import ServidorWeb.ws.central.EstadoInscripcion;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,7 +28,7 @@ public class SeleccionarEstudiantesServlet extends BaseServlet {
             throws ServletException, IOException {
         String edicion = param(req, "edicion");
         try {
-            req.setAttribute("seleccion", controller.consultarInscripcionesEdicion(usuario(req).getNickname(), edicion));
+            req.setAttribute("seleccion", central.consultarInscripcionesEdicion(usuario(req).getNickname(), edicion));
             req.setAttribute("titulo", "Seleccionar estudiantes");
             vista(req, resp, "edicion/seleccionar.jsp");
         } catch (RuntimeException e) {
@@ -54,8 +57,16 @@ public class SeleccionarEstudiantesServlet extends BaseServlet {
                 }
             }
         }
+        // SOAP no tiene Map: una DTSeleccion por estudiante (el Map evita repetir un nickname)
+        List<DTSeleccion> selecciones = new ArrayList<>();
+        estados.forEach((nickname, estado) -> {
+            DTSeleccion s = new DTSeleccion();
+            s.setNickname(nickname);
+            s.setEstado(estado);
+            selecciones.add(s);
+        });
         try {
-            controller.seleccionarEstudiantes(usuario(req).getNickname(), edicion, estados);
+            central.seleccionarEstudiantes(usuario(req).getNickname(), edicion, selecciones);
             flash(req, "Se guardó la selección de estudiantes.");
         } catch (RuntimeException e) {
             flashError(req, mensajeDeError(e));

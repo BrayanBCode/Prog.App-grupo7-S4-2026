@@ -1,7 +1,7 @@
 package ServidorWeb.servlets;
 
 import ServidorCentral.DataTypes.DTSesion;
-import ServidorCentral.DataTypes.DTUsuario;
+import ServidorWeb.ws.central.DTUsuario;
 import ServidorWeb.seguridad.SesionUsuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,15 +21,15 @@ public class ModificarUsuarioServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        DTUsuario yo = controller.obtenerUsuario(usuario(req).getNickname());
+        DTUsuario yo = central.obtenerUsuario(usuario(req).getNickname());
         if (yo == null) {
             flashError(req, "No se encontraron tus datos.");
             redirigir(req, resp, "/inicio");
             return;
         }
-        req.setAttribute("nombre", yo.nombre());
-        req.setAttribute("apellido", yo.apellido());
-        req.setAttribute("fechaNac", yo.fechaNac());
+        req.setAttribute("nombre", yo.getNombre());
+        req.setAttribute("apellido", yo.getApellido());
+        req.setAttribute("fechaNac", yo.getFechaNac());
         mostrarFormulario(req, resp);
     }
 
@@ -41,7 +41,7 @@ public class ModificarUsuarioServlet extends BaseServlet {
         String nombre = param(req, "nombre");
         String apellido = param(req, "apellido");
         try {
-            controller.modificarDatosUsuario(sesion.getNickname(), nombre, apellido, fecha(param(req, "fechaNac")));
+            central.modificarDatosUsuario(sesion.getNickname(), nombre, apellido, fecha(param(req, "fechaNac")));
             // El saludo del inicio usa el nombre de la sesion: se actualiza para no mostrar el viejo
             SesionUsuario.actualizar(req, new DTSesion(sesion.getNickname(), sesion.getMail(), nombre, apellido,
                     sesion.getImagen(), sesion.getRol()));

@@ -1,8 +1,8 @@
 package ServidorWeb.servlets;
 
-import ServidorCentral.DataTypes.DTPerfil;
+import ServidorWeb.ws.central.DTPerfil;
 import ServidorCentral.DataTypes.DTSesion;
-import ServidorCentral.Exepciones.ReglaNegocioException;
+import ServidorWeb.ws.ErrorNegocio;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,12 +31,12 @@ public class UsuariosServlet extends BaseServlet {
         }
         DTSesion yo = usuario(req);
         try {
-            DTPerfil perfil = controller.obtenerPerfil(nick, yo == null ? null : yo.getNickname());
-            req.setAttribute("titulo", perfil.usuario().nickname());
+            DTPerfil perfil = central.obtenerPerfil(nick, yo == null ? null : yo.getNickname());
+            req.setAttribute("titulo", perfil.getUsuario().getNickname());
             req.setAttribute("perfil", perfil);
             vista(req, resp, "usuario/perfil.jsp");
         } catch (RuntimeException e) {
-            if (e instanceof ReglaNegocioException) {
+            if (e instanceof ErrorNegocio) {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
             req.setAttribute("error", mensajeDeError(e));
@@ -47,7 +47,7 @@ public class UsuariosServlet extends BaseServlet {
     private void listar(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.setAttribute("titulo", "Usuarios");
-        req.setAttribute("usuarios", controller.listarUsuarios());
+        req.setAttribute("usuarios", central.listarUsuarios());
         vista(req, resp, "usuario/lista.jsp");
     }
 }

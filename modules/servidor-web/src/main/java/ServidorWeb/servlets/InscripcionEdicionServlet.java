@@ -1,7 +1,6 @@
 package ServidorWeb.servlets;
 
-import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
-import ServidorCentral.Exepciones.ReglaNegocioException;
+import ServidorWeb.ws.ErrorNegocio;
 import ServidorWeb.config.Json;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,11 +22,11 @@ public class InscripcionEdicionServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
         try {
-            controller.inscribirse(usuario(req).getNickname(), param(req, "edicion"));
+            central.inscribirse(usuario(req).getNickname(), param(req, "edicion"));
             Json.escribir(resp, HttpServletResponse.SC_OK,
-                    Map.of("ok", true, "estado", EstadoInscripcion.INSCRIPTO.getEtiqueta()));
+                    Map.of("ok", true, "estado", "Inscripto"));
         } catch (RuntimeException e) {
-            int status = e instanceof ReglaNegocioException
+            int status = e instanceof ErrorNegocio
                     ? HttpServletResponse.SC_CONFLICT : HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
             Json.error(resp, status, mensajeDeError(e));
         }

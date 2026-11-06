@@ -1,9 +1,8 @@
 package ServidorWeb.servlets;
 
-import ServidorCentral.Logica.controller.Fabrica;
-import ServidorCentral.Logica.controller.IControllerV2;
+import ServidorWeb.ws.Central;
 import ServidorCentral.DataTypes.DTSesion;
-import ServidorCentral.Exepciones.ReglaNegocioException;
+import ServidorWeb.ws.ErrorNegocio;
 import ServidorWeb.seguridad.SesionUsuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,11 +20,11 @@ import java.io.IOException;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    private IControllerV2 controller;
+    private Central central;
 
     @Override
     public void init() {
-        this.controller = Fabrica.getInstance().getControllerV2();
+        this.central = Central.de(getServletContext());
     }
 
     @Override
@@ -42,10 +41,10 @@ public class LoginServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         try {
-            DTSesion sesion = controller.iniciarSesion(usuario, password);
+            DTSesion sesion = central.iniciarSesion(usuario, password);
             SesionUsuario.iniciar(req, sesion);
             resp.sendRedirect(req.getContextPath() + "/inicio");
-        } catch (ReglaNegocioException datosInvalidos) {
+        } catch (ErrorNegocio datosInvalidos) {
             // Advertencia al visitante para que reingrese o cancele (login.js muestra el mensaje)
             resp.sendRedirect(req.getContextPath() + "/login?error=true");
         }

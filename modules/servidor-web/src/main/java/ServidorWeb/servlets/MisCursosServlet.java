@@ -19,7 +19,7 @@ public class MisCursosServlet extends BaseServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
-            req.setAttribute("misCursos", controller.misCursosDocente(usuario(req).getNickname()));
+            req.setAttribute("misCursos", central.misCursosDocente(usuario(req).getNickname()));
         } catch (RuntimeException e) {
             req.setAttribute("error", mensajeDeError(e));
         }

@@ -1,6 +1,6 @@
 package ServidorWeb.servlets;
 
-import ServidorCentral.Exepciones.ReglaNegocioException;
+import ServidorWeb.ws.ErrorNegocio;
 import ServidorWeb.config.Json;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,10 +25,10 @@ public class SeguimientoServlet extends BaseServlet {
         String nick = param(req, "nick");
         boolean dejar = "dejar".equals(param(req, "accion"));
         try {
-            int seguidores = dejar ? controller.dejarDeSeguirUsuario(yo, nick) : controller.seguirUsuario(yo, nick);
+            int seguidores = dejar ? central.dejarDeSeguirUsuario(yo, nick) : central.seguirUsuario(yo, nick);
             Json.escribir(resp, HttpServletResponse.SC_OK, Map.of("ok", true, "siguiendo", !dejar, "seguidores", seguidores));
         } catch (RuntimeException e) {
-            int status = e instanceof ReglaNegocioException
+            int status = e instanceof ErrorNegocio
                     ? HttpServletResponse.SC_CONFLICT : HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
             Json.error(resp, status, mensajeDeError(e));
         }

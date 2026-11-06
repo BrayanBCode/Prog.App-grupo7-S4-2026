@@ -1,6 +1,6 @@
 package ServidorWeb.servlets;
 
-import ServidorCentral.DataTypes.DTImagen;
+import ServidorWeb.ws.central.DTImagen;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -34,7 +34,7 @@ public class AltaCursoServlet extends BaseServlet {
         String nombre = param(req, "nombre");
         String[] previas = req.getParameterValues("previas");
         try {
-            controller.altaCurso(usuario(req).getNickname(), nombre, param(req, "descripcion"),
+            central.altaCurso(usuario(req).getNickname(), nombre, param(req, "descripcion"),
                     entero(req, "duracion"), (float) decimal(req, "cantHoras"), entero(req, "cantCreditos"),
                     param(req, "url"), param(req, "instituto"),
                     previas == null ? List.of() : Arrays.asList(previas), leerImagen(req, "imagen"));
@@ -52,8 +52,8 @@ public class AltaCursoServlet extends BaseServlet {
     private void mostrarFormulario(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.setAttribute("titulo", "Crear curso");
-        req.setAttribute("institutos", controller.listarNombresInstitutos());
-        req.setAttribute("cursos", controller.listarNombresCursos());
+        req.setAttribute("institutos", central.listarNombresInstitutos());
+        req.setAttribute("cursos", central.listarNombresCursos());
         vista(req, resp, "curso/alta.jsp");
     }
 

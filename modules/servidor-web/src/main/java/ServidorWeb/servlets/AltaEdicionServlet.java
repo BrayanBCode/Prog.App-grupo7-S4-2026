@@ -1,6 +1,6 @@
 package ServidorWeb.servlets;
 
-import ServidorCentral.DataTypes.DTCursoDetalle;
+import ServidorWeb.ws.central.DTCursoDetalle;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -35,7 +35,7 @@ public class AltaEdicionServlet extends BaseServlet {
         String curso = param(req, "curso");
         String[] docentes = req.getParameterValues("docentes");
         try {
-            controller.altaEdicion(usuario(req).getNickname(), nombre, curso, fecha(param(req, "fechaInicio")),
+            central.altaEdicion(usuario(req).getNickname(), nombre, curso, fecha(param(req, "fechaInicio")),
                     fecha(param(req, "fechaFin")), cupo(param(req, "cupo")),
                     docentes == null ? List.of() : Arrays.asList(docentes), leerImagen(req, "imagen"));
             flash(req, "Se creó la edición \"" + nombre + "\".");
@@ -51,9 +51,9 @@ public class AltaEdicionServlet extends BaseServlet {
     private void mostrarFormulario(HttpServletRequest req, HttpServletResponse resp, String curso)
             throws ServletException, IOException {
         try {
-            DTCursoDetalle detalle = controller.consultarCurso(curso);
-            req.setAttribute("cursoAlta", detalle.curso());
-            req.setAttribute("docentesInstituto", controller.listarDocentesPorInstituto(detalle.curso().instituto()));
+            DTCursoDetalle detalle = central.consultarCurso(curso);
+            req.setAttribute("cursoAlta", detalle.getCurso());
+            req.setAttribute("docentesInstituto", central.listarDocentesPorInstituto(detalle.getCurso().getInstituto()));
             req.setAttribute("titulo", "Crear edición");
             vista(req, resp, "edicion/alta.jsp");
         } catch (RuntimeException e) {

@@ -20,7 +20,7 @@ public class ListarAceptadosServlet extends BaseServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
-            req.setAttribute("aceptados", controller.consultarAceptadosEdicion(usuario(req).getNickname(), param(req, "edicion")));
+            req.setAttribute("aceptados", central.consultarAceptadosEdicion(usuario(req).getNickname(), param(req, "edicion")));
             req.setAttribute("titulo", "Estudiantes aceptados");
             vista(req, resp, "edicion/aceptados.jsp");
         } catch (RuntimeException e) {

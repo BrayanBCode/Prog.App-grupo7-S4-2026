@@ -18,7 +18,7 @@ public class ResultadosInscripcionesServlet extends BaseServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
-            req.setAttribute("resultados", controller.resultadosInscripciones(usuario(req).getNickname()));
+            req.setAttribute("resultados", central.resultadosInscripciones(usuario(req).getNickname()));
         } catch (RuntimeException e) {
             req.setAttribute("error", mensajeDeError(e));
         }

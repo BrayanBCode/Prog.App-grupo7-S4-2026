@@ -19,13 +19,13 @@
             <thead class="table-light"><tr><th>Edición</th><th>Curso</th><th>Fecha de inscripción</th><th>Estado</th></tr></thead>
             <tbody>
             <c:forEach var="i" items="${resultados}">
-                <c:url var="uEd" value="/ediciones"><c:param name="nombre" value="${i.edicion()}"/></c:url>
-                <c:url var="uCur" value="/cursos"><c:param name="nombre" value="${i.curso()}"/></c:url>
+                <c:url var="uEd" value="/ediciones"><c:param name="nombre" value="${i.edicion}"/></c:url>
+                <c:url var="uCur" value="/cursos"><c:param name="nombre" value="${i.curso}"/></c:url>
                 <tr>
-                    <td><a href="${uEd}"><c:out value="${i.edicion()}"/></a></td>
-                    <td><a href="${uCur}"><c:out value="${i.curso()}"/></a></td>
-                    <td><e:fecha valor="${i.fechaInscripcion()}"/></td>
-                    <td><e:estado valor="${i.estado()}"/></td>
+                    <td><a href="${uEd}"><c:out value="${i.edicion}"/></a></td>
+                    <td><a href="${uCur}"><c:out value="${i.curso}"/></a></td>
+                    <td><e:fecha valor="${i.fechaInscripcion}"/></td>
+                    <td><e:estado valor="${i.estado}"/></td>
                 </tr>
             </c:forEach>
             </tbody>
