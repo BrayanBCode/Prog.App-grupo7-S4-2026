@@ -2,6 +2,7 @@ package ServidorWeb.ws;
 
 import ServidorCentral.DataTypes.DTSesion;
 import ServidorCentral.Logica.seguridad.Rol;
+import ServidorWeb.config.ConfiguracionWeb;
 import ServidorWeb.ws.central.DTCursoDetalle;
 import ServidorWeb.ws.central.DTCursoResumen;
 import ServidorWeb.ws.central.DTDocenteResumen;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * Cliente de los Web Services del Servidor Central, el unico punto del sitio que habla SOAP.
  * <ul>
- *   <li>La direccion sale del context-param "edext.ws.url" de web.xml.</li>
+ *   <li>La direccion sale de "central.url" en ~/.edEXT/web.properties ({@link ConfiguracionWeb}).</li>
  *   <li>Las fechas van como texto ISO (yyyy-MM-dd).</li>
  *   <li>Un ReglaNegocioFault se convierte en {@link ErrorNegocio}; si el central no responde
  *       llega una WebServiceException. Las dos son RuntimeException, como antes con el controller.</li>
@@ -47,7 +48,12 @@ public class Central {
     public static synchronized Central de(ServletContext contexto) {
         Central central = (Central) contexto.getAttribute(ATRIBUTO);
         if (central == null) {
-            central = new Central(contexto.getInitParameter("edext.ws.url"));
+            String url = ConfiguracionWeb.get().valor(ConfiguracionWeb.CENTRAL_URL);
+            if (url == null) {
+                throw new IllegalStateException("Falta central.url en ~/.edEXT/web.properties");
+            }
+            contexto.log("Servidor Central en " + url);
+            central = new Central(url);
             contexto.setAttribute(ATRIBUTO, central);
         }
         return central;

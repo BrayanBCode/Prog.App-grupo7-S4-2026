@@ -13,8 +13,8 @@ public class Conexion {
     private EntityManagerFactory emf;
 
     private Conexion() {
-        //Aqui se crea la EntityManager bajo el nombre de nuestra DB
-        emf = Persistence.createEntityManagerFactory("DataBase");
+        //Aqui se crea la EntityManager bajo el nombre de nuestra DB; la conexion sale de ~/.edEXT (Configuracion)
+        emf = Persistence.createEntityManagerFactory("DataBase", Configuracion.get().propiedadesJpa());
     }
 
     private Conexion(Map<String, ?> propiedades) {

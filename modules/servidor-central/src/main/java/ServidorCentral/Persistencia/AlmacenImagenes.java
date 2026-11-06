@@ -22,11 +22,12 @@ import java.util.stream.Stream;
  * <ol>
  *   <li>{@link #setCarpetaBase(Path)} (solo para tests).</li>
  *   <li>Propiedad de sistema {@code edext.imagenes} o variable de entorno {@code EDEXT_IMAGENES}.</li>
+ *   <li>{@code imagenes.carpeta} de {@code ~/.edEXT/servidor.properties} ({@link Configuracion}).</li>
  *   <li>{@code ~/edext/imagenes}.</li>
  * </ol>
  * Las imagenes de los datos de prueba viven en {@code imagenes/} del repo: se copian a la carpeta
- * fija con {@link #sembrar(Path)}, sin pisar las que ya esten. Swing las siembra solo (busca esa
- * carpeta desde el directorio actual hacia arriba); el Servidor Web las siembra desde el WAR.
+ * fija con {@link #sembrar(Path)}, sin pisar las que ya esten. El central las siembra solo (busca esa
+ * carpeta desde el directorio actual hacia arriba); el Servidor Web las pide por SOAP.
  */
 public final class AlmacenImagenes {
 
@@ -53,6 +54,9 @@ public final class AlmacenImagenes {
 
     private static Path carpetaPorDefecto() {
         String configurada = System.getProperty("edext.imagenes", System.getenv("EDEXT_IMAGENES"));
+        if (configurada == null || configurada.isBlank()) {
+            configurada = Configuracion.get().valor(Configuracion.IMAGENES_CARPETA);
+        }
         if (configurada != null && !configurada.isBlank()) {
             return Paths.get(configurada).toAbsolutePath().normalize();
         }
