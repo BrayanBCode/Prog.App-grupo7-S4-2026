@@ -1,5 +1,6 @@
 package ServidorCentral.Logica.repositories;
 
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 import ServidorCentral.Logica.entities.cursos.InscripcionEdicion;
@@ -88,6 +89,43 @@ class EdicionCursoRepositoryTest {
         assertEquals(EstadoInscripcion.INSCRIPTO, e.ediciones.estadoInscripcion("weiss", "MicroBit-2026"));
         assertEquals(EstadoInscripcion.INSCRIPTO, e.ediciones.estadoInscripcion("roro", "MicroBit-2025"), "otra edicion");
         assertNull(e.ediciones.estadoInscripcion("weiss", "MicroBit-2025"));
+    }
+
+    private Integer notaDe(String nickname, String edicion) {
+        return e.ediciones.inscripcionesDeEdicion(edicion).stream()
+                .filter(i -> i.getEstudiante().getNickname().equals(nickname))
+                .findFirst().orElseThrow().getNota();
+    }
+
+    @Test
+    void notasYCierre_persisten() {
+        e.ediciones.actualizarEstados("MicroBit-2026", Map.of("roro", EstadoInscripcion.ACEPTADA,
+                "weiss", EstadoInscripcion.ACEPTADA));
+        e.ediciones.registrarNotas("MicroBit-2026", Map.of("roro", 10));
+
+        assertEquals(10, notaDe("roro", "MicroBit-2026"));
+        assertNull(notaDe("weiss", "MicroBit-2026"));
+        assertThrows(ReglaNegocioException.class, () -> e.ediciones.cerrarEdicion("MicroBit-2026"), "falta weiss");
+        assertFalse(e.ediciones.obtenerPorNombres("MicroBit-2026").isCerrada());
+
+        e.ediciones.registrarNotas("MicroBit-2026", Map.of("weiss", 6));
+        e.ediciones.cerrarEdicion("MicroBit-2026");
+
+        assertTrue(e.ediciones.obtenerPorNombres("MicroBit-2026").isCerrada());
+        assertFalse(e.ediciones.obtenerPorNombres("MicroBit-2025").isCerrada(), "otra edicion");
+        assertThrows(ReglaNegocioException.class,
+                () -> e.ediciones.registrarNotas("MicroBit-2026", Map.of("roro", 12)));
+        assertEquals(10, notaDe("roro", "MicroBit-2026"));
+    }
+
+    @Test
+    void registrarNotas_unaInvalidaNoGuardaNinguna() {
+        e.ediciones.actualizarEstados("MicroBit-2026", Map.of("roro", EstadoInscripcion.ACEPTADA));
+
+        assertThrows(ReglaNegocioException.class,
+                () -> e.ediciones.registrarNotas("MicroBit-2026", Map.of("roro", 8, "weiss", 5)), "weiss no esta aceptado");
+        assertNull(notaDe("roro", "MicroBit-2026"));
+        assertThrows(ReglaNegocioException.class, () -> e.ediciones.cerrarEdicion("No existe"));
     }
 
     @Test

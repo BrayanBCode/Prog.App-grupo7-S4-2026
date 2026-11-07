@@ -1,5 +1,6 @@
 package ServidorCentral.Logica.repositories;
 
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import ServidorCentral.Logica.entities.cursos.Curso;
 import ServidorCentral.Logica.entities.cursos.EdicionCurso;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class EdicionCursoRepository {
     private final Conexion conexion;
@@ -175,6 +177,58 @@ public class EdicionCursoRepository {
         }
     }
 
+    /**
+     * Guarda las notas indicadas (nickname -> nota) en una sola transaccion: si alguna rompe una regla de
+     * {@link InscripcionEdicion#calificar(int)} no se guarda ninguna. Los nicknames que no estan en el mapa no cambian.
+     */
+    public void registrarNotas(String nombreEdicion, Map<String, Integer> notasPorNickname) {
+        enTransaccion(em -> {
+            List<InscripcionEdicion> lista = em.createQuery(
+                            "SELECT i FROM InscripcionEdicion i WHERE i.edicionCurso.nombre = :n", InscripcionEdicion.class)
+                    .setParameter("n", nombreEdicion)
+                    .getResultList();
+            for (InscripcionEdicion i : lista) {
+                Integer nota = notasPorNickname.get(i.getEstudiante().getNickname());
+                if (nota != null) {
+                    i.calificar(nota);
+                }
+            }
+        });
+    }
+
+    /** Cierra la edicion (ver {@link EdicionCurso#cerrar()}). */
+    public void cerrarEdicion(String nombreEdicion) {
+        enTransaccion(em -> {
+            EdicionCurso edicion = em.find(EdicionCurso.class, nombreEdicion);
+            if (edicion == null) {
+                throw new ReglaNegocioException("No existe la edición " + nombreEdicion + ".");
+            }
+            edicion.cerrar();
+        });
+    }
+
+    /** Las reglas de negocio llegan tal cual a quien llama; cualquier otro error se envuelve. */
+    private void enTransaccion(Consumer<EntityManager> trabajo) {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            trabajo.accept(em);
+            em.getTransaction().commit();
+        } catch (ReglaNegocioException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException(e);
+        } finally {
+            em.close();
+        }
+    }
+
     public long contarInscriptos(String nombreEdicion) {
         EntityManager em = conexion.getEntityManager();
         try {
@@ -284,6 +338,9 @@ public class EdicionCursoRepository {
             inscripcion.setEdicionCurso(edicion);
             inscripcion.setFechaInscripcion(fechaInscripcion);
             em.persist(inscripcion);
+            // Mantener los dos lados: si no, la cache de EclipseLink guarda la lista vieja de la edicion
+            // y el cierre (EdicionCurso#cerrar) no ve a todos los aceptados.
+            edicion.getInscripciones().add(inscripcion);
 
             em.getTransaction().commit();
         } catch (Exception e) {

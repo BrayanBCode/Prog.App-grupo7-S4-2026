@@ -1,5 +1,6 @@
 package ServidorCentral.Logica.entities.cursos;
 
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import ServidorCentral.Logica.entities.usuarios.Estudiante;
 
 import javax.persistence.*;
@@ -30,6 +31,9 @@ public class InscripcionEdicion implements Serializable {
     @Enumerated(EnumType.STRING)
     private EstadoInscripcion estado = EstadoInscripcion.INSCRIPTO;
 
+    /** Resultado de la evaluacion, de 1 a 12 (null mientras el docente no la ingresa). */
+    private Integer nota;
+
     // Constructores
     public InscripcionEdicion() {}
 
@@ -54,6 +58,28 @@ public class InscripcionEdicion implements Serializable {
 
     public EstadoInscripcion getEstado() { return estado; }
     public void setEstado(EstadoInscripcion estado) { this.estado = estado; }
+
+    public Integer getNota() { return nota; }
+
+    public static final int NOTA_MINIMA = 1;
+    public static final int NOTA_MAXIMA = 12;
+
+    /**
+     * Registra el resultado de la evaluacion (letra 2026, "Ingresar resultados de evaluaciones"): solo para
+     * estudiantes aceptados, en la escala 1 a 12 y mientras la edicion no este cerrada.
+     */
+    public void calificar(int nota) {
+        if (estado != EstadoInscripcion.ACEPTADA) {
+            throw new ReglaNegocioException("Solo se califica a estudiantes aceptados en la edición.");
+        }
+        if (nota < NOTA_MINIMA || nota > NOTA_MAXIMA) {
+            throw new ReglaNegocioException("La nota debe estar entre " + NOTA_MINIMA + " y " + NOTA_MAXIMA + ".");
+        }
+        if (edicionCurso != null && edicionCurso.isCerrada()) {
+            throw new ReglaNegocioException("La edición está cerrada: no se pueden modificar las notas.");
+        }
+        this.nota = nota;
+    }
 
     @Override
     public int hashCode() {

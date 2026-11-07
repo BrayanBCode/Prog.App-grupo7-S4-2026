@@ -4,6 +4,7 @@
  */
 package ServidorCentral.Logica.entities.cursos;
 
+import ServidorCentral.Exepciones.ReglaNegocioException;
 import ServidorCentral.Logica.entities.usuarios.Docente;
 
 import javax.persistence.*;
@@ -35,6 +36,8 @@ public class EdicionCurso implements Serializable {
     private int cupo = 0;
     private LocalDate fechaPublicacion;
     private String imagen;   // ruta relativa a la carpeta de imagenes (puede ser null)
+    // Boolean y no boolean: en una base existente la columna se agrega vacia (null = abierta).
+    private Boolean cerrada = false;
 
     // Constructor vacío necesario para JPA
     public EdicionCurso() {
@@ -71,7 +74,27 @@ public class EdicionCurso implements Serializable {
 
     public String getImagen(){return imagen;}
     public void setImagen(String imagen){this.imagen = imagen;}
-    
+
+    public List<InscripcionEdicion> getInscripciones(){return inscripciones;}
+
+    public boolean isCerrada(){return Boolean.TRUE.equals(cerrada);}
+
+    /**
+     * Cierra la edicion (letra 2026, "Ingresar resultados de evaluaciones"): se hace luego de ingresar todas
+     * las evaluaciones, asi que exige nota en cada estudiante aceptado. Despues no se pueden modificar las notas.
+     */
+    public void cerrar() {
+        if (isCerrada()) {
+            throw new ReglaNegocioException("La edición ya está cerrada.");
+        }
+        boolean faltanNotas = inscripciones.stream()
+                .anyMatch(i -> i.getEstado() == EstadoInscripcion.ACEPTADA && i.getNota() == null);
+        if (faltanNotas) {
+            throw new ReglaNegocioException("Faltan notas: hay que calificar a todos los aceptados antes de cerrar.");
+        }
+        this.cerrada = true;
+    }
+
     private static final long serialVersionUID = 1L;
 
     // equals/hashCode basados en 'nombre', que es el verdadero @Id de la entidad.
