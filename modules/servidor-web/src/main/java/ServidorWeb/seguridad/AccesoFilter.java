@@ -1,9 +1,6 @@
 package ServidorWeb.seguridad;
 
 import ServidorWeb.ws.Central;
-import ServidorCentral.DataTypes.DTSesion;
-import ServidorCentral.Logica.seguridad.CasoDeUso;
-import ServidorCentral.Logica.seguridad.Rol;
 import ServidorWeb.config.Json;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;

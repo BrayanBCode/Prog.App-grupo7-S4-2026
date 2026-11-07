@@ -1,7 +1,7 @@
 package ServidorWeb.ws;
 
-import ServidorCentral.DataTypes.DTSesion;
-import ServidorCentral.Logica.seguridad.Rol;
+import ServidorWeb.seguridad.DTSesion;
+import ServidorWeb.seguridad.Rol;
 import ServidorWeb.config.ConfiguracionWeb;
 import ServidorWeb.ws.central.DTCursoDetalle;
 import ServidorWeb.ws.central.DTCursoResumen;
