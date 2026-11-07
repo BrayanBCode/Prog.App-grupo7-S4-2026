@@ -1,7 +1,7 @@
 package ServidorWeb.servlets;
 
 import ServidorWeb.ws.Central;
-import ServidorCentral.DataTypes.DTSesion;
+import ServidorWeb.seguridad.DTSesion;
 import ServidorWeb.ws.ErrorNegocio;
 import ServidorWeb.seguridad.SesionUsuario;
 import jakarta.servlet.ServletException;
