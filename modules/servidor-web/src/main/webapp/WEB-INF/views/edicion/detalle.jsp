@@ -56,7 +56,7 @@
                 </c:if>
                 <c:if test="${puede.INGRESAR_RESULTADOS_EVALUACIONES and not detalleEdicion.cerrada}">
                     <c:url var="uRes" value="/edicion/resultados"><c:param name="edicion" value="${ed.nombre}"/></c:url>
-                    <a class="btn btn-outline-secondary btn-sm" href="${uRes}">Resultados</a>
+                    <a class="btn btn-outline-secondary btn-sm" href="${uRes}">Calificar</a>
                 </c:if>
                 <c:if test="${puede.VER_RESULTADOS_EVALUACIONES and detalleEdicion.cerrada}">
                     <c:url var="uActa" value="/edicion/acta"><c:param name="edicion" value="${ed.nombre}"/></c:url>

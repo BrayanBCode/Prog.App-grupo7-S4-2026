@@ -52,19 +52,20 @@
             </c:if>
         </div>
         <c:if test="${empty detalle.ediciones}"><p class="small text-body-secondary">Todavía no tiene ediciones.</p></c:if>
-        <ul class="list-unstyled mb-4">
+        <%-- Cada edicion es una tarjeta: se puede tocar en cualquier parte para ir a la edicion --%>
+        <div class="d-flex flex-column gap-2 mb-4">
             <c:forEach var="ed" items="${detalle.ediciones}">
-                <li class="d-flex align-items-center gap-2 mb-2">
+                <c:url var="uEd" value="/ediciones"><c:param name="nombre" value="${ed.nombre}"/></c:url>
+                <a class="tarjeta-edicion card card-body p-2 d-flex flex-row align-items-center gap-2 text-body text-decoration-none" href="${uEd}">
                     <e:imagen ruta="${ed.imagen}" alt="${ed.nombre}" clase="img-mini rounded"/>
                     <div class="small">
-                        <c:url var="uEd" value="/ediciones"><c:param name="nombre" value="${ed.nombre}"/></c:url>
-                        <a class="fw-semibold" href="${uEd}"><c:out value="${ed.nombre}"/></a>
+                        <span class="fw-semibold text-primary"><c:out value="${ed.nombre}"/></span>
                         <c:if test="${ed.nombre == detalle.edicionVigente}"><span class="badge text-bg-success ms-1">Vigente</span></c:if>
                         <div class="text-body-secondary"><e:fecha valor="${ed.fechaInicio}"/> – <e:fecha valor="${ed.fechaFin}"/></div>
                     </div>
-                </li>
+                </a>
             </c:forEach>
-        </ul>
+        </div>
 
         <h2 class="h6 fw-bold">Programas de formación</h2>
         <c:if test="${empty detalle.programas}"><p class="small text-body-secondary">No forma parte de ningún programa.</p></c:if>

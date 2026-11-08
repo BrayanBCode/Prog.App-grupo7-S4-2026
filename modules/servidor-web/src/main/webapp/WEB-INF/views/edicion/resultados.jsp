@@ -9,7 +9,7 @@
 <c:set var="det" value="${resultados.edicion}"/>
 <%@ include file="/WEB-INF/views/edicion/encabezado.jspf" %>
 
-<h2 class="h6 fw-bold">Resultados de evaluaciones</h2>
+<h2 class="h6 fw-bold">Calificaciones</h2>
 <c:if test="${empty resultados.inscripciones}">
     <p class="text-body-secondary">No hay estudiantes aceptados en esta edición.</p>
 </c:if>
@@ -17,7 +17,7 @@
 <c:if test="${not empty resultados.inscripciones}">
     <form method="POST" action="${raiz}/edicion/resultados"
           onsubmit="return event.submitter == null || event.submitter.value != 'cerrar'
-                    || confirm('¿Cerrar la edición? Después no se van a poder modificar las notas.');">
+                    || confirm('¿Cerrar la edición? Después no se van a poder modificar las notas, y las inscripciones pendientes quedan rechazadas.');">
         <input type="hidden" name="edicion" value="<c:out value='${ed.nombre}'/>">
         <div class="table-responsive" style="max-width: 760px;">
             <table class="table table-sm align-middle">
@@ -42,7 +42,7 @@
             <button type="submit" name="accion" value="guardar" class="btn btn-primary">Guardar notas</button>
             <button type="submit" name="accion" value="cerrar" class="btn btn-outline-danger">Cerrar edición</button>
         </div>
-        <p class="form-text">Para cerrar, todos los estudiantes tienen que tener nota.</p>
+        <p class="form-text">Para cerrar, todos los estudiantes tienen que tener nota. Al cerrar, las inscripciones que sigan pendientes quedan rechazadas.</p>
     </form>
 </c:if>
 

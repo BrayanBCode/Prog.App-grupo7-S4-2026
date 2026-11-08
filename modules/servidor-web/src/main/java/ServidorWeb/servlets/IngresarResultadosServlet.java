@@ -36,7 +36,7 @@ public class IngresarResultadosServlet extends BaseServlet {
                 return;
             }
             req.setAttribute("resultados", resultados);
-            req.setAttribute("titulo", "Resultados de evaluaciones");
+            req.setAttribute("titulo", "Calificaciones");
             vista(req, resp, "edicion/resultados.jsp");
         } catch (RuntimeException e) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
