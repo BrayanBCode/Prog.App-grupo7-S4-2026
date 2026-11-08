@@ -15,6 +15,9 @@ public class DTInscripcionEstudianteWS {
     public String curso;
     public String fechaInscripcion;
     public EstadoInscripcion estado;
+    public boolean cerrada;
+    /** Solo con la edicion cerrada; null si no. */
+    public Integer nota;
 
     public DTInscripcionEstudianteWS() {
     }
@@ -28,6 +31,8 @@ public class DTInscripcionEstudianteWS {
         ws.curso = i.curso();
         ws.fechaInscripcion = Fechas.texto(i.fechaInscripcion());
         ws.estado = i.estado();
+        ws.cerrada = i.cerrada();
+        ws.nota = i.nota();
         return ws;
     }
 }

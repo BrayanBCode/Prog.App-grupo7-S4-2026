@@ -81,8 +81,8 @@ class EstudianteServiceTest {
     @Test
     void inscripciones_conCursoFechaYEstado() {
         assertEquals(List.of(
-                new DTInscripcionEstudiante("MicroBit-2026", "MicroBit", F_INSC, EstadoInscripcion.INSCRIPTO),
-                new DTInscripcionEstudiante("Komikan - 2026", "Komikan", F_INSC, EstadoInscripcion.ACEPTADA)),
+                new DTInscripcionEstudiante("MicroBit-2026", "MicroBit", F_INSC, EstadoInscripcion.INSCRIPTO, false, null),
+                new DTInscripcionEstudiante("Komikan - 2026", "Komikan", F_INSC, EstadoInscripcion.ACEPTADA, false, null)),
                 servicio().listarInscripciones("roro"));
     }
 

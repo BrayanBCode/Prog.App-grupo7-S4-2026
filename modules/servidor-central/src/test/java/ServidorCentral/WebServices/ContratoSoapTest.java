@@ -84,7 +84,7 @@ class ContratoSoapTest {
     void perfilConEnumsYListas() throws JAXBException {
         DTUsuario usuario = new DTUsuario("est1", "e@x.com", "Eva", "Lopez", LocalDate.of(2000, 5, 2), null);
         DTPerfil perfil = new DTPerfil(usuario, Rol.ESTUDIANTE, true, true, List.of(), List.of(EDICION),
-                List.of(new DTInscripcionEstudiante("Java 2026", "Java", LocalDate.of(2026, 2, 10), EstadoInscripcion.ACEPTADA)),
+                List.of(new DTInscripcionEstudiante("Java 2026", "Java", LocalDate.of(2026, 2, 10), EstadoInscripcion.ACEPTADA, false, null)),
                 List.of(new DTProgramaInscripto("EFI", LocalDate.of(2026, 2, 11))),
                 List.of("seg1"), List.of(), false, false);
         DTPerfilWS ws = idaYVuelta(DTPerfilWS.de(perfil));
