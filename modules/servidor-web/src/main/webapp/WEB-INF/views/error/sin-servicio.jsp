@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Servicio no disponible - edExt</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <script>try { if (localStorage.getItem('tema') === 'dark') document.documentElement.setAttribute('data-bs-theme', 'dark'); } catch (e) {}</script>
 </head>
 <body class="bg-body-tertiary">
 <div class="container-xl my-5">

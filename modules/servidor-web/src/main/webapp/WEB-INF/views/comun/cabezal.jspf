@@ -5,8 +5,8 @@
   Cabezal fijo de todas las paginas (letra 7.1, Figuras 2 y 3):
     - izquierda: logo (vuelve al inicio)
     - derecha, Visitante: "Iniciar sesión" | "Registrarse"
-    - derecha, con sesion: nombre e imagen reducida del usuario, link a su perfil (Consulta de Usuario).
-      "Salir" (Cierre de Sesion) esta al pie del lateral, como en la Figura 3.
+    - derecha, con sesion: nombre e imagen reducida del usuario; al hacer clic abre un submenu con
+      Mi perfil (Consulta de Usuario), Modo oscuro / Modo claro (js/tema.js) y Cerrar sesion (POST a /logout).
   ${puede.XXX} sale de la matriz CasoDeUso (ver AccesoFilter): aca no se decide por rol.
     - centro: cuadro de busqueda de cursos (requerimiento 7.5), en todas las paginas menos login/registro.
 --%>
@@ -46,11 +46,25 @@
 
             <c:if test="${rol.autenticado}">
                 <c:url var="urlMiPerfil" value="/usuarios"><c:param name="nick" value="${usuarioActual.nickname}"/></c:url>
-                <a class="d-inline-flex align-items-center gap-2 text-body fw-semibold text-decoration-none"
-                   href="${urlMiPerfil}" title="Mi perfil">
-                    <c:out value="${usuarioActual.nickname}"/>
-                    <e:imagen ruta="${usuarioActual.imagen}" alt="${usuarioActual.nickname}" clase="avatar avatar-mini"/>
-                </a>
+                <div class="dropdown">
+                    <button type="button" class="btn btn-link d-inline-flex align-items-center gap-2 text-body fw-semibold text-decoration-none p-0 dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false" title="Menú de la cuenta">
+                        <c:out value="${usuarioActual.nickname}"/>
+                        <e:imagen ruta="${usuarioActual.imagen}" alt="${usuarioActual.nickname}" clase="avatar avatar-mini"/>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                        <li><a class="dropdown-item" href="${urlMiPerfil}">Mi perfil</a></li>
+                        <li><button type="button" class="dropdown-item" data-tema-alternar>Modo oscuro</button></li>
+                        <c:if test="${puede.CIERRE_SESION}">
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="post" action="${raiz}/logout" class="m-0">
+                                    <button type="submit" class="dropdown-item">Cerrar sesión</button>
+                                </form>
+                            </li>
+                        </c:if>
+                    </ul>
+                </div>
             </c:if>
         </nav>
     </div>
