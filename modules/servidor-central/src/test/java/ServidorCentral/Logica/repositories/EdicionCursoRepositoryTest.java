@@ -119,6 +119,18 @@ class EdicionCursoRepositoryTest {
     }
 
     @Test
+    void cerrarEdicion_rechazaYGuardaLosPendientes() {
+        e.ediciones.actualizarEstados("MicroBit-2026", Map.of("roro", EstadoInscripcion.ACEPTADA));
+        e.ediciones.registrarNotas("MicroBit-2026", Map.of("roro", 9));
+
+        e.ediciones.cerrarEdicion("MicroBit-2026");
+
+        assertEquals(EstadoInscripcion.ACEPTADA, e.ediciones.estadoInscripcion("roro", "MicroBit-2026"));
+        assertEquals(EstadoInscripcion.RECHAZADA, e.ediciones.estadoInscripcion("weiss", "MicroBit-2026"), "pendiente");
+        assertEquals(EstadoInscripcion.INSCRIPTO, e.ediciones.estadoInscripcion("roro", "MicroBit-2025"), "otra edicion");
+    }
+
+    @Test
     void registrarNotas_unaInvalidaNoGuardaNinguna() {
         e.ediciones.actualizarEstados("MicroBit-2026", Map.of("roro", EstadoInscripcion.ACEPTADA));
 

@@ -46,16 +46,38 @@
 }
 .cabezal .buscador { max-width: 420px; }
 
-/* ---- Lateral (Figuras 2 a 4): titulos de grupo en mayusculas y gris ---- */
+/* ---- Tarjetas de edicion en la Consulta de Curso: toda la tarjeta es el link ---- */
+.tarjeta-edicion { transition: background-color .15s, border-color .15s; }
+.tarjeta-edicion:hover, .tarjeta-edicion:focus-visible {
+    background-color: var(--bs-secondary-bg);
+    border-color: var(--bs-primary);
+}
+
+/* ---- Lateral (Figuras 2 a 4): titulos de grupo en mayusculas ---- */
 .lateral .lateral-titulo {
-    padding-top: 0.9rem;
-    padding-bottom: 0.25rem;
-    font-size: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.35rem;
+    font-size: 0.85rem;
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--bs-secondary-color);
+    color: var(--bs-body-color);
     background: var(--bs-tertiary-bg);
+}
+
+/* Fondo y borde de los titulos mas marcados que las opciones, en los dos modos */
+html:not([data-bs-theme="dark"]) .lateral .lateral-titulo { background: #e2e6ea; border-bottom: 2px solid #c3cad2; }
+[data-bs-theme="dark"] .lateral .lateral-titulo { background: #22304d; border-bottom: 2px solid #34436a; }
+
+/* Opciones del lateral en modo oscuro: un gris azulado, un poco mas tenue que los titulos */
+[data-bs-theme="dark"] .lateral .list-group-item-action:not(.active) { color: #c2c8d1; }
+
+/* Hover de las opciones: fondo azulado y una barra de acento a la izquierda */
+.lateral .list-group-item-action:not(.active):hover,
+.lateral .list-group-item-action:not(.active):focus-visible {
+    color: var(--bs-emphasis-color);
+    background-color: rgba(var(--bs-primary-rgb), 0.14);
+    box-shadow: inset 3px 0 0 var(--bs-primary);
 }
 
 @media (min-width: 768px) {

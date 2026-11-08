@@ -85,6 +85,8 @@ public class EdicionCurso implements Serializable {
     /**
      * Cierra la edicion (letra 2026, "Ingresar resultados de evaluaciones"): se hace luego de ingresar todas
      * las evaluaciones, asi que exige nota en cada estudiante aceptado. Despues no se pueden modificar las notas.
+     * Las inscripciones que seguian pendientes (Inscripto, sin seleccion) quedan Rechazadas: ya no hay curso al
+     * que entrar.
      */
     public void cerrar() {
         if (isCerrada()) {
@@ -94,6 +96,11 @@ public class EdicionCurso implements Serializable {
                 .anyMatch(i -> i.getEstado() == EstadoInscripcion.ACEPTADA && i.getNota() == null);
         if (faltanNotas) {
             throw new ReglaNegocioException("Faltan notas: hay que calificar a todos los aceptados antes de cerrar.");
+        }
+        for (InscripcionEdicion i : inscripciones) {
+            if (i.getEstado() == EstadoInscripcion.INSCRIPTO) {
+                i.setEstado(EstadoInscripcion.RECHAZADA);
+            }
         }
         this.cerrada = true;
         this.fechaCierre = LocalDate.now();

@@ -47,6 +47,7 @@ public class AccesoFilter implements Filter {
             entry("/edicion/seleccionar", CasoDeUso.SELECCIONAR_ESTUDIANTES_EDICION),
             entry("/edicion/aceptados", CasoDeUso.LISTAR_ACEPTADOS_EDICION),
             entry("/edicion/resultados", CasoDeUso.INGRESAR_RESULTADOS_EVALUACIONES),
+            entry("/edicion/acta", CasoDeUso.VER_RESULTADOS_EVALUACIONES),
             entry("/inscripciones/resultados", CasoDeUso.LISTAR_RESULTADOS_INSCRIPCIONES),
             entry("/usuarios/modificar", CasoDeUso.MODIFICAR_DATOS_USUARIO),
             entry("/buscar", CasoDeUso.BUSCAR_CURSOS_Y_PROGRAMAS),
