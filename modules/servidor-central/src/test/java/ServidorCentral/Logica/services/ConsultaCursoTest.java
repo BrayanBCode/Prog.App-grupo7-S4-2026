@@ -124,6 +124,15 @@ class ConsultaCursoTest {
     }
 
     @Test
+    void edicionVigente_laQueEstaEnCursoHoy() {
+        assertEquals("Robotica 2026", servicio().consultarCurso("Robotica", LocalDate.of(2026, 5, 10)).edicionVigente());
+        assertEquals("Robotica 2026", servicio().consultarCurso("Robotica", LocalDate.of(2026, 3, 1)).edicionVigente(), "el primer dia cuenta");
+        assertEquals("Robotica 2026", servicio().consultarCurso("Robotica", LocalDate.of(2026, 7, 1)).edicionVigente(), "el ultimo dia cuenta");
+        assertNull(servicio().consultarCurso("Robotica", LocalDate.of(2025, 12, 1)).edicionVigente(), "entre ediciones no hay vigente");
+        assertNull(servicio().consultarCurso("Komikan", LocalDate.of(2026, 5, 10)).edicionVigente(), "sin ediciones");
+    }
+
+    @Test
     void cursoSinEdicionesNiProgramas() {
         DTCursoDetalle d = servicio().consultarCurso("Komikan");
 

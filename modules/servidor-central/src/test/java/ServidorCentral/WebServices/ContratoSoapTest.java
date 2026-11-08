@@ -60,7 +60,7 @@ class ContratoSoapTest {
     void cursoDetalleConFechasComoTexto() throws JAXBException {
         DTCurso curso = new DTCurso("Java", "Intro", 8, 90f, 6, "http://x", LocalDate.of(2026, 1, 15),
                 "INCO", DOCENTE, List.of("Prog 1"), "cursos/java.jpg");
-        DTCursoDetalleWS ws = idaYVuelta(DTCursoDetalleWS.de(new DTCursoDetalle(curso, List.of(EDICION), List.of("EFI"))));
+        DTCursoDetalleWS ws = idaYVuelta(DTCursoDetalleWS.de(new DTCursoDetalle(curso, List.of(EDICION), List.of("EFI"), "Java 2026")));
 
         assertEquals("Java", ws.curso.nombre);
         assertEquals("2026-01-15", ws.curso.fechaRegistro);
@@ -68,16 +68,18 @@ class ContratoSoapTest {
         assertEquals(List.of("Prog 1"), ws.curso.previas);
         assertEquals("2026-03-01", ws.ediciones.get(0).fechaInicio);
         assertEquals(List.of("EFI"), ws.programas);
+        assertEquals("Java 2026", ws.edicionVigente);
     }
 
     @Test
     void cursoSinDocenteNiFecha() throws JAXBException {
         DTCurso curso = new DTCurso("Java", "Intro", 8, 90f, 6, null, null, "INCO", null, null);
-        DTCursoDetalleWS ws = idaYVuelta(DTCursoDetalleWS.de(new DTCursoDetalle(curso, List.of(), List.of())));
+        DTCursoDetalleWS ws = idaYVuelta(DTCursoDetalleWS.de(new DTCursoDetalle(curso, List.of(), List.of(), null)));
 
         assertNull(ws.curso.docente);
         assertNull(ws.curso.fechaRegistro);
         assertTrue(ws.ediciones.isEmpty());
+        assertNull(ws.edicionVigente);
     }
 
     @Test

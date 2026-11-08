@@ -20,6 +20,7 @@ import ServidorCentral.Logica.repositories.ProgramaFormacionRepository;
 import ServidorCentral.Persistencia.AlmacenImagenes;
 
 import java.text.Collator;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -111,16 +112,26 @@ public class CursoService {
      * @throws ReglaNegocioException si el curso no existe
      */
     public DTCursoDetalle consultarCurso(String nombreCurso) {
+        return consultarCurso(nombreCurso, LocalDate.now());
+    }
+
+    /** Igual que {@link #consultarCurso(String)}, con la fecha de hoy explicita para decidir la edicion vigente. */
+    DTCursoDetalle consultarCurso(String nombreCurso, LocalDate hoy) {
         Curso c = nombreCurso == null ? null : cursoRepository.buscarPorNombre(nombreCurso);
         if (c == null) {
             throw new ReglaNegocioException("No existe el curso \"" + (nombreCurso == null ? "" : nombreCurso) + "\".");
         }
         List<DTEdicionCurso> ediciones = new ArrayList<>();
+        String vigente = null;
         for (EdicionCurso ed : edicionCursoRepository.edicionesDeCurso(c.getNombreC())) {
+            if (ed.getFechaInicio() != null && ed.getFechaFin() != null
+                    && !hoy.isBefore(ed.getFechaInicio()) && !hoy.isAfter(ed.getFechaFin())) {
+                vigente = ed.getNombre();   // por D1 hay como mucho una
+            }
             ediciones.add(new DTEdicionCurso(ed.getNombre(), ed.getCurso().getNombreC(), ed.getFechaInicio(),
                     ed.getFechaFin(), ed.getCupo(), ed.getFechaPublicacion(), ed.getImagen()));
         }
-        return new DTCursoDetalle(aDT(c), ediciones, programaRepository.obtenerPorCurso(c.getNombreC()));
+        return new DTCursoDetalle(aDT(c), ediciones, programaRepository.obtenerPorCurso(c.getNombreC()), vigente);
     }
 
     /**

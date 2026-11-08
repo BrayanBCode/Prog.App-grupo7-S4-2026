@@ -58,7 +58,8 @@
                     <e:imagen ruta="${ed.imagen}" alt="${ed.nombre}" clase="img-mini rounded"/>
                     <div class="small">
                         <c:url var="uEd" value="/ediciones"><c:param name="nombre" value="${ed.nombre}"/></c:url>
-                        <a class="fw-semibold d-block" href="${uEd}"><c:out value="${ed.nombre}"/></a>
+                        <a class="fw-semibold" href="${uEd}"><c:out value="${ed.nombre}"/></a>
+                        <c:if test="${ed.nombre == detalle.edicionVigente}"><span class="badge text-bg-success ms-1">Vigente</span></c:if>
                         <div class="text-body-secondary"><e:fecha valor="${ed.fechaInicio}"/> – <e:fecha valor="${ed.fechaFin}"/></div>
                     </div>
                 </li>
