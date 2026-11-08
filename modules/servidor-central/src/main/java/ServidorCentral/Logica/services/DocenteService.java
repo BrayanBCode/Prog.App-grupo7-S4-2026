@@ -70,7 +70,7 @@ public class DocenteService {
                     ed.getFechaFin(), ed.getCupo(), ed.getFechaPublicacion(), ed.getImagen());
             boolean vigente = ed.getFechaInicio() != null && ed.getFechaFin() != null
                     && !hoy.isBefore(ed.getFechaInicio()) && !hoy.isAfter(ed.getFechaFin());
-            ediciones.add(new DTMisCursos.Edicion(datos, vigente));
+            ediciones.add(new DTMisCursos.Edicion(datos, vigente, ed.isCerrada()));
         }
         ediciones.sort(Comparator.comparing((DTMisCursos.Edicion e) -> e.edicion().fechaInicio(),
                 Comparator.nullsLast(Comparator.<LocalDate>reverseOrder())));

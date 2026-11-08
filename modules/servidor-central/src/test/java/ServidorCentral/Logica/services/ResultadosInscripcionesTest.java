@@ -55,9 +55,9 @@ class ResultadosInscripcionesTest {
     @Test
     void estudianteConVariasInscripciones_veTodasConSuEstado() {
         assertEquals(List.of(
-                new DTInscripcionEstudiante("MicroBit-2026", "MicroBit", LocalDate.of(2026, 8, 22), EstadoInscripcion.INSCRIPTO, false, null),
-                new DTInscripcionEstudiante("MicroBit-2025", "MicroBit", LocalDate.of(2025, 2, 10), EstadoInscripcion.ACEPTADA, false, null),
-                new DTInscripcionEstudiante("MicroBit-2024", "MicroBit", LocalDate.of(2024, 2, 10), EstadoInscripcion.RECHAZADA, false, null)),
+                new DTInscripcionEstudiante("MicroBit-2026", "MicroBit", LocalDate.of(2026, 8, 22), EstadoInscripcion.INSCRIPTO, false, null, null),
+                new DTInscripcionEstudiante("MicroBit-2025", "MicroBit", LocalDate.of(2025, 2, 10), EstadoInscripcion.ACEPTADA, false, null, null),
+                new DTInscripcionEstudiante("MicroBit-2024", "MicroBit", LocalDate.of(2024, 2, 10), EstadoInscripcion.RECHAZADA, false, null, null)),
                 servicio().resultadosInscripciones("roro"));
     }
 
@@ -84,8 +84,8 @@ class ResultadosInscripcionesTest {
         });
 
         assertEquals(List.of(
-                new DTInscripcionEstudiante("MicroBit-2026", "MicroBit", LocalDate.of(2026, 2, 10), EstadoInscripcion.ACEPTADA, false, null),
-                new DTInscripcionEstudiante("MicroBit-2025", "MicroBit", LocalDate.of(2025, 2, 10), EstadoInscripcion.ACEPTADA, true, 9)),
+                new DTInscripcionEstudiante("MicroBit-2026", "MicroBit", LocalDate.of(2026, 2, 10), EstadoInscripcion.ACEPTADA, false, null, null),
+                new DTInscripcionEstudiante("MicroBit-2025", "MicroBit", LocalDate.of(2025, 2, 10), EstadoInscripcion.ACEPTADA, true, 9, LocalDate.now())),
                 s.resultadosInscripciones("roro"));
     }
 

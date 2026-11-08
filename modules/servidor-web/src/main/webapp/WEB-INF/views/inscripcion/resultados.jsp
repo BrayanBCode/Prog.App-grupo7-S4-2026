@@ -26,7 +26,11 @@
                     <td><a href="${uEd}"><c:out value="${i.edicion}"/></a></td>
                     <td><a href="${uCur}"><c:out value="${i.curso}"/></a></td>
                     <td><e:fecha valor="${i.fechaInscripcion}"/></td>
-                    <td><e:estado valor="${i.estado}"/></td>
+                    <td><e:estado valor="${i.estado}"/>
+                        <c:if test="${i.cerrada and i.estado == 'ACEPTADA'}">
+                            <span class="badge text-bg-secondary ms-1">Cerrada</span>
+                        </c:if>
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>
@@ -44,9 +48,9 @@
     <p class="text-body-secondary">Todavía no tenés ediciones cerradas con resultado.</p>
 </c:if>
 <c:if test="${hayCerradas}">
-    <div class="table-responsive" style="max-width: 760px;">
+    <div class="table-responsive" style="max-width: 900px;">
         <table class="table table-hover align-middle">
-            <thead class="table-light"><tr><th>Edición</th><th>Curso</th><th class="text-end">Nota</th></tr></thead>
+            <thead class="table-light"><tr><th>Edición</th><th>Curso</th><th>Fecha de inscripción</th><th>Fecha de cierre</th><th class="text-end">Nota</th></tr></thead>
             <tbody>
             <c:forEach var="i" items="${resultados}">
                 <c:if test="${i.cerrada and i.estado == 'ACEPTADA'}">
@@ -55,6 +59,8 @@
                     <tr>
                         <td><a href="${uEd}"><c:out value="${i.edicion}"/></a></td>
                         <td><a href="${uCur}"><c:out value="${i.curso}"/></a></td>
+                        <td><e:fecha valor="${i.fechaInscripcion}"/></td>
+                        <td><e:fecha valor="${i.fechaCierre}"/></td>
                         <td class="text-end fw-semibold"><c:out value="${i.nota}"/></td>
                     </tr>
                 </c:if>

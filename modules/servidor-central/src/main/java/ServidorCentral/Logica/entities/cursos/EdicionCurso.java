@@ -38,6 +38,7 @@ public class EdicionCurso implements Serializable {
     private String imagen;   // ruta relativa a la carpeta de imagenes (puede ser null)
     // Boolean y no boolean: en una base existente la columna se agrega vacia (null = abierta).
     private Boolean cerrada = false;
+    private LocalDate fechaCierre;   // dia en que el docente la cerro (null si esta abierta)
 
     // Constructor vacío necesario para JPA
     public EdicionCurso() {
@@ -79,6 +80,8 @@ public class EdicionCurso implements Serializable {
 
     public boolean isCerrada(){return Boolean.TRUE.equals(cerrada);}
 
+    public LocalDate getFechaCierre(){return fechaCierre;}
+
     /**
      * Cierra la edicion (letra 2026, "Ingresar resultados de evaluaciones"): se hace luego de ingresar todas
      * las evaluaciones, asi que exige nota en cada estudiante aceptado. Despues no se pueden modificar las notas.
@@ -93,6 +96,7 @@ public class EdicionCurso implements Serializable {
             throw new ReglaNegocioException("Faltan notas: hay que calificar a todos los aceptados antes de cerrar.");
         }
         this.cerrada = true;
+        this.fechaCierre = LocalDate.now();
     }
 
     private static final long serialVersionUID = 1L;

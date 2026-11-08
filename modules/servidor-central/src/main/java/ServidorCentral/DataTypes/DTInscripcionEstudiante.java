@@ -14,5 +14,6 @@ public record DTInscripcionEstudiante(
         LocalDate fechaInscripcion,
         EstadoInscripcion estado,
         boolean cerrada,
-        Integer nota) {
+        Integer nota,
+        LocalDate fechaCierre) {
 }

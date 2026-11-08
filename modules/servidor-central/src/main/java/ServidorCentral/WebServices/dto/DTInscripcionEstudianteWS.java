@@ -18,6 +18,7 @@ public class DTInscripcionEstudianteWS {
     public boolean cerrada;
     /** Solo con la edicion cerrada; null si no. */
     public Integer nota;
+    public String fechaCierre;
 
     public DTInscripcionEstudianteWS() {
     }
@@ -33,6 +34,7 @@ public class DTInscripcionEstudianteWS {
         ws.estado = i.estado();
         ws.cerrada = i.cerrada();
         ws.nota = i.nota();
+        ws.fechaCierre = Fechas.texto(i.fechaCierre());
         return ws;
     }
 }

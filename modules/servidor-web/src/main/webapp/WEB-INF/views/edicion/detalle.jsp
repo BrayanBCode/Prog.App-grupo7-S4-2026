@@ -14,8 +14,12 @@
         <p class="text-body-secondary mb-2"><c:out value="${detalleEdicion.instituto}"/>
             <c:if test="${detalleEdicion.vigente}"><span class="badge text-bg-success ms-1">Vigente</span></c:if>
         </p>
-        <%-- Inscripcion a Edicion (4.5, con Ajax): solo sobre la edicion vigente --%>
-        <c:if test="${detalleEdicion.vigente}">
+        <%-- Inscripcion a Edicion (4.5, con Ajax): solo sobre la edicion vigente y abierta --%>
+        <c:if test="${detalleEdicion.cerrada}">
+            <p class="mb-2"><span class="badge text-bg-secondary">Cerrada</span>
+                <span class="small text-body-secondary">Esta edición ya no admite inscripciones.</span></p>
+        </c:if>
+        <c:if test="${detalleEdicion.vigente and not detalleEdicion.cerrada}">
             <div class="mb-2" id="zona-inscripcion">
                 <c:choose>
                     <c:when test="${puede.INSCRIPCION_EDICION_CURSO and not empty detalleEdicion.miInscripcion}">
@@ -42,7 +46,7 @@
         </c:forEach>
         <c:if test="${participo}">
             <div class="mt-2 d-flex gap-2">
-                <c:if test="${puede.SELECCIONAR_ESTUDIANTES_EDICION and detalleEdicion.vigente}">
+                <c:if test="${puede.SELECCIONAR_ESTUDIANTES_EDICION and detalleEdicion.vigente and not detalleEdicion.cerrada}">
                     <c:url var="uSel" value="/edicion/seleccionar"><c:param name="edicion" value="${ed.nombre}"/></c:url>
                     <a class="btn btn-outline-primary btn-sm" href="${uSel}">Seleccionar estudiantes</a>
                 </c:if>

@@ -127,7 +127,7 @@ public class PerfilService {
                 // El perfil lo ven otros usuarios: nunca lleva la nota
                 resultado.add(new DTInscripcionEstudiante(i.getEdicionCurso().getNombre(),
                         i.getEdicionCurso().getCurso().getNombreC(), i.getFechaInscripcion(), i.getEstado(),
-                        i.getEdicionCurso().isCerrada(), null));
+                        i.getEdicionCurso().isCerrada(), null, i.getEdicionCurso().getFechaCierre()));
             }
         }
         resultado.sort(Comparator.comparing(DTInscripcionEstudiante::fechaInscripcion,

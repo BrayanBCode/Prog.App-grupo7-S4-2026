@@ -57,7 +57,7 @@ public class EstudianteService {
             boolean cerrada = i.getEdicionCurso().isCerrada();
             resultado.add(new DTInscripcionEstudiante(i.getEdicionCurso().getNombre(),
                     i.getEdicionCurso().getCurso().getNombreC(), i.getFechaInscripcion(), i.getEstado(),
-                    cerrada, cerrada ? i.getNota() : null));
+                    cerrada, cerrada ? i.getNota() : null, i.getEdicionCurso().getFechaCierre()));
         }
         return resultado;
     }

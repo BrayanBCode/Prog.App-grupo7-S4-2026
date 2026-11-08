@@ -17,7 +17,7 @@
 SET NAMES utf8mb4;
 
 UPDATE INSCRIPCIONEDICION SET NOTA = NULL;
-UPDATE EDICIONCURSO SET CERRADA = 0;
+UPDATE EDICIONCURSO SET CERRADA = 0, FECHACIERRE = NULL;
 
 -- Flor del Ceibo - 2010: eleven11, chechi
 UPDATE INSCRIPCIONEDICION SET NOTA = 10 WHERE ID = 1;
@@ -39,6 +39,7 @@ UPDATE INSCRIPCIONEDICION SET NOTA = 9  WHERE ID = 16;
 -- Inclusión Energética - 2026 (abierta): roro calificado, chechi pendiente
 UPDATE INSCRIPCIONEDICION SET NOTA = 8  WHERE ID = 17;
 
-UPDATE EDICIONCURSO SET CERRADA = 1
+-- Cerradas unos dias despues de terminar (FECHACIERRE = dia en que el docente cerro la edicion)
+UPDATE EDICIONCURSO SET CERRADA = 1, FECHACIERRE = DATE_ADD(FECHAFIN, INTERVAL 7 DAY)
  WHERE NOMBRE IN ('Flor del Ceibo - 2010', 'Flor del Ceibo - 2012', 'Dalavuelta - 2025',
                   'Taller de robótica educativa - 2024', 'Extensionismo Industrial - 2025');

@@ -126,6 +126,14 @@ class InscripcionEdicionTest {
     }
 
     @Test
+    void edicionCerrada_noAdmiteInscripciones() {
+        ediciones.get("Robotica 2026").cerrar();   // sin aceptados: se puede cerrar
+        assertEquals("La edición está cerrada: ya no admite inscripciones.",
+                error(() -> servicio().inscribirse("weiss", "Robotica 2026", HOY)));
+        assertTrue(guardado.isEmpty());
+    }
+
+    @Test
     void edicionNoVigente_falla() {
         assertEquals("Solo podés inscribirte a la edición vigente del curso.",
                 error(() -> servicio().inscribirse("weiss", "Robotica 2027", HOY)), "todavía no empezó");
