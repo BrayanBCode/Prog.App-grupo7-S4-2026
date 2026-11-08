@@ -13,6 +13,7 @@ import ServidorCentral.WebServices.dto.DTImagenWS;
 import ServidorCentral.WebServices.dto.DTInscripcionEstudianteWS;
 import ServidorCentral.WebServices.dto.DTInscripcionesEdicionWS;
 import ServidorCentral.WebServices.dto.DTMisCursosWS;
+import ServidorCentral.WebServices.dto.DTNotaWS;
 import ServidorCentral.WebServices.dto.DTPerfilWS;
 import ServidorCentral.WebServices.dto.DTSeleccionWS;
 import ServidorCentral.WebServices.dto.DTSesionWS;
@@ -230,6 +231,25 @@ public class ServicioCentral {
                                        @WebParam(name = "selecciones") List<DTSeleccionWS> selecciones) throws ReglaNegocioFault {
         llamar(() -> {
             controller.seleccionarEstudiantes(nickDocente, edicion, DTSeleccionWS.aMapa(selecciones));
+            return null;
+        });
+    }
+
+    @WebMethod
+    public void registrarNotas(@WebParam(name = "nickDocente") String nickDocente,
+                               @WebParam(name = "edicion") String edicion,
+                               @WebParam(name = "notas") List<DTNotaWS> notas) throws ReglaNegocioFault {
+        llamar(() -> {
+            controller.registrarNotas(nickDocente, edicion, DTNotaWS.aMapa(notas));
+            return null;
+        });
+    }
+
+    @WebMethod
+    public void cerrarEdicion(@WebParam(name = "nickDocente") String nickDocente,
+                              @WebParam(name = "edicion") String edicion) throws ReglaNegocioFault {
+        llamar(() -> {
+            controller.cerrarEdicion(nickDocente, edicion);
             return null;
         });
     }

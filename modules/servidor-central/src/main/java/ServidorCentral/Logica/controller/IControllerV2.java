@@ -105,6 +105,13 @@ public interface IControllerV2 {
      * edicion vigente (D2). Todo o nada. ReglaNegocioException con el mensaje para el usuario.
      */
     void seleccionarEstudiantes(String nicknameDocente, String nombreEdicion, Map<String, EstadoInscripcion> estados);
+    /**
+     * Ingresar resultados (Tarea 3): nickname -> nota de 1 a 12, solo aceptados y con la edicion abierta. Todo o nada.
+     * ReglaNegocioException con el mensaje para el usuario.
+     */
+    void registrarNotas(String nicknameDocente, String nombreEdicion, Map<String, Integer> notas);
+    /** Cierra la edicion: exige nota en todos los aceptados; despues no se modifican. ReglaNegocioException si no. */
+    void cerrarEdicion(String nicknameDocente, String nombreEdicion);
 
     // ---------------- Sprint 2: Servidor Web ----------------
     /** Consulta de Usuario: todos los usuarios con sus datos basicos, ordenados por nickname. */

@@ -19,6 +19,7 @@ public class DTEdicionDetalleWS {
     public List<DTDocenteResumenWS> docentes = new ArrayList<>();
     public boolean vigente;
     public EstadoInscripcion miInscripcion;
+    public boolean cerrada;
 
     public DTEdicionDetalleWS() {
     }
@@ -33,6 +34,7 @@ public class DTEdicionDetalleWS {
         ws.docentes = new ArrayList<>(d.docentes().stream().map(DTDocenteResumenWS::de).toList());
         ws.vigente = d.vigente();
         ws.miInscripcion = d.miInscripcion();
+        ws.cerrada = d.cerrada();
         return ws;
     }
 }

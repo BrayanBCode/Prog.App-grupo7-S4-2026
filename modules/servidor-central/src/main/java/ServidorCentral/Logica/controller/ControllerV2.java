@@ -346,6 +346,16 @@ public class ControllerV2 implements IControllerV2 {
         edicionCursoService.seleccionarEstudiantes(nicknameDocente, nombreEdicion, estados);
     }
 
+    @Override
+    public void registrarNotas(String nicknameDocente, String nombreEdicion, Map<String, Integer> notas) {
+        edicionCursoService.registrarNotas(nicknameDocente, nombreEdicion, notas);
+    }
+
+    @Override
+    public void cerrarEdicion(String nicknameDocente, String nombreEdicion) {
+        edicionCursoService.cerrarEdicion(nicknameDocente, nombreEdicion);
+    }
+
     // ---------------------------------------------------------------
     // PROGRAMAS DE FORMACION
     // ---------------------------------------------------------------

@@ -124,7 +124,8 @@ public class EdicionCursoService {
         String instituto = ed.getCurso().getInstituto() == null ? null : ed.getCurso().getInstituto().getNombre();
         EstadoInscripcion miInscripcion = nickQueMira == null ? null
                 : edicionCursoRepository.estadoInscripcion(nickQueMira, ed.getNombre());
-        return new DTEdicionDetalle(datos, instituto, listarDocentes(ed.getNombre()), esVigente(ed, hoy), miInscripcion);
+        return new DTEdicionDetalle(datos, instituto, listarDocentes(ed.getNombre()), esVigente(ed, hoy), miInscripcion,
+                ed.isCerrada());
     }
 
     /**
@@ -342,6 +343,44 @@ public class EdicionCursoService {
                 aDTInscripciones(edicionCursoRepository.inscripcionesDeEdicion(nombreEdicion), soloEstado));
     }
 
+    /**
+     * Ingresar resultados de evaluaciones (Tarea 3): guarda las notas (nickname -> nota de 1 a 12) de estudiantes
+     * aceptados. Solo un docente que participa en la edicion. No se limita a la edicion vigente: las notas se
+     * suelen cargar al terminar el curso, y lo que las bloquea es el cierre. Si una no es valida no se guarda ninguna.
+     *
+     * @throws ReglaNegocioException con el mensaje para el usuario
+     */
+    public void registrarNotas(String nicknameDocente, String nombreEdicion, Map<String, Integer> notas) {
+        verificarDocenteDeEdicion(nicknameDocente, nombreEdicion);
+        if (notas == null || notas.isEmpty()) {
+            throw new ReglaNegocioException("No hay ninguna nota para guardar.");
+        }
+        Map<String, EstadoInscripcion> inscriptos = new LinkedHashMap<>();
+        for (InscripcionEdicion i : edicionCursoRepository.inscripcionesDeEdicion(nombreEdicion)) {
+            inscriptos.put(i.getEstudiante().getNickname(), i.getEstado());
+        }
+        for (Map.Entry<String, Integer> n : notas.entrySet()) {
+            EstadoInscripcion estado = inscriptos.get(n.getKey());
+            if (estado == null) {
+                throw new ReglaNegocioException("El estudiante " + n.getKey() + " no está inscripto en esta edición.");
+            }
+            if (n.getValue() == null) {
+                throw new ReglaNegocioException("Falta la nota de " + n.getKey() + ".");
+            }
+        }
+        edicionCursoRepository.registrarNotas(nombreEdicion, notas);
+    }
+
+    /**
+     * Cierre de la edicion (Tarea 3): despues de ingresar todas las notas; luego no se pueden modificar.
+     *
+     * @throws ReglaNegocioException si falta alguna nota, ya estaba cerrada o el docente no participa
+     */
+    public void cerrarEdicion(String nicknameDocente, String nombreEdicion) {
+        verificarDocenteDeEdicion(nicknameDocente, nombreEdicion);
+        edicionCursoRepository.cerrarEdicion(nombreEdicion);
+    }
+
     /** La edicion debe existir y el docente debe participar en ella (letra: "edicion de curso en que participa"). */
     private EdicionCurso verificarDocenteDeEdicion(String nicknameDocente, String nombreEdicion) {
         EdicionCurso edicion = nombreEdicion == null ? null : edicionCursoRepository.obtenerPorNombres(nombreEdicion);
@@ -365,7 +404,7 @@ public class EdicionCursoService {
             }
             Estudiante e = i.getEstudiante();
             resultado.add(new DTInscripcionEdicion(e.getNickname(), e.getMail(), e.getNombreU(), e.getApellido(),
-                    i.getFechaInscripcion(), i.getEstado()));
+                    i.getFechaInscripcion(), i.getEstado(), i.getNota()));
         }
         return resultado;
     }
