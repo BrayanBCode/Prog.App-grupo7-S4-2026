@@ -5,7 +5,7 @@
     - con sesion: "Mi perfil" y los grupos de casos de uso de su rol (Figura 3: INSCRIPCIONES)
     - USUARIOS: entrada a la Consulta de Usuario
     - INSTITUTOS (las categorias no corresponden al grupo)
-    - con sesion: "Salir" (Cierre de Sesion)
+  "Cerrar sesion" esta en el submenu del avatar del cabezal.
   Cada opcion aparece solo si ${puede.XXX} lo permite. Los casos de uso se van sumando
   aca a medida que se rehacen (Fase 4 del plan).
 --%>
@@ -45,12 +45,5 @@
                ${instActual ? 'aria-current="page"' : ''}><c:out value="${inst}"/></a>
         </c:forEach>
 
-        <c:if test="${puede.CIERRE_SESION}">
-            <form method="post" action="${raiz}/logout" class="list-group-item p-0">
-                <button type="submit" class="btn btn-link w-100 text-start text-body text-decoration-none px-3 py-2">
-                    <span aria-hidden="true">⇥</span> Salir
-                </button>
-            </form>
-        </c:if>
     </div>
 </nav>

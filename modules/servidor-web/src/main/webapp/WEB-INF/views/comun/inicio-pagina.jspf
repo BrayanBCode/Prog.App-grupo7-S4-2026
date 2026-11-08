@@ -18,6 +18,8 @@
     <title><c:out value="${titulo}"/> - edExt</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
+    <%-- Tema elegido en el submenu del avatar (js/tema.js). Va antes de pintar para que no parpadee. --%>
+    <script>try { if (localStorage.getItem('tema') === 'dark') document.documentElement.setAttribute('data-bs-theme', 'dark'); } catch (e) {}</script>
 </head>
 <body class="bg-body-tertiary">
 <%@ include file="/WEB-INF/views/comun/cabezal.jspf" %>
