@@ -1,8 +1,9 @@
-<%@ page pageEncoding="UTF-8" session="false" isELIgnored="false" %>
+<%@ page pageEncoding="UTF-8" session="false" isELIgnored="false" import="ServidorWeb.ws.Central" %>
 <%--
   Pagina de error (web.xml, error-page 500). Vive aparte del marco general (inicio-pagina.jspf) a proposito:
   ese marco usa datos de la base (institutos del lateral) y esta pagina no puede depender de ella.
-  El status sigue siendo 500; solo cambia lo que ve el usuario.
+  El status sigue siendo 500; solo cambia lo que ve el usuario. El motivo distingue si no responde el
+  Servidor Central o si respondio con una falla (la base de datos caida).
 --%>
 <!DOCTYPE html>
 <html lang="es">
@@ -18,7 +19,7 @@
         <h1 class="h3 text-primary">edExt</h1>
         <h2 class="h4 mt-3">El servicio no está disponible</h2>
         <p class="mb-4">En este momento no podemos atender tu peticion. Intentá nuevamente en unos minutos.</p>
-        <p class="mb-4">(Base de datos no disponible)</p>
+        <p class="mb-4">(${Central.noResponde(requestScope['jakarta.servlet.error.exception']) ? 'Servidor Central no disponible' : 'Base de datos no disponible'})</p>
         <div><a class="btn btn-primary" href="${pageContext.request.contextPath}/inicio">Reintentar</a></div>
     </div>
 </div>

@@ -21,6 +21,8 @@ import ServidorWeb.ws.central.ServicioCentral;
 import ServidorWeb.ws.central.ServicioCentral_Service;
 import jakarta.servlet.ServletContext;
 import jakarta.xml.ws.BindingProvider;
+import jakarta.xml.ws.WebServiceException;
+import jakarta.xml.ws.soap.SOAPFaultException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -71,6 +73,22 @@ public class Central {
         } catch (ReglaNegocioFault_Exception e) {
             throw new ErrorNegocio(e.getMessage());
         }
+    }
+
+    /**
+     * Para la pagina de error: true si el error es que no se pudo hablar con el Servidor Central (apagado o
+     * inalcanzable). Si el central respondio con una falla (SOAPFaultException, por ejemplo con la base caida)
+     * devuelve false.
+     */
+    public static boolean noResponde(Throwable error) {
+        boolean ws = false;
+        for (Throwable t = error; t != null; t = t.getCause()) {
+            if (t instanceof SOAPFaultException) {
+                return false;
+            }
+            ws |= t instanceof WebServiceException;
+        }
+        return ws;
     }
 
     private static String texto(LocalDate fecha) {
