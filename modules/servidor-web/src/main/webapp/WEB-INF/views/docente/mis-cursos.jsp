@@ -4,7 +4,7 @@
 <%@ include file="/WEB-INF/views/comun/inicio-pagina.jspf" %>
 
 <%-- "Mis cursos y ediciones" del docente: acceso rapido a sus cursos y a las ediciones en las que participa,
-     con las acciones de cada una (Crear edicion, Seleccionar estudiantes en la vigente). --%>
+     con las acciones de cada una (Crear edicion, Seleccionar estudiantes en la vigente, Resultados). --%>
 <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
     <h1 class="h3 mb-0">Mis cursos y ediciones</h1>
     <a class="btn btn-outline-primary btn-sm text-nowrap" href="${raiz}/curso/alta">+ Crear curso</a>
@@ -55,6 +55,8 @@
                         </c:if>
                         <c:url var="uAcep" value="/edicion/aceptados"><c:param name="edicion" value="${ed.nombre}"/></c:url>
                         <a class="btn btn-outline-secondary btn-sm" href="${uAcep}">Ver aceptados</a>
+                        <c:url var="uRes" value="/edicion/resultados"><c:param name="edicion" value="${ed.nombre}"/></c:url>
+                        <a class="btn btn-outline-secondary btn-sm" href="${uRes}">Resultados</a>
                     </td>
                 </tr>
             </c:forEach>

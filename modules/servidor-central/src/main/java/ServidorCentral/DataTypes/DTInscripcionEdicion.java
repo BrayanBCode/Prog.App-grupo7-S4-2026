@@ -14,5 +14,6 @@ public record DTInscripcionEdicion(
         String nombre,
         String apellido,
         LocalDate fechaInscripcion,
-        EstadoInscripcion estado) {
+        EstadoInscripcion estado,
+        Integer nota) {
 }

@@ -99,9 +99,9 @@ class ContratoSoapTest {
 
     @Test
     void inscripcionesDeEdicionConEstadoNulo() throws JAXBException {
-        DTEdicionDetalle detalle = new DTEdicionDetalle(EDICION, "INCO", List.of(DOCENTE), true, null);
+        DTEdicionDetalle detalle = new DTEdicionDetalle(EDICION, "INCO", List.of(DOCENTE), true, null, false);
         DTInscripcionesEdicion insc = new DTInscripcionesEdicion(detalle, List.of(
-                new DTInscripcionEdicion("est1", "e@x.com", "Eva", "Lopez", LocalDate.of(2026, 2, 10), EstadoInscripcion.INSCRIPTO)));
+                new DTInscripcionEdicion("est1", "e@x.com", "Eva", "Lopez", LocalDate.of(2026, 2, 10), EstadoInscripcion.INSCRIPTO, null)));
         DTInscripcionesEdicionWS ws = idaYVuelta(DTInscripcionesEdicionWS.de(insc));
 
         assertNull(ws.edicion.miInscripcion);

@@ -11,6 +11,7 @@ import ServidorWeb.ws.central.DTImagen;
 import ServidorWeb.ws.central.DTInscripcionEstudiante;
 import ServidorWeb.ws.central.DTInscripcionesEdicion;
 import ServidorWeb.ws.central.DTMisCursos;
+import ServidorWeb.ws.central.DTNota;
 import ServidorWeb.ws.central.DTPerfil;
 import ServidorWeb.ws.central.DTSeleccion;
 import ServidorWeb.ws.central.DTUsuario;
@@ -201,6 +202,20 @@ public class Central {
     public void seleccionarEstudiantes(String nickDocente, String edicion, List<DTSeleccion> selecciones) {
         llamar(() -> {
             puerto.seleccionarEstudiantes(nickDocente, edicion, selecciones);
+            return null;
+        });
+    }
+
+    public void registrarNotas(String nickDocente, String edicion, List<DTNota> notas) {
+        llamar(() -> {
+            puerto.registrarNotas(nickDocente, edicion, notas);
+            return null;
+        });
+    }
+
+    public void cerrarEdicion(String nickDocente, String edicion) {
+        llamar(() -> {
+            puerto.cerrarEdicion(nickDocente, edicion);
             return null;
         });
     }

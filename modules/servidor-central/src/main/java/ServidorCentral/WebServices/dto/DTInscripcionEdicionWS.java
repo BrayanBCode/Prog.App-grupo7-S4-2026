@@ -17,6 +17,7 @@ public class DTInscripcionEdicionWS {
     public String apellido;
     public String fechaInscripcion;
     public EstadoInscripcion estado;
+    public Integer nota;
 
     public DTInscripcionEdicionWS() {
     }
@@ -32,6 +33,7 @@ public class DTInscripcionEdicionWS {
         ws.apellido = i.apellido();
         ws.fechaInscripcion = Fechas.texto(i.fechaInscripcion());
         ws.estado = i.estado();
+        ws.nota = i.nota();
         return ws;
     }
 }

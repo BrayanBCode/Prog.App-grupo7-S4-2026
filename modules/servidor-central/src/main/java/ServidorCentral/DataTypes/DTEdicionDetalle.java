@@ -10,7 +10,8 @@ import java.util.List;
  * miInscripcion: estado de la inscripcion de quien mira (si es estudiante y esta inscripto), o null.
  */
 public record DTEdicionDetalle(DTEdicionCurso edicion, String instituto, List<DTDocenteResumen> docentes,
-                               boolean vigente, EstadoInscripcion miInscripcion) {
+                               boolean vigente, EstadoInscripcion miInscripcion,
+                               boolean cerrada) {
 
     public DTEdicionDetalle {
         docentes = List.copyOf(docentes);
