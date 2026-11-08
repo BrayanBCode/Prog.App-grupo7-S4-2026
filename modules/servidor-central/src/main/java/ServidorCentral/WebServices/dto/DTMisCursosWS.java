@@ -15,13 +15,14 @@ public class DTMisCursosWS {
     public List<DTCursoResumenWS> cursos = new ArrayList<>();
     public List<Edicion> ediciones = new ArrayList<>();
 
-    /** DTMisCursos.Edicion: la edicion y si esta vigente. */
+    /** DTMisCursos.Edicion: la edicion, si esta vigente y si esta cerrada. */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "DTMisCursosEdicion")
     public static class Edicion {
 
         public DTEdicionCursoWS edicion;
         public boolean vigente;
+        public boolean cerrada;
 
         public Edicion() {
         }
@@ -30,6 +31,7 @@ public class DTMisCursosWS {
             Edicion ws = new Edicion();
             ws.edicion = DTEdicionCursoWS.de(e.edicion());
             ws.vigente = e.vigente();
+            ws.cerrada = e.cerrada();
             return ws;
         }
     }

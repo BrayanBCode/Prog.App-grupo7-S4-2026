@@ -55,10 +55,38 @@ class ResultadosInscripcionesTest {
     @Test
     void estudianteConVariasInscripciones_veTodasConSuEstado() {
         assertEquals(List.of(
-                new DTInscripcionEstudiante("MicroBit-2026", "MicroBit", LocalDate.of(2026, 8, 22), EstadoInscripcion.INSCRIPTO),
-                new DTInscripcionEstudiante("MicroBit-2025", "MicroBit", LocalDate.of(2025, 2, 10), EstadoInscripcion.ACEPTADA),
-                new DTInscripcionEstudiante("MicroBit-2024", "MicroBit", LocalDate.of(2024, 2, 10), EstadoInscripcion.RECHAZADA)),
+                new DTInscripcionEstudiante("MicroBit-2026", "MicroBit", LocalDate.of(2026, 8, 22), EstadoInscripcion.INSCRIPTO, false, null, null),
+                new DTInscripcionEstudiante("MicroBit-2025", "MicroBit", LocalDate.of(2025, 2, 10), EstadoInscripcion.ACEPTADA, false, null, null),
+                new DTInscripcionEstudiante("MicroBit-2024", "MicroBit", LocalDate.of(2024, 2, 10), EstadoInscripcion.RECHAZADA, false, null, null)),
                 servicio().resultadosInscripciones("roro"));
+    }
+
+    @Test
+    void notaSoloConLaEdicionCerrada() {
+        Curso microbit = new Curso("MicroBit", "d", 4, 40f, 4, NAC, null, null);
+        InscripcionEdicion cerrada = inscripcion("MicroBit-2025", microbit, LocalDate.of(2025, 2, 10), EstadoInscripcion.ACEPTADA);
+        cerrada.calificar(9);
+        cerrada.getEdicionCurso().getInscripciones().add(cerrada);
+        cerrada.getEdicionCurso().cerrar();
+        InscripcionEdicion abierta = inscripcion("MicroBit-2026", microbit, LocalDate.of(2026, 2, 10), EstadoInscripcion.ACEPTADA);
+        abierta.calificar(4);   // cargada pero la edicion sigue abierta: el estudiante todavia no la ve
+
+        EstudianteService s = new EstudianteService(new EstudianteRepository(null) {
+            @Override
+            public Estudiante buscarPorNickname(String nickname) {
+                return roro;
+            }
+
+            @Override
+            public List<InscripcionEdicion> inscripcionesDe(String nickname) {
+                return List.of(abierta, cerrada);
+            }
+        });
+
+        assertEquals(List.of(
+                new DTInscripcionEstudiante("MicroBit-2026", "MicroBit", LocalDate.of(2026, 2, 10), EstadoInscripcion.ACEPTADA, false, null, null),
+                new DTInscripcionEstudiante("MicroBit-2025", "MicroBit", LocalDate.of(2025, 2, 10), EstadoInscripcion.ACEPTADA, true, 9, LocalDate.now())),
+                s.resultadosInscripciones("roro"));
     }
 
     @Test

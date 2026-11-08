@@ -8,8 +8,8 @@ import java.util.List;
  */
 public record DTMisCursos(List<DTCursoResumen> cursos, List<Edicion> ediciones) {
 
-    /** Una edicion del docente y si hoy es la vigente de su curso. */
-    public record Edicion(DTEdicionCurso edicion, boolean vigente) {
+    /** Una edicion del docente, si hoy es la vigente de su curso y si ya se cerro (con las notas cargadas). */
+    public record Edicion(DTEdicionCurso edicion, boolean vigente, boolean cerrada) {
     }
 
     public DTMisCursos {

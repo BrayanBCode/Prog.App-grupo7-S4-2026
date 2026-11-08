@@ -12,5 +12,8 @@ public record DTInscripcionEstudiante(
         String edicion,
         String curso,
         LocalDate fechaInscripcion,
-        EstadoInscripcion estado) {
+        EstadoInscripcion estado,
+        boolean cerrada,
+        Integer nota,
+        LocalDate fechaCierre) {
 }

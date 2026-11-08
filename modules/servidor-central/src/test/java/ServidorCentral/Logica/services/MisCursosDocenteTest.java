@@ -75,6 +75,15 @@ class MisCursosDocenteTest {
     }
 
     @Test
+    void edicionCerrada_seInforma() {
+        ed2025.cerrar();
+        DTMisCursos m = servicio().misCursos("benkenobi", HOY);
+
+        assertFalse(m.ediciones().get(0).cerrada(), "Robotica 2026 sigue abierta");
+        assertTrue(m.ediciones().get(1).cerrada(), "Robotica 2025 esta cerrada");
+    }
+
+    @Test
     void docenteSinCursosNiEdiciones_listasVacias() {
         DTMisCursos m = servicio().misCursos("waston", HOY);
 

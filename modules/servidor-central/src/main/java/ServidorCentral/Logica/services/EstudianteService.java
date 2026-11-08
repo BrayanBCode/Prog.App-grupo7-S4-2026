@@ -53,8 +53,11 @@ public class EstudianteService {
     public List<DTInscripcionEstudiante> listarInscripciones(String nickname) {
         List<DTInscripcionEstudiante> resultado = new ArrayList<>();
         for (InscripcionEdicion i : estudianteRepository.inscripcionesDe(nickname)) {
+            // La nota solo se conoce cuando la edicion esta cerrada (Listar resultados de evaluaciones)
+            boolean cerrada = i.getEdicionCurso().isCerrada();
             resultado.add(new DTInscripcionEstudiante(i.getEdicionCurso().getNombre(),
-                    i.getEdicionCurso().getCurso().getNombreC(), i.getFechaInscripcion(), i.getEstado()));
+                    i.getEdicionCurso().getCurso().getNombreC(), i.getFechaInscripcion(), i.getEstado(),
+                    cerrada, cerrada ? i.getNota() : null, i.getEdicionCurso().getFechaCierre()));
         }
         return resultado;
     }

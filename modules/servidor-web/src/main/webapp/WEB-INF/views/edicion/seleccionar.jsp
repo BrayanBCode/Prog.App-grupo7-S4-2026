@@ -13,6 +13,10 @@
 <c:if test="${not det.vigente}">
     <div class="alert alert-info small">Esta edición no es la vigente del curso: solo se pueden seleccionar estudiantes en la edición vigente.</div>
 </c:if>
+<c:if test="${det.cerrada}">
+    <div class="alert alert-info small">La edición está cerrada: ya no se pueden seleccionar estudiantes.</div>
+</c:if>
+<c:set var="seleccionable" value="${det.vigente and not det.cerrada}"/>
 <c:if test="${empty seleccion.inscripciones}">
     <p class="text-body-secondary">Todavía no hay inscripciones a esta edición.</p>
 </c:if>
@@ -33,7 +37,7 @@
                         <td><e:fecha valor="${i.fechaInscripcion}"/></td>
                         <td>
                             <c:choose>
-                                <c:when test="${i.estado == 'INSCRIPTO' and det.vigente}">
+                                <c:when test="${i.estado == 'INSCRIPTO' and seleccionable}">
                                     <select name="seleccion" class="form-select form-select-sm" style="width: auto;"
                                             aria-label="Selección para ${i.nickname}">
                                         <option value="">Pendiente</option>
@@ -50,7 +54,7 @@
                 </tbody>
             </table>
         </div>
-        <c:if test="${det.vigente}">
+        <c:if test="${seleccionable}">
             <button type="submit" class="btn btn-primary">Guardar selección</button>
         </c:if>
     </form>

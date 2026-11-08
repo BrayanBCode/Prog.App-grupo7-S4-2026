@@ -59,10 +59,12 @@ class NotasYCierreTest {
 
         assertThrows(ReglaNegocioException.class, ed::cerrar);
         assertFalse(ed.isCerrada());
+        assertNull(ed.getFechaCierre());
 
         b.calificar(4);
         ed.cerrar();
         assertTrue(ed.isCerrada());
+        assertEquals(LocalDate.now(), ed.getFechaCierre());
     }
 
     @Test
