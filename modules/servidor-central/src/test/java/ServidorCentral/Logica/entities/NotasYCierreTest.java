@@ -80,6 +80,31 @@ class NotasYCierreTest {
     }
 
     @Test
+    void cerrar_rechazaLasInscripcionesPendientes() {
+        EdicionCurso ed = new EdicionCurso();
+        InscripcionEdicion aceptada = inscripcion(ed, EstadoInscripcion.ACEPTADA);
+        InscripcionEdicion pendiente = inscripcion(ed, EstadoInscripcion.INSCRIPTO);
+        InscripcionEdicion rechazada = inscripcion(ed, EstadoInscripcion.RECHAZADA);
+        aceptada.calificar(10);
+
+        ed.cerrar();
+
+        assertEquals(EstadoInscripcion.ACEPTADA, aceptada.getEstado());
+        assertEquals(EstadoInscripcion.RECHAZADA, pendiente.getEstado(), "el pendiente queda rechazado");
+        assertEquals(EstadoInscripcion.RECHAZADA, rechazada.getEstado());
+    }
+
+    @Test
+    void cerrarFallido_noTocaLosPendientes() {
+        EdicionCurso ed = new EdicionCurso();
+        inscripcion(ed, EstadoInscripcion.ACEPTADA);   // sin nota: no se puede cerrar
+        InscripcionEdicion pendiente = inscripcion(ed, EstadoInscripcion.INSCRIPTO);
+
+        assertThrows(ReglaNegocioException.class, ed::cerrar);
+        assertEquals(EstadoInscripcion.INSCRIPTO, pendiente.getEstado());
+    }
+
+    @Test
     void edicionSinAceptados_seCierra() {
         EdicionCurso ed = new EdicionCurso();
         assertFalse(ed.isCerrada());

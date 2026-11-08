@@ -43,3 +43,8 @@ UPDATE INSCRIPCIONEDICION SET NOTA = 8  WHERE ID = 17;
 UPDATE EDICIONCURSO SET CERRADA = 1, FECHACIERRE = DATE_ADD(FECHAFIN, INTERVAL 7 DAY)
  WHERE NOMBRE IN ('Flor del Ceibo - 2010', 'Flor del Ceibo - 2012', 'Dalavuelta - 2025',
                   'Taller de robótica educativa - 2024', 'Extensionismo Industrial - 2025');
+
+-- Al cerrar, las inscripciones que seguian pendientes quedan rechazadas
+UPDATE INSCRIPCIONEDICION SET ESTADO = 'RECHAZADA'
+ WHERE ESTADO = 'INSCRIPTO'
+   AND EDICIONCURSO_NOMBRE IN (SELECT NOMBRE FROM EDICIONCURSO WHERE CERRADA = 1);
