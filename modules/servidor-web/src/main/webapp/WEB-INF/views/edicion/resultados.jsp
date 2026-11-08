@@ -5,16 +5,11 @@
 
 <%-- Ingresar resultados de evaluaciones (Tarea 3): encabezado de la edicion y los aceptados con su nota (1 a 12).
      Mientras la edicion esta abierta se pueden guardar y corregir; "Cerrar edicion" guarda lo escrito y la cierra.
-     Cerrada, queda de solo lectura. --%>
+     Cerrada, el servlet lleva al acta (edicion/acta.jsp). --%>
 <c:set var="det" value="${resultados.edicion}"/>
 <%@ include file="/WEB-INF/views/edicion/encabezado.jspf" %>
 
-<h2 class="h6 fw-bold">Resultados de evaluaciones
-    <c:if test="${det.cerrada}"><span class="badge text-bg-secondary ms-1">Edición cerrada</span></c:if>
-</h2>
-<c:if test="${det.cerrada}">
-    <div class="alert alert-info small" style="max-width: 760px;">La edición está cerrada: las notas ya no se pueden modificar.</div>
-</c:if>
+<h2 class="h6 fw-bold">Resultados de evaluaciones</h2>
 <c:if test="${empty resultados.inscripciones}">
     <p class="text-body-secondary">No hay estudiantes aceptados en esta edición.</p>
 </c:if>
@@ -34,27 +29,20 @@
                         <td><a href="${uEst}"><c:out value="${i.nickname}"/></a></td>
                         <td><c:out value="${i.nombre} ${i.apellido}"/></td>
                         <td>
-                            <c:choose>
-                                <c:when test="${det.cerrada}"><c:out value="${i.nota}"/></c:when>
-                                <c:otherwise>
-                                    <input type="number" min="1" max="12" step="1" class="form-control form-control-sm"
-                                           name="nota.<c:out value='${i.nickname}'/>" value="<c:out value='${i.nota}'/>"
-                                           aria-label="Nota de ${i.nickname}">
-                                </c:otherwise>
-                            </c:choose>
+                            <input type="number" min="1" max="12" step="1" class="form-control form-control-sm"
+                                   name="nota.<c:out value='${i.nickname}'/>" value="<c:out value='${i.nota}'/>"
+                                   aria-label="Nota de ${i.nickname}">
                         </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
         </div>
-        <c:if test="${not det.cerrada}">
-            <div class="d-flex gap-2">
-                <button type="submit" name="accion" value="guardar" class="btn btn-primary">Guardar notas</button>
-                <button type="submit" name="accion" value="cerrar" class="btn btn-outline-danger">Cerrar edición</button>
-            </div>
-            <p class="form-text">Para cerrar, todos los estudiantes tienen que tener nota.</p>
-        </c:if>
+        <div class="d-flex gap-2">
+            <button type="submit" name="accion" value="guardar" class="btn btn-primary">Guardar notas</button>
+            <button type="submit" name="accion" value="cerrar" class="btn btn-outline-danger">Cerrar edición</button>
+        </div>
+        <p class="form-text">Para cerrar, todos los estudiantes tienen que tener nota.</p>
     </form>
 </c:if>
 

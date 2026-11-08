@@ -1,6 +1,7 @@
 package ServidorWeb.servlets;
 
 import ServidorWeb.ws.ErrorNegocio;
+import ServidorWeb.ws.central.DTInscripcionesEdicion;
 import ServidorWeb.ws.central.DTNota;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,7 +19,7 @@ import java.util.List;
  * Se llega desde "Mis cursos y ediciones" y desde la Consulta de Edicion.
  * Muestra los aceptados con su nota (1 a 12). El formulario manda nota.NICK=valor por cada estudiante (vacio = sin
  * cambios) y accion=guardar o accion=cerrar; cerrar guarda primero lo escrito y despues cierra (Post/Redirect/Get).
- * Con la edicion cerrada la pagina queda de solo lectura.
+ * Con la edicion cerrada ya no hay nada que ingresar: lleva al acta (Ver resultados, /edicion/acta).
  */
 @WebServlet("/edicion/resultados")
 public class IngresarResultadosServlet extends BaseServlet {
@@ -29,7 +30,12 @@ public class IngresarResultadosServlet extends BaseServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
-            req.setAttribute("resultados", central.consultarAceptadosEdicion(usuario(req).getNickname(), param(req, "edicion")));
+            DTInscripcionesEdicion resultados = central.consultarAceptadosEdicion(usuario(req).getNickname(), param(req, "edicion"));
+            if (resultados.getEdicion().isCerrada()) {
+                redirigir(req, resp, "/edicion/acta?edicion=" + url(param(req, "edicion")));
+                return;
+            }
+            req.setAttribute("resultados", resultados);
             req.setAttribute("titulo", "Resultados de evaluaciones");
             vista(req, resp, "edicion/resultados.jsp");
         } catch (RuntimeException e) {

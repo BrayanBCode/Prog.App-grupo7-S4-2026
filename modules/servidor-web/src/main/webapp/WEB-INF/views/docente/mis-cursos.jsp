@@ -56,8 +56,8 @@
                         </c:if>
                         <c:url var="uAcep" value="/edicion/aceptados"><c:param name="edicion" value="${ed.nombre}"/></c:url>
                         <a class="btn btn-outline-secondary btn-sm" href="${uAcep}">Ver aceptados</a>
-                        <c:url var="uRes" value="/edicion/resultados"><c:param name="edicion" value="${ed.nombre}"/></c:url>
-                        <a class="btn btn-outline-secondary btn-sm" href="${uRes}">Resultados</a>
+                        <c:url var="uRes" value="${me.cerrada ? '/edicion/acta' : '/edicion/resultados'}"><c:param name="edicion" value="${ed.nombre}"/></c:url>
+                        <a class="btn btn-outline-secondary btn-sm" href="${uRes}">${me.cerrada ? 'Ver acta' : 'Resultados'}</a>
                     </td>
                 </tr>
             </c:forEach>
