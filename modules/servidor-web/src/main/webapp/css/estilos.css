@@ -6,10 +6,42 @@
 /* ---- Cabezal ---- */
 .cabezal .logo { font-size: 1.5rem; }
 
-/* ---- Modo oscuro (data-bs-theme="dark", js/tema.js): los encabezados .table-light siguen al tema ---- */
+/* ---- Modo oscuro (data-bs-theme="dark", js/tema.js): paleta azul pizarra en lugar del gris de Bootstrap ---- */
+[data-bs-theme="dark"] {
+    --bs-body-bg: #131c2e;            /* tarjetas, cabezal, menues */
+    --bs-body-bg-rgb: 19, 28, 46;
+    --bs-tertiary-bg: #0c1322;        /* fondo de la pagina */
+    --bs-tertiary-bg-rgb: 12, 19, 34;
+    --bs-secondary-bg: #1c2740;
+    --bs-secondary-bg-rgb: 28, 39, 64;
+    --bs-body-color: #eef3fa;
+    --bs-body-color-rgb: 238, 243, 250;
+    --bs-emphasis-color: #ffffff;
+    --bs-secondary-color: rgba(238, 243, 250, 0.8);
+    --bs-tertiary-color: rgba(238, 243, 250, 0.6);
+    --bs-border-color: #2a3654;
+    --bs-link-color: #7cb4ff;
+    --bs-link-color-rgb: 124, 180, 255;
+    --bs-link-hover-color: #a8ccff;
+    --bs-link-hover-color-rgb: 168, 204, 255;
+}
+
+/* Botones grises (Buscar, Ver aceptados, Resultados...): el gris de Bootstrap casi no se ve sobre el azul */
+[data-bs-theme="dark"] .btn-outline-secondary {
+    --bs-btn-color: #d3dcea;
+    --bs-btn-border-color: #51628a;
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-hover-bg: #2a3654;
+    --bs-btn-hover-border-color: #6a7ca6;
+    --bs-btn-active-color: #ffffff;
+    --bs-btn-active-bg: #2a3654;
+    --bs-btn-active-border-color: #6a7ca6;
+}
+
+/* Los encabezados .table-light siguen al tema */
 [data-bs-theme="dark"] .table-light {
     --bs-table-color: var(--bs-body-color);
-    --bs-table-bg: var(--bs-tertiary-bg);
+    --bs-table-bg: var(--bs-secondary-bg);
     --bs-table-border-color: var(--bs-border-color);
 }
 .cabezal .buscador { max-width: 420px; }
