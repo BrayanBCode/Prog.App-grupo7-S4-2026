@@ -215,6 +215,9 @@
 <xs:element name="curso" type="xs:string" minOccurs="0"/>
 <xs:element name="fechaInscripcion" type="xs:string" minOccurs="0"/>
 <xs:element name="estado" type="tns:estadoInscripcion" minOccurs="0"/>
+<xs:element name="cerrada" type="xs:boolean"/>
+<xs:element name="nota" type="xs:int" minOccurs="0"/>
+<xs:element name="fechaCierre" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -345,6 +348,7 @@
 <xs:sequence>
 <xs:element name="edicion" type="tns:DTEdicionCurso" minOccurs="0"/>
 <xs:element name="vigente" type="xs:boolean"/>
+<xs:element name="cerrada" type="xs:boolean"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -470,6 +474,18 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="resultadosInscripciones">
+<xs:sequence>
+<xs:element name="nickEstudiante" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="resultadosInscripcionesResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DTInscripcionEstudiante" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="registrarNotas">
 <xs:sequence>
 <xs:element name="nickDocente" type="xs:string" minOccurs="0"/>
@@ -487,18 +503,6 @@
 
 <xs:complexType name="registrarNotasResponse">
 <xs:sequence/>
-</xs:complexType>
-
-<xs:complexType name="resultadosInscripciones">
-<xs:sequence>
-<xs:element name="nickEstudiante" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="resultadosInscripcionesResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:DTInscripcionEstudiante" minOccurs="0" maxOccurs="unbounded"/>
-</xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="listarNombresCursos">
@@ -537,19 +541,6 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="dejarDeSeguirUsuario">
-<xs:sequence>
-<xs:element name="seguidor" type="xs:string" minOccurs="0"/>
-<xs:element name="seguido" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="dejarDeSeguirUsuarioResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:int"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="altaEdicion">
 <xs:sequence>
 <xs:element name="nickDocente" type="xs:string" minOccurs="0"/>
@@ -565,6 +556,19 @@
 
 <xs:complexType name="altaEdicionResponse">
 <xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="dejarDeSeguirUsuario">
+<xs:sequence>
+<xs:element name="seguidor" type="xs:string" minOccurs="0"/>
+<xs:element name="seguido" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="dejarDeSeguirUsuarioResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="altaCurso">
@@ -611,17 +615,6 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="inscribirse">
-<xs:sequence>
-<xs:element name="nickEstudiante" type="xs:string" minOccurs="0"/>
-<xs:element name="edicion" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="inscribirseResponse">
-<xs:sequence/>
-</xs:complexType>
-
 <xs:complexType name="listarDocentesPorInstituto">
 <xs:sequence>
 <xs:element name="instituto" type="xs:string" minOccurs="0"/>
@@ -632,6 +625,17 @@
 <xs:sequence>
 <xs:element name="return" type="tns:DTDocenteResumen" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="inscribirse">
+<xs:sequence>
+<xs:element name="nickEstudiante" type="xs:string" minOccurs="0"/>
+<xs:element name="edicion" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="inscribirseResponse">
+<xs:sequence/>
 </xs:complexType>
 
 <xs:complexType name="nicknameDisponible">

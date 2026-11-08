@@ -41,6 +41,7 @@ class EdicionSeleccionServiceTest {
     /** Lo que el servicio mando a guardar (null = no se guardo nada). */
     private Map<String, EstadoInscripcion> guardado;
     private boolean edicionExiste = true;
+    private boolean edicionCerrada = false;
 
     private static InscripcionEdicion insc(String nick, String mail, String nombre, String apellido, EstadoInscripcion estado) {
         Estudiante e = new Estudiante(nick, mail, nombre, apellido, LocalDate.of(1990, 1, 1), null, "x");
@@ -53,10 +54,15 @@ class EdicionSeleccionServiceTest {
         EdicionCursoRepository repo = new EdicionCursoRepository(null) {
             @Override
             public EdicionCurso obtenerPorNombres(String nombreEdicion) {
-                return edicionExiste && EDICION.equals(nombreEdicion)
-                        ? new EdicionCurso(EDICION, new Curso("Robotica", "d", 4, 60f, 8, LocalDate.of(2024, 1, 1), "u", new Instituto("INCO")),
-                                LocalDate.now(), LocalDate.now().plusDays(30), 10, LocalDate.now())
-                        : null;
+                if (!edicionExiste || !EDICION.equals(nombreEdicion)) {
+                    return null;
+                }
+                EdicionCurso ed = new EdicionCurso(EDICION, new Curso("Robotica", "d", 4, 60f, 8, LocalDate.of(2024, 1, 1), "u", new Instituto("INCO")),
+                        LocalDate.now(), LocalDate.now().plusDays(30), 10, LocalDate.now());
+                if (edicionCerrada) {
+                    ed.cerrar();
+                }
+                return ed;
             }
 
             @Override
@@ -126,6 +132,15 @@ class EdicionSeleccionServiceTest {
     }
 
     // ---------------- Seleccion (Tabla 1) ----------------
+
+    @Test
+    void edicionCerrada_noSeSelecciona() {
+        edicionCerrada = true;
+        ReglaNegocioException e = assertThrows(ReglaNegocioException.class,
+                () -> servicio().seleccionarEstudiantes("benkenobi", EDICION, mapa("weiss", EstadoInscripcion.ACEPTADA)));
+        assertEquals("La edición está cerrada: ya no se pueden seleccionar estudiantes.", e.getMessage());
+        assertNull(guardado);
+    }
 
     @Test
     void inscriptoPasaAAceptada() throws Exception {

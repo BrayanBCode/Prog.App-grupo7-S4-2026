@@ -148,6 +148,9 @@ public class EdicionCursoService {
         if (!esVigente(ed, hoy)) {
             throw new ReglaNegocioException("Solo podés inscribirte a la edición vigente del curso.");
         }
+        if (ed.isCerrada()) {
+            throw new ReglaNegocioException("La edición está cerrada: ya no admite inscripciones.");
+        }
         if (edicionCursoRepository.existeInscripcion(nickEstudiante, ed.getNombre())) {
             throw new ReglaNegocioException("Ya estás inscripto en esta edición del curso.");
         }
@@ -284,6 +287,10 @@ public class EdicionCursoService {
         EdicionCurso edicion = verificarDocenteDeEdicion(nicknameDocente, nombreEdicion);
         if (!esVigente(edicion, hoy)) {
             throw new ReglaNegocioException("Solo se pueden seleccionar estudiantes en la edición vigente del curso.");
+        }
+        // Cerrada: aceptar a alguien dejaria un aceptado sin nota
+        if (edicion.isCerrada()) {
+            throw new ReglaNegocioException("La edición está cerrada: ya no se pueden seleccionar estudiantes.");
         }
 
         if (estados == null || estados.isEmpty()) {
@@ -431,6 +438,10 @@ public class EdicionCursoService {
         EdicionCurso edicion = edicionCursoRepository.obtenerPorNombres(nombreEdicion);
         if (edicion == null) {
             throw new Exception("La edición de curso seleccionada no existe.");
+        }
+
+        if (edicion.isCerrada()) {
+            throw new Exception("La edición está cerrada: ya no admite inscripciones.");
         }
 
         if (edicionCursoRepository.existeInscripcion(nickname, nombreEdicion)) {

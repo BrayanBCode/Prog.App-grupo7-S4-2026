@@ -44,12 +44,13 @@
                 <c:url var="uCur" value="/cursos"><c:param name="nombre" value="${ed.nombreCurso}"/></c:url>
                 <tr>
                     <td><a href="${uEd}"><c:out value="${ed.nombre}"/></a>
-                        <c:if test="${me.vigente}"><span class="badge text-bg-success ms-1">Vigente</span></c:if></td>
+                        <c:if test="${me.vigente}"><span class="badge text-bg-success ms-1">Vigente</span></c:if>
+                        <c:if test="${me.cerrada}"><span class="badge text-bg-secondary ms-1">Cerrada</span></c:if></td>
                     <td><a href="${uCur}"><c:out value="${ed.nombreCurso}"/></a></td>
                     <td><e:fecha valor="${ed.fechaInicio}"/></td>
                     <td><e:fecha valor="${ed.fechaFin}"/></td>
                     <td class="text-end text-nowrap">
-                        <c:if test="${me.vigente}">
+                        <c:if test="${me.vigente and not me.cerrada}">
                             <c:url var="uSel" value="/edicion/seleccionar"><c:param name="edicion" value="${ed.nombre}"/></c:url>
                             <a class="btn btn-outline-primary btn-sm" href="${uSel}">Seleccionar estudiantes</a>
                         </c:if>
