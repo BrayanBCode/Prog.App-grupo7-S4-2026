@@ -41,6 +41,24 @@ class BusquedaCursosTest {
     }
 
     @Test
+    void conValoraciones_cadaTarjetaTraeSuPromedio() {
+        CursoService conEstrellas = new CursoService(new CursoRepository(null) {
+            @Override
+            public List<Curso> buscar(String texto) {
+                return List.of(curso("MicroBit", 2024), curso("komikan", 2026));
+            }
+        }, null, null, null, null, new ServidorCentral.Logica.repositories.ValoracionCursoRepository(null) {
+            @Override
+            public java.util.Map<String, double[]> resumenPorCurso() {
+                return java.util.Map.of("MicroBit", new double[]{4.5, 2});
+            }
+        });
+        List<DTCursoResumen> r = conEstrellas.buscarCursos("", null);
+        assertEquals(new DTCursoResumen("komikan", "d", null, 0, 0), r.get(0), "sin valoraciones");
+        assertEquals(new DTCursoResumen("MicroBit", "d", null, 4.5, 2), r.get(1));
+    }
+
+    @Test
     void alfabetico_sinDistinguirMayusculasNiTildes() {
         List<String> esperado = List.of("Ábaco", "Dalavuelta", "komikan", "MicroBit", "Sin fecha", "taller");
         assertEquals(esperado, nombres(OrdenBusqueda.ALFABETICO_ASC));

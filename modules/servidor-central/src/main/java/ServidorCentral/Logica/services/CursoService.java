@@ -17,6 +17,7 @@ import ServidorCentral.Logica.repositories.DocenteRepository;
 import ServidorCentral.Logica.repositories.EdicionCursoRepository;
 import ServidorCentral.Logica.repositories.InstitutoRepository;
 import ServidorCentral.Logica.repositories.ProgramaFormacionRepository;
+import ServidorCentral.Logica.repositories.ValoracionCursoRepository;
 import ServidorCentral.Persistencia.AlmacenImagenes;
 
 import java.text.Collator;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Acá viven las reglas de negocio de Curso: qué es válido y qué no.
@@ -39,6 +41,8 @@ public class CursoService {
     private final DocenteRepository docenteRepository;
     private final EdicionCursoRepository edicionCursoRepository;
     private final ProgramaFormacionRepository programaRepository;
+    /** Para las estrellas de la busqueda; null = sin valoraciones (tests y Swing). */
+    private final ValoracionCursoRepository valoracionRepository;
 
     /** Sin ediciones ni programas: alcanza para el alta y la consulta basica (Swing, tests viejos). */
     public CursoService(CursoRepository cursoRepository, InstitutoRepository institutoRepository, DocenteRepository docenteRepository) {
@@ -47,6 +51,13 @@ public class CursoService {
 
     public CursoService(CursoRepository cursoRepository, InstitutoRepository institutoRepository, DocenteRepository docenteRepository,
                         EdicionCursoRepository edicionCursoRepository, ProgramaFormacionRepository programaRepository) {
+        this(cursoRepository, institutoRepository, docenteRepository, edicionCursoRepository, programaRepository, null);
+    }
+
+    public CursoService(CursoRepository cursoRepository, InstitutoRepository institutoRepository, DocenteRepository docenteRepository,
+                        EdicionCursoRepository edicionCursoRepository, ProgramaFormacionRepository programaRepository,
+                        ValoracionCursoRepository valoracionRepository) {
+        this.valoracionRepository = valoracionRepository;
         this.cursoRepository = cursoRepository;
         this.institutoRepository = institutoRepository;
         this.docenteRepository = docenteRepository;
@@ -184,7 +195,14 @@ public class CursoService {
             case ANIO_ASC -> porAnio(anios).thenComparing(porNombre);
             case ANIO_DESC -> porAnio(anios.reversed()).thenComparing(porNombre);
         });
-        return aTabla(cursos);
+        // Estrellas en los resultados (7.6): promedio y cantidad de valoraciones de cada curso
+        Map<String, double[]> valoraciones = valoracionRepository == null ? Map.of() : valoracionRepository.resumenPorCurso();
+        List<DTCursoResumen> resultado = new ArrayList<>();
+        for (Curso c : cursos) {
+            double[] v = valoraciones.getOrDefault(c.getNombreC(), new double[]{0, 0});
+            resultado.add(new DTCursoResumen(c.getNombreC(), c.getDescripcion(), c.getImagen(), v[0], (int) v[1]));
+        }
+        return resultado;
     }
 
     /** Por año de registro en el sentido dado; los cursos sin fecha, al final. */

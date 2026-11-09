@@ -51,6 +51,19 @@ class ValoracionCursoRepositoryTest {
     }
 
     @Test
+    void resumenPorCurso_promedioYCantidad() {
+        assertTrue(valoraciones.resumenPorCurso().isEmpty());
+        valoraciones.guardar("roro", "MicroBit", 4, LocalDate.now());
+        valoraciones.guardar("weiss", "MicroBit", 1, LocalDate.now());
+        valoraciones.guardar("roro", "Komikan", 5, LocalDate.now());
+
+        Map<String, double[]> r = valoraciones.resumenPorCurso();
+        assertEquals(2, r.size());
+        assertArrayEquals(new double[]{2.5, 2}, r.get("MicroBit"), 1e-9);
+        assertArrayEquals(new double[]{5, 1}, r.get("Komikan"), 1e-9);
+    }
+
+    @Test
     void dosVecesElMismoCurso_laBaseLoRechaza() {
         valoraciones.guardar("roro", "MicroBit", 4, LocalDate.now());
         assertThrows(RuntimeException.class, () -> valoraciones.guardar("roro", "MicroBit", 1, LocalDate.now()));
