@@ -65,6 +65,28 @@
     -webkit-text-stroke: 1px #d99a00;
 }
 
+/* Resumen de valoraciones (Figura 7): una barra por puntaje, de verde (5) a rojo (1) */
+.resumen-valoraciones .progress { min-width: 4rem; }
+.resumen-valoraciones .barra-5 { background-color: #7cb342; }
+.resumen-valoraciones .barra-4 { background-color: #a5c63b; }
+.resumen-valoraciones .barra-3 { background-color: #f5c518; }
+.resumen-valoraciones .barra-2 { background-color: #f39c32; }
+.resumen-valoraciones .barra-1 { background-color: #ef6c4a; }
+
+/* Boton "Valorar curso": en modo claro el amarillo de outline-warning casi no se ve; fondo ambar suave y texto oscuro */
+html:not([data-bs-theme="dark"]) .btn-valorar {
+    --bs-btn-color: #6b4e00;
+    --bs-btn-bg: #fff3cd;
+    --bs-btn-border-color: #e0a800;
+    --bs-btn-hover-color: #4a3600;
+    --bs-btn-hover-bg: #ffe08a;
+    --bs-btn-hover-border-color: #c79100;
+    --bs-btn-active-color: #4a3600;
+    --bs-btn-active-bg: #ffd54f;
+    --bs-btn-active-border-color: #c79100;
+    font-weight: 600;
+}
+
 /* Elegir puntaje (Valorar un Curso): las estrellas van de 5 a 1 en el HTML y se muestran de 1 a 5 */
 .elegir-estrellas {
     display: inline-flex;

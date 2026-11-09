@@ -41,7 +41,7 @@
         <%-- Estudiante aceptado en esta edicion: valora el curso (la valoracion es del curso, no de la edicion) --%>
         <c:if test="${puede.VALORAR_CURSO and detalleEdicion.miInscripcion == 'ACEPTADA'}">
             <c:url var="uValorar" value="/cursos/valorar"><c:param name="curso" value="${ed.nombreCurso}"/></c:url>
-            <div class="mt-2"><a class="btn btn-outline-warning btn-sm" href="${uValorar}">★ Valorar curso</a></div>
+            <div class="mt-2"><a class="btn btn-outline-warning btn-valorar btn-sm" href="${uValorar}">★ Valorar curso</a></div>
         </c:if>
 
         <%-- Docente que participa en la edicion: Seleccionar estudiantes (4.7, solo la vigente) y Ver aceptados (4.8) --%>

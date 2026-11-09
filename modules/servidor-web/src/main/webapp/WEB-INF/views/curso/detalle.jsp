@@ -1,9 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ taglib prefix="e" tagdir="/WEB-INF/tags" %><%@ include file="/WEB-INF/views/comun/inicio-pagina.jspf" %>
 
-<%-- Consulta de Curso (Figura 3): a la izquierda imagen y datos del curso; a la derecha sus
-     ediciones y los programas de formacion que lo incluyen. --%>
+<%-- Consulta de Curso (Figura 3): a la izquierda imagen y datos del curso, con el resumen de valoraciones abajo
+     (7.6, Figura 7); a la derecha sus ediciones y los programas de formacion que lo incluyen. --%>
 <c:set var="cur" value="${detalle.curso}"/>
 
 <div class="row g-4">
@@ -41,6 +42,44 @@
                 </c:forEach>
             </dd>
         </dl>
+
+        <%-- Resumen de valoraciones (7.6, Figura 7), debajo de los datos: barras de 5 a 1 estrellas con la cantidad
+             y, al lado, el promedio --%>
+        <c:if test="${not empty valoracion}">
+            <section class="resumen-valoraciones card card-body p-3 mt-4" style="max-width: 34rem;" aria-label="Valoraciones del curso">
+                <h2 class="h6 fw-bold mb-2">Valoraciones</h2>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="flex-grow-1">
+                        <c:forEach var="k" begin="0" end="4">
+                            <c:set var="n" value="${5 - k}"/>
+                            <c:set var="cant" value="${valoracion.porPuntaje[n - 1]}"/>
+                            <div class="d-flex align-items-center gap-2 small">
+                                <span class="text-nowrap" style="width: 1.8rem;">${n} <span class="text-warning">★</span></span>
+                                <div class="progress flex-grow-1" style="height: .55rem;" role="presentation">
+                                    <div class="progress-bar barra-${n}"
+                                         style="width: ${valoracion.cantidad == 0 ? 0 : cant * 100 / valoracion.cantidad}%"></div>
+                                </div>
+                                <span class="text-end text-body-secondary" style="width: 1.5rem;">${cant}</span>
+                            </div>
+                        </c:forEach>
+                    </div>
+                    <div class="text-center border-start ps-3">
+                        <div class="small text-body-secondary">Promedio</div>
+                        <div class="fs-2 fw-semibold lh-1 my-1">
+                            <c:choose>
+                                <c:when test="${valoracion.cantidad == 0}">–</c:when>
+                                <c:otherwise><fmt:formatNumber value="${valoracion.promedio}" maxFractionDigits="1" minFractionDigits="1"/></c:otherwise>
+                            </c:choose>
+                        </div>
+                        <e:estrellas valor="${valoracion.promedio}"/>
+                        <div class="small text-body-secondary text-nowrap mt-1">${valoracion.cantidad} ${valoracion.cantidad == 1 ? 'valoración' : 'valoraciones'}</div>
+                    </div>
+                </div>
+                <c:if test="${not empty valoracion.miPuntaje}">
+                    <div class="small mt-2 pt-2 border-top">Tu puntaje: <e:estrellas valor="${valoracion.miPuntaje}"/></div>
+                </c:if>
+            </section>
+        </c:if>
     </div>
 
     <div class="col-lg-5">
