@@ -25,6 +25,10 @@
             </button>
             <div id="seguimiento-mensaje" class="small mt-1" role="status" aria-live="polite"></div>
         </c:if>
+        <%-- Tramitar Acta de Estudio (6.1 y 7.4): el estudiante en su propio perfil descarga el PDF --%>
+        <c:if test="${puede.TRAMITAR_ACTA_ESTUDIO and perfil.propio}">
+            <a class="btn btn-sm btn-outline-primary" href="${raiz}/perfil/acta">Generar acta de estudio (PDF)</a>
+        </c:if>
     </div>
 </div>
 

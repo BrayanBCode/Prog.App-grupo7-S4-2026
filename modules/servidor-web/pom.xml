@@ -48,6 +48,17 @@
             <artifactId>jaxws-rt</artifactId>
             <version>4.0.3</version>
         </dependency>
+        <!-- Acta de estudio en PDF (letra 7.4): se genera con iText en cada pedido -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>kernel</artifactId>
+            <version>8.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>layout</artifactId>
+            <version>8.0.5</version>
+        </dependency>
     </dependencies>
 
     <build>
