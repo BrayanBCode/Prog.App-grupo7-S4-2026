@@ -20,6 +20,8 @@ import java.util.List;
  * @param seguidos       nicknames de a quienes sigue
  * @param loSigue        el que mira ya sigue a este usuario
  * @param verAceptados   docente mirando su propio perfil: tiene "Ver aceptados" en sus ediciones
+ * @param verCursos      se muestran Cursos y Programas: el perfil propio o lo mira un docente
+ * @param verSeguidores  se muestran seguidores y seguidos: solo en el perfil propio
  */
 public record DTPerfil(
         DTUsuario usuario,
@@ -33,7 +35,9 @@ public record DTPerfil(
         List<String> seguidores,
         List<String> seguidos,
         boolean loSigue,
-        boolean verAceptados) {
+        boolean verAceptados,
+        boolean verCursos,
+        boolean verSeguidores) {
 
     public DTPerfil {
         institutos = List.copyOf(institutos);

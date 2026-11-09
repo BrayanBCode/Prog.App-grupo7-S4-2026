@@ -25,6 +25,8 @@ public class DTPerfilWS {
     public List<String> seguidos = new ArrayList<>();
     public boolean loSigue;
     public boolean verAceptados;
+    public boolean verCursos;
+    public boolean verSeguidores;
 
     public DTPerfilWS() {
     }
@@ -46,6 +48,8 @@ public class DTPerfilWS {
         ws.seguidos = new ArrayList<>(p.seguidos());
         ws.loSigue = p.loSigue();
         ws.verAceptados = p.verAceptados();
+        ws.verCursos = p.verCursos();
+        ws.verSeguidores = p.verSeguidores();
         return ws;
     }
 }

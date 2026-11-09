@@ -26,6 +26,9 @@
         document.querySelectorAll('[data-contador-seguidores]').forEach(function (c) {
             c.textContent = total;
         });
+        if (!lista) {
+            return; // la lista de seguidores solo esta en el perfil propio
+        }
         var yo = boton.dataset.yo;
         var item = lista.querySelector('[data-nick="' + CSS.escape(yo) + '"]');
         if (siguiendo && !item) {
