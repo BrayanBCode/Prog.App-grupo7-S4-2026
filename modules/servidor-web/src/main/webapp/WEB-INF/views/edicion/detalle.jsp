@@ -38,6 +38,11 @@
         </c:if>
         <c:url var="uCurso" value="/cursos"><c:param name="nombre" value="${ed.nombreCurso}"/></c:url>
         <a href="${uCurso}">Ver información del Curso</a>
+        <%-- Estudiante aceptado en esta edicion: valora el curso (la valoracion es del curso, no de la edicion) --%>
+        <c:if test="${puede.VALORAR_CURSO and detalleEdicion.miInscripcion == 'ACEPTADA'}">
+            <c:url var="uValorar" value="/cursos/valorar"><c:param name="curso" value="${ed.nombreCurso}"/></c:url>
+            <div class="mt-2"><a class="btn btn-outline-warning btn-sm" href="${uValorar}">★ Valorar curso</a></div>
+        </c:if>
 
         <%-- Docente que participa en la edicion: Seleccionar estudiantes (4.7, solo la vigente) y Ver aceptados (4.8) --%>
         <c:set var="participo" value="${false}"/>

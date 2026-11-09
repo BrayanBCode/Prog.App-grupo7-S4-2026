@@ -18,6 +18,7 @@ import ServidorCentral.WebServices.dto.DTPerfilWS;
 import ServidorCentral.WebServices.dto.DTSeleccionWS;
 import ServidorCentral.WebServices.dto.DTSesionWS;
 import ServidorCentral.WebServices.dto.DTUsuarioWS;
+import ServidorCentral.WebServices.dto.DTValoracionCursoWS;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
@@ -252,6 +253,27 @@ public class ServicioCentral {
             controller.cerrarEdicion(nickDocente, edicion);
             return null;
         });
+    }
+
+    // ---------------- Valorar un Curso ----------------
+
+    @WebMethod
+    public List<String> cursosParaValorar(@WebParam(name = "nickEstudiante") String nickEstudiante) throws ReglaNegocioFault {
+        return llamar(() -> controller.cursosParaValorar(nickEstudiante));
+    }
+
+    @WebMethod
+    public DTValoracionCursoWS consultarValoracionCurso(@WebParam(name = "curso") String curso,
+                                                        @WebParam(name = "nickEstudiante") String nickEstudiante)
+            throws ReglaNegocioFault {
+        return llamar(() -> DTValoracionCursoWS.de(controller.consultarValoracionCurso(curso, nickEstudiante)));
+    }
+
+    @WebMethod
+    public DTValoracionCursoWS valorarCurso(@WebParam(name = "nickEstudiante") String nickEstudiante,
+                                            @WebParam(name = "curso") String curso,
+                                            @WebParam(name = "puntaje") int puntaje) throws ReglaNegocioFault {
+        return llamar(() -> DTValoracionCursoWS.de(controller.valorarCurso(nickEstudiante, curso, puntaje)));
     }
 
     @WebMethod

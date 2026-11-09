@@ -21,6 +21,7 @@ import ServidorCentral.DataTypes.DTEdicionDetalle;
 import ServidorCentral.DataTypes.DTProgramaInscripto;
 import ServidorCentral.DataTypes.DTUsuarioResumen;
 import ServidorCentral.DataTypes.DTProgramaResumen;
+import ServidorCentral.DataTypes.DTValoracionCurso;
 import ServidorCentral.DataTypes.OrdenBusqueda;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 import ServidorCentral.Logica.services.*;
@@ -197,7 +198,24 @@ class ControllerV2Test {
                 public List<DTUsuario> listarUsuarios() { anotar("listarUsuarios"); return List.of(); }
                 @Override
                 public DTPerfil obtenerPerfil(String c, String quien) { anotar("obtenerPerfil " + c + " " + quien); return null; }
+            },
+            new ValoracionCursoService(null, null, null) {
+                @Override
+                public List<String> cursosParaValorar(String n) { anotar("cursosParaValorar " + n); return NOMBRES; }
+                @Override
+                public DTValoracionCurso consultarValoracion(String c, String n) { anotar("consultarValoracion " + c + " " + n); return null; }
+                @Override
+                public DTValoracionCurso valorarCurso(String n, String c, int p) { anotar("valorarCurso " + n + " " + c + " " + p); return null; }
             }));
+
+    @Test
+    void valorarCurso_vaAlServicioDeValoraciones() {
+        assertSame(NOMBRES, controller.cursosParaValorar("roro"));
+        controller.consultarValoracionCurso("MicroBit", "roro");
+        controller.valorarCurso("roro", "MicroBit", 4);
+        assertEquals(List.of("cursosParaValorar roro", "consultarValoracion MicroBit roro", "valorarCurso roro MicroBit 4"),
+                llamadas);
+    }
 
     @Test
     void usuarios_vanAlServicioDeUsuarios() throws Exception {

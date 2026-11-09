@@ -4,20 +4,98 @@
 <xsd:import namespace="http://WebServices.ServidorCentral/" schemaLocation="ServicioCentral.xsd"/>
 </xsd:schema>
 </types>
+<message name="iniciarSesion">
+<part name="parameters" element="tns:iniciarSesion"/>
+</message>
+<message name="iniciarSesionResponse">
+<part name="parameters" element="tns:iniciarSesionResponse"/>
+</message>
+<message name="ReglaNegocioFault">
+<part name="fault" element="tns:ReglaNegocioFault"/>
+</message>
 <message name="altaCurso">
 <part name="parameters" element="tns:altaCurso"/>
 </message>
 <message name="altaCursoResponse">
 <part name="parameters" element="tns:altaCursoResponse"/>
 </message>
-<message name="ReglaNegocioFault">
-<part name="fault" element="tns:ReglaNegocioFault"/>
+<message name="consultarCurso">
+<part name="parameters" element="tns:consultarCurso"/>
 </message>
-<message name="consultarInscripcionesEdicion">
-<part name="parameters" element="tns:consultarInscripcionesEdicion"/>
+<message name="consultarCursoResponse">
+<part name="parameters" element="tns:consultarCursoResponse"/>
 </message>
-<message name="consultarInscripcionesEdicionResponse">
-<part name="parameters" element="tns:consultarInscripcionesEdicionResponse"/>
+<message name="buscarCursos">
+<part name="parameters" element="tns:buscarCursos"/>
+</message>
+<message name="buscarCursosResponse">
+<part name="parameters" element="tns:buscarCursosResponse"/>
+</message>
+<message name="altaUsuario">
+<part name="parameters" element="tns:altaUsuario"/>
+</message>
+<message name="altaUsuarioResponse">
+<part name="parameters" element="tns:altaUsuarioResponse"/>
+</message>
+<message name="seguirUsuario">
+<part name="parameters" element="tns:seguirUsuario"/>
+</message>
+<message name="seguirUsuarioResponse">
+<part name="parameters" element="tns:seguirUsuarioResponse"/>
+</message>
+<message name="listarCursosInstituto">
+<part name="parameters" element="tns:listarCursosInstituto"/>
+</message>
+<message name="listarCursosInstitutoResponse">
+<part name="parameters" element="tns:listarCursosInstitutoResponse"/>
+</message>
+<message name="nicknameDisponible">
+<part name="parameters" element="tns:nicknameDisponible"/>
+</message>
+<message name="nicknameDisponibleResponse">
+<part name="parameters" element="tns:nicknameDisponibleResponse"/>
+</message>
+<message name="listarUsuarios">
+<part name="parameters" element="tns:listarUsuarios"/>
+</message>
+<message name="listarUsuariosResponse">
+<part name="parameters" element="tns:listarUsuariosResponse"/>
+</message>
+<message name="obtenerUsuario">
+<part name="parameters" element="tns:obtenerUsuario"/>
+</message>
+<message name="obtenerUsuarioResponse">
+<part name="parameters" element="tns:obtenerUsuarioResponse"/>
+</message>
+<message name="valorarCurso">
+<part name="parameters" element="tns:valorarCurso"/>
+</message>
+<message name="valorarCursoResponse">
+<part name="parameters" element="tns:valorarCursoResponse"/>
+</message>
+<message name="consultarValoracionCurso">
+<part name="parameters" element="tns:consultarValoracionCurso"/>
+</message>
+<message name="consultarValoracionCursoResponse">
+<part name="parameters" element="tns:consultarValoracionCursoResponse"/>
+</message>
+<message name="cursosParaValorar">
+<part name="parameters" element="tns:cursosParaValorar"/>
+</message>
+<message name="cursosParaValorarResponse">
+<part name="parameters" element="tns:cursosParaValorarResponse"/>
+</message>
+<message name="registrarNotas">
+<part name="parameters" element="tns:registrarNotas"/>
+</message>
+<message name="registrarNotasResponse">
+<part name="parameters" element="tns:registrarNotasResponse"/>
+</message>
+<message name="seleccionarEstudiantes">
+<part name="parameters" element="tns:seleccionarEstudiantes"/>
+</message>
+<message name="seleccionarEstudiantesResponse">
+<part name="parameters" element="tns:seleccionarEstudiantesResponse"/>
 </message>
 <message name="consultarAceptadosEdicion">
 <part name="parameters" element="tns:consultarAceptadosEdicion"/>
@@ -31,83 +109,23 @@
 <message name="inscribirseResponse">
 <part name="parameters" element="tns:inscribirseResponse"/>
 </message>
-<message name="altaUsuario">
-<part name="parameters" element="tns:altaUsuario"/>
+<message name="misCursosDocente">
+<part name="parameters" element="tns:misCursosDocente"/>
 </message>
-<message name="altaUsuarioResponse">
-<part name="parameters" element="tns:altaUsuarioResponse"/>
+<message name="misCursosDocenteResponse">
+<part name="parameters" element="tns:misCursosDocenteResponse"/>
 </message>
-<message name="iniciarSesion">
-<part name="parameters" element="tns:iniciarSesion"/>
+<message name="listarDocentesPorInstituto">
+<part name="parameters" element="tns:listarDocentesPorInstituto"/>
 </message>
-<message name="iniciarSesionResponse">
-<part name="parameters" element="tns:iniciarSesionResponse"/>
-</message>
-<message name="buscarCursos">
-<part name="parameters" element="tns:buscarCursos"/>
-</message>
-<message name="buscarCursosResponse">
-<part name="parameters" element="tns:buscarCursosResponse"/>
-</message>
-<message name="listarNombresInstitutos">
-<part name="parameters" element="tns:listarNombresInstitutos"/>
-</message>
-<message name="listarNombresInstitutosResponse">
-<part name="parameters" element="tns:listarNombresInstitutosResponse"/>
-</message>
-<message name="consultarCurso">
-<part name="parameters" element="tns:consultarCurso"/>
-</message>
-<message name="consultarCursoResponse">
-<part name="parameters" element="tns:consultarCursoResponse"/>
-</message>
-<message name="consultarEdicion">
-<part name="parameters" element="tns:consultarEdicion"/>
-</message>
-<message name="consultarEdicionResponse">
-<part name="parameters" element="tns:consultarEdicionResponse"/>
-</message>
-<message name="listarNombresCursos">
-<part name="parameters" element="tns:listarNombresCursos"/>
-</message>
-<message name="listarNombresCursosResponse">
-<part name="parameters" element="tns:listarNombresCursosResponse"/>
-</message>
-<message name="mailDisponible">
-<part name="parameters" element="tns:mailDisponible"/>
-</message>
-<message name="mailDisponibleResponse">
-<part name="parameters" element="tns:mailDisponibleResponse"/>
-</message>
-<message name="cerrarEdicion">
-<part name="parameters" element="tns:cerrarEdicion"/>
-</message>
-<message name="cerrarEdicionResponse">
-<part name="parameters" element="tns:cerrarEdicionResponse"/>
-</message>
-<message name="nicknameDisponible">
-<part name="parameters" element="tns:nicknameDisponible"/>
-</message>
-<message name="nicknameDisponibleResponse">
-<part name="parameters" element="tns:nicknameDisponibleResponse"/>
+<message name="listarDocentesPorInstitutoResponse">
+<part name="parameters" element="tns:listarDocentesPorInstitutoResponse"/>
 </message>
 <message name="dejarDeSeguirUsuario">
 <part name="parameters" element="tns:dejarDeSeguirUsuario"/>
 </message>
 <message name="dejarDeSeguirUsuarioResponse">
 <part name="parameters" element="tns:dejarDeSeguirUsuarioResponse"/>
-</message>
-<message name="obtenerImagen">
-<part name="parameters" element="tns:obtenerImagen"/>
-</message>
-<message name="obtenerImagenResponse">
-<part name="parameters" element="tns:obtenerImagenResponse"/>
-</message>
-<message name="altaEdicion">
-<part name="parameters" element="tns:altaEdicion"/>
-</message>
-<message name="altaEdicionResponse">
-<part name="parameters" element="tns:altaEdicionResponse"/>
 </message>
 <message name="modificarDatosUsuario">
 <part name="parameters" element="tns:modificarDatosUsuario"/>
@@ -121,70 +139,132 @@
 <message name="obtenerPerfilResponse">
 <part name="parameters" element="tns:obtenerPerfilResponse"/>
 </message>
+<message name="mailDisponible">
+<part name="parameters" element="tns:mailDisponible"/>
+</message>
+<message name="mailDisponibleResponse">
+<part name="parameters" element="tns:mailDisponibleResponse"/>
+</message>
+<message name="listarNombresInstitutos">
+<part name="parameters" element="tns:listarNombresInstitutos"/>
+</message>
+<message name="listarNombresInstitutosResponse">
+<part name="parameters" element="tns:listarNombresInstitutosResponse"/>
+</message>
+<message name="listarNombresCursos">
+<part name="parameters" element="tns:listarNombresCursos"/>
+</message>
+<message name="listarNombresCursosResponse">
+<part name="parameters" element="tns:listarNombresCursosResponse"/>
+</message>
 <message name="resultadosInscripciones">
 <part name="parameters" element="tns:resultadosInscripciones"/>
 </message>
 <message name="resultadosInscripcionesResponse">
 <part name="parameters" element="tns:resultadosInscripcionesResponse"/>
 </message>
-<message name="listarUsuarios">
-<part name="parameters" element="tns:listarUsuarios"/>
+<message name="cerrarEdicion">
+<part name="parameters" element="tns:cerrarEdicion"/>
 </message>
-<message name="listarUsuariosResponse">
-<part name="parameters" element="tns:listarUsuariosResponse"/>
+<message name="cerrarEdicionResponse">
+<part name="parameters" element="tns:cerrarEdicionResponse"/>
 </message>
-<message name="seleccionarEstudiantes">
-<part name="parameters" element="tns:seleccionarEstudiantes"/>
+<message name="altaEdicion">
+<part name="parameters" element="tns:altaEdicion"/>
 </message>
-<message name="seleccionarEstudiantesResponse">
-<part name="parameters" element="tns:seleccionarEstudiantesResponse"/>
+<message name="altaEdicionResponse">
+<part name="parameters" element="tns:altaEdicionResponse"/>
 </message>
-<message name="listarCursosInstituto">
-<part name="parameters" element="tns:listarCursosInstituto"/>
+<message name="consultarEdicion">
+<part name="parameters" element="tns:consultarEdicion"/>
 </message>
-<message name="listarCursosInstitutoResponse">
-<part name="parameters" element="tns:listarCursosInstitutoResponse"/>
+<message name="consultarEdicionResponse">
+<part name="parameters" element="tns:consultarEdicionResponse"/>
 </message>
-<message name="listarDocentesPorInstituto">
-<part name="parameters" element="tns:listarDocentesPorInstituto"/>
+<message name="consultarInscripcionesEdicion">
+<part name="parameters" element="tns:consultarInscripcionesEdicion"/>
 </message>
-<message name="listarDocentesPorInstitutoResponse">
-<part name="parameters" element="tns:listarDocentesPorInstitutoResponse"/>
+<message name="consultarInscripcionesEdicionResponse">
+<part name="parameters" element="tns:consultarInscripcionesEdicionResponse"/>
 </message>
-<message name="misCursosDocente">
-<part name="parameters" element="tns:misCursosDocente"/>
+<message name="obtenerImagen">
+<part name="parameters" element="tns:obtenerImagen"/>
 </message>
-<message name="misCursosDocenteResponse">
-<part name="parameters" element="tns:misCursosDocenteResponse"/>
-</message>
-<message name="seguirUsuario">
-<part name="parameters" element="tns:seguirUsuario"/>
-</message>
-<message name="seguirUsuarioResponse">
-<part name="parameters" element="tns:seguirUsuarioResponse"/>
-</message>
-<message name="registrarNotas">
-<part name="parameters" element="tns:registrarNotas"/>
-</message>
-<message name="registrarNotasResponse">
-<part name="parameters" element="tns:registrarNotasResponse"/>
-</message>
-<message name="obtenerUsuario">
-<part name="parameters" element="tns:obtenerUsuario"/>
-</message>
-<message name="obtenerUsuarioResponse">
-<part name="parameters" element="tns:obtenerUsuarioResponse"/>
+<message name="obtenerImagenResponse">
+<part name="parameters" element="tns:obtenerImagenResponse"/>
 </message>
 <portType name="ServicioCentral">
+<operation name="iniciarSesion">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/iniciarSesionRequest" message="tns:iniciarSesion"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/iniciarSesionResponse" message="tns:iniciarSesionResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/iniciarSesion/Fault/ReglaNegocioFault"/>
+</operation>
 <operation name="altaCurso">
 <input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/altaCursoRequest" message="tns:altaCurso"/>
 <output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/altaCursoResponse" message="tns:altaCursoResponse"/>
 <fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/altaCurso/Fault/ReglaNegocioFault"/>
 </operation>
-<operation name="consultarInscripcionesEdicion">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarInscripcionesEdicionRequest" message="tns:consultarInscripcionesEdicion"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarInscripcionesEdicionResponse" message="tns:consultarInscripcionesEdicionResponse"/>
-<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarInscripcionesEdicion/Fault/ReglaNegocioFault"/>
+<operation name="consultarCurso">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarCursoRequest" message="tns:consultarCurso"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarCursoResponse" message="tns:consultarCursoResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarCurso/Fault/ReglaNegocioFault"/>
+</operation>
+<operation name="buscarCursos">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/buscarCursosRequest" message="tns:buscarCursos"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/buscarCursosResponse" message="tns:buscarCursosResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/buscarCursos/Fault/ReglaNegocioFault"/>
+</operation>
+<operation name="altaUsuario">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/altaUsuarioRequest" message="tns:altaUsuario"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/altaUsuarioResponse" message="tns:altaUsuarioResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/altaUsuario/Fault/ReglaNegocioFault"/>
+</operation>
+<operation name="seguirUsuario">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/seguirUsuarioRequest" message="tns:seguirUsuario"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/seguirUsuarioResponse" message="tns:seguirUsuarioResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/seguirUsuario/Fault/ReglaNegocioFault"/>
+</operation>
+<operation name="listarCursosInstituto">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarCursosInstitutoRequest" message="tns:listarCursosInstituto"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarCursosInstitutoResponse" message="tns:listarCursosInstitutoResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarCursosInstituto/Fault/ReglaNegocioFault"/>
+</operation>
+<operation name="nicknameDisponible">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/nicknameDisponibleRequest" message="tns:nicknameDisponible"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/nicknameDisponibleResponse" message="tns:nicknameDisponibleResponse"/>
+</operation>
+<operation name="listarUsuarios">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarUsuariosRequest" message="tns:listarUsuarios"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarUsuariosResponse" message="tns:listarUsuariosResponse"/>
+</operation>
+<operation name="obtenerUsuario">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/obtenerUsuarioRequest" message="tns:obtenerUsuario"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/obtenerUsuarioResponse" message="tns:obtenerUsuarioResponse"/>
+</operation>
+<operation name="valorarCurso">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/valorarCursoRequest" message="tns:valorarCurso"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/valorarCursoResponse" message="tns:valorarCursoResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/valorarCurso/Fault/ReglaNegocioFault"/>
+</operation>
+<operation name="consultarValoracionCurso">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarValoracionCursoRequest" message="tns:consultarValoracionCurso"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarValoracionCursoResponse" message="tns:consultarValoracionCursoResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarValoracionCurso/Fault/ReglaNegocioFault"/>
+</operation>
+<operation name="cursosParaValorar">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/cursosParaValorarRequest" message="tns:cursosParaValorar"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/cursosParaValorarResponse" message="tns:cursosParaValorarResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/cursosParaValorar/Fault/ReglaNegocioFault"/>
+</operation>
+<operation name="registrarNotas">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/registrarNotasRequest" message="tns:registrarNotas"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/registrarNotasResponse" message="tns:registrarNotasResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/registrarNotas/Fault/ReglaNegocioFault"/>
+</operation>
+<operation name="seleccionarEstudiantes">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/seleccionarEstudiantesRequest" message="tns:seleccionarEstudiantes"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/seleccionarEstudiantesResponse" message="tns:seleccionarEstudiantesResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/seleccionarEstudiantes/Fault/ReglaNegocioFault"/>
 </operation>
 <operation name="consultarAceptadosEdicion">
 <input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarAceptadosEdicionRequest" message="tns:consultarAceptadosEdicion"/>
@@ -196,65 +276,20 @@
 <output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/inscribirseResponse" message="tns:inscribirseResponse"/>
 <fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/inscribirse/Fault/ReglaNegocioFault"/>
 </operation>
-<operation name="altaUsuario">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/altaUsuarioRequest" message="tns:altaUsuario"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/altaUsuarioResponse" message="tns:altaUsuarioResponse"/>
-<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/altaUsuario/Fault/ReglaNegocioFault"/>
+<operation name="misCursosDocente">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/misCursosDocenteRequest" message="tns:misCursosDocente"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/misCursosDocenteResponse" message="tns:misCursosDocenteResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/misCursosDocente/Fault/ReglaNegocioFault"/>
 </operation>
-<operation name="iniciarSesion">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/iniciarSesionRequest" message="tns:iniciarSesion"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/iniciarSesionResponse" message="tns:iniciarSesionResponse"/>
-<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/iniciarSesion/Fault/ReglaNegocioFault"/>
-</operation>
-<operation name="buscarCursos">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/buscarCursosRequest" message="tns:buscarCursos"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/buscarCursosResponse" message="tns:buscarCursosResponse"/>
-<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/buscarCursos/Fault/ReglaNegocioFault"/>
-</operation>
-<operation name="listarNombresInstitutos">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarNombresInstitutosRequest" message="tns:listarNombresInstitutos"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarNombresInstitutosResponse" message="tns:listarNombresInstitutosResponse"/>
-</operation>
-<operation name="consultarCurso">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarCursoRequest" message="tns:consultarCurso"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarCursoResponse" message="tns:consultarCursoResponse"/>
-<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarCurso/Fault/ReglaNegocioFault"/>
-</operation>
-<operation name="consultarEdicion">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarEdicionRequest" message="tns:consultarEdicion"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarEdicionResponse" message="tns:consultarEdicionResponse"/>
-<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarEdicion/Fault/ReglaNegocioFault"/>
-</operation>
-<operation name="listarNombresCursos">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarNombresCursosRequest" message="tns:listarNombresCursos"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarNombresCursosResponse" message="tns:listarNombresCursosResponse"/>
-</operation>
-<operation name="mailDisponible">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/mailDisponibleRequest" message="tns:mailDisponible"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/mailDisponibleResponse" message="tns:mailDisponibleResponse"/>
-</operation>
-<operation name="cerrarEdicion">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/cerrarEdicionRequest" message="tns:cerrarEdicion"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/cerrarEdicionResponse" message="tns:cerrarEdicionResponse"/>
-<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/cerrarEdicion/Fault/ReglaNegocioFault"/>
-</operation>
-<operation name="nicknameDisponible">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/nicknameDisponibleRequest" message="tns:nicknameDisponible"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/nicknameDisponibleResponse" message="tns:nicknameDisponibleResponse"/>
+<operation name="listarDocentesPorInstituto">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarDocentesPorInstitutoRequest" message="tns:listarDocentesPorInstituto"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarDocentesPorInstitutoResponse" message="tns:listarDocentesPorInstitutoResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarDocentesPorInstituto/Fault/ReglaNegocioFault"/>
 </operation>
 <operation name="dejarDeSeguirUsuario">
 <input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/dejarDeSeguirUsuarioRequest" message="tns:dejarDeSeguirUsuario"/>
 <output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/dejarDeSeguirUsuarioResponse" message="tns:dejarDeSeguirUsuarioResponse"/>
 <fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/dejarDeSeguirUsuario/Fault/ReglaNegocioFault"/>
-</operation>
-<operation name="obtenerImagen">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/obtenerImagenRequest" message="tns:obtenerImagen"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/obtenerImagenResponse" message="tns:obtenerImagenResponse"/>
-</operation>
-<operation name="altaEdicion">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/altaEdicionRequest" message="tns:altaEdicion"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/altaEdicionResponse" message="tns:altaEdicionResponse"/>
-<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/altaEdicion/Fault/ReglaNegocioFault"/>
 </operation>
 <operation name="modificarDatosUsuario">
 <input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/modificarDatosUsuarioRequest" message="tns:modificarDatosUsuario"/>
@@ -266,52 +301,62 @@
 <output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/obtenerPerfilResponse" message="tns:obtenerPerfilResponse"/>
 <fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/obtenerPerfil/Fault/ReglaNegocioFault"/>
 </operation>
+<operation name="mailDisponible">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/mailDisponibleRequest" message="tns:mailDisponible"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/mailDisponibleResponse" message="tns:mailDisponibleResponse"/>
+</operation>
+<operation name="listarNombresInstitutos">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarNombresInstitutosRequest" message="tns:listarNombresInstitutos"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarNombresInstitutosResponse" message="tns:listarNombresInstitutosResponse"/>
+</operation>
+<operation name="listarNombresCursos">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarNombresCursosRequest" message="tns:listarNombresCursos"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarNombresCursosResponse" message="tns:listarNombresCursosResponse"/>
+</operation>
 <operation name="resultadosInscripciones">
 <input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/resultadosInscripcionesRequest" message="tns:resultadosInscripciones"/>
 <output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/resultadosInscripcionesResponse" message="tns:resultadosInscripcionesResponse"/>
 <fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/resultadosInscripciones/Fault/ReglaNegocioFault"/>
 </operation>
-<operation name="listarUsuarios">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarUsuariosRequest" message="tns:listarUsuarios"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarUsuariosResponse" message="tns:listarUsuariosResponse"/>
+<operation name="cerrarEdicion">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/cerrarEdicionRequest" message="tns:cerrarEdicion"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/cerrarEdicionResponse" message="tns:cerrarEdicionResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/cerrarEdicion/Fault/ReglaNegocioFault"/>
 </operation>
-<operation name="seleccionarEstudiantes">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/seleccionarEstudiantesRequest" message="tns:seleccionarEstudiantes"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/seleccionarEstudiantesResponse" message="tns:seleccionarEstudiantesResponse"/>
-<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/seleccionarEstudiantes/Fault/ReglaNegocioFault"/>
+<operation name="altaEdicion">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/altaEdicionRequest" message="tns:altaEdicion"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/altaEdicionResponse" message="tns:altaEdicionResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/altaEdicion/Fault/ReglaNegocioFault"/>
 </operation>
-<operation name="listarCursosInstituto">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarCursosInstitutoRequest" message="tns:listarCursosInstituto"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarCursosInstitutoResponse" message="tns:listarCursosInstitutoResponse"/>
-<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarCursosInstituto/Fault/ReglaNegocioFault"/>
+<operation name="consultarEdicion">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarEdicionRequest" message="tns:consultarEdicion"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarEdicionResponse" message="tns:consultarEdicionResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarEdicion/Fault/ReglaNegocioFault"/>
 </operation>
-<operation name="listarDocentesPorInstituto">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarDocentesPorInstitutoRequest" message="tns:listarDocentesPorInstituto"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarDocentesPorInstitutoResponse" message="tns:listarDocentesPorInstitutoResponse"/>
-<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/listarDocentesPorInstituto/Fault/ReglaNegocioFault"/>
+<operation name="consultarInscripcionesEdicion">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarInscripcionesEdicionRequest" message="tns:consultarInscripcionesEdicion"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarInscripcionesEdicionResponse" message="tns:consultarInscripcionesEdicionResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarInscripcionesEdicion/Fault/ReglaNegocioFault"/>
 </operation>
-<operation name="misCursosDocente">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/misCursosDocenteRequest" message="tns:misCursosDocente"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/misCursosDocenteResponse" message="tns:misCursosDocenteResponse"/>
-<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/misCursosDocente/Fault/ReglaNegocioFault"/>
-</operation>
-<operation name="seguirUsuario">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/seguirUsuarioRequest" message="tns:seguirUsuario"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/seguirUsuarioResponse" message="tns:seguirUsuarioResponse"/>
-<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/seguirUsuario/Fault/ReglaNegocioFault"/>
-</operation>
-<operation name="registrarNotas">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/registrarNotasRequest" message="tns:registrarNotas"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/registrarNotasResponse" message="tns:registrarNotasResponse"/>
-<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/registrarNotas/Fault/ReglaNegocioFault"/>
-</operation>
-<operation name="obtenerUsuario">
-<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/obtenerUsuarioRequest" message="tns:obtenerUsuario"/>
-<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/obtenerUsuarioResponse" message="tns:obtenerUsuarioResponse"/>
+<operation name="obtenerImagen">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/obtenerImagenRequest" message="tns:obtenerImagen"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/obtenerImagenResponse" message="tns:obtenerImagenResponse"/>
 </operation>
 </portType>
 <binding name="ServicioCentralPortBinding" type="tns:ServicioCentral">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<operation name="iniciarSesion">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ReglaNegocioFault">
+<soap:fault name="ReglaNegocioFault" use="literal"/>
+</fault>
+</operation>
 <operation name="altaCurso">
 <soap:operation soapAction=""/>
 <input>
@@ -324,7 +369,142 @@
 <soap:fault name="ReglaNegocioFault" use="literal"/>
 </fault>
 </operation>
-<operation name="consultarInscripcionesEdicion">
+<operation name="consultarCurso">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ReglaNegocioFault">
+<soap:fault name="ReglaNegocioFault" use="literal"/>
+</fault>
+</operation>
+<operation name="buscarCursos">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ReglaNegocioFault">
+<soap:fault name="ReglaNegocioFault" use="literal"/>
+</fault>
+</operation>
+<operation name="altaUsuario">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ReglaNegocioFault">
+<soap:fault name="ReglaNegocioFault" use="literal"/>
+</fault>
+</operation>
+<operation name="seguirUsuario">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ReglaNegocioFault">
+<soap:fault name="ReglaNegocioFault" use="literal"/>
+</fault>
+</operation>
+<operation name="listarCursosInstituto">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ReglaNegocioFault">
+<soap:fault name="ReglaNegocioFault" use="literal"/>
+</fault>
+</operation>
+<operation name="nicknameDisponible">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="listarUsuarios">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="obtenerUsuario">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="valorarCurso">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ReglaNegocioFault">
+<soap:fault name="ReglaNegocioFault" use="literal"/>
+</fault>
+</operation>
+<operation name="consultarValoracionCurso">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ReglaNegocioFault">
+<soap:fault name="ReglaNegocioFault" use="literal"/>
+</fault>
+</operation>
+<operation name="cursosParaValorar">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ReglaNegocioFault">
+<soap:fault name="ReglaNegocioFault" use="literal"/>
+</fault>
+</operation>
+<operation name="registrarNotas">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ReglaNegocioFault">
+<soap:fault name="ReglaNegocioFault" use="literal"/>
+</fault>
+</operation>
+<operation name="seleccionarEstudiantes">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -360,7 +540,7 @@
 <soap:fault name="ReglaNegocioFault" use="literal"/>
 </fault>
 </operation>
-<operation name="altaUsuario">
+<operation name="misCursosDocente">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -372,7 +552,7 @@
 <soap:fault name="ReglaNegocioFault" use="literal"/>
 </fault>
 </operation>
-<operation name="iniciarSesion">
+<operation name="listarDocentesPorInstituto">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -383,113 +563,8 @@
 <fault name="ReglaNegocioFault">
 <soap:fault name="ReglaNegocioFault" use="literal"/>
 </fault>
-</operation>
-<operation name="buscarCursos">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-<fault name="ReglaNegocioFault">
-<soap:fault name="ReglaNegocioFault" use="literal"/>
-</fault>
-</operation>
-<operation name="listarNombresInstitutos">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="consultarCurso">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-<fault name="ReglaNegocioFault">
-<soap:fault name="ReglaNegocioFault" use="literal"/>
-</fault>
-</operation>
-<operation name="consultarEdicion">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-<fault name="ReglaNegocioFault">
-<soap:fault name="ReglaNegocioFault" use="literal"/>
-</fault>
-</operation>
-<operation name="listarNombresCursos">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="mailDisponible">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="cerrarEdicion">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-<fault name="ReglaNegocioFault">
-<soap:fault name="ReglaNegocioFault" use="literal"/>
-</fault>
-</operation>
-<operation name="nicknameDisponible">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
 </operation>
 <operation name="dejarDeSeguirUsuario">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-<fault name="ReglaNegocioFault">
-<soap:fault name="ReglaNegocioFault" use="literal"/>
-</fault>
-</operation>
-<operation name="obtenerImagen">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="altaEdicion">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -525,6 +600,33 @@
 <soap:fault name="ReglaNegocioFault" use="literal"/>
 </fault>
 </operation>
+<operation name="mailDisponible">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="listarNombresInstitutos">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="listarNombresCursos">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="resultadosInscripciones">
 <soap:operation soapAction=""/>
 <input>
@@ -537,16 +639,7 @@
 <soap:fault name="ReglaNegocioFault" use="literal"/>
 </fault>
 </operation>
-<operation name="listarUsuarios">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="seleccionarEstudiantes">
+<operation name="cerrarEdicion">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -558,7 +651,7 @@
 <soap:fault name="ReglaNegocioFault" use="literal"/>
 </fault>
 </operation>
-<operation name="listarCursosInstituto">
+<operation name="altaEdicion">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -570,7 +663,7 @@
 <soap:fault name="ReglaNegocioFault" use="literal"/>
 </fault>
 </operation>
-<operation name="listarDocentesPorInstituto">
+<operation name="consultarEdicion">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -582,7 +675,7 @@
 <soap:fault name="ReglaNegocioFault" use="literal"/>
 </fault>
 </operation>
-<operation name="misCursosDocente">
+<operation name="consultarInscripcionesEdicion">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -594,31 +687,7 @@
 <soap:fault name="ReglaNegocioFault" use="literal"/>
 </fault>
 </operation>
-<operation name="seguirUsuario">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-<fault name="ReglaNegocioFault">
-<soap:fault name="ReglaNegocioFault" use="literal"/>
-</fault>
-</operation>
-<operation name="registrarNotas">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-<fault name="ReglaNegocioFault">
-<soap:fault name="ReglaNegocioFault" use="literal"/>
-</fault>
-</operation>
-<operation name="obtenerUsuario">
+<operation name="obtenerImagen">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
