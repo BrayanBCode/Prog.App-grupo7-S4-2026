@@ -25,6 +25,10 @@
             </button>
             <div id="seguimiento-mensaje" class="small mt-1" role="status" aria-live="polite"></div>
         </c:if>
+        <%-- Tramitar Acta de Estudio (6.1 y 7.4): el estudiante en su propio perfil descarga el PDF --%>
+        <c:if test="${puede.TRAMITAR_ACTA_ESTUDIO and perfil.propio}">
+            <a class="btn btn-sm btn-outline-primary" href="${raiz}/perfil/acta">Generar acta de estudio (PDF)</a>
+        </c:if>
     </div>
 </div>
 
@@ -33,7 +37,8 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-general" type="button" role="tab">General</button>
     </li>
-    <c:if test="${perfil.verDetalle}">
+    <%-- Cursos y Programas: el propio o un docente. Seguidores: solo el propio (lo decide el central) --%>
+    <c:if test="${perfil.verCursos}">
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-cursos" type="button" role="tab">Cursos</button>
         </li>
@@ -42,6 +47,8 @@
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-programas" type="button" role="tab">Programas</button>
             </li>
         </c:if>
+    </c:if>
+    <c:if test="${perfil.verSeguidores}">
         <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-seguidores" type="button" role="tab">
                 Seguidores <span class="badge text-bg-secondary" data-contador-seguidores>${perfil.seguidores.size()}</span>
@@ -70,7 +77,7 @@
         </dl>
     </div>
 
-    <c:if test="${perfil.verDetalle}">
+    <c:if test="${perfil.verCursos}">
         <%-- Cursos: ediciones en las que participa (docente) o inscripciones a ediciones (estudiante) --%>
         <div class="tab-pane" id="tab-cursos" role="tabpanel">
             <c:choose>
@@ -140,8 +147,10 @@
                 </ul>
             </div>
         </c:if>
+    </c:if>
 
-        <%-- Seguidores y seguidos --%>
+    <%-- Seguidores y seguidos --%>
+    <c:if test="${perfil.verSeguidores}">
         <div class="tab-pane" id="tab-seguidores" role="tabpanel">
             <div class="row g-4">
                 <section class="col-md-6">

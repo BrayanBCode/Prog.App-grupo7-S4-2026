@@ -50,6 +50,7 @@ public class AccesoFilter implements Filter {
             entry("/edicion/acta", CasoDeUso.VER_RESULTADOS_EVALUACIONES),
             entry("/inscripciones/resultados", CasoDeUso.LISTAR_RESULTADOS_INSCRIPCIONES),
             entry("/cursos/valorar", CasoDeUso.VALORAR_CURSO),
+            entry("/perfil/acta", CasoDeUso.TRAMITAR_ACTA_ESTUDIO),
             entry("/usuarios/modificar", CasoDeUso.MODIFICAR_DATOS_USUARIO),
             entry("/buscar", CasoDeUso.BUSCAR_CURSOS_Y_PROGRAMAS),
             // acceso rapido del docente (no es un caso de uso de la letra): se protege con un permiso solo de docentes

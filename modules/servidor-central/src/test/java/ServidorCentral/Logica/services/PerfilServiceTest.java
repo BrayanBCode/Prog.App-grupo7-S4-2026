@@ -194,15 +194,18 @@ class PerfilServiceTest {
     // ---- Estudiante que mira ----
 
     @Test
-    void estudianteVeOtroEstudiante_sinRechazadas() {
+    void estudianteVeOtroEstudiante_soloDatosBasicosYSeguir() {
         DTPerfil p = servicio().obtenerPerfil("weiss", "Chechi");
 
         assertTrue(p.verDetalle());
         assertFalse(p.propio());
-        assertEquals(List.of(EstadoInscripcion.INSCRIPTO, EstadoInscripcion.ACEPTADA), estados(p));
-        assertEquals("EFI Robotica", p.programas().get(0).programa());
-        assertEquals(List.of("Chechi"), p.seguidores());
-        assertTrue(p.loSigue());
+        assertFalse(p.verCursos());
+        assertFalse(p.verSeguidores());
+        assertTrue(p.inscripciones().isEmpty());
+        assertTrue(p.programas().isEmpty());
+        assertTrue(p.seguidores().isEmpty());
+        assertTrue(p.seguidos().isEmpty());
+        assertTrue(p.loSigue(), "el boton Seguir sigue sabiendo si ya lo sigue");
     }
 
     @Test
@@ -210,6 +213,10 @@ class PerfilServiceTest {
         DTPerfil p = servicio().obtenerPerfil("weiss", "weiss");
 
         assertTrue(p.propio());
+        assertTrue(p.verCursos());
+        assertTrue(p.verSeguidores());
+        assertEquals(List.of("Chechi"), p.seguidores());
+        assertEquals("EFI Robotica", p.programas().get(0).programa());
         assertEquals(3, p.inscripciones().size());
         assertTrue(estados(p).contains(EstadoInscripcion.RECHAZADA));
         assertFalse(p.loSigue(), "uno no se sigue a si mismo");
@@ -226,10 +233,13 @@ class PerfilServiceTest {
     }
 
     @Test
-    void estudianteVeDocente_conEdicionesSinVerAceptados() {
+    void estudianteVeDocente_sinEdicionesNiSeguidores() {
         DTPerfil p = servicio().obtenerPerfil("benkenobi", "weiss");
 
-        assertEquals(2, p.ediciones().size());
+        assertFalse(p.verCursos());
+        assertFalse(p.verSeguidores());
+        assertTrue(p.ediciones().isEmpty());
+        assertEquals(List.of("INCO"), p.institutos(), "los institutos son dato basico");
         assertFalse(p.verAceptados());
         assertFalse(p.loSigue());
         assertTrue(p.inscripciones().isEmpty(), "un docente no tiene inscripciones");
@@ -238,11 +248,16 @@ class PerfilServiceTest {
     // ---- Docente que mira ----
 
     @Test
-    void docenteVeEstudiante_conRechazadas() {
+    void docenteVeEstudiante_cursosYProgramasConRechazadasPeroSinSeguidores() {
         DTPerfil p = servicio().obtenerPerfil("weiss", "benkenobi");
 
         assertFalse(p.propio());
+        assertTrue(p.verCursos());
         assertTrue(estados(p).contains(EstadoInscripcion.RECHAZADA));
+        assertEquals("EFI Robotica", p.programas().get(0).programa());
+        assertFalse(p.verSeguidores());
+        assertTrue(p.seguidores().isEmpty());
+        assertTrue(p.seguidos().isEmpty());
     }
 
     @Test

@@ -88,7 +88,7 @@ class ContratoSoapTest {
         DTPerfil perfil = new DTPerfil(usuario, Rol.ESTUDIANTE, true, true, List.of(), List.of(EDICION),
                 List.of(new DTInscripcionEstudiante("Java 2026", "Java", LocalDate.of(2026, 2, 10), EstadoInscripcion.ACEPTADA, false, null, null)),
                 List.of(new DTProgramaInscripto("EFI", LocalDate.of(2026, 2, 11))),
-                List.of("seg1"), List.of(), false, false);
+                List.of("seg1"), List.of(), false, false, true, true);
         DTPerfilWS ws = idaYVuelta(DTPerfilWS.de(perfil));
 
         assertEquals(Rol.ESTUDIANTE, ws.rol);
@@ -97,6 +97,8 @@ class ContratoSoapTest {
         assertEquals("2026-02-11", ws.programas.get(0).fechaInscripcion);
         assertEquals(List.of("seg1"), ws.seguidores);
         assertTrue(ws.propio);
+        assertTrue(ws.verCursos);
+        assertTrue(ws.verSeguidores);
     }
 
     @Test
