@@ -12,6 +12,9 @@ public class DTCursoResumenWS {
     public String nombre;
     public String descripcion;
     public String imagen;
+    /** Promedio de valoraciones (0 si no tiene) y cuantas hay: solo en la busqueda. */
+    public double promedio;
+    public int valoraciones;
 
     public DTCursoResumenWS() {
     }
@@ -24,6 +27,8 @@ public class DTCursoResumenWS {
         ws.nombre = c.nombre();
         ws.descripcion = c.descripcion();
         ws.imagen = c.imagen();
+        ws.promedio = c.promedio();
+        ws.valoraciones = c.valoraciones();
         return ws;
     }
 }

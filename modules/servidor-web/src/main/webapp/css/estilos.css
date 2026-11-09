@@ -170,6 +170,7 @@ html:not([data-bs-theme="dark"]) .lateral .lateral-titulo { background: #e2e6ea;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    overflow-wrap: anywhere;   /* una palabra muy larga sin espacios no se sale de la tarjeta */
 }
 
 .avatar { border-radius: 50%; flex: 0 0 auto; }

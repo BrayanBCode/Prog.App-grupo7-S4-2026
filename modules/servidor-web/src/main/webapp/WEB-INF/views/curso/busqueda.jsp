@@ -47,7 +47,17 @@
             <div class="card h-100 shadow-sm">
                 <e:imagen ruta="${cur.imagen}" alt="${cur.nombre}" clase="card-img-top img-tarjeta"/>
                 <div class="card-body">
-                    <a class="stretched-link fw-semibold text-decoration-none" href="${url}"><c:out value="${cur.nombre}"/></a>
+                    <a class="stretched-link fw-semibold text-decoration-none text-break" href="${url}"><c:out value="${cur.nombre}"/></a>
+                    <%-- Promedio de valoraciones en 5 estrellas (7.6, Figura 6) --%>
+                    <div class="small d-flex align-items-center gap-1 mt-1">
+                        <e:estrellas valor="${cur.promedio}"/>
+                        <span class="text-body-secondary">
+                            <c:choose>
+                                <c:when test="${cur.valoraciones == 0}">Sin valoraciones</c:when>
+                                <c:otherwise>(${cur.valoraciones})</c:otherwise>
+                            </c:choose>
+                        </span>
+                    </div>
                     <p class="small text-body-secondary mb-0 mt-1 recorte"><c:out value="${cur.descripcion}"/></p>
                 </div>
             </div>

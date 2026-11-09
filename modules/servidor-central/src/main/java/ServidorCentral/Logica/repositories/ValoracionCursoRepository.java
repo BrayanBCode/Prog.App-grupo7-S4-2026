@@ -6,7 +6,9 @@ import ServidorCentral.Persistencia.Conexion;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /** Acceso a datos de las valoraciones de cursos. Las reglas viven en ValoracionCursoService. */
 public class ValoracionCursoRepository {
@@ -39,6 +41,25 @@ public class ValoracionCursoRepository {
             return em.createQuery("SELECT v.puntaje FROM ValoracionCurso v WHERE v.curso = :c", Integer.class)
                     .setParameter("c", curso)
                     .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Promedio y cantidad de valoraciones de cada curso que tiene alguna, en una sola consulta (para las tarjetas de
+     * la busqueda). Curso -> {promedio, cantidad}. Los cursos sin valoraciones no aparecen.
+     */
+    public Map<String, double[]> resumenPorCurso() {
+        EntityManager em = conexion.getEntityManager();
+        try {
+            Map<String, double[]> r = new HashMap<>();
+            for (Object[] fila : em.createQuery(
+                    "SELECT v.curso, AVG(v.puntaje), COUNT(v) FROM ValoracionCurso v GROUP BY v.curso", Object[].class)
+                    .getResultList()) {
+                r.put((String) fila[0], new double[]{((Number) fila[1]).doubleValue(), ((Number) fila[2]).doubleValue()});
+            }
+            return r;
         } finally {
             em.close();
         }
