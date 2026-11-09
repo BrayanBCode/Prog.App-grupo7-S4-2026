@@ -15,6 +15,7 @@ import ServidorWeb.ws.central.DTNota;
 import ServidorWeb.ws.central.DTPerfil;
 import ServidorWeb.ws.central.DTSeleccion;
 import ServidorWeb.ws.central.DTUsuario;
+import ServidorWeb.ws.central.DTValoracionCurso;
 import ServidorWeb.ws.central.OrdenBusqueda;
 import ServidorWeb.ws.central.ReglaNegocioFault_Exception;
 import ServidorWeb.ws.central.ServicioCentral;
@@ -240,6 +241,21 @@ public class Central {
 
     public List<DTInscripcionEstudiante> resultadosInscripciones(String nickEstudiante) {
         return llamar(() -> puerto.resultadosInscripciones(nickEstudiante));
+    }
+
+    // ---------------- Valorar un Curso ----------------
+
+    public List<String> cursosParaValorar(String nickEstudiante) {
+        return llamar(() -> puerto.cursosParaValorar(nickEstudiante));
+    }
+
+    /** nickEstudiante puede ser null (quien mira no es estudiante). */
+    public DTValoracionCurso consultarValoracionCurso(String curso, String nickEstudiante) {
+        return llamar(() -> puerto.consultarValoracionCurso(curso, nickEstudiante));
+    }
+
+    public DTValoracionCurso valorarCurso(String nickEstudiante, String curso, int puntaje) {
+        return llamar(() -> puerto.valorarCurso(nickEstudiante, curso, puntaje));
     }
 
     // ---------------- Imagenes ----------------

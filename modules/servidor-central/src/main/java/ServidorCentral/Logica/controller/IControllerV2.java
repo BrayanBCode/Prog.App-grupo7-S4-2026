@@ -20,6 +20,7 @@ import ServidorCentral.DataTypes.DTProgramaResumen;
 import ServidorCentral.DataTypes.DTSesion;
 import ServidorCentral.DataTypes.DTUsuario;
 import ServidorCentral.DataTypes.DTUsuarioResumen;
+import ServidorCentral.DataTypes.DTValoracionCurso;
 import ServidorCentral.DataTypes.OrdenBusqueda;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 
@@ -112,6 +113,12 @@ public interface IControllerV2 {
     void registrarNotas(String nicknameDocente, String nombreEdicion, Map<String, Integer> notas);
     /** Cierra la edicion: exige nota en todos los aceptados; despues no se modifican. ReglaNegocioException si no. */
     void cerrarEdicion(String nicknameDocente, String nombreEdicion);
+    /** Valorar un Curso, paso 1: cursos en los que el estudiante participa. ReglaNegocioException si no es estudiante. */
+    List<String> cursosParaValorar(String nicknameEstudiante);
+    /** Promedio, cantidad, resumen por puntaje y puntaje propio (nickEstudiante puede ser null). ReglaNegocioException si el curso no existe. */
+    DTValoracionCurso consultarValoracionCurso(String nombreCurso, String nicknameEstudiante);
+    /** Valorar un Curso: puntaje de 1 a 5, una sola vez, solo si participa. Devuelve la valoracion actualizada. */
+    DTValoracionCurso valorarCurso(String nicknameEstudiante, String nombreCurso, int puntaje);
 
     // ---------------- Sprint 2: Servidor Web ----------------
     /** Consulta de Usuario: todos los usuarios con sus datos basicos, ordenados por nickname. */

@@ -19,6 +19,7 @@ import ServidorCentral.DataTypes.DTProgramaResumen;
 import ServidorCentral.DataTypes.DTSesion;
 import ServidorCentral.DataTypes.DTUsuario;
 import ServidorCentral.DataTypes.DTUsuarioResumen;
+import ServidorCentral.DataTypes.DTValoracionCurso;
 import ServidorCentral.DataTypes.OrdenBusqueda;
 import ServidorCentral.Logica.entities.cursos.EstadoInscripcion;
 import ServidorCentral.Logica.repositories.*;
@@ -45,6 +46,7 @@ public class ControllerV2 implements IControllerV2 {
     private final ProgramaFormacionService programaFormacionService;
     private final SeguimientoService seguimientoService;
     private final PerfilService perfilService;
+    private final ValoracionCursoService valoracionCursoService;
     public ControllerV2() {
         this(Servicios.conBase(Conexion.getInstancia()));
     }
@@ -60,12 +62,14 @@ public class ControllerV2 implements IControllerV2 {
         this.programaFormacionService = s.programaFormacion();
         this.seguimientoService = s.seguimiento();
         this.perfilService = s.perfil();
+        this.valoracionCursoService = s.valoracion();
     }
 
     /** Los servicios que usa el controller. */
     record Servicios(UsuarioService usuario, DocenteService docente, EstudianteService estudiante, CursoService curso,
                      InstitutoService instituto, EdicionCursoService edicionCurso,
-                     ProgramaFormacionService programaFormacion, SeguimientoService seguimiento, PerfilService perfil) {
+                     ProgramaFormacionService programaFormacion, SeguimientoService seguimiento, PerfilService perfil,
+                     ValoracionCursoService valoracion) {
 
         /** Los servicios reales, conectados a la base. */
         static Servicios conBase(Conexion conexion) {
@@ -78,6 +82,7 @@ public class ControllerV2 implements IControllerV2 {
             EdicionCursoRepository edicionCursoRepository = new EdicionCursoRepository(conexion);
             ProgramaFormacionRepository programaFormacionRepository = new ProgramaFormacionRepository(conexion);
             SeguimientoRepository seguimientoRepository = new SeguimientoRepository(conexion);
+            ValoracionCursoRepository valoracionCursoRepository = new ValoracionCursoRepository(conexion);
             // Capa de reglas de negocio
             return new Servicios(
                     new UsuarioService(usuarioRepository, institutoRepository, docenteRepository),
@@ -88,7 +93,8 @@ public class ControllerV2 implements IControllerV2 {
                     new EdicionCursoService(edicionCursoRepository, cursoRepository, docenteRepository, estudianteRepository),
                     new ProgramaFormacionService(programaFormacionRepository, cursoRepository, estudianteRepository),
                     new SeguimientoService(usuarioRepository, seguimientoRepository),
-                    new PerfilService(usuarioRepository, docenteRepository, estudianteRepository, seguimientoRepository));
+                    new PerfilService(usuarioRepository, docenteRepository, estudianteRepository, seguimientoRepository),
+                    new ValoracionCursoService(estudianteRepository, cursoRepository, valoracionCursoRepository));
         }
     }
 
@@ -354,6 +360,25 @@ public class ControllerV2 implements IControllerV2 {
     @Override
     public void cerrarEdicion(String nicknameDocente, String nombreEdicion) {
         edicionCursoService.cerrarEdicion(nicknameDocente, nombreEdicion);
+    }
+
+    // ---------------------------------------------------------------
+    // VALORAR UN CURSO
+    // ---------------------------------------------------------------
+
+    @Override
+    public List<String> cursosParaValorar(String nicknameEstudiante) {
+        return valoracionCursoService.cursosParaValorar(nicknameEstudiante);
+    }
+
+    @Override
+    public DTValoracionCurso consultarValoracionCurso(String nombreCurso, String nicknameEstudiante) {
+        return valoracionCursoService.consultarValoracion(nombreCurso, nicknameEstudiante);
+    }
+
+    @Override
+    public DTValoracionCurso valorarCurso(String nicknameEstudiante, String nombreCurso, int puntaje) {
+        return valoracionCursoService.valorarCurso(nicknameEstudiante, nombreCurso, puntaje);
     }
 
     // ---------------------------------------------------------------

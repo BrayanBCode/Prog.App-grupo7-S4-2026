@@ -38,6 +38,14 @@
 
 <xs:element name="consultarInscripcionesEdicionResponse" type="tns:consultarInscripcionesEdicionResponse"/>
 
+<xs:element name="consultarValoracionCurso" type="tns:consultarValoracionCurso"/>
+
+<xs:element name="consultarValoracionCursoResponse" type="tns:consultarValoracionCursoResponse"/>
+
+<xs:element name="cursosParaValorar" type="tns:cursosParaValorar"/>
+
+<xs:element name="cursosParaValorarResponse" type="tns:cursosParaValorarResponse"/>
+
 <xs:element name="dejarDeSeguirUsuario" type="tns:dejarDeSeguirUsuario"/>
 
 <xs:element name="dejarDeSeguirUsuarioResponse" type="tns:dejarDeSeguirUsuarioResponse"/>
@@ -114,6 +122,10 @@
 
 <xs:element name="seleccionarEstudiantesResponse" type="tns:seleccionarEstudiantesResponse"/>
 
+<xs:element name="valorarCurso" type="tns:valorarCurso"/>
+
+<xs:element name="valorarCursoResponse" type="tns:valorarCursoResponse"/>
+
 <xs:complexType name="obtenerUsuario">
 <xs:sequence>
 <xs:element name="nickname" type="xs:string" minOccurs="0"/>
@@ -164,6 +176,29 @@
 <xs:complexType name="ReglaNegocioFault">
 <xs:sequence>
 <xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultarValoracionCurso">
+<xs:sequence>
+<xs:element name="curso" type="xs:string" minOccurs="0"/>
+<xs:element name="nickEstudiante" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultarValoracionCursoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DTValoracionCurso" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DTValoracionCurso">
+<xs:sequence>
+<xs:element name="curso" type="xs:string" minOccurs="0"/>
+<xs:element name="promedio" type="xs:double"/>
+<xs:element name="cantidad" type="xs:int"/>
+<xs:element name="porPuntaje" type="xs:int" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="miPuntaje" type="xs:int" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -260,6 +295,18 @@
 
 <xs:complexType name="altaUsuarioResponse">
 <xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="cursosParaValorar">
+<xs:sequence>
+<xs:element name="nickEstudiante" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cursosParaValorarResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="consultarCurso">
@@ -475,18 +522,6 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="resultadosInscripciones">
-<xs:sequence>
-<xs:element name="nickEstudiante" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="resultadosInscripcionesResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:DTInscripcionEstudiante" minOccurs="0" maxOccurs="unbounded"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="registrarNotas">
 <xs:sequence>
 <xs:element name="nickDocente" type="xs:string" minOccurs="0"/>
@@ -504,6 +539,18 @@
 
 <xs:complexType name="registrarNotasResponse">
 <xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="resultadosInscripciones">
+<xs:sequence>
+<xs:element name="nickEstudiante" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="resultadosInscripcionesResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DTInscripcionEstudiante" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="listarNombresCursos">
@@ -604,6 +651,20 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="valorarCurso">
+<xs:sequence>
+<xs:element name="nickEstudiante" type="xs:string" minOccurs="0"/>
+<xs:element name="curso" type="xs:string" minOccurs="0"/>
+<xs:element name="puntaje" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="valorarCursoResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:DTValoracionCurso" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="obtenerImagen">
 <xs:sequence>
 <xs:element name="ruta" type="xs:string" minOccurs="0"/>
@@ -616,17 +677,6 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="inscribirse">
-<xs:sequence>
-<xs:element name="nickEstudiante" type="xs:string" minOccurs="0"/>
-<xs:element name="edicion" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="inscribirseResponse">
-<xs:sequence/>
-</xs:complexType>
-
 <xs:complexType name="nicknameDisponible">
 <xs:sequence>
 <xs:element name="nickname" type="xs:string" minOccurs="0"/>
@@ -637,6 +687,17 @@
 <xs:sequence>
 <xs:element name="return" type="xs:boolean"/>
 </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="inscribirse">
+<xs:sequence>
+<xs:element name="nickEstudiante" type="xs:string" minOccurs="0"/>
+<xs:element name="edicion" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="inscribirseResponse">
+<xs:sequence/>
 </xs:complexType>
 
 <xs:complexType name="listarDocentesPorInstituto">
