@@ -47,7 +47,7 @@
             <div class="card h-100 shadow-sm">
                 <e:imagen ruta="${cur.imagen}" alt="${cur.nombre}" clase="card-img-top img-tarjeta"/>
                 <div class="card-body">
-                    <a class="stretched-link fw-semibold text-decoration-none" href="${url}"><c:out value="${cur.nombre}"/></a>
+                    <a class="stretched-link fw-semibold text-decoration-none text-break" href="${url}"><c:out value="${cur.nombre}"/></a>
                     <%-- Promedio de valoraciones en 5 estrellas (7.6, Figura 6) --%>
                     <div class="small d-flex align-items-center gap-1 mt-1">
                         <e:estrellas valor="${cur.promedio}"/>
