@@ -210,6 +210,13 @@ public class Central {
         });
     }
 
+    public void desistir(String nickEstudiante, String edicion) {
+        llamar(() -> {
+            puerto.desistir(nickEstudiante, edicion);
+            return null;
+        });
+    }
+
     public DTInscripcionesEdicion consultarInscripcionesEdicion(String nickDocente, String edicion) {
         return llamar(() -> puerto.consultarInscripcionesEdicion(nickDocente, edicion));
     }

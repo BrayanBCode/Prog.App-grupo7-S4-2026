@@ -138,6 +138,8 @@ public interface IControllerV2 {
     DTEdicionDetalle consultarEdicion(String nombreEdicion, String nickQueMira);
     /** Inscripcion a Edicion (web): el estudiante se inscribe a la edicion vigente, hoy, en estado Inscripto. ReglaNegocioException si no puede. */
     void inscribirse(String nickEstudiante, String nombreEdicion);
+    /** Desistir de inscripcion (web): solo si esta en estado Inscripto y la edicion no cerro. ReglaNegocioException si no puede. */
+    void desistir(String nickEstudiante, String nombreEdicion);
     /**
      * Alta de Curso (web): el docente del curso es el que da el alta; previas e imagen opcionales.
      * Tira ReglaNegocioException con el mensaje para el usuario.

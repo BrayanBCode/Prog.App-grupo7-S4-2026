@@ -160,6 +160,32 @@ public class EdicionCursoService {
         edicionCursoRepository.inscribir(nickEstudiante, estudiante.getMail(), ed.getNombre(), hoy);
     }
 
+    /**
+     * Desistir de inscripcion (opcional, Tarea 3): el estudiante retira su inscripcion a una edicion. Solo se
+     * puede mientras la inscripcion esta en estado Inscripto (el docente todavia no la acepto ni la rechazo) y
+     * la edicion no esta cerrada. La inscripcion se borra: libera el cupo y el estudiante puede volver a
+     * inscribirse si la edicion sigue vigente.
+     *
+     * @throws ReglaNegocioException con el mensaje para el usuario si no puede desistir
+     */
+    public void desistir(String nickEstudiante, String nombreEdicion) {
+        if (nickEstudiante == null || estudianteRepository.buscarPorNickname(nickEstudiante) == null) {
+            throw new ReglaNegocioException("Solo un estudiante puede desistir de una inscripción.");
+        }
+        EdicionCurso ed = buscarEdicion(nombreEdicion);
+        EstadoInscripcion estado = edicionCursoRepository.estadoInscripcion(nickEstudiante, ed.getNombre());
+        if (estado == null) {
+            throw new ReglaNegocioException("No estás inscripto en esta edición del curso.");
+        }
+        if (ed.isCerrada()) {
+            throw new ReglaNegocioException("La edición está cerrada: ya no podés desistir.");
+        }
+        if (estado != EstadoInscripcion.INSCRIPTO) {
+            throw new ReglaNegocioException("Solo podés desistir mientras tu inscripción está en estado Inscripto.");
+        }
+        edicionCursoRepository.eliminarInscripcion(nickEstudiante, ed.getNombre());
+    }
+
     private EdicionCurso buscarEdicion(String nombreEdicion) {
         EdicionCurso ed = nombreEdicion == null ? null : edicionCursoRepository.obtenerPorNombres(nombreEdicion);
         if (ed == null) {

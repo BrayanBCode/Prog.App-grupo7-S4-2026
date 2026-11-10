@@ -133,6 +133,8 @@ class ControllerV2Test {
                 @Override
                 public void inscribirse(String n, String e) { anotar("inscribirse " + n + " " + e); }
                 @Override
+                public void desistir(String n, String e) { anotar("desistir " + n + " " + e); }
+                @Override
                 public void altaEdicion(String d, String n, String c, LocalDate fi, LocalDate ff, Integer cupo, List<String> docentes, DTImagen img) {
                     anotar("altaEdicion " + d + " " + n + " " + c + " " + cupo + " " + docentes);
                 }
@@ -291,6 +293,7 @@ class ControllerV2Test {
     void ediciones_vanAlServicioDeEdiciones() throws Exception {
         controller.consultarEdicion("MicroBit-2026", "roro");
         controller.inscribirse("roro", "MicroBit-2026");
+        controller.desistir("roro", "MicroBit-2026");
         controller.altaEdicion("house", "Anatomia-2026", "Anatomia", F1, F2, 30, List.of("house"), null);
         controller.listarDocentesEdicion("MicroBit-2026");
         controller.listarEstudiantesEdicion("MicroBit-2026");
@@ -305,7 +308,7 @@ class ControllerV2Test {
         controller.seleccionarEstudiantes("house", "Anatomia-2026", Map.of("roro", EstadoInscripcion.ACEPTADA));
 
         assertEquals(List.of(
-                "consultarEdicion MicroBit-2026 roro", "inscribirse roro MicroBit-2026",
+                "consultarEdicion MicroBit-2026 roro", "inscribirse roro MicroBit-2026", "desistir roro MicroBit-2026",
                 "altaEdicion house Anatomia-2026 Anatomia 30 [house]", "listarDocentes MicroBit-2026",
                 "listarEstudiantes MicroBit-2026", "registrarEdicion Anatomia-2026 30", "registrarEdicion Anatomia-2026 e.png",
                 "obtenerNombresEdiciones Anatomia", "obtenerPorNombre Anatomia-2026", "obtenerEdicionVigente Anatomia",
