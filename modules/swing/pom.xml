@@ -28,8 +28,9 @@
     </dependencies>
 
     <build>
-        <!-- Se conserva el nombre del JAR original; ajustalo si el Estandar de Entregas pide otro -->
-        <finalName>ProgApp-grupo8-S4-2026</finalName>
+        <!-- servidor.jar (G12345-136): Estacion de Trabajo + Servidor Central que publica los Web Services.
+             Main publica los WS y abre la ventana; con "-sin-ventana" solo publica. -->
+        <finalName>servidor</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -42,7 +43,23 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <!-- Firmas de los JAR originales: dentro del JAR unico ya no valen y la JVM lo rechazaria -->
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>META-INF/versions/*/module-info.class</exclude>
+                                        <exclude>module-info.class</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                             <transformers>
+                                <!-- JAX-WS y JAXB se descubren por META-INF/services: hay que juntar los de todos los JAR -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>${mainClass}</mainClass>
                                 </transformer>
