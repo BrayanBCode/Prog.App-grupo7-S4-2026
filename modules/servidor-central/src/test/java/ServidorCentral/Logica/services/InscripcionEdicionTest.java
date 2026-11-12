@@ -70,6 +70,11 @@ class InscripcionEdicionTest {
             }
 
             @Override
+            public void eliminarInscripcion(String nick, String edicion) {
+                inscripciones.remove(nick + ">" + edicion);
+            }
+
+            @Override
             public List<ServidorCentral.Logica.entities.usuarios.Docente> docentesDeEdicion(String nombreEdicion) {
                 return List.of();
             }
@@ -153,6 +158,51 @@ class InscripcionEdicionTest {
                 error(() -> servicio().inscribirse("benkenobi", "Robotica 2026", HOY)));
         assertEquals("Solo un estudiante puede inscribirse a una edición.",
                 error(() -> servicio().inscribirse(null, "Robotica 2026", HOY)));
+    }
+
+    // ---- Desistir de inscripcion ----
+
+    @Test
+    void desistir_borraLaInscripcionYLiberaElCupo() {
+        EdicionCursoService s = servicio();
+        s.inscribirse("weiss", "Robotica 2026", HOY);
+        s.inscribirse("chechi", "Robotica 2026", HOY);
+
+        s.desistir("weiss", "Robotica 2026");
+
+        assertFalse(inscripciones.containsKey("weiss>Robotica 2026"));
+        s.inscribirse("roro", "Robotica 2026", HOY);   // el cupo liberado se puede usar
+        assertEquals(2, inscripciones.size());
+    }
+
+    @Test
+    void desistir_soloSiEstaEnEstadoInscripto() {
+        inscripciones.put("weiss>Robotica 2026", EstadoInscripcion.ACEPTADA);
+        inscripciones.put("chechi>Robotica 2026", EstadoInscripcion.RECHAZADA);
+        String mensaje = "Solo podés desistir mientras tu inscripción está en estado Inscripto.";
+        assertEquals(mensaje, error(() -> servicio().desistir("weiss", "Robotica 2026")));
+        assertEquals(mensaje, error(() -> servicio().desistir("chechi", "Robotica 2026")));
+        assertEquals(2, inscripciones.size());
+    }
+
+    @Test
+    void desistir_edicionCerrada_falla() {
+        inscripciones.put("weiss>Robotica 2026", EstadoInscripcion.INSCRIPTO);
+        ediciones.get("Robotica 2026").cerrar();
+        assertEquals("La edición está cerrada: ya no podés desistir.",
+                error(() -> servicio().desistir("weiss", "Robotica 2026")));
+        assertTrue(inscripciones.containsKey("weiss>Robotica 2026"));
+    }
+
+    @Test
+    void desistir_sinInscripcionOSinSerEstudiante_falla() {
+        assertEquals("No estás inscripto en esta edición del curso.",
+                error(() -> servicio().desistir("weiss", "Robotica 2026")));
+        assertEquals("Solo un estudiante puede desistir de una inscripción.",
+                error(() -> servicio().desistir("benkenobi", "Robotica 2026")));
+        assertEquals("Solo un estudiante puede desistir de una inscripción.",
+                error(() -> servicio().desistir(null, "Robotica 2026")));
+        assertEquals("No existe la edición \"Cocina\".", error(() -> servicio().desistir("weiss", "Cocina")));
     }
 
     // ---- Estado de la inscripcion que ve quien mira la edicion ----

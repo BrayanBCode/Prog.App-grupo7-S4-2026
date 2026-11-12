@@ -229,6 +229,27 @@ public class EdicionCursoRepository {
         }
     }
 
+    /**
+     * Borra la inscripcion del estudiante a la edicion (Desistir de inscripcion). Las validaciones (estado
+     * Inscripto, edicion abierta) ya las hizo el Service.
+     */
+    public void eliminarInscripcion(String nickname, String nombreEdicion) {
+        enTransaccion(em -> {
+            List<InscripcionEdicion> encontradas = em.createQuery(
+                            "SELECT i FROM InscripcionEdicion i WHERE i.estudiante.nickname = :nick "
+                                    + "AND i.edicionCurso.nombre = :edicion", InscripcionEdicion.class)
+                    .setParameter("nick", nickname)
+                    .setParameter("edicion", nombreEdicion)
+                    .getResultList();
+            for (InscripcionEdicion i : encontradas) {
+                // Mantener los dos lados, igual que en inscribir: si no, la cache guarda las listas viejas
+                i.getEdicionCurso().getInscripciones().remove(i);
+                i.getEstudiante().getInscripciones().remove(i);
+                em.remove(i);
+            }
+        });
+    }
+
     public long contarInscriptos(String nombreEdicion) {
         EntityManager em = conexion.getEntityManager();
         try {

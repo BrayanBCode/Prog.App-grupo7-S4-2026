@@ -85,6 +85,12 @@
 <message name="inscribirseResponse">
 <part name="parameters" element="tns:inscribirseResponse"/>
 </message>
+<message name="desistir">
+<part name="parameters" element="tns:desistir"/>
+</message>
+<message name="desistirResponse">
+<part name="parameters" element="tns:desistirResponse"/>
+</message>
 <message name="consultarCurso">
 <part name="parameters" element="tns:consultarCurso"/>
 </message>
@@ -256,6 +262,11 @@
 <input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/inscribirseRequest" message="tns:inscribirse"/>
 <output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/inscribirseResponse" message="tns:inscribirseResponse"/>
 <fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/inscribirse/Fault/ReglaNegocioFault"/>
+</operation>
+<operation name="desistir">
+<input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/desistirRequest" message="tns:desistir"/>
+<output wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/desistirResponse" message="tns:desistirResponse"/>
+<fault message="tns:ReglaNegocioFault" name="ReglaNegocioFault" wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/desistir/Fault/ReglaNegocioFault"/>
 </operation>
 <operation name="consultarCurso">
 <input wsam:Action="http://WebServices.ServidorCentral/ServicioCentral/consultarCursoRequest" message="tns:consultarCurso"/>
@@ -484,6 +495,18 @@
 </fault>
 </operation>
 <operation name="inscribirse">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ReglaNegocioFault">
+<soap:fault name="ReglaNegocioFault" use="literal"/>
+</fault>
+</operation>
+<operation name="desistir">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

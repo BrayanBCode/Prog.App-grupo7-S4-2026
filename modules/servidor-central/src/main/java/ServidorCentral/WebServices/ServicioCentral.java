@@ -213,6 +213,15 @@ public class ServicioCentral {
     }
 
     @WebMethod
+    public void desistir(@WebParam(name = "nickEstudiante") String nickEstudiante,
+                         @WebParam(name = "edicion") String edicion) throws ReglaNegocioFault {
+        llamar(() -> {
+            controller.desistir(nickEstudiante, edicion);
+            return null;
+        });
+    }
+
+    @WebMethod
     public DTInscripcionesEdicionWS consultarInscripcionesEdicion(@WebParam(name = "nickDocente") String nickDocente,
                                                                   @WebParam(name = "edicion") String edicion)
             throws ReglaNegocioFault {

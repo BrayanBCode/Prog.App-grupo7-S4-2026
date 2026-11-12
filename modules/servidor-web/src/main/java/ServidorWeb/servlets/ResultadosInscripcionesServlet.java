@@ -10,6 +10,9 @@ import java.io.IOException;
 /**
  * Caso de uso "Listar resultados de inscripciones a ediciones de curso" (4.9). Actor: Estudiante (lo garantiza el
  * AccesoFilter). Se entra por el lateral: INSCRIPCIONES -> Ver resultados (Figura 3).
+ * <p>
+ * POST: "Desistir de inscripcion" (opcional, Tarea 3). El boton de cada inscripcion en estado Inscripto manda
+ * la edicion; el central valida la regla y se vuelve a la lista (Post/Redirect/Get) con el mensaje.
  */
 @WebServlet("/inscripciones/resultados")
 public class ResultadosInscripcionesServlet extends BaseServlet {
@@ -24,5 +27,18 @@ public class ResultadosInscripcionesServlet extends BaseServlet {
         }
         req.setAttribute("titulo", "Resultados de mis inscripciones");
         vista(req, resp, "inscripcion/resultados.jsp");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.setCharacterEncoding("UTF-8");
+        String edicion = param(req, "edicion");
+        try {
+            central.desistir(usuario(req).getNickname(), edicion);
+            flash(req, "Desististe de tu inscripción a " + edicion + ".");
+        } catch (RuntimeException e) {
+            flashError(req, mensajeDeError(e));
+        }
+        redirigir(req, resp, "/inscripciones/resultados");
     }
 }

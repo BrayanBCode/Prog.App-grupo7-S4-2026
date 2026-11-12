@@ -17,7 +17,7 @@
 <c:if test="${not empty resultados}">
     <div class="table-responsive">
         <table class="table table-hover align-middle">
-            <thead class="table-light"><tr><th>Edición</th><th>Curso</th><th>Fecha de inscripción</th><th>Estado</th></tr></thead>
+            <thead class="table-light"><tr><th>Edición</th><th>Curso</th><th>Fecha de inscripción</th><th>Estado</th><th></th></tr></thead>
             <tbody>
             <c:forEach var="i" items="${resultados}">
                 <c:url var="uEd" value="/ediciones"><c:param name="nombre" value="${i.edicion}"/></c:url>
@@ -29,6 +29,16 @@
                     <td><e:estado valor="${i.estado}"/>
                         <c:if test="${i.cerrada and i.estado == 'ACEPTADA'}">
                             <span class="badge text-bg-secondary ms-1">Cerrada</span>
+                        </c:if>
+                    </td>
+                    <td class="text-end">
+                        <%-- Desistir: solo mientras sigue Inscripto y la edicion no cerro (el central lo vuelve a validar) --%>
+                        <c:if test="${i.estado == 'INSCRIPTO' and not i.cerrada}">
+                            <form method="post" action="${pageContext.request.contextPath}/inscripciones/resultados"
+                                  class="d-inline" onsubmit="return confirm('¿Desistir de tu inscripción a esta edición?');">
+                                <input type="hidden" name="edicion" value="<c:out value='${i.edicion}'/>">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Desistir</button>
+                            </form>
                         </c:if>
                     </td>
                 </tr>
