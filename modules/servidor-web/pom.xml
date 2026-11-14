@@ -62,7 +62,8 @@
     </dependencies>
 
     <build>
-        <finalName>servidor-web</finalName>
+        <!-- web.war (G12345-137): se despliega con el Tomcat Manager en /web -->
+        <finalName>web</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

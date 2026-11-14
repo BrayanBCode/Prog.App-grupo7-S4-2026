@@ -19,3 +19,6 @@ dependency-reduced-pom.xml
 
 # Acciones locales de NetBeans (se generan al configurar Run/Debug en cada maquina)
 nbactions*.xml
+
+# Artefactos de la entrega (los genera compilar.sh / compilar.bat)
+/dist/
